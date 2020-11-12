@@ -1,0 +1,78 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block scripts %}
+<script>
+  $(function(){
+    $("tbody").each(function(elem,index){
+      var arr = $.makeArray($("tr",this).detach());
+      arr.reverse();
+        $(this).append(arr);
+    });
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="card w-75 mx-auto">
+  <div class="card-body">
+    <h5 class="card-title display-2 mb-1">
+      {{ player.endowment }}
+      <small class="text-muted">Punkte</small>
+    </h5>
+    <h6 class="card-subtitle mb-4 text-muted">
+      beträgt Ihr Kontostand aktuell  (zu Beginn der {{player.round_number }}. Runde).
+    </h6>
+
+    <p class="card-text mb-5 lead">
+      Von diesen {{ player.endowment }} Punkten können Sie einen beliebigen Betrag investieren. <br> Nicht investierte (Rest-)Beträge bleiben stehen Ihnen in der
+      nächsten Runde unverändert zur Verfügung. Möchten Sie etwas investieren?
+    </p>
+
+    <div class="form-group row mb-1">
+      <div class="col">
+        <input type="number" class="form-control border border-primary float-right" placeholder="Punkte*" id="id_contribution" name="contribution" required>
+      </div>
+      <div class="col">
+        <button type="submit" id="submit_button" class="btn-primary btn float-left">Weiter</button>
+      </div>
+    </div>
+    <label for="id_contribution" class="text-secondary mb-5"><small>*0, wenn Sie nichts invetieren möchten</small></label>
+  </div>
+
+  {% if player.round_number > 1%}
+
+    <div class="card-footer">
+      <p class="lead mb-1">Transaktionen der vergangenen Runden:</p>
+      <p class="mb-5"><small>Die Tabelle zeigt für jede Runde wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
+        investiert wurde und welche Dividende jede(r) von Ihnen in der jeweiligen Runde ausgezahlt bekommen hat.</small></p>
+
+
+      <table class="table table-hover">
+          <thead>
+          <td>Runde</td>
+          <td>Ihre Investitionen</td>
+          <td>gesamte Investitionen</td>
+          <td>Dividende</td>
+          </thead>
+          <tbody>
+          {% for p in player.in_previous_rounds %}
+              <tr>
+                <td>#{{ p.round_number }}</td>
+                <td>{{ p.contribution }} Punkte</td>
+                <td>{{ p.group.total_contribution }} Punkte</td>
+                <td>{{ p.group.individual_share }}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+    </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+
