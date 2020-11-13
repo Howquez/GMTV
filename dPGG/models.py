@@ -24,11 +24,15 @@ class Constants(BaseConstants):
     max_rounds = 15 # set maximum number of rounds possible
     num_rounds = max_rounds
     initial_endowment = 20
-    efficiency_factor = 1.5 # (MPCR) Marginal Per Capita Return per round
+    efficiency_factor = 1.25 # (MPCR) Marginal Per Capita Return per round
 
 
 class Subsession(BaseSubsession):
-    pass
+    def creating_session(self):
+        if self.round_number == 1:
+            for p in self.get_players():
+                p.participant.vars["endowments"] = []
+                p.participant.vars["stock"] = []
 
 
 class Group(BaseGroup):
@@ -48,10 +52,17 @@ class Group(BaseGroup):
                             - p.contribution,
                             + self.individual_share,
                             ])
+
             if p.stock < 0:
                 p.stock = 0
-            if self.round_number == self.session.config["num_rounds"]:
-                p.payoff = c(p.stock)
+
+            gain = self.individual_share - p.contribution
+            # limited liability
+            if gain < - p.endowment:
+                gain = - p.endowment
+            p.payoff = c(gain)
+
+            p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
 
 
 class Player(BasePlayer):
@@ -65,6 +76,7 @@ class Player(BasePlayer):
             self.endowment = Constants.initial_endowment
         else:
             self.endowment = int(self.in_round(self.round_number - 1).stock)
+        self.participant.vars["endowments"].append(self.endowment)
 
 
     def contribution_max(self):

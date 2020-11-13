@@ -2,8 +2,13 @@
 {% load otree static %}
 
 {% block scripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 <script src="{% static 'global/js/full_screen.js' %}"></script>
+<script src="{% static 'global/js/time_series.js' %}"></script>
 
 <script>
   $(function(){
@@ -40,7 +45,7 @@
                 <input type="number" class="form-control border border-success float-right" placeholder="Investition" id="id_contribution" name="contribution" required>
             </div>
             <div class="col">
-                <button type="submit" id="submit_button" class="btn-outline-success btn float-left">Weiter</button>
+                <button type="submit" id="submit_button" class="btn-success btn float-left">Weiter</button>
             </div>
         </div>
         <label for="id_contribution" class="text-secondary mb-4 d-flex justify-content-center"><small>
@@ -48,10 +53,17 @@
     </div>
 
     {% if player.round_number > 1%}
-    <div class="card-footer bg-white text-secondary">
+    <div class="card-footer bg-light text-secondary">
 
-        <p class="lead mb-1">Transaktionen der vergangenen Runden:</p>
-        <p class="mb-5"><small>Die Tabelle zeigt für jede Runde wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
+        <p class="lead mb-1">Ihr Kontostand:</p>
+
+        <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
+
+        <figure class="highcharts-figure mb-5">
+                <div id="container"></div>
+        </figure>
+
+        <p class="mb-1"><small>Die Tabelle zeigt für jede Runde wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
             investiert wurde und welche Dividende jede(r) von Ihnen in der jeweiligen Runde ausgezahlt bekommen hat.</small></p>
 
 
@@ -60,15 +72,15 @@
             <td>Runde</td>
             <td>Ihre Investitionen</td>
             <td>gesamte Investitionen</td>
-            <td>Dividende</td>
+            <td>Gewinn</td>
             </thead>
             <tbody>
             {% for p in player.in_previous_rounds %}
             <tr>
-                <td>#{{ p.round_number }}</td>
-                <td>{{ p.contribution }} Punkte</td>
-                <td>{{ p.group.total_contribution }} Punkte</td>
-                <td>{{ p.group.individual_share }}</td>
+                <td><small>#{{ p.round_number }}</small></td>
+                <td><small>{{ p.contribution }} Punkte</small></td>
+                <td><small>{{ p.group.total_contribution }} Punkte</small></td>
+                <td><small>{{ p.payoff }}</small></td>
             </tr>
             {% endfor %}
             </tbody>

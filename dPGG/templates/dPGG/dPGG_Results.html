@@ -2,7 +2,13 @@
 {% load otree static %}
 
 {% block scripts %}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
     <script src="{% static 'global/js/full_screen.js' %}"></script>
+    <script src="{% static 'global/js/time_series.js' %}"></script>
 {% endblock %}
 
 
@@ -10,12 +16,15 @@
 <body onload="">
 
 
-  <div class="jumbotron bg-primary text-white">
+  <div class="jumbotron bg-light border border-success">
     <h1 class="display-4 mb-5">Vielen Dank für Ihre Teilnahme</h1>
     <p class="lead">
       Sie bekommen <strong> {{ final_payoff }} </strong> ausgezahlt.
     </p>
     <hr class="my-4">
+    <figure class="highcharts-figure mb-5">
+      <div id="container"></div>
+    </figure>
     <p>Das Experiment ist jetzt beendet.</p>
   </div>
 

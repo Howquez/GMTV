@@ -16,6 +16,13 @@ class dPGG_Decision(Page):
         if self.round_number <= self.session.config["num_rounds"]:
             return True
 
+    def js_vars(self):
+        return dict(
+            template="decision",
+            current_round=self.round_number,
+            endowments=self.participant.vars["endowments"],
+        )
+
 class ResultsWaitPage(WaitPage):
     # template_name = "dPGG/dPGG_Custom_Wait.html"
 
@@ -34,6 +41,13 @@ class dPGG_Results(Page):
     def vars_for_template(self):
         return dict(
             final_payoff=self.participant.payoff_plus_participation_fee().to_real_world_currency(self.session),
+        )
+
+    def js_vars(self):
+        return dict(
+            template="results",
+            current_round=self.round_number,
+            stock=self.participant.vars["stock"],
         )
 
 
