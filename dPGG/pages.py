@@ -17,13 +17,13 @@ class dPGG_Decision(Page):
             return True
 
 class ResultsWaitPage(WaitPage):
+    # template_name = "dPGG/dPGG_Custom_Wait.html"
 
     def is_displayed(self):
         if self.round_number <= self.session.config["num_rounds"]:
             return True
 
     after_all_players_arrive = "set_payoffs"
-    pass
 
 
 class dPGG_Results(Page):
