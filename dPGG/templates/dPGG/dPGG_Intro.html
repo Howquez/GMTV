@@ -1,12 +1,15 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
-{% block title %}
-    Page title
-{% endblock %}
 
 {% block content %}
 
-    {% next_button %}
+    <div class="jumbotron">
+        <h1 class="display-4">Willkommen!</h1>
+        <p class="lead">Vielen Dank für Ihre Bereitschaft an der Umfrage teilzunehmen.</p>
+        <hr class="my-4">
+        <p>Die folgenden Seiten sind nicht wirklich responsive, setzen Sie sich also lieber an einen Laptop.<br><br></p>
+        <button class="btn btn-primary btn-lg" role="button">Experiment starten</button>
+    </div>
 
 {% endblock %}
