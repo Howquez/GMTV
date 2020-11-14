@@ -45,6 +45,8 @@ class dPGG_Results(Page):
 
     def js_vars(self):
         return dict(
+            flat_fee=self.session.config["participation_fee"],
+            exchange_rate=self.session.config["real_world_currency_per_point"],
             template="results",
             current_round=self.round_number,
             stock=self.participant.vars["stock"],

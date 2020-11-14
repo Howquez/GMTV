@@ -5,6 +5,8 @@
 	}
 
 // initiate vars from python
+	let flat_fee = js_vars.flat_fee || 0;
+	let exchange_rate = js_vars.exchange_rate;
 	let template = js_vars.template;
 	let current_round  = js_vars.current_round;
 	let endowments = js_vars.endowments;
@@ -18,16 +20,21 @@
 		category[i]="Runde #"+category[i];
 	}
 
+// create participation fee series
+	var flat = Array(current_round).fill(flat_fee)
+
+
 // determine which series to be displayed
 	var series = endowments;
 	var suffix = " Punkte";
-	plot_line_label = "Anfangsausstattung";
+	var plot_line_width = 1;
+	var show_in_legend = false;
 
 	if (template == "results"){
 		series = stock;
 		suffix = " Euro";
-		plot_line_label = "Grundbetrag";
-
+		plot_line_width = 0;
+		show_in_legend = true;
 	}
 
 	// console.log(current_round);
@@ -65,10 +72,7 @@ var chart = Highcharts.chart('container', {
                 value: series[0],
                 color: 'grey',
                 dashStyle: 'shortdash',
-                width: 1,
-                label: {
-                    text: ""//plot_line_label
-                },
+                width: plot_line_width,
             }]
     },
     tooltip: {
@@ -83,12 +87,19 @@ var chart = Highcharts.chart('container', {
     		color: "#00C851"
     	},
         areaspline: {
+        	stacking: "normal",
             fillOpacity: 0.33
         }
     },
     series: [{
         name: "Kontostand",
         data: series,
-        showInLegend: false
+        showInLegend: show_in_legend
+    },{
+        name: "Grundbetrag",
+        data: flat,
+        color: "#0BD4CD",
+        showInLegend: show_in_legend,
+        visible: template == "results"
     }]
 });

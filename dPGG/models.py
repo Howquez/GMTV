@@ -9,6 +9,7 @@ from otree.api import (
     currency_range,
 )
 
+import math
 
 author = "Hauke Roggenkamp"
 
@@ -39,7 +40,7 @@ class Group(BaseGroup):
 
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
-    individual_share = models.CurrencyField(doc="individual share each player receives from this round's contributions")
+    individual_share = models.FloatField(doc="individual share each player receives from this round's contributions")
 
     def set_payoffs(self):
 
@@ -48,27 +49,26 @@ class Group(BaseGroup):
         self.individual_share = self.total_contribution * Constants.efficiency_factor / Constants.players_per_group
 
         for p in self.get_players():
-            p.stock = sum([+ p.endowment,
-                            - p.contribution,
-                            + self.individual_share,
-                            ])
 
+            p.gain = int(math.ceil(self.individual_share - p.contribution))
+            p.stock = p.endowment + p.gain
+
+            # limited liability
             if p.stock < 0:
                 p.stock = 0
 
-            gain = self.individual_share - p.contribution
-            # limited liability
-            if gain < - p.endowment:
-                gain = - p.endowment
-            p.payoff = c(gain)
-
             p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
 
+            if self.round_number == 1:
+                p.payoff = c(p.stock)
+            else:
+                p.payoff = c(p.gain)
 
 class Player(BasePlayer):
 
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
+    gain = models.IntegerField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
     stock = models.CurrencyField(doc="accumulated earnings of played rounds")
 
     def start(self):
