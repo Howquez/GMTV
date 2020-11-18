@@ -10,6 +10,7 @@ from otree.api import (
 )
 
 import math
+import random
 
 author = "Hauke Roggenkamp"
 
@@ -27,6 +28,10 @@ class Constants(BaseConstants):
     initial_endowment = 20
     efficiency_factor = 1.25 # (MPCR) Marginal Per Capita Return per round
 
+    safe_rounds = 1 # number of rounds without any risk
+    risk = 0.5 # risk of damage per round in %
+
+
 
 class Subsession(BaseSubsession):
     def creating_session(self):
@@ -36,13 +41,19 @@ class Subsession(BaseSubsession):
                 p.participant.vars["stock"] = []
 
 
+
 class Group(BaseGroup):
 
+    disaster = models.BooleanField(initial=False, doc="if true, negative effects on MPCR or stock will occur.")
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.FloatField(doc="individual share each player receives from this round's contributions")
 
     def set_payoffs(self):
+
+        if self.round_number > Constants.safe_rounds:
+            if Constants.risk > random.uniform(0, 1):
+                self.disaster = True
 
         self.total_contribution = sum([p.contribution for p in self.get_players()])
         self.average_contribution = round(self.total_contribution / Constants.players_per_group, 2)
@@ -51,11 +62,16 @@ class Group(BaseGroup):
         for p in self.get_players():
 
             p.gain = int(math.ceil(self.individual_share - p.contribution))
-            p.stock = p.endowment + p.gain
+
+            # implement basic disaster damage
+            if self.disaster:
+                p.gain = p.gain - 10
 
             # limited liability
-            if p.stock < 0:
-                p.stock = 0
+            if p.gain < - p.endowment:
+                p.gain = - p.endowment
+
+            p.stock = p.endowment + p.gain
 
             p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
 

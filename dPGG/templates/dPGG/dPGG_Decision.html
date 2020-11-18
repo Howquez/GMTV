@@ -49,7 +49,13 @@
             </div>
         </div>
         <label for="id_contribution" class="text-secondary mb-4 d-flex justify-content-center"><small>
-            <sup>1</sup> Maximal {{ player.endowment }} Punkte in dieser Runde. <br><sup>2</sup> 0 Punkte, wenn Sie nicht invetieren möchten.</small></label>
+            <sup>1</sup> Maximal {{ player.endowment }} Punkte in dieser Runde. <br><sup>2</sup> 0 Punkte, wenn Sie nicht investieren möchten.</small></label>
+
+        {% if disaster == 1 %}
+            <div class="alert alert-danger" role="alert">
+                This is a danger alert—check it out!
+            </div>
+        {% endif %}
     </div>
 
     {% if player.round_number > 1%}
@@ -67,7 +73,7 @@
             investiert wurde und welche Dividende jede(r) von Ihnen in der jeweiligen Runde ausgezahlt bekommen hat.</small></p>
 
 
-        <table class="table table-hover">
+        <table class="table table-hover table-responsive-md">
             <thead>
             <td>Runde</td>
             <td>Ihre Investitionen</td>

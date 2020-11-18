@@ -16,6 +16,14 @@ class dPGG_Decision(Page):
         if self.round_number <= self.session.config["num_rounds"]:
             return True
 
+    def vars_for_template(self):
+        disaster = 0
+        if self.round_number > 1:
+            disaster = self.group.in_round(self.round_number - 1).disaster
+        return dict(
+            disaster=disaster,
+        )
+
     def js_vars(self):
         return dict(
             template="decision",
