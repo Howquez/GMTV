@@ -10,6 +10,7 @@
 <script src="{% static 'global/js/full_screen.js' %}"></script>
 <script src="{% static 'global/js/time_series.js' %}"></script>
 
+<!-- reverse table order -->
 <script>
   $(function(){
     $("tbody").each(function(elem,index){
@@ -19,6 +20,7 @@
     });
   });
 </script>
+
 {% endblock %}
 
 {% block content %}
@@ -42,7 +44,7 @@
 
         <div class="form-group row mb-1">
             <div class="col">
-                <input type="number" class="form-control border border-success float-right" placeholder="Investition" id="id_contribution" name="contribution" required>
+                <input type="number" class="form-control border border-success float-right" placeholder="Investition" id="id_contribution" name="contribution" min="0" required>
             </div>
             <div class="col">
                 <button type="submit" id="submit_button" class="btn-success btn float-left">Weiter</button>
