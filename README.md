@@ -30,8 +30,9 @@ In addition, we have to think about ways to conduct the experiment during COVID-
 consequences for the number of rounds and group sizes.
 
 ## 🚏 How you can access a demo
-TBA
-[![](figures/Decision_Screen.png)]()
+You can find the experiment's demo [here](https://cliccs.herokuapp.com/demo/). A click on _Dynamic Public Goods Game_ 
+will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._
+[![](figures/Decision_Screen.png)](https://cliccs.herokuapp.com/demo/)
 
 
 ## 🛠 How we built it
