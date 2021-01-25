@@ -3,15 +3,39 @@
 Made with [oTree](https://www.sciencedirect.com/science/article/pii/S2214635016000101) and ❤️
 
 ## 🧐 What the project is about
-This experiment replicates Gächter's [(2017, Journal of Public Economics)](https://www.sciencedirect.com/science/article/pii/S0047272717300361)
-dynamic public goods game and incorporates uncertainty. More details follow.
+This experiment replicates Gächter et al.'s [(2017, Journal of Public Economics)](https://www.sciencedirect.com/science/article/pii/S0047272717300361)
+dynamic public goods game and incorporates uncertainty. 
+
+The original game is a public goods game where each player's current endowment is the sum of her initial endowment and 
+gains or losses from previous periods. Hence, period endowments are incomes of previous periods and both growth as well 
+as inequality arise endogenously.
+
+## 🎓 Academic Contributions
+Gächter et al used this design to investigate growth, inequality and cooperation. We would like to extend the game by
+incorporating uncertainty as well. Doing so, we want to model uncertainty from arising extreme weather events that are
+expected to become more severe and frequent due to climatic change.
+
+One can think of extreme weather events as destroying income as well as productivity. Therefore, we can incorporate
+uncertain shocks to both the endowment as well as the marginal per capita return (MPCR). In addition, one could think of 
+prevention as a public good. By contributing to this good, players can reduce the extreme weather events' damage, while
+their frequency remains unaffected (because there is nothing to do about it in the short term).
+
+## ✅ To do
+We have to decide whether...
+- [ ] we want to model prevention, i.e. whether the damage depends on contributions
+- [ ] the endowment and/or MPCR shall be affected
+- [ ] damage shall be heterogeneous within groups
+
+In addition, we have to think about ways to conduct the experiment during COVID-19. These consideration may have
+consequences for the number of rounds and group sizes.
 
 ## 🚏 How you can access a demo
 TBA
+[![](figures/Decision_Screen.png)]()
 
-## 🎓 Academic Contributions
-TBD
 
 ## 🛠 How we built it
-TBA
+The experiment is built in Python 3 using [oTree](https://www.sciencedirect.com/science/article/pii/S2214635016000101).
+So far, one can consider the game as an MVP -- it therefore only contains constant and homogeneous shocks to the 
+players' endowments. 
 
