@@ -1,0 +1,47 @@
+/* Title */
+.otree-title {
+  display: none;
+}
+
+/* Hide Timer */
+.otree-timer {
+    display: none;
+}
+
+/* Background image*/
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  opacity: 0.33;
+}
+
+/* Navbar background */
+.bg-header {
+  background-color: rgba(255, 255, 255, 0.90);
+}
+
+/* colors */
+.my-warning{
+  color: #FFFFFF ;
+  background-color: #FC6100;
+}
+
+
+/* display style */
+.displaystyle-leftborder {
+    padding: 15px;
+    margin: 15px;
+    background-color: #FFFFFF;
+    border-left: 9px solid ;
+    margin-bottom: 10px;
+}
+
+.displaystyle-my-warning {
+        border-color: #FC6100;
+    }
+

@@ -1,103 +1,142 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
+{% block styles %}
+    <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+{% endblock %}
+
+
 {% block scripts %}
 <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 <script src="{% static 'global/js/full_screen.js' %}"></script>
+<script src="{% static 'global/js/basics.js' %}"></script>
 <script src="{% static 'global/js/time_series.js' %}"></script>
-
-<!-- reverse table order -->
-<script>
-  $(function(){
-    $("tbody").each(function(elem,index){
-      var arr = $.makeArray($("tr",this).detach());
-      arr.reverse();
-        $(this).append(arr);
-    });
-  });
-</script>
-
+<script src="{% static 'global/js/decision.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <body onload="">
+<img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-8 col-lg-6">
 
-<div class="card w-75 mx-auto">
-    <div class="card-body">
-        <h5 class="card-title display-2 mb-1">
-            {{ player.endowment }}
-            <small class="text-muted">Punkte</small>
-        </h5>
-        <h6 class="card-subtitle mb-4 text-muted">
-            beträgt Ihr Kontostand aktuell  (zu Beginn der {{player.round_number }}. Runde).
-        </h6>
-        <hr class="my-4">
+            <div class="card mt-5">
+                <div class="card-body">
 
-        <p class="card-text mb-5 lead">
-            Von diesen {{ player.endowment }} Punkten können Sie einen beliebigen Betrag investieren. <br> Nicht investierte (Rest-)Beträge  stehen Ihnen in der
-            nächsten Runde unverändert zur Verfügung. Möchten Sie  investieren?<sup>1,2</sup>
-        </p>
+                    <h5 class="card-title display-3 mb-1" data-toggle="tooltip" data-placement="top" title="Ihr aktueller Kontostand">
+                        {{ player.endowment }}
+                        <small class="text-muted">
+                            Punkte
+                        </small>
+                    </h5>
+                    <h6 class="card-subtitle mb-4">
+                        {% if player.round_number > 1%}
+                            {% if diff >= 0 %}
+                                <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Punkte, die sie in der letzten Runde dazuverdient haben">
+                                    +{{ diff }} Punkte
+                                </span>
+                            {% else %}
+                                <span class="badge badge-danger" data-toggle="tooltip" data-placement="right" title="Punkte, die sie in der letzten Runde verloren haben">
+                                    {{ diff }} Punkte
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                        <span class="badge badge-light">
+                            Runde {{ player.round_number }}
+                        </span>
+                        <!--
+                        {% if disaster == 1 %}
+                            <span class="badge badge-warning">
+                                Extremwetterereignis
+                            </span>
+                        {% endif %}
+                        -->
+                    </h6>
 
-        <div class="form-group row mb-1">
-            <div class="col">
-                <input type="number" class="form-control border border-success float-right" placeholder="Investition" id="id_contribution" name="contribution" min="0" required>
-            </div>
-            <div class="col">
-                <button type="submit" id="submit_button" class="btn-success btn float-left">Weiter</button>
+                    <hr class="my-4">
+
+                    {% if disaster == 1 %}
+                        <div class="alert alert-danger mb4- mt-4" role="alert">
+                            Es ist ein Extremwetterereignis eingetreten. Dieses hat ihr Einkommen aus der letzten Runde um 10 Punkte reduziert.
+                        </div>
+                    {% endif %}
+
+                    <p class="card-text lead mb-1">
+                        Von diesen {{ player.endowment }} Punkten können Sie einen beliebigen Betrag investieren.
+                    </p>
+
+                    <p class="mb-4">
+                        <small>Nicht investierte (Rest-) Beträge  stehen Ihnen in der nächsten Runde unverändert zur Verfügung.</small>
+                    </p>
+
+                    <div class="form-group row mb-5">
+                        <div class="col">
+                            <input type="number" class="form-control border border-success float-right" placeholder="Investition" id="id_contribution" name="contribution" min="0" required
+                                   data-container="body" data-toggle="popover" data-placement="bottom" data-content="Maximal {{ player.endowment }} Punkte in dieser Runde.">
+                        </div>
+                        <div class="col">
+                            <button type="button" id="submit_button" class="btn-outline-secondary btn float-left" onclick="submitForm();">
+                                Alles Sparen
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% if player.round_number > 1%}
+                <div class="card-footer bg-light text-secondary">
+
+                    <p class="lead mb-1">Ihr Kontostand:</p>
+
+                    <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
+
+                    <figure class="highcharts-figure mb-5">
+                            <div id="container"></div>
+                    </figure>
+
+                    <p class="mb-1"><small>Die Tabelle zeigt für jede Runde, wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
+                        investiert wurde sowie Ihren Gewinn (oder Verlust).</small></p>
+
+
+                    <table class="table table-hover table-responsive-md">
+                        <thead>
+                        <td>Runde</td>
+                        <td>Ihre Investitionen</td>
+                        <td>Gesamte Investitionen</td>
+                        <td>Ihr Gewinne</td>
+                        </thead>
+                        <tbody>
+                        {% for p in player.in_previous_rounds %}
+                        <tr>
+                            <td><small>
+                                {% if p.group.disaster%}
+                                    <span class="badge badge-danger" data-toggle="tooltip" data-placement="bottom" title="Extremwetterereignis">
+                                {% else %}
+                                    <span class="badge badge-light">
+                                {% endif %}
+                                    #{{ p.round_number }}
+                                </span>
+                            </small></td>
+                            <td><small>{{ p.contribution }} Punkte</small></td>
+                            <td><small>{{ p.group.total_contribution }} Punkte</small></td>
+                            <td><small>{{ p.gain }} Punkte</small></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% endif %}
+
             </div>
         </div>
-        <label for="id_contribution" class="text-secondary mb-4 d-flex justify-content-center"><small>
-            <sup>1</sup> Maximal {{ player.endowment }} Punkte in dieser Runde. <br><sup>2</sup> 0 Punkte, wenn Sie nicht investieren möchten.</small></label>
-
-        {% if disaster == 1 %}
-            <div class="alert alert-danger" role="alert">
-                Es ist ein Extremwetterereignis eingetreten. Dieses hat ihr Einkommen um 10 reduziert.
-            </div>
-        {% endif %}
     </div>
-
-    {% if player.round_number > 1%}
-    <div class="card-footer bg-light text-secondary">
-
-        <p class="lead mb-1">Ihr Kontostand:</p>
-
-        <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
-
-        <figure class="highcharts-figure mb-5">
-                <div id="container"></div>
-        </figure>
-
-        <p class="mb-1"><small>Die Tabelle zeigt für jede Runde wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
-            investiert wurde und welche Dividende jede(r) von Ihnen in der jeweiligen Runde ausgezahlt bekommen hat.</small></p>
-
-
-        <table class="table table-hover table-responsive-md">
-            <thead>
-            <td>Runde</td>
-            <td>Ihre Investitionen</td>
-            <td>gesamte Investitionen</td>
-            <td>Gewinn</td>
-            </thead>
-            <tbody>
-            {% for p in player.in_previous_rounds %}
-            <tr>
-                <td><small>#{{ p.round_number }}</small></td>
-                <td><small>{{ p.contribution }} Punkte</small></td>
-                <td><small>{{ p.group.total_contribution }} Punkte</small></td>
-                <td><small>{{ p.gain }} Punkte</small></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    {% endif %}
-
 </div>
+
 </body>
 {% endblock %}
 

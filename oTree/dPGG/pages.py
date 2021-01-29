@@ -18,10 +18,13 @@ class dPGG_Decision(Page):
 
     def vars_for_template(self):
         disaster = 0
+        diff = 0
         if self.round_number > 1:
             disaster = self.group.in_round(self.round_number - 1).disaster
+            diff = self.player.in_round(self.round_number - 1).gain
         return dict(
-            disaster=disaster,
+            disaster = disaster,
+            diff=diff,
         )
 
     def js_vars(self):

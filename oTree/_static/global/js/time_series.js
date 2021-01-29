@@ -44,7 +44,7 @@
 
 var chart = Highcharts.chart('container', {
     chart: {
-        type: 'areaspline',
+        type: "areaspline",
         backgroundColor: "transparent",
         height: (4 / 16 * 100) + '%' // 16:9 ratio
     },
@@ -84,12 +84,15 @@ var chart = Highcharts.chart('container', {
     },
     plotOptions: {
     	series: {
-    		color: "#00C851"
+    		color: "#00C851",
+    		marker: {
+                enabled: false
+            }
     	},
         areaspline: {
         	stacking: "normal",
             fillOpacity: 0.33
-        }
+        },
     },
     series: [{
         name: "Kontostand",
@@ -103,3 +106,7 @@ var chart = Highcharts.chart('container', {
         visible: template == "results"
     }]
 });
+
+if (template == "results"){
+    chart.tooltip.refresh([chart.series[0].points[current_round - 1]]);
+}
