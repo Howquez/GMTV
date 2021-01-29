@@ -1,9 +1,14 @@
 from otree.api import Currency as c, currency_range
 from . import pages
 from ._builtin import Bot
+from otree.api import Submission
 from .models import Constants
+import random
 
 
 class PlayerBot(Bot):
     def play_round(self):
-        pass
+        if self.round_number == 1:
+            yield pages.dPGG_Intro
+        if self.round_number <= self.session.config["num_rounds"]:
+            yield Submission(pages.dPGG_Decision, dict(contribution=random.randint(0, self.player.endowment)), check_html=False)
