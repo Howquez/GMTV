@@ -29,8 +29,8 @@ strategic and more general decisions to be made. That is, we have to decide whet
 - [ ] the endowment and/or MPCR shall be affected
 - [ ] damage shall be heterogeneous within groups
 
-We also have to think about ways to conduct the experiment during COVID-19. These consideration may have
-consequences for the number of rounds and group sizes.
+We also have to think about [ways to conduct the experiment online](https://doi.org/10.1007/s10683-017-9527-2) during 
+COVID-19. These considerations may have consequences for the number of rounds and group sizes.
 
 ## 🚏 How you can access a demo
 You can find the experiment's demo [here](https://cliccs.herokuapp.com/demo/). A click on _Dynamic Public Goods Game_ 
