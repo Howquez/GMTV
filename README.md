@@ -21,8 +21,11 @@ prevention as a public good. By contributing to this good, players can reduce th
 their frequency remains unaffected (because there is nothing to do about it in the short term).
 
 ## ✅ To do
-We have to decide whether...
+
+A kanban board can be found [here](https://github.com/Howquez/coopUncertainty/projects/1). In addition, there are some
+strategic and more general decisions to be made. That is, we have to decide whether...
 - [ ] we want to model prevention, i.e. whether the damage depends on contributions
+- [ ] we want to frame it as a public goods or public bad game
 - [ ] the endowment and/or MPCR shall be affected
 - [ ] damage shall be heterogeneous within groups
 
