@@ -49,15 +49,15 @@
                     <table class="table table-hover table-responsive-md">
                         <thead>
                         <td>Runde</td>
-                        <td>Ihre Investitionen</td>
+                        <td>Ihre Investition</td>
                         <td>Gesamte Investitionen</td>
-                        <td>Ihr Gewinne</td>
+                        <td>Ihr Gewinn</td>
                         </thead>
                         <tbody>
                         {% for p in player.in_all_rounds %}
                         <tr>
                             <td><small>
-                                {% if p.group.disaster%}
+                                {% if p.group.disaster %}
                                     <span class="badge badge-danger" data-toggle="tooltip" data-placement="right" title="Kein Extremwetterereignis">
                                 {% else %}
                                     <span class="badge badge-light" data-toggle="tooltip" data-placement="right" title="Extremwetterereignis">

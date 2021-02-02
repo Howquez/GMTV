@@ -1,5 +1,8 @@
 console.log("basics ready!")
 
+// variables from python
+let template = js_vars.template || 0
+
 // tooltip
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -12,11 +15,13 @@ $(function () {
 
 // reverse the table's order
 $(function(){
-$("tbody").each(function(elem,index){
-  var arr = $.makeArray($("tr",this).detach());
-  arr.reverse();
-    $(this).append(arr);
-});
+if (template != "instructions"){
+    $("tbody").each(function(elem,index){
+      var arr = $.makeArray($("tr",this).detach());
+      arr.reverse();
+        $(this).append(arr);
+    });
+}
 });
 
 // change button text on input

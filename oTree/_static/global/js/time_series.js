@@ -7,11 +7,17 @@
 // initiate vars from python
 	let flat_fee = js_vars.flat_fee || 0;
 	let exchange_rate = js_vars.exchange_rate;
-	let template = js_vars.template;
+	// let template = js_vars.template; declared in basics
 	let current_round  = js_vars.current_round;
 	let endowments = js_vars.endowments;
 	let stock = js_vars.stock || 0;
-	console.log(stock);
+	console.log(endowments);
+
+// create dummy data for instructions
+    if (template == "instructions"){
+        current_round = 3;
+        endowments = [20, 17, 20, 25]
+    }
 
 // get categories, i.e. the rounds
 	var category = Array.from(seq(1, current_round));

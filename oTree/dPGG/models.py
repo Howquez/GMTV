@@ -27,6 +27,7 @@ class Constants(BaseConstants):
     num_rounds = max_rounds
     initial_endowment = 20
     efficiency_factor = 1.25 # (MPCR) Marginal Per Capita Return per round
+    rate_of_return = (efficiency_factor - 1)*100
 
     safe_rounds = 2 # number of rounds without any risk
     risk = 0.33 # risk of damage per round

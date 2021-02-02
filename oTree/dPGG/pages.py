@@ -2,11 +2,13 @@ from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
 
+class InitialWaitPage(WaitPage):
+    group_by_arrival_time = True
 
-class dPGG_Intro(Page):
     def is_displayed(self):
         if self.round_number == 1:
             return True
+
 
 class dPGG_Decision(Page):
     form_model = "player"
@@ -65,4 +67,7 @@ class dPGG_Results(Page):
 
 
 
-page_sequence = [dPGG_Intro, dPGG_Decision, ResultsWaitPage, dPGG_Results]
+page_sequence = [InitialWaitPage,
+                 dPGG_Decision,
+                 ResultsWaitPage,
+                 dPGG_Results]

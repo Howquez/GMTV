@@ -61,7 +61,7 @@
 
                     {% if disaster == 1 %}
                         <div class="alert alert-danger mb4- mt-4" role="alert">
-                            Es ist ein Extremwetterereignis eingetreten. Dieses hat ihr Einkommen aus der letzten Runde um 10 Punkte reduziert.
+                            Es ist ein Extremwetterereignis eingetreten. Dieses hat Ihr Guthaben um 10 Punkte reduziert.
                         </div>
                     {% endif %}
 
@@ -95,7 +95,7 @@
                     <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
 
                     <figure class="highcharts-figure mb-5">
-                            <div id="container"></div>
+                        <div id="container"></div>
                     </figure>
 
                     <p class="mb-1"><small>Die Tabelle zeigt für jede Runde, wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
@@ -105,15 +105,15 @@
                     <table class="table table-hover table-responsive-md">
                         <thead>
                         <td>Runde</td>
-                        <td>Ihre Investitionen</td>
+                        <td>Ihre Investition</td>
                         <td>Gesamte Investitionen</td>
-                        <td>Ihr Gewinne</td>
+                        <td>Ihr Gewinn</td>
                         </thead>
                         <tbody>
                         {% for p in player.in_previous_rounds %}
                         <tr>
                             <td><small>
-                                {% if p.group.disaster%}
+                                {% if p.group.disaster %}
                                     <span class="badge badge-danger" data-toggle="tooltip" data-placement="bottom" title="Extremwetterereignis">
                                 {% else %}
                                     <span class="badge badge-light">
@@ -131,7 +131,6 @@
                 </div>
 
                 {% endif %}
-
             </div>
         </div>
     </div>

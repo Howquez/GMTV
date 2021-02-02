@@ -1,0 +1,553 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<script src="{% static 'global/js/basics.js' %}"></script>
+<script src="{% static 'global/js/time_series.js' %}"></script>
+<script src="{% static 'global/js/buttons.js' %}"></script>
+
+
+{% endblock %}
+
+
+{% block content %}
+<body onload="">
+<img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
+
+    <!-- Instructions -->
+    <div class="card">
+        <div class="card-header">
+
+            <!-- Card's Tab Navigation -->
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+
+                <a class="navbar-brand text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-square-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.93 4.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                    Anleitung
+                </a>
+
+                <li class="nav-item" >
+                    <a class="nav-link back-and-forth active" id="part1-tab" data-toggle="tab" href="#part1" role="tab" aria-controls="part1"> Allgemeines </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Aufbau </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part3-tab" data-toggle="tab" href="#part3" role="tab" aria-controls="part3"> Demo </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Beispiele </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part5-tab" data-toggle="tab" href="#part5" role="tab" aria-controls="part5"> Verständnisfragen </a>
+                </li>
+            </ul>
+
+        </div>
+
+
+        <div class="tab-content" id="myTabContent">
+
+            <!-- Part 1: Allgemeines -->
+            <div class="tab-pane show active" id="part1" role="tabpanel" aria-labelledby="part1-tab">
+                <div class="card-body">
+                    <p class="lead">
+                    Das Wichtigste in Kürze
+                    </p>
+                    <p>
+                        Dies ist eine Studie, die Ihre Entscheidungen innerhalb einer Gruppe untersucht. Wenn Sie die
+                        folgenden Instruktionen aufmerksam lesen, können Sie durch Ihre Entscheidungen einen Bonus
+                        verdienen. Der Betrag vom Bonus hängt dabei sowohl von Ihren Entscheidungen als auch von den
+                        Entscheidungen der anderen Teilnehmer in Ihrer Gruppe ab.
+                    </p>
+
+                    <p>
+                        Während der gesamten Studie fällen Sie Entscheidungen über Punkte, die am Ende der Studie in
+                        Euro umgerechnet werden. Der Wechselkurs beträgt
+                        <u>{{ session.config.real_world_currency_per_point }} Euro für jeden Punkt</u>.
+                        Generell gilt also, dass sie umso mehr Geld verdienen, je mehr Punkte Sie im Laufe der Studie
+                        verdienen.
+                    </p>
+
+                    <p>
+                        Es ist wichtig, dass Sie konzentriert und ohne Unterbrechungen an der Studie teilnehmen. Denn
+                        Sie können den Bonus nur dann verdienen, wenn Sie sowie Ihre Gruppenmitglieder ans Ende der
+                        Studie gelangen.
+                    </p>
+
+
+
+                    <!-- on Card Navigation  Arrows -->
+                    <div class="row justify-content-md-center mt-5">
+                        <div class="col col-lg-2">
+                        <p class="prevtab text-light text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                            </svg>
+                        </p>
+                        </div>
+
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="nexttab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"/>
+                            </svg>
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Part 2: Aufbau  -->
+            <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
+                <div class="card-body">
+                    <p class="lead"><u>Gruppen und Runden</u></p>
+                    <p>
+                        In Studie befinden Sie sich ein einer Gruppe bestehend aus insgesamt
+                        {{ Constants.group_size }} Personen. Über den Verlauf der Studie wird sich die
+                        Gruppenzusammensetzung nicht ändern. Sie werden also immer mit denselben
+                        {{ Constants.num_others_per_group }} Personen interagieren.
+                    </p>
+                    <p>
+                        Die Studie besteht aus {{ session.config.num_rounds }} Runden. In jeder Runde stehen Sie, sowie
+                        die anderen Teilnehmer in Ihrer Gruppe, vor derselben Entscheidungssituation: Sie müssen abwägen,
+                        ob und wie viele Punkte Sie investieren wollen. Dafür bekommen Sie zu Beginn der ersten Runde
+                        ein Guthaben von {{ Constants.initial_endowment }} Punkten.
+                    </p>
+                    <p class="lead"><br><u>Ihre Entscheidungen</u></p>
+                    <p>
+                        Sie müssen nun in jeder Runde entscheiden, wie viele Punkte Sie investieren wollen. Dabei können
+                        Sie 0 Punkte (also nichts), ihr gesamtes Guthaben oder einen Betrag dazwischen investieren. Nicht
+                        investierte Restbeträge werden Ihrem Guthaben der nächsten Runde gutgeschrieben.
+                    </p>
+                    <p>
+                        Die Beträge, die Sie oder Ihre Gruppenmitglieder investieren, werden mit
+                        {{ Constants.efficiency_factor }} multipliziert und zu gleichen Teilen auf alle
+                        Gruppenmitglieder aufgeteilt. Das heißt, dass es eine Rendite von {{ Constants.rate_of_return }}%
+                        auf alle in Ihrer Gruppe getätigten Investitionen gibt, bevor Sie
+                        1/{{ Constants.group_size }} davon gutschrieben bekommen.
+                    </p>
+                    <p class="lead"><br><u>Guthaben</u></p>
+                    <p>
+                        Ihr Guthaben in der jeweiligen Folgerunde besteht aus den Punkten, die Sie in einer Runde nicht
+                        investiert haben, sowie Ihrem Anteil aus dem Ertrag der Investitionen aus dieser Runde.
+                        Dieses Guthaben können Sie dann in der Folgerunde wieder für Investitionen verwenden, wenn Sie
+                        möchten. Am Ende der Studie bekommen Sie dann das Guthaben, dass Sie nach der letzten Runde
+                        haben, als Bonus ausgezahlt.
+                    </p>
+
+
+
+
+
+                    <!-- on Card Navigation  Arrows -->
+                    <div class="row justify-content-md-center mt-5">
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="prevtab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                            </svg>
+                        </p>
+                        </div>
+
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="nexttab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"/>
+                            </svg>
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Part 3: Demo  -->
+            <div class="tab-pane" id="part3" role="tabpanel" aria-labelledby="part3-tab">
+                <div class="card-body">
+                    <p>
+                        In jeder Runde teilen wir Ihnen mit, in welcher Runde Sie sich befinden, wie hoch Ihr Guthaben
+                        in dieser Runde ist und wie viel Sie in der letzten Runde verdient oder verloren haben.
+                        Darüber hinaus zeigen wir Ihnen eine Art Kontoauszug an, der Ihnen Ihre Investitionen, die
+                        Investitionen der gesamten Gruppe sowie Ihre Gewinne oder Verluste aus allen Runden grafisch
+                        und tabellarisch darstellt. Unten zeigen wir Ihnen einen exemplarischen
+                        Entscheidungsbildschirm.
+                    </p>
+
+                    <div class="container clearfix displaystyle-leftborder displaystyle-my-warning w-75 bg-light">
+                        <div class="row justify-content-center">
+                            <div class="card mt-5 mb-5 w-75">
+                            <div class="card-body">
+
+                                <h5 class="card-title display-3 mb-1" data-toggle="tooltip" data-placement="top" title="Ihr aktueller Kontostand">
+                                    25
+                                    <small class="text-muted">
+                                        Punkte
+                                    </small>
+                                </h5>
+                                <h6 class="card-subtitle mb-4">
+                                            <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Punkte, die sie in der letzten Runde dazuverdient haben">
+                                                +5 Punkte
+                                            </span>
+                                    <span class="badge badge-light">
+                                        Runde 3
+                                    </span>
+                                </h6>
+
+                                <hr class="my-4">
+
+                                    <div class="alert alert-danger mb4- mt-4" role="alert"
+                                    data-toggle="tooltip" data-placement="right" title="Kann passieren, muss noch erklärt werden.">
+                                        Es ist ein Extremwetterereignis eingetreten. Dieses hat Ihr Guthaben um 10 Punkte reduziert.
+                                    </div>
+
+                                <p class="card-text lead mb-1">
+                                    Von diesen 25 Punkten können Sie einen beliebigen Betrag investieren.
+                                </p>
+
+                                <p class="mb-4">
+                                    <small>Nicht investierte (Rest-) Beträge  stehen Ihnen in der nächsten Runde unverändert zur Verfügung.</small>
+                                </p>
+
+                                <div class="form-group row mb-5">
+                                    <div class="col">
+                                        <input type="number" class="form-control border border-success float-right" placeholder="Investition" id="id_contribution" name="contribution" min="0" max="25"
+                                               data-container="body" data-toggle="popover" data-placement="bottom" data-content="Maximal 25 Punkte in dieser Runde.">
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" id="submit_button" class="btn-outline-secondary btn float-left"
+                                        data-toggle="tooltip" data-placement="right" title="Der Button ist in der Demo deaktiviert">
+                                            Alles Sparen
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="card-footer bg-light text-secondary" data-toggle="tooltip" data-placement="top" title="Dieser Teil ist erst ab der zweiten Runde sichtbar.">
+
+                                <p class="lead mb-1">Ihr Kontostand:</p>
+
+                                <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
+
+                                <figure class="highcharts-figure mb-5">
+                                    <div id="container"></div>
+                                </figure>
+
+                                <p class="mb-1"><small>Die Tabelle zeigt für jede Runde, wie viel Sie investiert haben, wie viel insgesamt von Ihrer Gruppe
+                                    investiert wurde sowie Ihren Gewinn (oder Verlust).</small></p>
+
+                                <table class="table table-hover table-responsive-md">
+                                    <thead>
+                                    <td>Runde</td>
+                                    <td>Ihre Investition</td>
+                                    <td>Gesamte Investitionen</td>
+                                    <td>Ihr Gewinn</td>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><small>
+                                            <span class="badge badge-danger"> #3 </span>
+                                        </small></td>
+                                        <td><small>3 Punkte</small></td>
+                                        <td><small>43 Punkte</small></td>
+                                        <td><small>5 Punkte</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td><small>
+                                            <span class="badge badge-light"> #2 </span>
+                                        </small></td>
+                                        <td><small>3 Punkte</small></td>
+                                        <td><small>14 Punkte</small></td>
+                                        <td><small>3 Punkte</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td><small>
+                                            <span class="badge badge-light"> #1 </span>
+                                        </small></td>
+                                        <td><small>20 Punkte</small></td>
+                                        <td><small>40 Punkte</small></td>
+                                        <td><small>-3 Punkte</small></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- on Card Navigation  Arrows -->
+                    <div class="row justify-content-md-center mt-5">
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="prevtab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                            </svg>
+                        </p>
+                        </div>
+
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="nexttab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"/>
+                            </svg>
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Part 4: Beispiele -->
+            <div class="tab-pane" id="part4" role="tabpanel" aria-labelledby="part4-tab">
+                <div class="card-body">
+                    <p>
+                        Stellen Sie sich vor, dass Sie sich in einer beliebigen Runde befinden und dass zu Beginn dieser
+                        Runde ein Guthaben von 40 Punkten haben. Unter dieser Annahme stellen wir Ihnen 4 Beispiele vor,
+                        um zu vereutlichen, welchen Einfluss die Entscheidungen von Ihnen und den anderen Teilnehmern
+                        in Ihre Gruppe auf Ihr Guthaben haben.
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="lead">Sie investieren viel, die anderen wenig</p>
+                                    <p><small>
+                                        Stellen Sie sich vor, dass Sie 30 Punkte investieren und dass die anderen
+                                        Teilnehmer in Ihrer Gruppe jeweils 5 Punkte investieren. Dann wurden insgesamt
+                                        40 Punkte investiert, die (durch die Rendite von {{ Constants.rate_of_return }}%)
+                                        einen Ertrag von 50 Punkten ergeben.
+                                    </small></p>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
+                                                <td>40</td>
+                                            </tr>
+                                            <tr>
+                                                <td>-</td>
+                                                <td>Ihre Investition</th>
+                                                <td>30</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>+</td>
+                                                <td>Ihr Anteil vom Ertrag</th>
+                                                <td>&asymp;17</td>
+                                            </tr>
+                                            <tr>
+                                                <td>=</td>
+                                                <th scope="row">Guthaben in der nächsten Runde</th>
+                                                <td>27</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="lead">Sie investieren viel, die anderen auch</p>
+                                    <p><small>
+                                        Stellen Sie sich vor, dass Sie 30 Punkte investieren und dass die anderen
+                                        Teilnehmer in Ihrer Gruppe jeweils 35 Punkte investieren. Dann wurden insgesamt
+                                        120 Punkte investiert, die (durch die Rendite von {{ Constants.rate_of_return }}%)
+                                        einen Ertrag von 150 Punkten ergeben.
+                                    </small></p>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
+                                                <td>40</td>
+                                            </tr>
+                                            <tr>
+                                                <td>-</td>
+                                                <td>Ihre Investition</th>
+                                                <td>40</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>+</td>
+                                                <td>Ihr Anteil vom Ertrag</th>
+                                                <td>50</td>
+                                            </tr>
+                                            <tr>
+                                                <td>=</td>
+                                                <th scope="row">Guthaben in der nächsten Runde</th>
+                                                <td>50</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="lead">Sie investieren wenig, die anderen auch</p>
+                                    <p><small>
+                                        Stellen Sie sich vor, dass Sie 0 Punkte investieren und dass die anderen
+                                        Teilnehmer in Ihrer Gruppe jeweils 0 Punkte investieren. Dann wurden insgesamt
+                                        0 Punkte investiert, die keinen Ertrag ergeben.
+                                    </small></p>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
+                                                <td>40</td>
+                                            </tr>
+                                            <tr>
+                                                <td>-</td>
+                                                <td>Ihre Investition</th>
+                                                <td>0</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>+</td>
+                                                <td>Ihr Anteil vom Ertrag</th>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>=</td>
+                                                <th scope="row">Guthaben in der nächsten Runde</th>
+                                                <td>40</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="lead">Sie investieren wenig, die anderen viel</p>
+                                    <p><small>
+                                        Stellen Sie sich vor, dass Sie 4 Punkte investieren und dass die anderen
+                                        Teilnehmer in Ihrer Gruppe jeweils 38 Punkte investieren. Dann wurden insgesamt
+                                        80 Punkte investiert, die (durch die Rendite von {{ Constants.rate_of_return }}%)
+                                        einen Ertrag von 100 Punkten ergeben.
+                                    </small></p>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
+                                                <td>40</td>
+                                            </tr>
+                                            <tr>
+                                                <td>-</td>
+                                                <td>Ihre Investition</th>
+                                                <td>4</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>+</td>
+                                                <td>Ihr Anteil vom Ertrag</th>
+                                                <td>&asymp;33</td>
+                                            </tr>
+                                            <tr>
+                                                <td>=</td>
+                                                <th scope="row">Guthaben in der nächsten Runde</th>
+                                                <td>69</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- on Card Navigation  Arrows -->
+                    <div class="row justify-content-md-center mt-5">
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="prevtab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                            </svg>
+                        </p>
+                        </div>
+
+                        <div class="col col-lg-2">
+                        <p onclick="topFunction()" class="nexttab text-secondary text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"/>
+                            </svg>
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Part 5: Verständnisfragen -->
+            <div class="tab-pane" id="part5" role="tabpanel" aria-labelledby="part5-tab">
+                <div class="card-body">
+                    <p>
+                        to do.
+                    </p>
+
+
+                    <!-- on Card Navigation  Arrows -->
+                    <div class="row justify-content-md-center mt-5">
+                        <div class="col col-lg-2">
+                        <button onclick="topFunction()" class="btn prevtab bg-white btn-outline-white text-secondary" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                            </svg>
+                        </button>
+                        </div>
+
+                        <div class="col col-lg-4">
+                            <button class="btn bg-white btn-outline-white" style="color: #FC6100" type="submit">
+                                <small><u> Mit Aufgabe 1 beginnen </u></small>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer bg-light text-secondary">
+                    <p><sup>1</sup> Die Zeitangabe MEZ bedeutet nicht automatisch, dass es sich um einen Ort in der MEZ handelt.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{% endblock %}
