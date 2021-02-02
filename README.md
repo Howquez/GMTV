@@ -29,7 +29,7 @@ strategic and more general decisions to be made. That is, we have to decide whet
 - [ ] the endowment and/or MPCR shall be affected
 - [ ] damage shall be heterogeneous within groups
 
-In addition, we have to think about ways to conduct the experiment during COVID-19. These consideration may have
+We also have to think about ways to conduct the experiment during COVID-19. These consideration may have
 consequences for the number of rounds and group sizes.
 
 ## 🚏 How you can access a demo
@@ -43,3 +43,5 @@ The experiment is built in Python 3 using [oTree](https://www.sciencedirect.com/
 So far, one can consider the game as an MVP -- it therefore only contains constant and homogeneous shocks to the 
 players' endowments. 
 
+## 📖 Read the Docs
+I am creating a wiki over [here](https://github.com/Howquez/coopUncertainty/wiki).
