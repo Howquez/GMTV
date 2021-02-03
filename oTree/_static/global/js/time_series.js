@@ -11,7 +11,6 @@
 	let current_round  = js_vars.current_round;
 	let endowments = js_vars.endowments;
 	let stock = js_vars.stock || 0;
-	console.log(endowments);
 
 // create dummy data for instructions
     if (template == "instructions"){
