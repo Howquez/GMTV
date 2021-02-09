@@ -25,7 +25,8 @@ if (template != "instructions"){
 });
 
 // change button text on input
-document.getElementById("id_contribution").addEventListener('input', () => {
+if (document.getElementById("id_contribution")){
+    document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || 0;
     if (input > 0){
         document.getElementById("submit_button").innerHTML = "Weiter";
@@ -34,3 +35,4 @@ document.getElementById("id_contribution").addEventListener('input', () => {
         document.getElementById("id_contribution").value = 0;
     }
 });
+}

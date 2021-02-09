@@ -34,6 +34,7 @@ class dPGG_Decision(Page):
             template="decision",
             current_round=self.round_number,
             endowments=self.participant.vars["endowments"],
+            num_rounds=self.session.config["num_rounds"],
         )
 
 class ResultsWaitPage(WaitPage):

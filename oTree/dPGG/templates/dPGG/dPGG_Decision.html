@@ -8,7 +8,6 @@
 
 {% block scripts %}
 <script src="https://code.highcharts.com/highcharts.js"></script>
-
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 <script src="{% static 'global/js/full_screen.js' %}"></script>
@@ -90,9 +89,9 @@
                 {% if player.round_number > 1%}
                 <div class="card-footer bg-light text-secondary">
 
-                    <p class="lead mb-1">Ihr Kontostand:</p>
+                    <p class="lead mb-1">Ihr Guthaben:</p>
 
-                    <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
+                    <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Punktestands im Zeitverlauf dar.</small></p>
 
                     <figure class="highcharts-figure mb-5">
                         <div id="container"></div>

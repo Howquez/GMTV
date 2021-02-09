@@ -9,8 +9,11 @@
 	let exchange_rate = js_vars.exchange_rate;
 	// let template = js_vars.template; declared in basics
 	let current_round  = js_vars.current_round;
+	let num_rounds  = js_vars.num_rounds;
 	let endowments = js_vars.endowments;
 	let stock = js_vars.stock || 0;
+
+	var plot_height = 4;
 
 // create dummy data for instructions
     if (template == "instructions"){
@@ -40,6 +43,7 @@
 		suffix = " Euro";
 		plot_line_width = 0;
 		show_in_legend = true;
+		plot_height = 9;
 	}
 
 	// console.log(current_round);
@@ -51,7 +55,7 @@ var chart = Highcharts.chart('container', {
     chart: {
         type: "areaspline",
         backgroundColor: "transparent",
-        height: (4 / 16 * 100) + '%' // 16:9 ratio
+        height: (plot_height / 16 * 100) + '%' // 16:9 ratio
     },
     title: {
         text: ""
@@ -61,6 +65,7 @@ var chart = Highcharts.chart('container', {
 	},
     
     xAxis: {
+        max: num_rounds,
         categories: category,
         labels: {
 		   enabled: false
@@ -78,7 +83,7 @@ var chart = Highcharts.chart('container', {
                 color: 'grey',
                 dashStyle: 'shortdash',
                 width: plot_line_width,
-            }]
+        }]
     },
     tooltip: {
         shared: true,
@@ -89,6 +94,13 @@ var chart = Highcharts.chart('container', {
     },
     plotOptions: {
     	series: {
+    	    fillColor: {
+                linearGradient: [0, 0, 0, series[series.length - 1]*1.5],
+                stops: [
+                    [0, "rgba(0,200,81,0.5)"],
+                    [1, "rgba(0,200,81,0.1)"]
+                ]
+            },
     		color: "#00C851",
     		marker: {
                 enabled: false
@@ -96,7 +108,7 @@ var chart = Highcharts.chart('container', {
     	},
         areaspline: {
         	stacking: "normal",
-            fillOpacity: 0.33
+        	//fillOpacity: 0.33
         },
     },
     series: [{
