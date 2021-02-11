@@ -16,12 +16,12 @@ document.getElementById("id_contribution").addEventListener('input', () => {
 // change button on input
 document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || 0;
-    document.getElementById("submit_button").className = "btn-success btn float-left"
+    document.getElementById("submit_button").className = "btn-primary btn float-left"
     if (input > 0){
-        document.getElementById("submit_button").innerHTML = "Investieren";
+        document.getElementById("submit_button").innerHTML = "Absenden";
     } else {
         document.getElementById("submit_button").innerHTML = "Alles Sparen";
-        document.getElementById("id_contribution").value = null;
+        document.getElementById("id_contribution").value = 0;
     }
 });
 

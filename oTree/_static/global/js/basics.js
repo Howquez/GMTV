@@ -36,3 +36,8 @@ if (document.getElementById("id_contribution")){
     }
 });
 }
+
+// submit in case you don't use buttons
+function submitPage() {
+    document.forms[0].submit()
+}

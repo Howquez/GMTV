@@ -97,11 +97,11 @@ var chart = Highcharts.chart('container', {
     	    fillColor: {
                 linearGradient: [0, 0, 0, series[series.length - 1]*1.5],
                 stops: [
-                    [0, "rgba(0,200,81,0.5)"],
-                    [1, "rgba(0,200,81,0.1)"]
+                    [0, "rgba(62,56,242,0.5)"],
+                    [1, "rgba(62,56,242,0.1)"]
                 ]
             },
-    		color: "#00C851",
+    		color: "#3E38F2",
     		marker: {
                 enabled: false
             }
