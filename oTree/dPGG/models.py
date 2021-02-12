@@ -40,6 +40,7 @@ class Subsession(BaseSubsession):
             for p in self.get_players():
                 p.participant.vars["endowments"] = []
                 p.participant.vars["stock"] = []
+                p.participant.vars["is_dropout"] = False
 
 
 
@@ -76,17 +77,35 @@ class Group(BaseGroup):
 
             p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
 
-            if self.round_number == 1:
+
+            # Make sure participants do not earn anything if they drop out in four steps:
+            #1: pay them according to their gains
+            if p.round_number == 1:
                 p.payoff = c(p.stock)
             else:
                 p.payoff = c(p.gain)
+            #2: if they are marked as a dropout, they shouldn't earn anything
+            if p.is_dropout:
+                if self.round_number < self.session.config["num_rounds"]:
+                    p.payoff = c(0)
+            #3: in their last round, also substract the participationn fee
+                else:
+                    p.payoff = c(- self.session.config["participation_fee"]/self.session.config["real_world_currency_per_point"])
+            #4: substract all the money they earned prior to dropping out
+            if self.round_number > 1:
+                if not p.is_dropout == p.in_round(self.round_number - 1).is_dropout:
+                    p.payoff = -p.endowment
+
+
+
 
 class Player(BasePlayer):
 
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
-    gain = models.IntegerField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
+    gain = models.CurrencyField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
     stock = models.CurrencyField(doc="accumulated earnings of played rounds")
+    is_dropout = models.BooleanField(doc="note whether player dropped out", initial = False)
 
     def start(self):
         if self.round_number == 1:

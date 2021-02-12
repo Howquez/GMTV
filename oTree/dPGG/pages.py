@@ -19,14 +19,13 @@ class dPGG_Decision(Page):
         if self.participant.vars.get("is_dropout"):
             return 1  # instant timeout, 1 second
         else:
-            return 3*60
+            return 10#*60
 
     def before_next_page(self):
-        player = self.player
-        timeout_happened = self.timeout_happened
-        if timeout_happened:
-            player.contribution = random.randint(0, player.endowment)
+        if self.timeout_happened:
+            self.player.contribution = random.randint(0, self.player.endowment)
             self.participant.vars["is_dropout"] = True
+            self.player.is_dropout = True
 
 
     def is_displayed(self):
