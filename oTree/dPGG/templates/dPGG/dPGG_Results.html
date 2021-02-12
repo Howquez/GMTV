@@ -25,6 +25,15 @@
     <div class="row justify-content-center">
         <div class="col-sm-10 col-md-10 col-lg-8">
             <div class="card mt-5">
+                {% if player.is_dropout %}
+                <div class="card-body">
+                    <h1 class="display-4 mb-5">Das Experiment ist jetzt beendet.</h1>
+                    <p class="lead">
+                        Leider sind Sie aus der Studie ausgeschieden, ohne alle Entscheidungen zu fällen.
+                        Aus diesem Grund können wir Ihnen leider keinen Betrag auszahlen.
+                    </p>
+                </div>
+                {% else %}
                 <div class="card-body">
                     <h1 class="display-4 mb-5">Vielen Dank für Ihre Teilnahme</h1>
                     <p class="lead">
@@ -58,21 +67,22 @@
                         <tr>
                             <td><small>
                                 {% if p.group.disaster %}
-                                    <span class="badge badge-danger" data-toggle="tooltip" data-placement="right" title="Kein Extremwetterereignis">
+                                    <span class="badge badge-danger" data-toggle="tooltip" data-placement="right" title="Extremwetterereignis">
                                 {% else %}
-                                    <span class="badge badge-light" data-toggle="tooltip" data-placement="right" title="Extremwetterereignis">
+                                    <span class="badge badge-light">
                                 {% endif %}
                                     #{{ p.round_number }}
                                 </span>
                             </small></td>
-                            <td><small>{{ p.contribution }} Punkte</small></td>
+                            <td><small>{{ p.contribution}} Punkte</small></td>
                             <td><small>{{ p.group.total_contribution }} Punkte</small></td>
-                            <td><small>{{ p.gain }} Punkte</small></td>
+                            <td><small>{{ p.gain }}</small></td>
                         </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
