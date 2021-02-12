@@ -1,6 +1,7 @@
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
+import random
 
 class InitialWaitPage(WaitPage):
     group_by_arrival_time = True
@@ -13,6 +14,20 @@ class InitialWaitPage(WaitPage):
 class dPGG_Decision(Page):
     form_model = "player"
     form_fields = ["contribution"]
+
+    def get_timeout_seconds(self):
+        if self.participant.vars.get("is_dropout"):
+            return 1  # instant timeout, 1 second
+        else:
+            return 3*60
+
+    def before_next_page(self):
+        player = self.player
+        timeout_happened = self.timeout_happened
+        if timeout_happened:
+            player.contribution = random.randint(0, player.endowment)
+            self.participant.vars["is_dropout"] = True
+
 
     def is_displayed(self):
         if self.round_number <= self.session.config["num_rounds"]:
