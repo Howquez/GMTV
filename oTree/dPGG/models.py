@@ -50,6 +50,7 @@ class Group(BaseGroup):
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.FloatField(doc="individual share each player receives from this round's contributions")
+    bot_active = models.BooleanField(doc="denotes whether player in group dropped out such that a bot takes over", initial = False)
 
     def set_payoffs(self):
 
@@ -105,7 +106,7 @@ class Player(BasePlayer):
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
     gain = models.CurrencyField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
     stock = models.CurrencyField(doc="accumulated earnings of played rounds")
-    is_dropout = models.BooleanField(doc="note whether player dropped out", initial = False)
+    is_dropout = models.BooleanField(doc="denotes whether player dropped out", initial = False)
 
     def start(self):
         if self.round_number == 1:

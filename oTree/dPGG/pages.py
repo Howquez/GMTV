@@ -26,6 +26,7 @@ class dPGG_Decision(Page):
             self.player.contribution = random.randint(0, self.player.endowment)
             self.participant.vars["is_dropout"] = True
             self.player.is_dropout = True
+            self.group.bot_active = True
 
 
     def is_displayed(self):
@@ -35,12 +36,15 @@ class dPGG_Decision(Page):
     def vars_for_template(self):
         disaster = 0
         diff = 0
+        bot_active = False
         if self.round_number > 1:
             disaster = self.group.in_round(self.round_number - 1).disaster
             diff = self.player.in_round(self.round_number - 1).gain
+            bot_active = self.group.in_round(self.round_number - 1).bot_active
         return dict(
             disaster = disaster,
             diff=diff,
+            bot_active=bot_active
         )
 
     def js_vars(self):
