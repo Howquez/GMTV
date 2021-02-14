@@ -37,4 +37,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    pass
+    # Tracking Fields
+    window_width = models.IntegerField(doc="Documents the respondent's browser window's width.")
+    window_height = models.IntegerField(doc="Documents the respondent's browser window's height.")
+    browser = models.StringField(doc="Documents the respondent's browser (incl. its version).")

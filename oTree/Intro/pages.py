@@ -7,6 +7,8 @@ class Intro_Welcome(Page):
     pass
 
 class Intro_Instructions(Page):
+    form_model = "player"
+    form_fields = ["window_width", "window_height", "browser"]
     def js_vars(self):
         return dict(
             template="instructions",
