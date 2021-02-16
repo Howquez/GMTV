@@ -3,6 +3,12 @@
 
 {% block styles %}
     <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+    <!-- change ul-style as it affects the check-boxes in the multiple choice comprehension questions -->
+    <style>
+        ul {
+            list-style-type: none;
+        }
+    </style>
 {% endblock %}
 
 {% block scripts %}
@@ -10,13 +16,34 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script src="{% static 'global/js/landscape_view.js' %}"></script>
 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <script src="{% static 'global/js/basics.js' %}"></script>
 <script src="{% static 'global/js/time_series.js' %}"></script>
 <script src="{% static 'global/js/buttons.js' %}"></script>
 <script src="{% static 'global/js/decision.js' %}"></script>
 <script src="{% static 'global/js/general_information.js' %}"></script>
-
-
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
 {% endblock %}
 
 
@@ -108,9 +135,12 @@
             <!-- Part 1: Allgemeines -->
             <div class="tab-pane show active" id="part1" role="tabpanel" aria-labelledby="part1-tab">
                 <div class="card-body">
-                    <p class="lead">
-                    Das Wichtigste in Kürze
-                    </p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Inhalt
+                        </span>
+                    </h5>
                     <p>
                         Dies ist eine Studie, die Ihre Entscheidungen innerhalb einer Gruppe untersucht. Wenn Sie die
                         folgenden Instruktionen aufmerksam lesen, können Sie durch Ihre Entscheidungen einen Bonus
@@ -118,6 +148,11 @@
                         Entscheidungen der anderen Teilnehmer in Ihrer Gruppe ab.
                     </p>
 
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Wechselkurs
+                        </span>
+                    </h5>
                     <p>
                         Während der gesamten Studie fällen Sie Entscheidungen über Punkte, die am Ende der Studie in
                         Euro umgerechnet werden. Der Wechselkurs beträgt
@@ -126,12 +161,22 @@
                         verdienen.
                     </p>
 
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Disqualifikation
+                        </span>
+                    </h5>
                     <p>
                         Es ist wichtig, dass Sie konzentriert und ohne Unterbrechungen an der Studie teilnehmen. Denn
-                        Sie können den Bonus nur dann verdienen, wenn Sie sowie Ihre Gruppenmitglieder ans Ende der
-                        Studie gelangen.
-                    </p>
+                        Sollten Sie die Studie frühzeitig abbrechen oder länger als 3 Minuten keine Entscheidung treffen,
+                        dann können wir Ihre Daten sowie die Daten Ihrer Gruppenmitglieder nicht auswerten. Deshalb
+                        können wir Ihnen dann nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen. <br><br>
 
+                        Sollte ein Gruppenmitglied frühzeitig abbrechen, so werden wir diese Person durch einen Bot,
+                        also durch ein Computerprogramm ersetzen, sodass Sie trotzdem zum Ende der Studie gelangen
+                        können. Wir werden Sie in diesem Fall darüber informieren, dass ein Gruppenmitglied durch einen
+                        Bot ersetzt wurde.
+                    </p>
 
 
 
@@ -163,39 +208,81 @@
             <!-- Part 2: Aufbau  -->
             <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
                 <div class="card-body">
-                    <p class="lead"><u>Gruppen und Runden</u></p>
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Gruppen
+                        </span>
+                    </h5>
                     <p>
                         In Studie befinden Sie sich ein einer Gruppe bestehend aus insgesamt
                         {{ Constants.group_size }} Personen. Über den Verlauf der Studie wird sich die
                         Gruppenzusammensetzung nicht ändern. Sie werden also immer mit denselben
                         {{ Constants.num_others_per_group }} Personen interagieren.
                     </p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Runden
+                        </span>
+                    </h5>
                     <p>
                         Die Studie besteht aus {{ session.config.num_rounds }} Runden. In jeder Runde stehen Sie, sowie
                         die anderen Teilnehmer in Ihrer Gruppe, vor derselben Entscheidungssituation: Sie müssen abwägen,
-                        ob und wie viele Punkte Sie investieren wollen. Dafür bekommen Sie zu Beginn der ersten Runde
-                        ein Guthaben von {{ Constants.initial_endowment }} Punkten.
+                        ob und wie viele Punkte Sie investieren wollen.
                     </p>
-                    <p class="lead"><br><u>Ihre Entscheidungen</u></p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Entscheidungen
+                        </span>
+                    </h5>
                     <p>
-                        Sie müssen nun in jeder Runde entscheiden, wie viele Punkte Sie investieren wollen. Dabei können
-                        Sie 0 Punkte (also nichts), ihr gesamtes Guthaben oder einen Betrag dazwischen investieren. Nicht
-                        investierte Restbeträge werden Ihrem Guthaben der nächsten Runde gutgeschrieben.
+                        Sie müssen also in jeder Runde entscheiden, wie viele Punkte Sie investieren wollen. Dabei können
+                        Sie 0 Punkte (also nichts), ihr gesamtes Guthaben oder einen Betrag dazwischen investieren.
+                        Investierte Beträge bringen eine Rendite, die auf alle Gruppenmitglieder aufgeteilt wird.
+                        Nicht investierte Restbeträge werden Ihrem Guthaben der nächsten Runde unverändert
+                        gutgeschrieben.
                     </p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Rendite
+                        </span>
+                    </h5>
                     <p>
-                        Die Beträge, die Sie oder Ihre Gruppenmitglieder investieren, werden mit
-                        {{ Constants.efficiency_factor }} multipliziert und zu gleichen Teilen auf alle
-                        Gruppenmitglieder aufgeteilt. Das heißt, dass es eine Rendite von {{ Constants.rate_of_return }}%
-                        auf alle in Ihrer Gruppe getätigten Investitionen gibt, bevor Sie
-                        1/{{ Constants.group_size }} davon gutschrieben bekommen.
+                        Die Beträge, die Sie oder Ihre Gruppenmitglieder investieren, haben eine Rendite von
+                        werden mit {{ Constants.rate_of_return }}%. Das heißt, dass die Gesamtinvestionen (also alle
+                        in Ihrer Gruppe getätigten Investitionen) der jeweiligen Runde mit
+                        {{ Constants.efficiency_factor }} multipliziert werden. Das Ergebnis (also die
+                        Gesamtinvestitionen plus die Rendite) wird dann zu gleichen Teilen auf alle Gruppenmitglieder
+                        aufgeteilt. Sie bekommen also einen Ertrag von:
                     </p>
-                    <p class="lead"><br><u>Guthaben</u></p>
+                    $$\frac{\text{Gesamtinvestitionen} \times {{ Constants.efficiency_factor }} }{ {{ Constants.group_size }} }$$
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Guthaben
+                        </span>
+                    </h5>
                     <p>
-                        Ihr Guthaben in der jeweiligen Folgerunde besteht aus den Punkten, die Sie in einer Runde nicht
-                        investiert haben, sowie Ihrem Anteil aus dem Ertrag der Investitionen aus dieser Runde.
-                        Dieses Guthaben können Sie dann in der Folgerunde wieder für Investitionen verwenden, wenn Sie
-                        möchten. Am Ende der Studie bekommen Sie dann das Guthaben, dass Sie nach der letzten Runde
-                        haben, als Bonus ausgezahlt.
+                        Zu Beginn der ersten Runde bekommen Sie ein Guthaben von {{ Constants.initial_endowment }} Punkten.
+                        Ihr Guthaben in der zweiten Runde hängt davon ab, wie viel Sie in der ersten Runde verdienen.
+                        Das heißt: Ihr Guthaben in zweiten Runde besteht aus den Punkten, die Sie in der ersten Runde
+                        nicht investiert haben, sowie Ihrem Anteil aus dem Ertrag der Investitionen aus der ersten Runde.
+                        Das Guthaben der zweiten Runde können Sie dann wieder für Investitionen verwenden, wenn
+                        Sie möchten. Der Ertrag aus den Gesamtinvestitionen, sowie Ihr nicht-investiertes Guthaben steht
+                        Ihnen dann wiederum in der dritten Runde zur Verfügung und so weiter.
+                    </p>
+
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Verdienst
+                        </span>
+                    </h5>
+                    <p>
+                        Am Ende der Studie bekommen Sie dann das Guthaben, dass Sie nach der letzten Runde haben,
+                        als Bonus ausgezahlt. Dafür werden die Punkte gemäß des Wechselkurses
+                        ({{ session.config.real_world_currency_per_point }} Euro für jeden Punkt) in Euro umgerechnet.
                     </p>
 
 
@@ -275,7 +362,7 @@
 
                                 <div class="form-group row mb-5">
                                     <div class="col">
-                                        <input type="number" class="form-control float-right" placeholder="Investieren" id="id_contribution" name="contribution" min="0" required>
+                                        <input type="number" class="form-control float-right" placeholder="Investieren" id="id_contribution" name="contribution" min="0" max="25">
                                     </div>
                                     <div class="col">
                                         <button type="button" id="submit_button" class="btn-outline-primary btn float-left">
@@ -560,44 +647,84 @@
                         Bitte beantworten Sie die nachfolgenden Fragen, durch die wir sicherstellen wollen, dass alle
                         Teilnehmer die Instruktionen sorgfältig gelesen und verstanden haben.
                     </p>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="card bg-white">
+                                <div class="card-body">
+                                    <p>
+                                        Zu Beginn der ersten Runde bekommen alle Gruppenmitglieder ein Guthaben in Höhe
+                                        von {{ Constants.initial_endowment }} Punkten.
+                                        <strong>Angenommen niemand aus Ihrer Gruppe investiert
+                                            (auch Sie nicht)...</strong>
+                                    </p>
+                                    {% formfield player.CQ1_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde?</small>"  %}
+                                    {% formfield player.CQ1_2 label="<small>Wie hoch ist das Guthaben von einem anderen Gruppenmitglied zu Beginn der Folgerunde?</small>" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card bg-white">
+                                <div class="card-body">
+                                    <p>
+                                        Zu Beginn der ersten Runde bekommen alle Gruppenmitglieder ein Guthaben in Höhe
+                                        von {{ Constants.initial_endowment }} Punkten.
+                                        <strong>Angenommen alle aus Ihrer Gruppe
+                                        investieren alles (auch Sie)...</strong>
+                                    </p>
+                                    {% formfield player.CQ2_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde?</small>"  %}
+                                    {% formfield player.CQ2_2 label="<small>Wie hoch ist das Guthaben von einem anderen Gruppenmitglied zu Beginn der Folgerunde?</small>" %}
 
-                    <p>
-                        Zu Beginn der ersten Runde bekommt jeder Teilnehmer ein Guthaben in Höhe von
-                        {{ Constants.initial_endowment }} Punkten. Angenommen niemand aus Ihrer Gruppe investiert
-                        (auch Sie nicht)... <br><br>
-                        Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde? <br><br>
-                        Wie hoch ist das Guthaben von einem Ihrer Mitspieler zu Beginn der Folgerunde?
-                    </p>
-                    <p>
-                        Zu Beginn der ersten Runde bekommt jeder Teilnehmer ein Guthaben in Höhe von
-                        {{ Constants.initial_endowment }} Punkten. Angenommen alle aus Ihrer Gruppe investieren
-                        (auch Sie)... <br><br>
-                        Wie hoch ist Ihr Guthaben dann zu Beginn der zweiten Runde? <br><br>
-                        Wie hoch ist das Guthaben von einem Ihrer Mitspieler zu Beginn der zweiten Runde?
-                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <div class="card bg-white">
+                                <div class="card-body">
+                                    <p>
+                                        Stellen Sie sich vor, zu Beginn einer beliebigen Runde ein Guthaben in Höhe von
+                                        40 Punkten zu haben. Wenn Sie 30 Punkte investieren und die Gesamtinvestitionen
+                                        insgesamt 60 Punkte betragen, welche der folgenden Aussagen stimmt dann?
+                                        <small class="text-muted"> (Mehrfachnennung möglich).</small>
+                                    </p>
+                                    {% formfield player.MCQ_1 label="" %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card bg-white">
+                                <div class="card-body">
+                                    <p>
+                                        In welchem der folgenden Szenarien können Sie Gewinn machen?
+                                        <small class="text-muted"> (Mehrfachnennung möglich).</small>
+                                    </p>
+                                     {% formfield player.MCQ_2 label="" %}
+                                    <br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
 
                     <!-- on Card Navigation  Arrows -->
                     <!-- on Card Navigation  Arrows -->
                     <div class="row justify-content-md-center mt-5">
                         <div class="col col-lg-2">
-                        <p onclick="topFunction()" class="prevtab text-center" data-toggle="tooltip" data-placement="top" title="Zurück">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0029FA" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-                            </svg>
-                        </p>
+                            <p onclick="topFunction()" class="prevtab text-center" data-toggle="tooltip" data-placement="top" title="Zurück">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0029FA" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+                                </svg>
+                            </p>
                         </div>
 
                         <div class="col col-lg-2">
-                        <p onclick="submitPage()" class="nexttab text-center" data-toggle="tooltip" data-placement="top" title="Studie beginnen">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0029FA" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                </svg>
-                        </p>
+                            {% next_button %}
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>
