@@ -9,4 +9,8 @@ import random
 class PlayerBot(Bot):
     def play_round(self):
         if self.round_number <= self.session.config["num_rounds"]:
-            yield Submission(pages.dPGG_Decision, dict(contribution=random.randint(0, self.player.endowment)), check_html=False)
+            yield Submission(pages.dPGG_Decision,
+                             dict(contribution=random.randint(int(self.player.endowment/2),
+                                                              self.player.endowment)
+                                  ),
+                             check_html=False)
