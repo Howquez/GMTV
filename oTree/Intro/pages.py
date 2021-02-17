@@ -21,6 +21,5 @@ class Intro_Instructions(Page):
 
     def before_next_page(self):
         self.participant.vars['wait_page_arrival'] = time.time()
-        print(self.participant.vars['wait_page_arrival'])
 
 page_sequence = [Intro_Welcome, Intro_Instructions]

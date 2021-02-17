@@ -43,7 +43,7 @@
 		suffix = " Euro";
 		plot_line_width = 0;
 		show_in_legend = true;
-		plot_height = 9;
+		plot_height = 6;
 	}
 
 	// console.log(current_round);
@@ -70,6 +70,13 @@ var chart = Highcharts.chart('container', {
         labels: {
 		   enabled: false
 		},
+		plotLines: [{
+        	zIndex: 5,
+                value: num_rounds,
+                color: 'grey',
+                dashStyle: 'shortdash',
+                width: plot_line_width,
+        }]
     },
     yAxis: {
     	gridLineWidth: 0,
@@ -118,7 +125,7 @@ var chart = Highcharts.chart('container', {
     },{
         name: "Grundbetrag",
         data: flat,
-        color: "#0BD4CD",
+        color: "#00fad1",
         showInLegend: show_in_legend,
         visible: template == "results"
     }]

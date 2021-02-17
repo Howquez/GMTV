@@ -7,6 +7,12 @@ SESSION_CONFIGS = [
         display_name="Dynamic Public Goods Game",
         num_demo_participants=3,
         app_sequence=["Intro", "dPGG"]
+    ), dict(
+        name="shorty",
+        num_rounds=10,
+        display_name="No Instructions",
+        num_demo_participants=3,
+        app_sequence=["dPGG"]
     ),
 ]
 

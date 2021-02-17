@@ -20,7 +20,10 @@ class dPGG_Decision(Page):
         if self.participant.vars.get("is_dropout"):
             return 1  # instant timeout, 1 second
         else:
-            return Constants.timeout*60
+            if self.round_number == 1:
+                return 2 * Constants.timeout * 60
+            else:
+                return Constants.timeout * 60
 
     def before_next_page(self):
         if self.timeout_happened:

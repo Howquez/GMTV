@@ -32,7 +32,7 @@ class Constants(BaseConstants):
 
     safe_rounds = 2 # number of rounds without any risk
     risk = 0.33 # risk of damage per round
-    timeout = 10 # minutes
+    timeout = 3 # minutes
     patience = 6 # minutes
 
 
@@ -87,7 +87,7 @@ class Group(BaseGroup):
                 p.payoff = 0
                 # give them a 2 Euro bonus
                 if self.round_number == self.session.config["num_rounds"]:
-                    p.payoff = c(Constants.initial_endowment)
+                    p.payoff = c(Constants.initial_endowment - self.session.config["participation_fee"]/self.session.config["real_world_currency_per_point"])
             # all the others essentially earn their gains (which can be negative)
             else:
                 p.gain = int(math.ceil(self.individual_share - p.contribution))
@@ -128,7 +128,9 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
-    review_instructions = models.IntegerField(doc="Counts the number of times a player reviews instructions.")
+    review_instructions = models.IntegerField(doc="Counts the number of times a player reviews instructions.",
+                                              initial=0,
+                                              blank=True)
 
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
