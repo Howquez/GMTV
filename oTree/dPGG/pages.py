@@ -14,13 +14,13 @@ class dPGG_InitialWaitPage(WaitPage):
 
 class dPGG_Decision(Page):
     form_model = "player"
-    form_fields = ["contribution"]
+    form_fields = ["review_instructions", "contribution"]
 
     def get_timeout_seconds(self):
         if self.participant.vars.get("is_dropout"):
             return 1  # instant timeout, 1 second
         else:
-            return 3*60
+            return Constants.timeout*60
 
     def before_next_page(self):
         if self.timeout_happened:

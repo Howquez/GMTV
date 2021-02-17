@@ -22,7 +22,7 @@
 
 /* Navbar background */
 .bg-header {
-  background-color: rgba(255, 255, 255, 0.90);
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* colors */
@@ -44,6 +44,8 @@
 .displaystyle-my-warning {
         border-color: #3E38F2;
     }
+
+
 
 /* Boostrap Buttons Styling */
 
@@ -152,9 +154,29 @@
 
 
 /* Boostrap Nav Links Styling */
+
 ul.nav li a, ul.nav li a:visited {
     color: #0029fa;
 }
 ul.nav li a:hover, ul.nav li a:active {
-    color: #001998;
+    color: #00e25b;
+}
+
+/* Bootstrap Badge Stiling */
+.badge-content {
+  background-color: #0029fa;
+  color: #ffffff;
+}
+
+
+/* Table Styling */
+
+th {
+  font-weight: normal;
+  color: #0029fa;
+}
+
+.bi:hover{
+    fill: #00e25b;
+    cursor: pointer;
 }

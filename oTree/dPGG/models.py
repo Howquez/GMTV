@@ -32,6 +32,7 @@ class Constants(BaseConstants):
 
     safe_rounds = 2 # number of rounds without any risk
     risk = 0.33 # risk of damage per round
+    timeout = 10 # minutes
     patience = 6 # minutes
 
 
@@ -126,6 +127,8 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+
+    review_instructions = models.IntegerField(doc="Counts the number of times a player reviews instructions.")
 
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
