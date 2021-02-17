@@ -3,7 +3,8 @@ from ._builtin import Page, WaitPage
 from .models import Constants
 import random
 
-class InitialWaitPage(WaitPage):
+class dPGG_InitialWaitPage(WaitPage):
+    template_name = 'dPGG/dPGG_InitialWaitPage.html'
     group_by_arrival_time = True
 
     def is_displayed(self):
@@ -30,8 +31,9 @@ class dPGG_Decision(Page):
 
 
     def is_displayed(self):
-        if self.round_number <= self.session.config["num_rounds"]:
-            return True
+        if not self.participant.vars["is_residual_player"]:
+            if self.round_number <= self.session.config["num_rounds"]:
+                return True
 
     def vars_for_template(self):
         disaster = 0
@@ -56,7 +58,6 @@ class dPGG_Decision(Page):
         )
 
 class ResultsWaitPage(WaitPage):
-    # template_name = "dPGG/dPGG_Custom_Wait.html"
 
     def is_displayed(self):
         if self.round_number <= self.session.config["num_rounds"]:
@@ -72,6 +73,7 @@ class dPGG_Results(Page):
 
     def vars_for_template(self):
         return dict(
+            is_residual_player=self.participant.vars["is_residual_player"],
             final_payoff=self.participant.payoff_plus_participation_fee().to_real_world_currency(self.session),
         )
 
@@ -86,7 +88,7 @@ class dPGG_Results(Page):
 
 
 
-page_sequence = [InitialWaitPage,
+page_sequence = [dPGG_InitialWaitPage,
                  dPGG_Decision,
                  ResultsWaitPage,
                  dPGG_Results]
