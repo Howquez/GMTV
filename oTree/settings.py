@@ -9,7 +9,7 @@ SESSION_CONFIGS = [
         app_sequence=["Intro", "dPGG", "Outro"]
     ), dict(
         name="shorty",
-        num_rounds=10,
+        num_rounds=5,
         display_name="No Instructions",
         num_demo_participants=3,
         app_sequence=["dPGG", "Outro"]

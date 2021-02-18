@@ -65,6 +65,10 @@ class ResultsWaitPage(WaitPage):
         if self.round_number <= self.session.config["num_rounds"]:
             return True
 
+    def app_after_this_page(self, upcoming_apps):
+        if self.round_number >= self.session.config["num_rounds"]:
+            return upcoming_apps[0]
+
     after_all_players_arrive = "set_payoffs"
 
 
