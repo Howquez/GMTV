@@ -3,15 +3,17 @@ from os import environ
 SESSION_CONFIGS = [
     dict(
         name="dPGG",
-        num_rounds=10,
         display_name="Dynamic Public Goods Game",
+        num_rounds=10,
         num_demo_participants=3,
+        risk=0.0,
         app_sequence=["Intro", "dPGG", "Outro"]
     ), dict(
         name="shorty",
-        num_rounds=5,
         display_name="No Instructions",
+        num_rounds=5,
         num_demo_participants=3,
+        risk=0.0,
         app_sequence=["dPGG", "Outro"]
     ),
 ]

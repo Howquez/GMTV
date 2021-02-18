@@ -30,7 +30,6 @@ class Constants(BaseConstants):
     rate_of_return = (efficiency_factor - 1)*100
 
     safe_rounds = 2 # number of rounds without any risk
-    risk = 0.33 # risk of damage per round
     timeout = 3 # minutes
     patience = 6 # minutes
 
@@ -69,7 +68,7 @@ class Group(BaseGroup):
     def set_payoffs(self):
 
         if self.round_number > Constants.safe_rounds:
-            if Constants.risk > random.uniform(0, 1):
+            if self.session.config["risk"] > random.uniform(0, 1):
                 self.disaster = True
 
         if len(self.get_players()) == Constants.players_per_group:
