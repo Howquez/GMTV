@@ -61,7 +61,6 @@ class dPGG_Decision(Page):
         )
 
 class ResultsWaitPage(WaitPage):
-
     def is_displayed(self):
         if self.round_number <= self.session.config["num_rounds"]:
             return True
@@ -74,24 +73,8 @@ class dPGG_Results(Page):
         if self.round_number == self.session.config["num_rounds"]:
             return True
 
-    def vars_for_template(self):
-        return dict(
-            is_residual_player=self.participant.vars["is_residual_player"],
-            final_payoff=self.participant.payoff_plus_participation_fee().to_real_world_currency(self.session),
-        )
-
-    def js_vars(self):
-        return dict(
-            flat_fee=self.session.config["participation_fee"],
-            exchange_rate=self.session.config["real_world_currency_per_point"],
-            template="results",
-            current_round=self.round_number,
-            stock=self.participant.vars["stock"],
-        )
-
 
 
 page_sequence = [dPGG_InitialWaitPage,
                  dPGG_Decision,
-                 ResultsWaitPage,
-                 dPGG_Results]
+                 ResultsWaitPage]

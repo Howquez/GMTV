@@ -25,7 +25,7 @@
     <div class="row justify-content-center">
         <div class="col-sm-10 col-md-10 col-lg-8">
             <div class="card mt-5">
-                {% if player.is_dropout %}
+                {% if participant.vars.is_dropout %}
                 <div class="card-body">
                     <h1 class="display-4 mb-5">Das Experiment ist jetzt beendet.</h1>
                     <p class="lead">
@@ -62,40 +62,6 @@
                     </div>
                     <div class="card-footer bg-light text-secondary">
 
-                        <p class="lead mb-1">Ihr Guthaben im Zeitverlauf:</p>
-
-
-                        <p class="mb-1"><small>Die Tabelle zeigt für jede Runde, wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
-                            investiert wurde sowie Ihren Gewinn (oder Verlust).</small></p>
-
-
-                        <table class="table table-hover table-responsive-md">
-                            <thead>
-                            <td>Runde</td>
-                            <td>Ihre Investition</td>
-                            <td>Gesamte Investitionen</td>
-                            <td>Ihr Gewinn</td>
-                            </thead>
-                            <tbody>
-                            {% for p in player.in_all_rounds %}
-                            <tr>
-                                <td><small>
-                                    {% if p.group.disaster %}
-                                        <span class="badge badge-danger" data-toggle="tooltip" data-placement="right" title="Extremwetterereignis">
-                                    {% else %}
-                                        <span class="badge badge-light">
-                                    {% endif %}
-                                        #{{ p.round_number }}
-                                    </span>
-                                </small></td>
-                                <td><small>{{ p.contribution}} Punkte</small></td>
-                                <td><small>{{ p.group.total_contribution }} Punkte</small></td>
-                                <td><small>{{ p.gain }}</small></td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
                     {% endif %}
                 {% endif %}
             </div>

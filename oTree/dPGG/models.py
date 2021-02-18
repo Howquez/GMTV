@@ -24,8 +24,7 @@ class Constants(BaseConstants):
     name_in_url = 'dPGG'
     players_per_group = 3
     num_others_per_group = players_per_group - 1
-    max_rounds = 15 # set maximum number of rounds possible
-    num_rounds = max_rounds
+    num_rounds = 10
     initial_endowment = 20
     efficiency_factor = 1.25 # (MPCR) Marginal Per Capita Return per round
     rate_of_return = (efficiency_factor - 1)*100
