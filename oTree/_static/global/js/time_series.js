@@ -68,13 +68,19 @@ var chart = Highcharts.chart('container', {
         max: num_rounds,
         categories: category,
         labels: {
-		   enabled: false
+		   enabled: true,
+		   formatter: function () {
+		        if (this.value == 5){
+		            return "Ende"
+		        }
+            }
 		},
+		tickPositions: [num_rounds],
 		plotLines: [{
         	zIndex: 5,
                 value: num_rounds,
                 color: 'grey',
-                dashStyle: 'shortdash',
+                //dashStyle: 'shortdash',
                 width: plot_line_width,
         }]
     },

@@ -12,17 +12,18 @@ from otree.api import (
 from django.forms.widgets import CheckboxSelectMultiple
 import re
 
-author = 'Your name here'
+author = "Hauke Roggenkamp"
 
 doc = """
-Your app description
+Welcome participants, display instructions and comprehension questions.
 """
 
 
 class Constants(BaseConstants):
-    name_in_url = 'Intro'
+    name_in_url = "Intro"
     players_per_group = None
     num_rounds = 1
+
     group_size = 3
     num_others_per_group = group_size - 1
     initial_endowment = 20

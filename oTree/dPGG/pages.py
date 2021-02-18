@@ -49,7 +49,8 @@ class dPGG_Decision(Page):
         return dict(
             disaster = disaster,
             diff=diff,
-            bot_active=bot_active
+            bot_active=bot_active,
+            last_round=self.session.config["num_rounds"],
         )
 
     def js_vars(self):

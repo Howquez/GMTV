@@ -10,10 +10,10 @@ from otree.api import (
 )
 
 
-author = 'Your name here'
+author = "Hauke Roggenkamp"
 
 doc = """
-Elicit Covariates and Display Results
+Elicit covariates and display results
 """
 
 
