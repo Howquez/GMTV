@@ -51,6 +51,34 @@
 <body onload="">
 <img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
 
+    <!-- Header
+     <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist"> -->
+    <nav class="navbar bg-header border-bottom mb-4 justify-content-between" role="tablist">
+
+        <ul class="nav" id="myTab" role="tablist">
+                <li class="nav-item" >
+                    <a class="nav-link back-and-forth active" id="part1-tab" data-toggle="tab" href="#part1" role="tab" aria-controls="part1"> Allgemeines </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Aufbau </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part3-tab" data-toggle="tab" href="#part3" role="tab" aria-controls="part3"> Demo </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Beispiele </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link back-and-forth" id="part5-tab" data-toggle="tab" href="#part5" role="tab" aria-controls="part5"> Verständnisfragen </a>
+                </li>
+            </ul>
+    </nav>
+
+    <!-- Hidden Tracking Fields -->
     <input type="hidden" name="window_width" id="id_window_width" value="0"/>
     <input type="hidden" name="window_height" id="id_window_height" value="0"/>
     <input type="hidden" name="browser" id="id_browser" value="0"/>
@@ -93,39 +121,14 @@
 
     <!-- Instructions -->
     <div class="card mt-5">
-        <div class="card-header">
-
-            <!-- Card's Tab Navigation -->
-            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-
-                <li class="nav-item" >
-                    <a class="nav-link back-and-forth active" id="part1-tab" data-toggle="tab" href="#part1" role="tab" aria-controls="part1"> Allgemeines </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Aufbau </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link back-and-forth" id="part3-tab" data-toggle="tab" href="#part3" role="tab" aria-controls="part3"> Demo </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Beispiele </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link back-and-forth" id="part5-tab" data-toggle="tab" href="#part5" role="tab" aria-controls="part5"> Verständnisfragen </a>
-                </li>
-            </ul>
-
-        </div>
-
 
         <div class="tab-content" id="myTabContent">
 
             <!-- Part 1: Allgemeines -->
             <div class="tab-pane show active" id="part1" role="tabpanel" aria-labelledby="part1-tab">
+                <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
+                    <p class="h4">Allgemeines</p>
+                </div>
                 <div class="card-body">
 
                     <h5>
@@ -199,6 +202,9 @@
 
             <!-- Part 2: Aufbau  -->
             <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
+                <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
+                    <p class="h4">Aufbau</p>
+                </div>
                 <div class="card-body">
                     <h5>
                         <span class="badge badge-content mt-4">
@@ -307,6 +313,9 @@
 
             <!-- Part 3: Demo  -->
             <div class="tab-pane" id="part3" role="tabpanel" aria-labelledby="part3-tab">
+                <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
+                    <p class="h4">Demo</p>
+                </div>
                 <div class="card-body">
                     <p>
                         In jeder Runde teilen wir Ihnen mit, in welcher Runde Sie sich befinden, wie hoch Ihr Guthaben
@@ -445,6 +454,9 @@
 
             <!-- Part 4: Beispiele -->
             <div class="tab-pane" id="part4" role="tabpanel" aria-labelledby="part4-tab">
+                <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
+                    <p class="h4">Beispiele</p>
+                </div>
                 <div class="card-body">
                     <p>
                         Stellen Sie sich vor, dass Sie sich in einer beliebigen Runde befinden und dass zu Beginn dieser
@@ -634,6 +646,9 @@
 
             <!-- Part 5: Verständnisfragen -->
             <div class="tab-pane" id="part5" role="tabpanel" aria-labelledby="part5-tab">
+                <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
+                    <p class="h4">Verständnisfragen</p>
+                </div>
                 <div class="card-body">
                     <p>
                         Bitte beantworten Sie die nachfolgenden Fragen, durch die wir sicherstellen wollen, dass alle

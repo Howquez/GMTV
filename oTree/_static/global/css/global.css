@@ -25,6 +25,7 @@
   background-color: rgba(255, 255, 255, 0.5);
 }
 
+
 /* colors */
 .my-warning{
   color: #FFFFFF ;
@@ -155,12 +156,15 @@
 
 /* Boostrap Nav Links Styling */
 
-ul.nav li a, ul.nav li a:visited {
+ul.nav li a {
     color: #0029fa;
 }
-ul.nav li a:hover, ul.nav li a:active {
-    color: #00e25b;
+ul.nav li a:hover, ul.nav li a:focus, ul.nav li a:active {
+    color: #230A59;
+    font-weight: bold;
 }
+
+
 
 /* Bootstrap Badge Stiling */
 .badge-content {
@@ -177,6 +181,6 @@ th {
 }
 
 .bi:hover{
-    fill: #00e25b;
+    fill: #230A59;
     cursor: pointer;
 }
