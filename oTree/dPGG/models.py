@@ -32,6 +32,7 @@ class Constants(BaseConstants):
     safe_rounds = 2 # number of rounds without any risk
     timeout = 3 # minutes
     patience = 6 # minutes
+    patience_bonus = 10 # points
 
 
 
@@ -50,6 +51,7 @@ class Subsession(BaseSubsession):
         if len(waiting_players) >= Constants.players_per_group:
             return waiting_players[:Constants.players_per_group]
         for player in waiting_players:
+            player.wait_time_left = int(math.ceil(Constants.patience - (time.time() - player.participant.vars['wait_page_arrival']) / 60))
             if player.waiting_too_long():
                 player.participant.vars["is_residual_player"] = True
                 # make a single-player group.
@@ -64,6 +66,7 @@ class Group(BaseGroup):
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.FloatField(doc="individual share each player receives from this round's contributions")
     bot_active = models.BooleanField(doc="denotes whether player in group dropped out such that a bot takes over", initial = False)
+
 
     def set_payoffs(self):
 
@@ -83,9 +86,9 @@ class Group(BaseGroup):
                 p.stock = 0
                 p.gain = 0
                 p.payoff = 0
-                # give them a 2 Euro bonus
+                # give them a patience bonus
                 if self.round_number == self.session.config["num_rounds"]:
-                    p.payoff = c(Constants.initial_endowment - self.session.config["participation_fee"]/self.session.config["real_world_currency_per_point"])
+                    p.payoff = c(Constants.patience_bonus)
             # all the others essentially earn their gains (which can be negative)
             else:
                 p.gain = int(math.ceil(self.individual_share - p.contribution))
@@ -130,6 +133,7 @@ class Player(BasePlayer):
                                               initial=0,
                                               blank=True)
 
+    wait_time_left = models.IntegerField(doc="denotes the time a player has to wait for others to arrive on WaitPage")
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
     gain = models.CurrencyField(doc="each round's payoff as the difference of the individual_share and the player's contribution")

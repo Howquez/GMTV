@@ -106,7 +106,7 @@
                         <small>Nicht investierte (Rest-) Beträge  stehen Ihnen in der nächsten Runde unverändert zur Verfügung.</small>
                     </p>
 
-                    <div class="form-group row mb-5">
+                    <div class="form-group row mb-4">
                         <div class="col">
                             <input type="number" class="form-control float-right" placeholder="Investieren" id="id_contribution" name="contribution" min="0" required
                                    data-container="body" data-toggle="popover" data-placement="bottom" data-content="Sie können in dieser Runde maximal {{ player.endowment }} Punkte investieren.">
@@ -187,7 +187,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Verdienst </a>
+                            <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Beispiele </a>
                         </li>
 
                     </ul>
@@ -340,11 +340,69 @@
                         </div>
 
 
-                        <!-- Part 4: Verdienst -->
+                        <!-- Part 4: Beispiele -->
                         <div class="tab-pane" id="part4" role="tabpanel" aria-labelledby="part4-tab">
                             <div class="card-body">
-                                <p class="lead">
-                                    Ihr Verdienst/Gewinn in dieser Aufgabe
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Beispiel 1
+                                    </span>
+                                </h5>
+                                <p>
+                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie
+                                    und ihre beiden Gruppenmitglieder investieren jeweils 10 Punkte. Dann betragen die
+                                    Gesamtinvestitionen 30 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben von
+                                    23 Punkten. Warum? Weil Sie in dieser Runde 10 Punkte behalten (also nicht
+                                    investierten) und weil die insgesamt 30 investierten Punkte eine Rendite von 7,5 Punkten
+                                    einbringen. Daraus ergibt sich ein Investitions<u>ertrag</u> von 37,5 Punkten,
+                                    der zu gleichen Teilen auf alle 3 Gruppenmitglieder aufgeteilt wird und jedem
+                                    Gruppenmitglied 12,5 (also gerundet 8) Punkte einbringt.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Beispiel 2
+                                    </span>
+                                </h5>
+                                <p>
+                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie investieren nichts
+                                    und ihre beiden Gruppenmitglieder investieren jeweils 10 Punkte. Dann betragen die
+                                    Gesamtinvestitionen 20 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben von
+                                    29 Punkten. Warum? Weil Sie in dieser Runde 20 Punkte behalten (also nicht
+                                    investierten) und weil die insgesamt 20 investierten Punkte eine Rendite von 5 Punkten
+                                    einbringen. Daraus ergibt sich ein Investitions<u>ertrag</u> von 25 Punkten,
+                                    der zu gleichen Teilen auf alle 3 Gruppenmitglieder aufgeteilt wird und jedem
+                                    Gruppenmitglied 8,3 (also aufgerundet 9) Punkte einbringt.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Beispiel 3
+                                    </span>
+                                </h5>
+                                <p>
+                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie investieren 10
+                                    Punkte und ihre beiden Gruppenmitglieder investieren jeweils nichts. Dann betragen
+                                    die Gesamtinvestitionen 10 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben
+                                    von 15 Punkten. Warum? Weil Sie in dieser Runde 10 Punkte behalten (also nicht
+                                    investieren) und weil die insgesamt 10 investierten Punkte eine Rendite von 2,5 Punkten
+                                    einbringen. Daraus ergibt sich ein Investitions<u>ertrag</u> von 12,5 Punkten,
+                                    der zu gleichen Teilen auf alle 3 Gruppenmitglieder aufgeteilt wird und jedem
+                                    Gruppenmitglied 4,2 (also aufgerundet 5) Punkte einbringt.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Beispiel 4
+                                    </span>
+                                </h5>
+                                <p>
+                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie investieren nichts
+                                    Punkte und ihre beiden Gruppenmitglieder investieren ebenfalls nichts. Dann betragen
+                                    die Gesamtinvestitionen 0 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben
+                                    von 20 Punkten. Warum? Weil Sie in dieser Runde 20 Punkte behalten (also nicht
+                                    investieren) und weil die insgesamt 0 investierten Punkte eine Rendite von 0 Punkten
+                                    einbringen.
                                 </p>
 
                             </div>

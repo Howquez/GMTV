@@ -28,9 +28,14 @@ function myFunction() {
 </p>
 <p>
     <small>
-        Sollten sich in den nächsten {{ Constants.patience }} Minuten keine weiteren Teilnehmer finden, so werden Sie
-        direkt ans Ende der Studie geleitet. Für Ihre Geduld werden wir Ihnen das Guthaben, das Sie zu Beginn der ersten
-        Runde zur Verfügung gehabt hätten (also {{ Constants.initial_endowment }} Punkte) auszahlen.
+        {% if player.wait_time_left > 1 %}
+        Sollten sich in den nächsten {{ player.wait_time_left }} Minuten
+        {% else %}
+        Sollten sich in den nächsten Minute
+        {% endif %}
+        keine weiteren Teilnehmer finden, so werden Sie
+        direkt ans Ende der Studie geleitet. Für Ihre Geduld werden wir Ihnen einen Bonus in Höhe von
+        {{ Constants.patience_bonus }} Punkten auszahlen.
     </small>
 </p>
 

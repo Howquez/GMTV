@@ -73,11 +73,6 @@ class ResultsWaitPage(WaitPage):
     after_all_players_arrive = "set_payoffs"
 
 
-class dPGG_Results(Page):
-    def is_displayed(self):
-        if self.round_number == self.session.config["num_rounds"]:
-            return True
-
 
 
 page_sequence = [dPGG_InitialWaitPage,
