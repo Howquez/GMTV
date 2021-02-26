@@ -1,7 +1,9 @@
 console.log("basics ready!")
 
 // variables from python
-let template = js_vars.template || 0
+let template = js_vars.template || 0;
+let endowments = js_vars.endowments || 0;
+let current_round  = js_vars.current_round || 0;
 
 // tooltip
 $(function () {

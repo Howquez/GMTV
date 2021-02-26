@@ -8,9 +8,9 @@
 	let flat_fee = js_vars.flat_fee || 0;
 	let exchange_rate = js_vars.exchange_rate;
 	// let template = js_vars.template; declared in basics
-	let current_round  = js_vars.current_round;
+	//let current_round  = js_vars.current_round;
 	let num_rounds  = js_vars.num_rounds;
-	let endowments = js_vars.endowments;
+	//let endowments = js_vars.endowments;
 	let stock = js_vars.stock || 0;
 
 	var plot_height = 4;

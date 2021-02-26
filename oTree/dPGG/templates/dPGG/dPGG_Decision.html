@@ -13,10 +13,10 @@
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-
-<script src="{% static 'global/js/full_screen.js' %}"></script>
 <script src="{% static 'global/js/basics.js' %}"></script>
+{% if player.round_number > 1%}
 <script src="{% static 'global/js/time_series.js' %}"></script>
+{% endif %}
 <script src="{% static 'global/js/decision.js' %}"></script>
 <script src="{% static 'global/js/instructions_clicks.js' %}"></script>
 {% endblock %}

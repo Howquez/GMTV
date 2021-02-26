@@ -30,6 +30,7 @@ class Constants(BaseConstants):
     rate_of_return = (efficiency_factor - 1)*100
 
     safe_rounds = 2 # number of rounds without any risk
+    belief_elicitation_round = 1
     timeout = 3 # minutes
     patience = 6 # minutes
     patience_bonus = 10 # points
@@ -69,11 +70,12 @@ class Group(BaseGroup):
 
 
     def set_payoffs(self):
-
+        # random risk lottery
         if self.round_number > Constants.safe_rounds:
             if self.session.config["risk"] > random.uniform(0, 1):
                 self.disaster = True
 
+        # group contributions
         if len(self.get_players()) == Constants.players_per_group:
             self.total_contribution = sum([p.contribution for p in self.get_players()])
             self.average_contribution = round(self.total_contribution / Constants.players_per_group, 2)
@@ -124,6 +126,12 @@ class Group(BaseGroup):
                     if not p.is_dropout == p.in_round(self.round_number - 1).is_dropout:
                         p.payoff = -p.endowment
 
+            # add payoff if belief was correct
+            if self.round_number == Constants.belief_elicitation_round:
+                others_average_contribution = (self.total_contribution - p.contribution) / Constants.num_others_per_group
+                if p.belief > others_average_contribution * 0.9 and p.belief < others_average_contribution * 1.1:
+                    p.payoff = c(p.payoff + 10)
+
 
 
 
@@ -136,6 +144,7 @@ class Player(BasePlayer):
     wait_time_left = models.IntegerField(doc="denotes the time a player has to wait for others to arrive on WaitPage")
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
+    belief = models.IntegerField(min=0, doc="the player's belief about the other player's average contribution")
     gain = models.CurrencyField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
     stock = models.CurrencyField(doc="accumulated earnings of played rounds")
     is_dropout = models.BooleanField(doc="denotes whether player dropped out", initial = False)
