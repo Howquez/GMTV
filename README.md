@@ -2,6 +2,12 @@
 [![Generic badge](https://img.shields.io/badge/Status:-WIP-yellow.svg)](https://shields.io/)
 Made with [oTree](https://www.sciencedirect.com/science/article/pii/S2214635016000101) and ❤️
 
+## 🚏 How you can access a demo
+You can find the experiment's demo [here](https://cliccs.herokuapp.com/demo/). A click on _Dynamic Public Goods Game_ 
+will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._
+[![](figures/Decision_Screen.png)](https://cliccs.herokuapp.com/demo/)
+
+
 ## 🧐 What the project is about
 This experiment replicates Gächter et al.'s [(2017, Journal of Public Economics)](https://www.sciencedirect.com/science/article/pii/S0047272717300361)
 dynamic public goods game and incorporates uncertainty. 
@@ -31,12 +37,6 @@ strategic and more general decisions to be made. That is, we have to decide whet
 
 We also have to think about [ways to conduct the experiment online](https://doi.org/10.1007/s10683-017-9527-2) during 
 COVID-19. These considerations may have consequences for the number of rounds and group sizes.
-
-## 🚏 How you can access a demo
-You can find the experiment's demo [here](https://cliccs.herokuapp.com/demo/). A click on _Dynamic Public Goods Game_ 
-will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._
-[![](figures/Decision_Screen.png)](https://cliccs.herokuapp.com/demo/)
-
 
 ## 🛠 How we built it
 The experiment is built in Python 3 using [oTree](https://www.sciencedirect.com/science/article/pii/S2214635016000101).
