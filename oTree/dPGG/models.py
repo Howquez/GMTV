@@ -31,6 +31,7 @@ class Constants(BaseConstants):
 
     safe_rounds = 2 # number of rounds without any risk
     belief_elicitation_round = 1
+    elicitation_bonus = 10 # points
     timeout = 3 # minutes
     patience = 6 # minutes
     patience_bonus = 10 # points
@@ -41,6 +42,7 @@ class Subsession(BaseSubsession):
     def creating_session(self):
         if self.round_number == 1:
             for p in self.get_players():
+                p.participant.vars["belief_elicitation_round"] = Constants.belief_elicitation_round
                 p.participant.vars["endowments"] = []
                 p.participant.vars["stock"] = []
                 p.participant.vars["is_dropout"] = False
@@ -129,10 +131,15 @@ class Group(BaseGroup):
             # add payoff if belief was correct
             if self.round_number == Constants.belief_elicitation_round:
                 others_average_contribution = (self.total_contribution - p.contribution) / Constants.num_others_per_group
+                # vars for Outro
+                p.participant.vars["correct_guess"] = False
+                p.participant.vars["others_average_contribution"] = others_average_contribution
+                p.participant.vars["belief"] = p.belief
+                p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(self.session)
+                # actual payoff operation
                 if p.belief > others_average_contribution * 0.9 and p.belief < others_average_contribution * 1.1:
-                    p.payoff = c(p.payoff + 10)
-
-
+                    p.payoff = c(p.payoff + Constants.elicitation_bonus)
+                    p.participant.vars["correct_guess"] = True
 
 
 class Player(BasePlayer):
