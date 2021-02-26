@@ -14,3 +14,7 @@ class PlayerBot(Bot):
                                                               self.player.endowment)
                                   ),
                              check_html=False)
+            if self.round_number == Constants.belief_elicitation_round:
+                yield pages.dPGG_Belief, dict(belief=random.randint(int(self.player.endowment/2),
+                                                                    self.player.endowment)
+                                              )
