@@ -30,6 +30,7 @@ class Constants(BaseConstants):
     rate_of_return = (efficiency_factor - 1)*100
 
     safe_rounds = 2 # number of rounds without any risk
+    threshold = 0.5 # fraction of a group's endowment that has to be contributed such that no disaster can occur
     belief_elicitation_round = 1
     elicitation_bonus = 10 # points
     timeout = 3 # minutes
@@ -69,20 +70,32 @@ class Group(BaseGroup):
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.IntegerField(doc="individual share each player receives from this round's contributions")
     bot_active = models.BooleanField(doc="denotes whether player in group dropped out such that a bot takes over", initial = False)
+    wealth = models.IntegerField(doc="sum of endowments at the beginning of a round")
 
 
-    def set_payoffs(self):
-        # random risk lottery
-        if self.round_number > Constants.safe_rounds:
-            if self.session.config["risk"] > random.uniform(0, 1):
-                self.disaster = True
-
-        # group contributions
+    def set_group_variables(self):
         if len(self.get_players()) == Constants.players_per_group:
             self.total_contribution = sum([p.contribution for p in self.get_players()])
             self.average_contribution = round(self.total_contribution / Constants.players_per_group, 2)
             self.individual_share = int(math.ceil(self.total_contribution * Constants.efficiency_factor / Constants.players_per_group))
+            self.wealth = sum([p.endowment for p in self.get_players()])
+            # alternatively, define wealth as the last round's stock
+            # self.wealth = sum([p.stock for p in self.in_round(self.round_number - 1).get_players()])
 
+    def set_disaster(self):
+        if self.total_contribution < Constants.threshold * self.wealth:
+            # random risk lottery
+            if self.round_number > Constants.safe_rounds:
+                if self.session.config["risk"] > random.uniform(0, 1):
+                    self.disaster = True
+
+    def set_payoffs(self):
+
+        # call  methods
+        self.set_group_variables()
+        self.set_disaster()
+
+        # calculate player-level-variables
         for p in self.get_players():
             # players who were stuck on the initial wait page due to group member's drop outs have 0-earnings as well as
             # little bonus implemented as a payoff in the last round
@@ -95,17 +108,15 @@ class Group(BaseGroup):
                     p.payoff = c(Constants.patience_bonus)
             # all the others essentially earn their gains (which can be negative)
             else:
-                p.gain = self.individual_share - p.contribution
+                p.gross_gain = self.individual_share - p.contribution
+
+                p.stock = p.endowment + p.gross_gain
 
                 # implement basic disaster damage
                 if self.disaster:
-                    p.gain = p.gain - 10
+                    p.stock = int(math.ceil(p.stock * 0.5))
 
-                # limited liability
-                if p.gain < - p.endowment:
-                    p.gain = - p.endowment
-
-                p.stock = p.endowment + p.gain
+                p.gain = p.stock - p.endowment
 
                 p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
 
@@ -152,7 +163,8 @@ class Player(BasePlayer):
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
     belief = models.IntegerField(min=0, doc="the player's belief about the other player's average contribution")
-    gain = models.IntegerField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
+    gross_gain = models.IntegerField(doc="each round's gross earnings as the difference of the individual_share and the player's contribution")
+    gain = models.IntegerField(doc="each round's net earnings as the difference between stock and endowment (incorporating possible damage)")
     stock = models.IntegerField(doc="accumulated earnings of played rounds")
     is_dropout = models.BooleanField(doc="denotes whether player dropped out", initial = False)
 

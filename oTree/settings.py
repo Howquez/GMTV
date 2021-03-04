@@ -11,9 +11,9 @@ SESSION_CONFIGS = [
     ), dict(
         name="shorty",
         display_name="No Instructions",
-        num_rounds=5,
+        num_rounds=10,
         num_demo_participants=3,
-        risk=0.0,
+        risk=0.33,
         app_sequence=["dPGG", "Outro"]
     ),
 ]
