@@ -14,7 +14,7 @@ class Outro_CLICCS(Page):
 
 
 
-class Outro_Results(Page):
+class Outro_Final(Page):
     def vars_for_template(self):
         return dict(
             is_residual_player=self.participant.vars["is_residual_player"],
@@ -25,10 +25,11 @@ class Outro_Results(Page):
         return dict(
             flat_fee=self.session.config["participation_fee"],
             exchange_rate=self.session.config["real_world_currency_per_point"],
-            template="results",
+            template="final",
             current_round=self.session.config["num_rounds"],
-            stock=self.participant.vars["stock"],
+            euros=self.participant.vars["euros"],
+            num_rounds=self.session.config["num_rounds"],
         )
 
 
-page_sequence = [Outro_Covariates, Outro_CLICCS, Outro_Results]
+page_sequence = [Outro_Covariates, Outro_CLICCS, Outro_Final]

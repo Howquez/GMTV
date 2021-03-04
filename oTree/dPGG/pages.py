@@ -40,13 +40,16 @@ class dPGG_Decision(Page):
 
     def vars_for_template(self):
         disaster = 0
+        EWE = 0
         diff = 0
         bot_active = False
         if self.round_number > 1:
+            EWE = self.group.in_round(self.round_number - 1).EWE
             disaster = self.group.in_round(self.round_number - 1).disaster
             diff = self.player.in_round(self.round_number - 1).gain
             bot_active = self.group.in_round(self.round_number - 1).bot_active
         return dict(
+            EWE = EWE,
             disaster = disaster,
             diff=diff,
             bot_active=bot_active,
@@ -85,11 +88,32 @@ class ResultsWaitPage(WaitPage):
         if self.round_number <= self.session.config["num_rounds"]:
             return True
 
+    after_all_players_arrive = "set_payoffs"
+
+
+
+class dPGG_Results(Page):
+    def is_displayed(self):
+        if self.round_number == self.session.config["num_rounds"]:
+            return True
+
+    def vars_for_template(self):
+        return dict(
+            is_residual_player=self.participant.vars["is_residual_player"],
+            final_payoff=self.participant.payoff_plus_participation_fee().to_real_world_currency(self.session),
+        )
+
+    def js_vars(self):
+        return dict(
+            template="results",
+            current_round=self.round_number,
+            stock=self.participant.vars["stock"],
+            num_rounds=self.session.config["num_rounds"],
+        )
+
     def app_after_this_page(self, upcoming_apps):
         if self.round_number >= self.session.config["num_rounds"]:
             return upcoming_apps[0]
-
-    after_all_players_arrive = "set_payoffs"
 
 
 
@@ -97,4 +121,5 @@ class ResultsWaitPage(WaitPage):
 page_sequence = [dPGG_InitialWaitPage,
                  dPGG_Decision,
                  dPGG_Belief,
-                 ResultsWaitPage]
+                 ResultsWaitPage,
+                 dPGG_Results]

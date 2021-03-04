@@ -46,6 +46,7 @@ class Subsession(BaseSubsession):
                 p.participant.vars["belief_elicitation_round"] = Constants.belief_elicitation_round
                 p.participant.vars["endowments"] = []
                 p.participant.vars["stock"] = []
+                p.participant.vars["euros"] = []
                 p.participant.vars["is_dropout"] = False
                 p.participant.vars["is_residual_player"] = False
                 if not "wait_page_arrival" in p.participant.vars:
@@ -65,7 +66,8 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
 
-    disaster = models.BooleanField(initial=False, doc="if true, negative effects on MPCR or stock will occur.")
+    EWE = models.BooleanField(initial=False, doc="if true, extreme weather event occurred")
+    disaster = models.BooleanField(initial=False, doc="if true, the EWE has negative effects on stock ")
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.IntegerField(doc="individual share each player receives from this round's contributions")
@@ -83,10 +85,11 @@ class Group(BaseGroup):
             # self.wealth = sum([p.stock for p in self.in_round(self.round_number - 1).get_players()])
 
     def set_disaster(self):
-        if self.total_contribution < Constants.threshold * self.wealth:
-            # random risk lottery
-            if self.round_number > Constants.safe_rounds:
-                if self.session.config["risk"] > random.uniform(0, 1):
+        # random risk lottery
+        if self.round_number > Constants.safe_rounds:
+            if self.session.config["risk"] > random.uniform(0, 1):
+                self.EWE = True
+                if self.total_contribution < Constants.threshold * self.wealth:
                     self.disaster = True
 
     def set_payoffs(self):
@@ -118,7 +121,10 @@ class Group(BaseGroup):
 
                 p.gain = p.stock - p.endowment
 
-                p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
+                # p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
+                p.participant.vars["stock"].append(p.stock)
+                p.participant.vars["euros"].append(c(p.stock).to_real_world_currency(self.session))
+
 
                 # payoff
                 if p.round_number == 1:

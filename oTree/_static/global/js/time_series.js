@@ -12,6 +12,7 @@
 	let num_rounds  = js_vars.num_rounds;
 	//let endowments = js_vars.endowments;
 	let stock = js_vars.stock || 0;
+	let euros = js_vars.euros || 0;
 
 	var plot_height = 4;
 
@@ -37,13 +38,22 @@
 	var suffix = " Punkte";
 	var plot_line_width = 1;
 	var show_in_legend = false;
+	var max = num_rounds;
 
 	if (template == "results"){
-		series = stock;
+	    series = stock;
+		plot_line_width = 1;
+		plot_height = 4;
+		max = num_rounds - 1;
+	}
+
+	if (template == "final"){
+		series = euros;
 		suffix = " Euro";
 		plot_line_width = 0;
 		show_in_legend = true;
 		plot_height = 6;
+		max = num_rounds - 1;
 	}
 
 	// console.log(current_round);
@@ -65,20 +75,18 @@ var chart = Highcharts.chart('container', {
 	},
     
     xAxis: {
-        max: num_rounds,
+        max: max,
         categories: category,
         labels: {
 		   enabled: true,
 		   formatter: function () {
-		        if (this.value == 5){
-		            return "Ende"
-		        }
+                return "Ende"
             }
 		},
-		tickPositions: [num_rounds],
+		tickPositions: [max],
 		plotLines: [{
         	zIndex: 5,
-                value: num_rounds,
+                value: max,
                 color: 'grey',
                 //dashStyle: 'shortdash',
                 width: plot_line_width,
@@ -133,10 +141,10 @@ var chart = Highcharts.chart('container', {
         data: flat,
         color: "#00fad1",
         showInLegend: show_in_legend,
-        visible: template == "results"
+        visible: template == "final"
     }]
 });
 
-if (template == "results"){
+if (template != "decision"){
     chart.tooltip.refresh([chart.series[0].points[current_round - 1]]);
 }
