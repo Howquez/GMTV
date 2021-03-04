@@ -67,7 +67,7 @@ class Group(BaseGroup):
     disaster = models.BooleanField(initial=False, doc="if true, negative effects on MPCR or stock will occur.")
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
-    individual_share = models.FloatField(doc="individual share each player receives from this round's contributions")
+    individual_share = models.IntegerField(doc="individual share each player receives from this round's contributions")
     bot_active = models.BooleanField(doc="denotes whether player in group dropped out such that a bot takes over", initial = False)
 
 
@@ -81,7 +81,7 @@ class Group(BaseGroup):
         if len(self.get_players()) == Constants.players_per_group:
             self.total_contribution = sum([p.contribution for p in self.get_players()])
             self.average_contribution = round(self.total_contribution / Constants.players_per_group, 2)
-            self.individual_share = self.total_contribution * Constants.efficiency_factor / Constants.players_per_group
+            self.individual_share = int(math.ceil(self.total_contribution * Constants.efficiency_factor / Constants.players_per_group))
 
         for p in self.get_players():
             # players who were stuck on the initial wait page due to group member's drop outs have 0-earnings as well as
@@ -95,7 +95,7 @@ class Group(BaseGroup):
                     p.payoff = c(Constants.patience_bonus)
             # all the others essentially earn their gains (which can be negative)
             else:
-                p.gain = int(math.ceil(self.individual_share - p.contribution))
+                p.gain = self.individual_share - p.contribution
 
                 # implement basic disaster damage
                 if self.disaster:
@@ -152,8 +152,8 @@ class Player(BasePlayer):
     endowment = models.IntegerField(doc="the player's endowment in this round (equals her stock of last round)")
     contribution = models.IntegerField(min=0, doc="the player's contribution in this round")
     belief = models.IntegerField(min=0, doc="the player's belief about the other player's average contribution")
-    gain = models.CurrencyField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
-    stock = models.CurrencyField(doc="accumulated earnings of played rounds")
+    gain = models.IntegerField(doc="each round's payoff as the difference of the individual_share and the player's contribution")
+    stock = models.IntegerField(doc="accumulated earnings of played rounds")
     is_dropout = models.BooleanField(doc="denotes whether player dropped out", initial = False)
 
     def start(self):

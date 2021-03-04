@@ -50,7 +50,8 @@ class dPGG_Decision(Page):
             disaster = disaster,
             diff=diff,
             bot_active=bot_active,
-            last_round=self.session.config["num_rounds"],
+            previous_round=self.round_number - 1,
+            last_round=self.session.config["num_rounds"]
         )
 
     def js_vars(self):

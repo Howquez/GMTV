@@ -125,42 +125,54 @@
 
                     <p class="lead mb-1">Ihr Guthaben:</p>
 
-                    <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Punktestands im Zeitverlauf dar.</small></p>
-
-                    <figure class="highcharts-figure mb-5">
+                    <figure class="highcharts-figure mb-1">
                         <div id="container"></div>
                     </figure>
 
-                    <p class="mb-1"><small>Die Tabelle zeigt für jede Runde, wieviel Sie investiert haben, wieviel insgesamt von Ihrer Gruppe
-                        investiert wurde sowie Ihren Gewinn (oder Verlust).</small></p>
+                    <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Punktestands im Zeitverlauf dar.</small></p>
 
+
+                    <p class="lead mt-5 mb-1">Entscheidungen in der letzten Runde:</p>
 
                     <table class="table table-hover table-responsive-md">
                         <thead>
-                        <td>Runde</td>
-                        <td>Ihre Investition</td>
-                        <td>Gesamte Investitionen</td>
-                        <td>Ihr Gewinn</td>
+                        <td>Teilnehmer</td>
+                        <td>Voriges Guthaben</td>
+                        <td>Investition</td>
+                        <td>Dividende</td>
+                        <td>Aktuelles Guthaben</td>
                         </thead>
-                        <tbody>
-                        {% for p in player.in_previous_rounds %}
-                        <tr>
-                            <td><small>
-                                {% if p.group.disaster %}
-                                    <span class="badge badge-danger" data-toggle="tooltip" data-placement="bottom" title="Extremwetterereignis">
-                                {% else %}
-                                    <span class="badge badge-light">
-                                {% endif %}
-                                    #{{ p.round_number }}
-                                </span>
-                            </small></td>
-                            <td><small>{{ p.contribution }} Punkte</small></td>
-                            <td><small>{{ p.group.total_contribution }} Punkte</small></td>
-                            <td><small>{{ p.gain }}</small></td>
-                        </tr>
+                        {% for t in player.in_all_rounds %}
+                            {% if t.round_number == previous_round %}
+                                <tr>
+                                    <td><small> <span class="badge badge-secondary">Sie</span> </small></td>
+                                    <td><small> {{ t.endowment }} </small></td>
+                                    <td><small> {{ t.contribution }} </small></td>
+                                    <td><small> {{ t.group.individual_share }} </small></td>
+                                    <td><small> {{ t.stock }} </small></td>
+                                </tr>
+                                {% for p in t.get_others_in_group %}
+                                    <tr>
+                                        <td><small> <span class="badge badge-light"> #{{ p.id_in_group }}</span> </small></td>
+                                        <td><small> {{ p.endowment }} </small></td>
+                                        <td><small> {{ p.contribution }} </small></td>
+                                        <td><small> {{ p.group.individual_share }} </small></td>
+                                        <td><small> {{ p.stock }} </small></td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
                         {% endfor %}
-                        </tbody>
                     </table>
+
+                    <p class="mb-1">
+                        <small>
+                            Die Tabelle zeigt Ihnen das Guthaben von Ihnen und den übrigen Gruppenmitgliedern zu Beginn
+                            der letzten Runde (ganz links) sowie das aktuelle Guthaben zu Beginn dieser Runde (ganz
+                            rechts). Darüber hinaus können SIe der Tabelle entnehmen, wie viel Sie und die übrigen
+                            Gruppenmitglieder investiert haben. Schließlich listet die Tabelle auch den Anteil vom
+                            Ertrag der Gesamtinvestitionen.
+                        </small>
+                    </p>
                 </div>
 
                 {% endif %}
