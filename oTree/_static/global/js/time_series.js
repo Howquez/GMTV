@@ -18,8 +18,8 @@
 
 // create dummy data for instructions
     if (template == "instructions"){
-        current_round = 3;
-        endowments = [20, 17, 20, 25]
+        current_round = 4;
+        endowments = [20, 21, 27, 35]
     }
 
 // get categories, i.e. the rounds

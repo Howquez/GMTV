@@ -69,12 +69,9 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Beispiele </a>
+                <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Verständnisfragen </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link back-and-forth" id="part5-tab" data-toggle="tab" href="#part5" role="tab" aria-controls="part5"> Verständnisfragen </a>
-            </li>
         </ul>
 
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#666666" class="bi bi-book-fill" viewBox="0 0 16 16"
@@ -143,10 +140,11 @@
                         </span>
                     </h5>
                     <p>
-                        Dies ist eine Studie, die Ihre Entscheidungen innerhalb einer Gruppe untersucht. Wenn Sie die
-                        folgenden Instruktionen aufmerksam lesen, können Sie durch Ihre Entscheidungen einen Bonus
-                        verdienen. Der Betrag vom Bonus hängt dabei sowohl von Ihren Entscheidungen als auch von den
-                        Entscheidungen der anderen Teilnehmer in Ihrer Gruppe ab.
+                        Sie nehmen jetzt an einem Entscheidungsexperiment teil. Wenn Sie die Instruktionen aufmerksam
+                        lesen und befolgen, können Sie einen beträchtlichen Betrag verdienen, der von Ihren
+                        Entscheidungen und den Entscheidungen weiterer Teilnehmer abhängt. Dieser Betrag wird Ihnen am
+                        Ende des Experiments genannt und ausgezahlt. Die finanziellen Mittel dieser Studie stammen aus
+                        dem CLICCS-Forschungsprojekt der Hamburger Universitäten.
                     </p>
 
                     <h5>
@@ -155,11 +153,11 @@
                         </span>
                     </h5>
                     <p>
-                        Während der gesamten Studie fällen Sie Entscheidungen über Punkte, die am Ende der Studie in
-                        Euro umgerechnet werden. Der Wechselkurs beträgt
-                        <u>{{ session.config.real_world_currency_per_point }} Euro für jeden Punkt</u>.
-                        Generell gilt also, dass sie umso mehr Geld verdienen, je mehr Punkte Sie im Laufe der Studie
-                        verdienen.
+                        Während des gesamten Experiments werden Sie Entscheidungen über Punkte fällen. Am Ende des
+                        Experiments werden alle Punkte zu einem Wechselkurs von
+                        {{ session.config.real_world_currency_per_point }} Euro je Punkt umgerechnet. Zusätzlich
+                        erhalten sie einen Betrag in Höhe von {{ session.config.participation_fee }} Euro für Ihre
+                        Bereitschaft an dem Experiment teilzunehmen.
                     </p>
 
                     <h5>
@@ -171,24 +169,7 @@
                         Es ist wichtig, dass Sie konzentriert und ohne Unterbrechungen an der Studie teilnehmen.
                         Sollten Sie die Studie frühzeitig abbrechen oder länger als 3 Minuten keine Entscheidung treffen,
                         dann können wir Ihre Daten sowie die Daten Ihrer Gruppenmitglieder nicht auswerten. Deshalb
-                        können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen. <br><br>
-
-                        Sollte ein Gruppenmitglied frühzeitig abbrechen, so werden wir diese Person durch einen Bot,
-                        also durch ein Computerprogramm ersetzen, sodass Sie trotzdem zum Ende der Studie gelangen
-                        können. Wir werden Sie in diesem Fall darüber informieren, dass ein Gruppenmitglied durch einen
-                        Bot ersetzt wurde.
-                    </p>
-
-                    <h5>
-                        <span class="badge badge-content mt-4">
-                            Aufbau
-                        </span>
-                    </h5>
-                    <p>
-                        Nachdem Sie die Instruktionen gelesen und Verständnisfragen beantwortet haben, beginnt der Kern
-                        dieser Studie, in dem Sie eine Aufgabe in mehreren Runden durchlafen werden. Im Anschluss daran
-                        beantworten Sie ein paar Fragen zu Ihrer Person. Danach bekommen Sie angezeigt, wie viel Sie in
-                        dieser Studie verdient haben.
+                        können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen.
                     </p>
 
 
@@ -226,25 +207,25 @@
                 <div class="card-body">
                     <h5>
                         <span class="badge badge-content mt-4">
-                            Gruppen
+                            Runden & Gruppen
                         </span>
                     </h5>
                     <p>
-                        In Studie befinden Sie sich ein einer Gruppe bestehend aus insgesamt
-                        {{ Constants.group_size }} Personen. Über den Verlauf der Studie wird sich die
-                        Gruppenzusammensetzung nicht ändern. Sie werden also immer mit denselben
-                        {{ Constants.num_others_per_group }} Personen interagieren.
+                        Das Experiment besteht aus {{ session.config.num_rounds }} Entscheidungsrunden.
+                        Zu Beginn des Experiments werden Sie mit {{ Constants.num_others_per_group }} weiteren
+                        Teilnehmern gruppiert. In einer Gruppe sind daher {{ Constants.group_size }} Personen, inklusive
+                        Ihnen. Die Zusammensetzung der Gruppe wird sich für die Dauer des Experiments nicht verändern.
+                        Weil das Experiment anonym ist, kennen Sie Ihre Gruppenmitglieder nicht und Ihre
+                        Gruppenmitglieder kennen Sie nicht.
                     </p>
 
                     <h5>
                         <span class="badge badge-content mt-4">
-                            Runden
+                            Startguthaben
                         </span>
                     </h5>
                     <p>
-                        Die Aufgabe besteht aus {{ session.config.num_rounds }} Runden. In jeder Runde stehen Sie, sowie
-                        die anderen Teilnehmer in Ihrer Gruppe, vor derselben Entscheidungssituation: Sie müssen abwägen,
-                        ob und wie viele Punkte Sie investieren wollen.
+                        Vor der ersten Runde bekommen Sie ein Guthaben von 20 Punkten.
                     </p>
 
                     <h5>
@@ -253,12 +234,23 @@
                         </span>
                     </h5>
                     <p>
-                        Sie müssen also in jeder Runde entscheiden, wie viele Punkte Sie investieren wollen. Dabei können
-                        Sie 0 Punkte (also nichts), ihr gesamtes Guthaben oder einen Betrag dazwischen investieren.
-                        Investierte Beträge bringen eine Rendite, die auf alle Gruppenmitglieder aufgeteilt wird.
-                        Nicht investierte Restbeträge werden Ihrem Guthaben der nächsten Runde unverändert
-                        gutgeschrieben.
+                        Zu Beginn der ersten Runde werden Sie gebeten Ihr Guthaben entweder in ein Gruppenprojekt zu
+                        investieren oder es für Sie zu sparen. Punkte, die Sie sparen, haben keinen Ertrag.
+                        Gesparte Punkte werden also einfach behalten und stehen Ihnen zu Beginn der nächsten Runde
+                        unverändert zur Verfügung. Niemand außer Ihnen selber profitiert von Ihren Ersparnissen.
+                        <br><br>
+                        Die Punkte, die Sie in das Gruppenprojekt investieren, werden zu den Investitionen der anderen
+                        {{ Constants.num_others_per_group }} Gruppenmitglieder gerechnet. Die Summe der Investitionen
+                        hat einen Ertrag von Constants.efficiency_factor (also eine Rendite von
+                        {{ Constants.rate_of_return }}%) und wird anschließend in Form einer Dividende gleichmäßig auf
+                        alle Gruppenmitglieder aufgeteilt. Dementsprechend profitieren alle Gruppenmitglieder
+                        gleichermaßen von den Investitionen und der Rendite. Das heißt, dass die Summe
+                        aller Investitionen einer Runde zusammengezählt und dann mit 1,5 multipliziert werden, bevor sie
+                        zu gleichen Teilen auf alle Gruppenmitglieder aufgeteilt werden.
+                        Dementsprechend ist Ihre Dividende am Ende der ersten Runde die folgende:
                     </p>
+                    $$\frac{\text{Investitionssumme} \times {{ Constants.efficiency_factor }} }{ {{ Constants.group_size }} }$$
+
 
                     <h5>
                         <span class="badge badge-content mt-4">
@@ -266,27 +258,35 @@
                         </span>
                     </h5>
                     <p>
-                        Die Beträge, die Sie oder Ihre Gruppenmitglieder investieren, haben eine Rendite von
-                        werden mit {{ Constants.rate_of_return }}%. Das heißt, dass die Gesamtinvestionen (also alle
-                        in Ihrer Gruppe getätigten Investitionen) der jeweiligen Runde mit
-                        {{ Constants.efficiency_factor }} multipliziert werden. Das Ergebnis (also die
-                        Gesamtinvestitionen plus die Rendite) wird dann zu gleichen Teilen auf alle Gruppenmitglieder
-                        aufgeteilt. Sie bekommen also einen Ertrag von:
+                        Ihr Guthaben zu Beginn der zweiten Runde entspricht Ihrer Ersparnis sowie Ihrer Dividende aus
+                        der ersten Runde.
+
+                        Zu Beginn der zweiten Runde werden Sie dann wieder gefragt, wie viele Punkte Sie sparen und wie
+                        viele Punkte Sie investieren wollen. Ersparnis und Investitionen funktionieren dabei exakt
+                        genauso wie in der ersten Runde auch: Ersparnisse werden bis zur Folgerunde unverändert behalten
+                        und das Ergebnis der Investitionen wird in Form einer Dividende auf alle Gruppenmitglieder
+                        ausgezahlt.
+
+                        Alle weiteren Runden folgen derselben Struktur: Ihr Guthaben zu Beginn einer Runde entspricht
+                        der Ersparnis und der Dividende der Vorrunde.
                     </p>
-                    $$\frac{\text{Gesamtinvestitionen} \times {{ Constants.efficiency_factor }} }{ {{ Constants.group_size }} }$$
+
                     <h5>
                         <span class="badge badge-content mt-4">
-                            Guthaben
+                            Informationen
                         </span>
                     </h5>
                     <p>
-                        Zu Beginn der ersten Runde bekommen Sie ein Guthaben von {{ Constants.initial_endowment }} Punkten.
-                        Ihr Guthaben in der zweiten Runde hängt davon ab, wie viel Sie in der ersten Runde verdienen.
-                        Das heißt: Ihr Guthaben in zweiten Runde besteht aus den Punkten, die Sie in der ersten Runde
-                        nicht investiert haben, sowie Ihrem Anteil aus dem Ertrag der Investitionen aus der ersten Runde.
-                        Das Guthaben der zweiten Runde können Sie dann wieder für Investitionen verwenden, wenn
-                        Sie möchten. Der Ertrag aus den Gesamtinvestitionen, sowie Ihr nicht-investiertes Guthaben steht
-                        Ihnen dann wiederum in der dritten Runde zur Verfügung und so weiter.
+                        In jeder Runde werden Sie über Folgendes informiert:
+                    </p>
+                    <ul>
+                        <li>Das Guthaben der jeweiligen Gruppenmitglieder zu Beginn der Vorrunde</li>
+                        <li>Die Investitionen der jeweiligen Gruppenmitglieder in der Vorrunde</li>
+                        <li>Die Dividende in der Vorrunde</li>
+                        <li>Das Guthaben der jeweiligen Gruppenmitglieder zu Beginn der aktuellen Runde</li>
+                    </ul>
+                    <p>
+                        Alle weiteren Gruppenmitglieder erhalten exakt die gleichen Instruktionen wie Sie.
                     </p>
 
 
@@ -296,9 +296,18 @@
                         </span>
                     </h5>
                     <p>
-                        Am Ende der Studie bekommen Sie dann das Guthaben, dass Sie nach der letzten Runde haben,
-                        als Bonus ausgezahlt. Dafür werden die Punkte gemäß des Wechselkurses
-                        ({{ session.config.real_world_currency_per_point }} Euro für jeden Punkt) in Euro umgerechnet.
+                        Ihr Verdienst am Ende des Experiments ist gleich der Summe an Punkten, die Sie in der
+                        {{ session.config.num_rounds }}ten (also der letzten) Runde verdient haben – also Ihre Ersparnis
+                        plus die Dividende. Vor der Auszahlung werden wir Sie bitten einen kurzen Fragebogen auszufüllen.
+                    </p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Weiterer Verlauf
+                        </span>
+                    </h5>
+                    <p>
+                        Vor der Auszahlung werden wir Sie bitten einen kurzen Fragebogen auszufüllen.
                     </p>
 
                     <h5>
@@ -307,8 +316,8 @@
                         </span>
                     </h5>
                     <p>
-                        Diese Instruktionen stehen Ihnen während Ihrer Entscheidung zur Verfügung. Sollten Sie also
-                        Erklärungen nachschlagen wollen, können Sie auf ein
+                        Diese Instruktionen stehen Ihnen während Ihrer Entscheidungen zur Verfügung. Sollten Sie also
+                        Erklärungen nachschlagen wollen, können Sie auf das
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#666666" class="bi bi-book-fill" viewBox="0 0 16 16">
                             <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
                         </svg> Symbol klicken, das Ihnen oben rechts im Bild angezeigt wird.
@@ -349,28 +358,24 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        In jeder Runde teilen wir Ihnen mit, in welcher Runde Sie sich befinden, wie hoch Ihr Guthaben
-                        in dieser Runde ist und wie viel Sie in der letzten Runde verdient oder verloren haben.
-                        Darüber hinaus zeigen wir Ihnen eine Art Kontoauszug an, der Ihnen Ihre Investitionen, die
-                        Investitionen der gesamten Gruppe sowie Ihre Gewinne oder Verluste aus allen Runden grafisch
-                        und tabellarisch darstellt. Unten zeigen wir Ihnen einen exemplarischen
+                        Unten zeigen wir Ihnen einen exemplarischen
                         Entscheidungsbildschirm.
                     </p>
 
-                    <div class="container clearfix displaystyle-leftborder displaystyle-my-warning w-75 bg-light">
+                    <div class="container clearfix displaystyle-leftborder displaystyle-my-warning w-100 bg-light">
                         <div class="row justify-content-center">
                             <div class="card mt-5 mb-5 w-75">
                             <div class="card-body">
 
                                 <h5 class="card-title display-3 mb-1" data-toggle="tooltip" data-placement="top" title="Ihr aktueller Kontostand">
-                                    25
+                                    35
                                     <small class="text-muted">
                                         Punkte
                                     </small>
                                 </h5>
                                 <h6 class="card-subtitle mb-4">
                                             <span class="badge badge-success" data-toggle="tooltip" data-placement="right" title="Punkte, die sie in der letzten Runde dazuverdient haben">
-                                                +5 Punkte
+                                                +8 Punkte
                                             </span>
                                 </h6>
 
@@ -383,7 +388,7 @@
                                     -->
 
                                 <p class="card-text lead mb-1">
-                                    Von diesen 25 Punkten können Sie einen beliebigen Betrag investieren.
+                                    Von diesen 35 Punkten können Sie einen beliebigen Betrag investieren.
                                 </p>
 
                                 <p class="mb-4">
@@ -392,7 +397,7 @@
 
                                 <div class="form-group row mb-5">
                                     <div class="col">
-                                        <input type="number" class="form-control float-right" placeholder="Investieren" id="id_contribution" name="contribution" min="0" max="25">
+                                        <input type="number" class="form-control float-right" placeholder="Investieren" id="id_contribution" name="contribution" min="0" max="35">
                                     </div>
                                     <div class="col">
                                         <button type="button" id="submit_button" class="btn-outline-primary btn float-left">
@@ -405,52 +410,65 @@
 
                             <div class="card-footer bg-light text-secondary" data-toggle="tooltip" data-placement="top" title="Dieser Teil ist erst ab der zweiten Runde sichtbar.">
 
-                                <p class="lead mb-1">Ihr Kontostand:</p>
+                                <p class="lead mb-1">Ihr Guthaben:</p>
 
-                                <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Kontostands (in Punkten) im Zeitverlauf dar.</small></p>
-
-                                <figure class="highcharts-figure mb-5">
+                                <figure class="highcharts-figure mb-1">
                                     <div id="container"></div>
                                 </figure>
 
-                                <p class="mb-1"><small>Die Tabelle zeigt für jede Runde, wie viel Sie investiert haben, wie viel insgesamt von Ihrer Gruppe
-                                    investiert wurde sowie Ihren Gewinn (oder Verlust).</small></p>
+                                <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Punktestands im Zeitverlauf dar.</small></p>
+
+                                <p class="lead mt-5 mb-1">Entscheidungen in der letzten Runde:</p>
 
                                 <table class="table table-hover table-responsive-md">
                                     <thead>
-                                    <td>Runde</td>
-                                    <td>Ihre Investition</td>
-                                    <td>Gesamte Investitionen</td>
-                                    <td>Ihr Gewinn</td>
+                                    <td>Teilnehmer</td>
+                                    <td>Voriges Guthaben</td>
+                                    <td>Investition</td>
+                                    <td>Dividende</td>
+                                    <td>Aktuelles Guthaben</td>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td><small>
-                                            <span class="badge badge-danger"> #3 </span>
+                                            <span class="badge badge-light"> Sie </span>
                                         </small></td>
-                                        <td><small>3 Punkte</small></td>
-                                        <td><small>43 Punkte</small></td>
-                                        <td><small>5 Punkte</small></td>
-                                    </tr>
-                                    <tr>
-                                        <td><small>
-                                            <span class="badge badge-light"> #2 </span>
-                                        </small></td>
-                                        <td><small>3 Punkte</small></td>
-                                        <td><small>14 Punkte</small></td>
-                                        <td><small>3 Punkte</small></td>
+                                        <td><small>27</small></td>
+                                        <td><small>20</small></td>
+                                        <td><small>28</small></td>
+                                        <td><small>35</small></td>
                                     </tr>
                                     <tr>
                                         <td><small>
                                             <span class="badge badge-light"> #1 </span>
                                         </small></td>
-                                        <td><small>20 Punkte</small></td>
-                                        <td><small>40 Punkte</small></td>
-                                        <td><small>-3 Punkte</small></td>
+                                        <td><small>32</small></td>
+                                        <td><small>20</small></td>
+                                        <td><small>28</small></td>
+                                        <td><small>40</small></td>
+                                    </tr>
+                                    <tr>
+                                        <td><small>
+                                            <span class="badge badge-light"> #2 </span>
+                                        </small></td>
+                                        <td><small>27</small></td>
+                                        <td><small>25</small></td>
+                                        <td><small>28</small></td>
+                                        <td><small>30</small></td>
                                     </tr>
                                     </tbody>
                                 </table>
 
+                                <p class="mb-3">
+                                    <small>
+                                        Die Tabelle zeigt Ihnen das Guthaben von Ihnen und den übrigen Gruppenmitgliedern zu Beginn
+                                        der letzten Runde (ganz links) sowie das aktuelle Guthaben zu Beginn dieser Runde (ganz
+                                        rechts). Darüber hinaus können SIe der Tabelle entnehmen, wie viel Sie und die übrigen
+                                        Gruppenmitglieder investiert haben. Schließlich listet die Tabelle auch den Anteil vom
+                                        Ertrag der Gesamtinvestitionen.
+                                    </small>
+                                </p>
+
                             </div>
 
                         </div>
@@ -481,200 +499,8 @@
             </div>
 
 
-            <!-- Part 4: Beispiele -->
+            <!-- Part 4: Verständnisfragen -->
             <div class="tab-pane" id="part4" role="tabpanel" aria-labelledby="part4-tab">
-                <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
-                    <p class="h4">Beispiele</p>
-                </div>
-                <div class="card-body">
-                    <p>
-                        Stellen Sie sich vor, dass Sie sich in einer beliebigen Runde befinden und dass zu Beginn dieser
-                        Runde ein Guthaben von 40 Punkten haben. Unter dieser Annahme stellen wir Ihnen 4 Beispiele vor,
-                        um zu vereutlichen, welchen Einfluss die Entscheidungen von Ihnen und den anderen Teilnehmern
-                        in Ihre Gruppe auf Ihr Guthaben haben.
-                    </p>
-                    <div class="row mt-4">
-                        <div class="col">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <p class="lead">Sie investieren viel, die anderen wenig</p>
-                                    <p><small>
-                                        Stellen Sie sich vor, dass Sie 30 Punkte investieren und dass die anderen
-                                        Teilnehmer in Ihrer Gruppe jeweils 5 Punkte investieren. Dann wurden insgesamt
-                                        40 Punkte investiert, die (durch die Rendite von {{ Constants.rate_of_return }}%)
-                                        einen Ertrag von 50 Punkten ergeben.
-                                    </small></p>
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
-                                                <td>40</td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td>Ihre Investition</th>
-                                                <td>30</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>+</td>
-                                                <td>Ihr Anteil vom Ertrag</th>
-                                                <td>&asymp;17</td>
-                                            </tr>
-                                            <tr>
-                                                <td>=</td>
-                                                <th scope="row">Guthaben in der nächsten Runde</th>
-                                                <td>27</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <p class="lead">Sie investieren viel, die anderen auch</p>
-                                    <p><small>
-                                        Stellen Sie sich vor, dass Sie 30 Punkte investieren und dass die anderen
-                                        Teilnehmer in Ihrer Gruppe jeweils 35 Punkte investieren. Dann wurden insgesamt
-                                        120 Punkte investiert, die (durch die Rendite von {{ Constants.rate_of_return }}%)
-                                        einen Ertrag von 150 Punkten ergeben.
-                                    </small></p>
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
-                                                <td>40</td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td>Ihre Investition</th>
-                                                <td>40</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>+</td>
-                                                <td>Ihr Anteil vom Ertrag</th>
-                                                <td>50</td>
-                                            </tr>
-                                            <tr>
-                                                <td>=</td>
-                                                <th scope="row">Guthaben in der nächsten Runde</th>
-                                                <td>50</td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <p class="lead">Sie investieren wenig, die anderen auch</p>
-                                    <p><small>
-                                        Stellen Sie sich vor, dass Sie 0 Punkte investieren und dass die anderen
-                                        Teilnehmer in Ihrer Gruppe jeweils 0 Punkte investieren. Dann wurden insgesamt
-                                        0 Punkte investiert, die keinen Ertrag ergeben.
-                                    </small></p>
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
-                                                <td>40</td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td>Ihre Investition</th>
-                                                <td>0</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>+</td>
-                                                <td>Ihr Anteil vom Ertrag</th>
-                                                <td>0</td>
-                                            </tr>
-                                            <tr>
-                                                <td>=</td>
-                                                <th scope="row">Guthaben in der nächsten Runde</th>
-                                                <td>40</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card bg-light">
-                                <div class="card-body">
-                                    <p class="lead">Sie investieren wenig, die anderen viel</p>
-                                    <p><small>
-                                        Stellen Sie sich vor, dass Sie 4 Punkte investieren und dass die anderen
-                                        Teilnehmer in Ihrer Gruppe jeweils 38 Punkte investieren. Dann wurden insgesamt
-                                        80 Punkte investiert, die (durch die Rendite von {{ Constants.rate_of_return }}%)
-                                        einen Ertrag von 100 Punkten ergeben.
-                                    </small></p>
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row" colspan="2">Guthaben zu Beginn dieser Runde</th>
-                                                <td>40</td>
-                                            </tr>
-                                            <tr>
-                                                <td>-</td>
-                                                <td>Ihre Investition</th>
-                                                <td>4</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>+</td>
-                                                <td>Ihr Anteil vom Ertrag</th>
-                                                <td>&asymp;33</td>
-                                            </tr>
-                                            <tr>
-                                                <td>=</td>
-                                                <th scope="row">Guthaben in der nächsten Runde</th>
-                                                <td>69</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- on Card Navigation  Arrows -->
-                    <div class="row justify-content-md-center mt-5">
-                        <div class="col col-lg-2">
-                        <p onclick="topFunction()" class="prevtab text-center" data-toggle="tooltip" data-placement="top" title="Zurück">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0029FA" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-                            </svg>
-                        </p>
-                        </div>
-
-                        <div class="col col-lg-2">
-                        <p onclick="topFunction()" class="nexttab text-center" data-toggle="tooltip" data-placement="top" title="Weiter">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0029FA" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5A.5.5 0 0 0 4 8z"/>
-                            </svg>
-                        </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Part 5: Verständnisfragen -->
-            <div class="tab-pane" id="part5" role="tabpanel" aria-labelledby="part5-tab">
                 <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
                     <p class="h4">Verständnisfragen</p>
                 </div>

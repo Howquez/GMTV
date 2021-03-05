@@ -2,7 +2,7 @@ console.log("decision ready!")
 
 // form validation
 if (template == "instructions"){
-    var current_endowment = 25;
+    var current_endowment = 35;
 } else {
     var current_endowment = endowments[current_round - 1]
 }
