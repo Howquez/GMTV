@@ -2,7 +2,7 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name="original_dPGG",
+        name="dPGG",
         display_name="dPGG Replication",
         num_rounds=10,
         num_demo_participants=3,

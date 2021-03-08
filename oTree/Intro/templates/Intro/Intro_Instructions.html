@@ -296,9 +296,8 @@
                         </span>
                     </h5>
                     <p>
-                        Ihr Verdienst am Ende des Experiments ist gleich der Summe an Punkten, die Sie in der
-                        {{ session.config.num_rounds }}ten (also der letzten) Runde verdient haben – also Ihre Ersparnis
-                        plus die Dividende. Vor der Auszahlung werden wir Sie bitten einen kurzen Fragebogen auszufüllen.
+                        Ihr Verdienst am Ende des Experiments ist gleich der Menge an Punkten, die Sie in der
+                        {{ session.config.num_rounds }}ten (also in der letzten) Runde verdient haben.
                     </p>
 
                     <h5>
@@ -307,17 +306,18 @@
                         </span>
                     </h5>
                     <p>
-                        Vor der Auszahlung werden wir Sie bitten einen kurzen Fragebogen auszufüllen.
+                        Nach den {{ session.config.num_rounds }} Runden werden wir Sie bitten, einen kurzen Fragebogen
+                        auszufüllen. Im Anschluss daran werden Sie über Ihre Auszahlung informiert.
                     </p>
 
                     <h5>
                         <span class="badge badge-content mt-4">
-                            Nachschlagen
+                            Instruktionen
                         </span>
                     </h5>
                     <p>
-                        Diese Instruktionen stehen Ihnen während Ihrer Entscheidungen zur Verfügung. Sollten Sie also
-                        Erklärungen nachschlagen wollen, können Sie auf das
+                        Diese Instruktionen stehen Ihnen auch während Ihrer Entscheidungen zur Verfügung. Sollten Sie
+                        diese Erklärungen nochmals nachschlagen wollen, können Sie auf das
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#666666" class="bi bi-book-fill" viewBox="0 0 16 16">
                             <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
                         </svg> Symbol klicken, das Ihnen oben rechts im Bild angezeigt wird.
@@ -400,7 +400,8 @@
                                         <input type="number" class="form-control float-right" placeholder="Investieren" id="id_contribution" name="contribution" min="0" max="35">
                                     </div>
                                     <div class="col">
-                                        <button type="button" id="submit_button" class="btn-outline-primary btn float-left">
+                                        <button type="button" id="submit_button" class="btn-outline-primary btn float-left" data-toggle="tooltip" data-placement="top"
+                                                title="Der Button ist für diese Demonstrationszwecke deaktiviert.">
                                             Alles Sparen
                                         </button>
                                     </div>
@@ -418,7 +419,7 @@
 
                                 <p class="mb-1"><small>Die Grafik stellt Ihnen die Entwicklung Ihres Punktestands im Zeitverlauf dar.</small></p>
 
-                                <p class="lead mt-5 mb-1">Entscheidungen in der letzten Runde:</p>
+                                <p class="lead mt-5 mb-1">Entscheidungen der Vorrunde:</p>
 
                                 <table class="table table-hover table-responsive-md">
                                     <thead>
@@ -509,6 +510,18 @@
                         Bitte beantworten Sie die nachfolgenden Fragen, durch die wir sicherstellen wollen, dass alle
                         Teilnehmer die Instruktionen sorgfältig gelesen und verstanden haben.
                     </p>
+
+                    <div class="alert alert-danger mb-4 mt-4 alert-dismissible fade show" role="alert">
+                        Die Verständnisfragen sind für Demo-Zwecke deaktiviert. Klicken Sie einfach auf "Weiter", um
+                        mit dem Experiment zu beginnen.
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+
+                    <!--
                     <div class="row mt-4">
                         <div class="col">
                             <div class="card bg-white">
@@ -567,10 +580,10 @@
                             </div>
                         </div>
                     </div>
+                    -->
 
 
 
-                    <!-- on Card Navigation  Arrows -->
                     <!-- on Card Navigation  Arrows -->
                     <div class="row justify-content-md-center mt-5">
                         <div class="col col-lg-2">
