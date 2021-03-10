@@ -512,8 +512,7 @@
                     </p>
 
                     <div class="alert alert-danger mb-4 mt-4 alert-dismissible fade show" role="alert">
-                        Die Verständnisfragen sind für Demo-Zwecke deaktiviert. Klicken Sie einfach auf "Weiter", um
-                        mit dem Experiment zu beginnen.
+                        Die Verständnisfragen sind vorrübergehend noch für 3-Spieler-Gruppen konzipiert.
 
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -521,11 +520,16 @@
                     </div>
 
 
-                    <!--
+
                     <div class="row mt-4">
                         <div class="col">
                             <div class="card bg-white">
                                 <div class="card-body">
+                                    <h5>
+                                        <span class="badge badge-content mb-4">
+                                            Frage #1
+                                        </span>
+                                    </h5>
                                     <p>
                                         Zu Beginn der ersten Runde bekommen alle Gruppenmitglieder ein Guthaben in Höhe
                                         von {{ Constants.initial_endowment }} Punkten.
@@ -540,6 +544,11 @@
                         <div class="col">
                             <div class="card bg-white">
                                 <div class="card-body">
+                                    <h5>
+                                        <span class="badge badge-content mb-4">
+                                            Frage #2
+                                        </span>
+                                    </h5>
                                     <p>
                                         Zu Beginn der ersten Runde bekommen alle Gruppenmitglieder ein Guthaben in Höhe
                                         von {{ Constants.initial_endowment }} Punkten.
@@ -557,30 +566,24 @@
                         <div class="col">
                             <div class="card bg-white">
                                 <div class="card-body">
+                                    <h5>
+                                        <span class="badge badge-content mb-4">
+                                            Frage #3
+                                        </span>
+                                    </h5>
                                     <p>
                                         Stellen Sie sich vor, zu Beginn einer beliebigen Runde ein Guthaben in Höhe von
-                                        40 Punkten zu haben. Wenn Sie 30 Punkte investieren und die Gesamtinvestitionen
-                                        insgesamt 60 Punkte betragen, welche der folgenden Aussagen stimmt dann?
-                                        <small class="text-muted"> (Mehrfachnennung möglich).</small>
+                                        40 Punkten zu haben und dass Ihre Gruppenmitglieder insgesamt 60 Punkte
+                                        investieren.
                                     </p>
-                                    {% formfield player.MCQ_1 label="" %}
+                                    {% formfield player.CQ3_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde, wenn Sie 0 Punkte investieren?</small>"  %}
+                                    {% formfield player.CQ3_2 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde, wenn Sie 12 Punkte investieren?</small>" %}
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card bg-white">
-                                <div class="card-body">
-                                    <p>
-                                        In welchem der folgenden Szenarien können Sie Gewinn machen?
-                                        <small class="text-muted"> (Mehrfachnennung möglich).</small>
-                                    </p>
-                                     {% formfield player.MCQ_2 label="" %}
-                                    <br><br>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
-                    -->
+                    <!---->
 
 
 

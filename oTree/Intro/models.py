@@ -45,25 +45,37 @@ class Player(BasePlayer):
     window_height = models.IntegerField(doc="Documents the respondent's browser window's height.")
     browser = models.StringField(doc="Documents the respondent's browser (incl. its version).")
 
-    CQ1_1 = models.IntegerField(doc="Comprehension Question 1.1", initial=20, blank = True)
-    # def CQ1_1_error_message(self, value):
-    #     if value != 20:
-    #         return "Leider falsch."
 
-    CQ1_2 = models.IntegerField(doc="Comprehension Question 1.2", initial=20, blank = True)
-    # def CQ1_2_error_message(self, value):
-    #     if value != 20:
-    #         return "Leider falsch."
 
-    CQ2_1 = models.IntegerField(doc="Comprehension Question 2.1", initial=25, blank = True)
-    # def CQ2_1_error_message(self, value):
-    #     if value != 25:
-    #         return "Leider falsch."
+    CQ1_1 = models.IntegerField(doc="Comprehension Question 1.1", initial=int(Constants.initial_endowment), blank = True)
+    def CQ1_1_error_message(self, value):
+        if value != int(Constants.initial_endowment):
+            return "Leider falsch."
 
-    CQ2_2 = models.IntegerField(doc="Comprehension Question 2.2", initial=25, blank = True)
-    # def CQ2_2_error_message(self, value):
-    #     if value != 25:
-    #         return "Leider falsch."
+    CQ1_2 = models.IntegerField(doc="Comprehension Question 1.2", initial=int(Constants.initial_endowment), blank = True)
+    def CQ1_2_error_message(self, value):
+        if value != int(Constants.initial_endowment):
+            return "Leider falsch."
+
+    CQ2_1 = models.IntegerField(doc="Comprehension Question 2.1", initial=int(Constants.initial_endowment * Constants.efficiency_factor), blank = True)
+    def CQ2_1_error_message(self, value):
+        if value != int(Constants.initial_endowment * Constants.efficiency_factor):
+            return "Leider falsch."
+
+    CQ2_2 = models.IntegerField(doc="Comprehension Question 2.2", initial=int(Constants.initial_endowment * Constants.efficiency_factor), blank = True)
+    def CQ2_2_error_message(self, value):
+        if value != int(Constants.initial_endowment * Constants.efficiency_factor):
+            return "Leider falsch."
+
+    CQ3_1 = models.IntegerField(doc="Comprehension Question 3.1", initial=int(40 + Constants.efficiency_factor * 60 / Constants.group_size), blank=True)
+    def CQ3_1_error_message(self, value):
+        if value != int(40 + Constants.efficiency_factor * 60 / Constants.group_size):
+            return "Leider falsch."
+
+    CQ3_2 = models.IntegerField(doc="Comprehension Question 3.2", initial=int(40 - 12 + Constants.efficiency_factor * (60+12) / Constants.group_size), blank=True)
+    def CQ3_2_error_message(self, value):
+        if value != int(40 - 12 + Constants.efficiency_factor * (60+12) / Constants.group_size):
+            return "Leider falsch."
 
     MCQ_1 = models.StringField(
         widget=CheckboxSelectMultiple(

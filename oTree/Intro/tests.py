@@ -10,5 +10,10 @@ class PlayerBot(Bot):
     def play_round(self):
         yield pages.Intro_Welcome
         yield pages.Intro_Instructions, dict(window_width=1, window_height=1, browser="Chrome Canary",
-                                             CQ1_1=20, CQ1_2=20, CQ2_1=25, CQ2_2=25,
-                                             MCQ_1=['2', '3'], MCQ_2=['2', '3'])
+                                             CQ1_1=int(Constants.initial_endowment),
+                                             CQ1_2=int(Constants.initial_endowment),
+                                             CQ2_1=int(Constants.initial_endowment * Constants.efficiency_factor),
+                                             CQ2_2=int(Constants.initial_endowment * Constants.efficiency_factor),
+                                             #MCQ_1=['2', '3'], MCQ_2=['2', '3'],
+                                             CQ3_1=int(40 + Constants.efficiency_factor * 60 / Constants.group_size),
+                                             CQ3_2=int(40 - 12 + Constants.efficiency_factor * (60+12) / Constants.group_size))
