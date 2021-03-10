@@ -2,10 +2,25 @@ from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants
 
+class Outro_Comprehension(Page):
+    form_model = "player"
+    form_fields = ["Comprehension"]
+
+
+class Outro_Personality(Page):
+    form_model = "player"
+    form_fields = ["PQ01", "PQ02", "PQ03", "PQ04", "PQ05",
+                   "PQ06", "PQ07", "PQ08", "PQ09", "PQ10",
+                   "PQ11", "PQ12", "PQ13", "PQ14"]
+
+    def vars_for_template(self):
+        return dict(
+            choices=[0, 1, 2, 3, 4, 5, 6],
+        )
 
 class Outro_Covariates(Page):
     form_model = "player"
-    form_fields = ["Age", "Gender", "Education", "Income", "Comprehension"]
+    form_fields = ["Age", "Gender", "Education", "Income"]
 
 
 class Outro_CLICCS(Page):
@@ -32,4 +47,4 @@ class Outro_Final(Page):
         )
 
 
-page_sequence = [Outro_Covariates, Outro_CLICCS, Outro_Final]
+page_sequence = [Outro_Comprehension, Outro_Personality, Outro_Covariates, Outro_CLICCS, Outro_Final]
