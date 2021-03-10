@@ -18,7 +18,7 @@ for(outcome in outcomes){
                       measurevar = outcome, 
                       groupvars=c("treatment", "round"),
                       na.rm = FALSE,
-                      conf.interval = 0.999,
+                      conf.interval = 0.95,
                       .drop = TRUE)
   
   temp <- plotDT[, outcome]
@@ -26,10 +26,9 @@ for(outcome in outcomes){
   # plot
   plot <- ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + # linetype = treatment
     layout +
-    #geom_vline(xintercept = 10, alpha = 0.5) +
     geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
     geom_line() +
-    geom_point() + 
+    # geom_point() + 
     scale_x_continuous(name="Period",  breaks = 1:15) +
     scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
     labs(y = outcome %>% str_to_title()) +

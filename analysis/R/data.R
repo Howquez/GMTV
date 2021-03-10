@@ -5,13 +5,16 @@ sim3 <- read.csv("../data/simulation/yk7fjybl.csv", stringsAsFactors = FALSE) %>
 
 
 # pretend we had a treatment
-sim1[, session.code := "treatment"]
+sim1[, session.code := "control"]
 sim2[, session.code := "treatment"]
-sim3[, session.code := "control"]
+sim3[, session.code := "treatment"]
 
-dt <- rbindlist(list(sim1, sim3),
+dt <- rbindlist(list(sim1, sim2, sim3),
                 use.names = FALSE)
 
+# or use the data gathered in a demo session
+# dt <- read.csv("../data/demoSessions/all_apps_wide-2021-03-09.csv", stringsAsFactors = FALSE) %>% data.table()
+# dt <- dt[, session.code := "demoSession"]
 
 # control variables
 cRegex <- "participant\\.code$|participant\\..time_started|session\\.code$|_index_in_pages|Intro\\.1\\.player\\.window.*|Intro\\.1\\.player\\.browser|participant\\.payoff$|^Outro"
@@ -21,7 +24,7 @@ ct <- dt[, ..controlVariables]
 
 
 # main data frame
-mRegex <- "participant\\.code$|participant\\.time_started|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|\\.1\\.player.belief|endowment|contribution|stock|gain$|is_dropout"
+mRegex <- "participant\\.code$|participant\\.time_started|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active"
 mainVariables <- str_subset(string = names(dt),
                             pattern = mRegex)
 mt <- dt[, ..mainVariables]
@@ -42,18 +45,23 @@ names(mt)[names(mt) == "session.code"] <- "treatment"
 
 # DT Magic: calculate averages by group 
 cluster <- c("treatment", "groupID")
-outcomes <- c("contribution", "endowment", "share", "stock", "gain")
+outcomes <- c("contribution", "endowment", "share", "stock", "gain", "bot_active")
 
 DTs <- list()
 for(outcome in outcomes){
-  var = names(mt) %>% str_subset(pattern = glue("player\\.{outcome}$"))
+  if(outcome == "bot_active"){
+    var = names(mt) %>% str_subset(pattern = "group\\.bot_active$")
+  } else {
+    var = names(mt) %>% str_subset(pattern = glue("player\\.{outcome}$"))
+  }
+
 
   # this is gold from https://stackoverflow.com/questions/16513827/summarizing-multiple-columns-with-data-table
   averages = mt[, 
                 lapply(.SD, mean, na.rm=TRUE), 
                 by = cluster, 
                 .SDcols=var
-  ]
+                ]
   
   # this is gold from # https://cran.r-project.org/web/packages/data.table/vignettes/datatable-reshape.html
   meltedAverages <- melt(averages, id.vars = cluster, measure.vars = var)
@@ -70,7 +78,7 @@ for(i in 1:length(outcomes)){
   DTs[[i]] <- DTs[[i]][,
                        .(treatment = treatment,
                          groupID = groupID,
-                         round = str_replace_all(string =variable,
+                         round = str_replace_all(string = variable,
                                                  pattern = "\\D", 
                                                  replacement="") %>% as.integer(),
                          value # to be renamed afterwards
@@ -83,6 +91,10 @@ for(i in 1:length(outcomes)){
 # create long dt with rounds as rows
 # lapply(DTs, function(i) setkey(i, round))
 longDT <- Reduce(function(...) merge(..., by=c(cluster, "round"), all = TRUE), DTs)
+
+
+# drop observations (i.e. groups in rounds) with dropouts (bot_active == 1)
+longDT <- longDT[bot_active == 0]
 
 
 
