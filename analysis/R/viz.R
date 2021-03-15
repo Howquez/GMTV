@@ -42,6 +42,7 @@ for(outcome in outcomes){
          height = 10, 
          units = "cm",
          bg = "transparent")
+  
   rm(list = c("plotTitle", "plot", "temp", "plotDT", "outcome"))
 }
 

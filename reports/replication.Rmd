@@ -1,0 +1,193 @@
+---
+title: "Gächter et al (2007, JPE) replication"
+description: |
+  A new article created using the Distill format.
+author:
+  - name: Hauke Roggenkamp 
+    affiliation: CLICCS
+    affiliation_url: https://www.cliccs.uni-hamburg.de/
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+    code_folding: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(haven)
+library(data.table)
+library(magrittr)
+library(kableExtra)
+library(Rmisc)
+library(ggplot2)
+library(wesanderson)
+
+DT <- read_dta(file="../data/gaechteretal/GMTV-data.dta") %>% data.table()
+```
+
+# Background 
+
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The current demo version of the experiments can be found [here](https://cliccs.herokuapp.com/).^[Some of the demo experiments will model three-player games as this is the maximum number of players one can open in split-screen mode.] One of these experiments will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances) to allow for comparisons. I'll therefore run seesions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of 20 points and a group account with a return of $1.5$, such that:
+$$
+N_i^{t+1}=N-i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
+$$
+
+To this end, I aim to incorporate Gächter et al's data into my analysis.
+
+# Data 
+
+## Original Data
+
+The data can be found in the supplementary materials they provide in their [online appendix](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115).
+
+```{r data, include = FALSE}
+noPunish10 <- DT[exp_num == 5 | exp_num == 8 | exp_num == 9]
+```
+
+Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a ```data.table``` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
+
+For this purpose only a few variables are relevant:
+
+- ```exp_num``` is a seesion identifier
+- ```per``` denotes the period
+- ```gr_id``` is a group identifier (carrying treatment information)
+- ```subj_id``` is a subject indentifier
+- ```tokens``` reports a subject's endowment in a period
+- ```other[1-3]``` report the other group members' endowments in a period
+- ```gdp ``` equals the sum of endowments of a group in a period
+- ```putin``` reports a subject's contribution in a period
+- ```pu[1-3]``` report the other group members' contributions in a period
+- ```sum``` euqals the sum of contributions of a group in a period.
+
+As a consequence, the first few rows of the data looks as follows and is quite intuitive:
+
+```{r showData, layout = "l-body-outset"}
+noPunish10[order(gr_id, per),
+           .(exp_num, gr_id, per, subj_id, # IDs
+             tokens, other1, other2, other3, gdp, #endowments
+             putin, pu1, pu2, pu3, sum # contributions
+             )] %>% 
+  head(n = 9) %>%
+  kbl() %>% 
+  # scroll_box(height = "200px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+
+```
+
+We see group 501 in the first two periods where subjects 511 to 514 start with an initial endowment of 20 which makes a GDP of 80. Subject 511 does not contribute (```putin==0``` in the first row and ```pu1==0```in rows 2 to 4) while the others contribute 5, 15 and 15 in the first period, respectively. The ```sum``` of contributions therefore equals 35 period 1.
+
+With a sum of contributions being 35 and a return of contributions of $1.5$, each subject receives ```ceil(13.125)``` $=14$ points from the group project such that the next period's gdp equals $101$.
+
+## Data Manipulation
+
+To resemble the oTree data, the orginal data has to be transformed a little. therefore, variables will be renamed, variables (such as ```stock```[^Gächter et al called this variable _Wealth_] and ```gain```) will be created and, most notbaly, the unit of observations will be groups such that subject-level variables will be dropped.
+
+```{r}
+
+gaechter <- noPunish10[order(gr_id, per),
+           .(treatment = "noPunish10", 
+             groupID = gr_id, 
+             round = per,
+             contribution = sum,
+             endowment = gdp,
+             share = mean,
+             stock = gdp + ceiling(sum/4*1.5)*4-sum,
+             gain = ceiling(sum/4*1.5)*4-sum,
+             bot_active = 0)] %>% unique()
+
+gaechter %>%
+  head(n = 12) %>%
+  kbl() %>% 
+  # scroll_box(height = "200px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+```
+
+# Visualizations
+
+```{r}
+layout <- theme(panel.background = element_rect(fill = "white"),
+                panel.grid = element_line(colour="gray", size=0),
+                panel.grid.major.y = element_line(colour="gray", size=0.25),
+                legend.key = element_rect(fill = "white"),
+                axis.line.x.bottom = element_line(size = 0.25),
+                axis.line.y.left = element_line(size = 0.25),
+                plot.margin = unit(c(1,1,1,1), "cm"),
+                legend.title = element_blank()
+                )
+```
+
+
+```{r plotContribution}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "contribution", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "contribution"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+    labs(y = "Average Amount of Points contributed") +
+    scale_color_manual(values = wes_palette("Moonrise3", n = 1))
+```
+
+```{r plotShare}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "share", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "share"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+    labs(y = "Share of Current Endowment contributed") +
+    scale_color_manual(values = wes_palette("Moonrise3", n = 1))
+```
+
+```{r plotStock}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "stock", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "stock"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+    labs(y = "Wealth") +
+    scale_color_manual(values = wes_palette("Moonrise3", n = 1))
+```

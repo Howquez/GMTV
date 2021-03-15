@@ -3,11 +3,14 @@
 listOfPackages <- c("renv",          # package management
                     "rmarkdown",
                     "knitr",
+                    "distill",       # good looking HTML articles
+                    "kableExtra",    # HTML tables
+                    "tidyverse",     # many useful packages
+                    "haven",         # read dta data from stata
                     "glue",          # get some python-like string operations
-                    "stringr",       # working with strings
+                    # "stringr",       # working with strings included in tidyverse
                     "lubridate",     # working with dates
                     "plotly",        # interactive visualizations
-                    "ggplot2",       # static visualizations
                     "wesanderson",   # color palette
                     "highcharter",   # get nice viz
                     "Rmisc",         # Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
@@ -26,3 +29,4 @@ for(package in listOfPackages){
 }
 
 snapshot()
+# create_article("../reports/replication.Rmd")

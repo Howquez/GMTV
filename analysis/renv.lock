@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "3.6.1",
+    "Version": "4.0.4",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -12,14 +12,9 @@
     "renv": {
       "Package": "renv",
       "Version": "0.12.5-7",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "renv",
-      "RemoteUsername": "rstudio",
-      "RemoteRef": "master",
-      "RemoteSha": "7bd669b40dea4c3bb1ce61731701159d7aef6fb7",
-      "Hash": "d65de537258cec6491c9fcde5050bfff"
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "43c4c783c3a051c704351ef8fc41fff0"
     }
   }
 }
