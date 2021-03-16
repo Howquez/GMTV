@@ -35,7 +35,7 @@ class Constants(BaseConstants):
     elicitation_bonus = 30 # points
     timeout = 3 # minutes
     patience = 6 # minutes
-    patience_bonus = 10 # points
+    patience_bonus = 20 # points
 
 
 
@@ -59,6 +59,7 @@ class Subsession(BaseSubsession):
             player.wait_time_left = int(math.ceil(Constants.patience - (time.time() - player.participant.vars['wait_page_arrival']) / 60))
             if player.waiting_too_long():
                 player.participant.vars["is_residual_player"] = True
+                player.group.residual = True
                 # make a single-player group.
                 return [player]
 
@@ -66,6 +67,7 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
 
+    residual = models.BooleanField(initial=False, doc="if true, group is incomplete")
     EWE = models.BooleanField(initial=False, doc="if true, extreme weather event occurred")
     disaster = models.BooleanField(initial=False, doc="if true, the EWE has negative effects on stock ")
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
@@ -86,11 +88,12 @@ class Group(BaseGroup):
 
     def set_disaster(self):
         # random risk lottery
-        if self.round_number > Constants.safe_rounds:
-            if self.session.config["risk"] > random.uniform(0, 1):
-                self.EWE = True
-                if self.total_contribution < Constants.threshold * self.wealth:
-                    self.disaster = True
+        if not self.residual:
+            if self.round_number > Constants.safe_rounds:
+                if self.session.config["risk"] > random.uniform(0, 1):
+                    self.EWE = True
+                    if self.total_contribution < Constants.threshold * self.wealth:
+                        self.disaster = True
 
     def set_payoffs(self):
 
@@ -145,19 +148,19 @@ class Group(BaseGroup):
                     if not p.is_dropout == p.in_round(self.round_number - 1).is_dropout:
                         p.payoff = -p.endowment
 
-            # add payoff if belief was correct
-            if self.round_number == Constants.belief_elicitation_round:
-                others_contribution = (self.total_contribution - p.contribution)
-                # vars for Outro
-                p.participant.vars["guess"] = 0
-                p.participant.vars["others_average_contribution"] = others_contribution
-                p.participant.vars["belief"] = p.belief
-                p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(self.session)
-                # actual payoff operation
-                guess = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
-                if guess >= 0:
-                    p.payoff = c(p.payoff + guess)
-                    p.participant.vars["guess"] = guess.to_real_world_currency(self.session)
+                # add payoff if belief was correct
+                if self.round_number == Constants.belief_elicitation_round:
+                    others_contribution = (self.total_contribution - p.contribution)
+                    # vars for Outro
+                    p.participant.vars["guess"] = 0
+                    p.participant.vars["others_average_contribution"] = others_contribution
+                    p.participant.vars["belief"] = p.belief
+                    p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(self.session)
+                    # actual payoff operation
+                    guess = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
+                    if guess >= 0:
+                        p.payoff = c(p.payoff + guess)
+                        p.participant.vars["guess"] = guess.to_real_world_currency(self.session)
 
 
 class Player(BasePlayer):
@@ -176,11 +179,15 @@ class Player(BasePlayer):
     is_dropout = models.BooleanField(doc="denotes whether player dropped out", initial = False)
 
     def start(self):
-        if self.round_number == 1:
-            self.endowment = Constants.initial_endowment
+        if self.participant.vars["is_residual_player"]:
+            self.endowment == 0
+            self.stock == 0
         else:
-            self.endowment = int(self.in_round(self.round_number - 1).stock)
-        self.participant.vars["endowments"].append(self.endowment)
+            if self.round_number == 1:
+                self.endowment = Constants.initial_endowment
+            else:
+                self.endowment = int(self.in_round(self.round_number - 1).stock)
+            self.participant.vars["endowments"].append(self.endowment)
 
 
     def contribution_max(self):

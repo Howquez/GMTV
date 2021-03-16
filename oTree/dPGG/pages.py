@@ -16,9 +16,12 @@ class dPGG_Belief(Page):
     form_model = "player"
     form_fields = ["review_instructions", "belief"]
 
+    timeout_seconds = Constants.timeout * 60
+
     def is_displayed(self):
-        if self.round_number == Constants.belief_elicitation_round:
-            return True
+        if not self.participant.vars["is_residual_player"]:
+            if self.round_number == Constants.belief_elicitation_round:
+                return True
 
     def js_vars(self):
         return dict(
@@ -27,6 +30,13 @@ class dPGG_Belief(Page):
             endowments=self.participant.vars["endowments"],
             num_rounds=self.session.config["num_rounds"],
         )
+
+    def before_next_page(self):
+        if self.timeout_happened:
+            self.player.belief = 99999
+            self.participant.vars["is_dropout"] = True
+            self.player.is_dropout = True
+            self.group.bot_active = True
 
 
 class dPGG_Decision(Page):
@@ -94,8 +104,13 @@ class ResultsWaitPage(WaitPage):
 
 class dPGG_Results(Page):
     def is_displayed(self):
-        if self.round_number >= self.session.config["num_rounds"]:
-            return True
+        if not self.participant.vars["is_residual_player"]:
+            if self.round_number >= self.session.config["num_rounds"]:
+                return True
+
+    def get_timeout_seconds(self):
+        if self.participant.vars.get("is_dropout"):
+            return 1  # instant timeout, 1 second
 
     def vars_for_template(self):
         return dict(
