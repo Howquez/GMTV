@@ -32,7 +32,7 @@ class Constants(BaseConstants):
     safe_rounds = 2 # number of rounds without any risk
     threshold = 0.5 # fraction of a group's endowment that has to be contributed such that no disaster can occur
     belief_elicitation_round = 1
-    elicitation_bonus = 10 # points
+    elicitation_bonus = 30 # points
     timeout = 3 # minutes
     patience = 6 # minutes
     patience_bonus = 10 # points
@@ -147,16 +147,17 @@ class Group(BaseGroup):
 
             # add payoff if belief was correct
             if self.round_number == Constants.belief_elicitation_round:
-                others_average_contribution = (self.total_contribution - p.contribution) / Constants.num_others_per_group
+                others_contribution = (self.total_contribution - p.contribution)
                 # vars for Outro
-                p.participant.vars["correct_guess"] = False
-                p.participant.vars["others_average_contribution"] = others_average_contribution
+                p.participant.vars["guess"] = 0
+                p.participant.vars["others_average_contribution"] = others_contribution
                 p.participant.vars["belief"] = p.belief
                 p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(self.session)
                 # actual payoff operation
-                if p.belief > others_average_contribution * 0.9 and p.belief < others_average_contribution * 1.1:
-                    p.payoff = c(p.payoff + Constants.elicitation_bonus)
-                    p.participant.vars["correct_guess"] = True
+                guess = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
+                if guess >= 0:
+                    p.payoff = c(p.payoff + guess)
+                    p.participant.vars["guess"] = guess.to_real_world_currency(self.session)
 
 
 class Player(BasePlayer):

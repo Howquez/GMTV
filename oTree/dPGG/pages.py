@@ -12,6 +12,23 @@ class dPGG_InitialWaitPage(WaitPage):
             return True
 
 
+class dPGG_Belief(Page):
+    form_model = "player"
+    form_fields = ["review_instructions", "belief"]
+
+    def is_displayed(self):
+        if self.round_number == Constants.belief_elicitation_round:
+            return True
+
+    def js_vars(self):
+        return dict(
+            template="decision",
+            current_round=self.round_number,
+            endowments=self.participant.vars["endowments"],
+            num_rounds=self.session.config["num_rounds"],
+        )
+
+
 class dPGG_Decision(Page):
     form_model = "player"
     form_fields = ["review_instructions", "contribution"]
@@ -66,23 +83,6 @@ class dPGG_Decision(Page):
         )
 
 
-class dPGG_Belief(Page):
-    form_model = "player"
-    form_fields = ["review_instructions", "belief"]
-
-    def is_displayed(self):
-        if self.round_number == Constants.belief_elicitation_round:
-            return True
-
-    def js_vars(self):
-        return dict(
-            template="decision",
-            current_round=self.round_number,
-            endowments=self.participant.vars["endowments"],
-            num_rounds=self.session.config["num_rounds"],
-        )
-
-
 class ResultsWaitPage(WaitPage):
     def is_displayed(self):
         if self.round_number <= self.session.config["num_rounds"]:
@@ -94,7 +94,7 @@ class ResultsWaitPage(WaitPage):
 
 class dPGG_Results(Page):
     def is_displayed(self):
-        if self.round_number == self.session.config["num_rounds"]:
+        if self.round_number >= self.session.config["num_rounds"]:
             return True
 
     def vars_for_template(self):
@@ -119,7 +119,7 @@ class dPGG_Results(Page):
 
 
 page_sequence = [dPGG_InitialWaitPage,
-                 dPGG_Decision,
                  dPGG_Belief,
+                 dPGG_Decision,
                  ResultsWaitPage,
                  dPGG_Results]

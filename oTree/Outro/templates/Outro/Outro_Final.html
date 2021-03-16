@@ -51,26 +51,24 @@
                         <h1 class="display-4 mb-5">Vielen Dank für Ihre Teilnahme.</h1>
                         <p class="lead">
                             Das Experiment ist jetzt beendet.
-                            Sie bekommen <strong> {{ final_payoff }} </strong> ausgezahlt.
+                            Sie bekommen <strong>{{ final_payoff }}</strong><sup>*</sup> ausgezahlt.
                         </p>
                         <hr class="my-4">
                         <figure class="highcharts-figure mb-3 mt-5">
                             <div id="container"></div>
                         </figure>
                         <hr class="my-4">
+
                         <small>
+                            <sup>*</sup>
                             Sie haben in Runde #{{ participant.vars.belief_elicitation_round }} geschätzt, dass die
-                            anderen Gruppenmitglieder im Durchschnitt {{ participant.vars.belief }}
-                            Punkte sparen. Tatsächlich haben die anderen Mitglieder im Durchschnitt
+                            anderen Gruppenmitglieder zusammen {{ participant.vars.belief }}
+                            Punkte sparen. Tatsächlich haben die anderen Mitglieder insgesamt
                             {{ participant.vars.others_average_contribution }} Punkte gespart.
                         </small>
                         <small>
-                            {% if participant.vars.correct_guess %}
                             Deshalb haben wir Ihnen, zusätzlich zu Ihrem Kontostand und dem Grundbetrag,
-                            {{ participant.vars.belief_bonus }} gutgeschrieben.
-                            {% else %}
-                            Deshalb haben wir Ihnen keine zusätzlichen Punkte gutgeschrieben.
-                            {% endif%}
+                            {{ participant.vars.guess }} gutgeschrieben.
                         </small>
 
                     </div>

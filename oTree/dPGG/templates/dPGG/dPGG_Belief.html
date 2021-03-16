@@ -39,23 +39,39 @@
             <div class="card mt-5">
                 <div class="card-body">
 
-                    <p class="card-text lead mb-1">
-                        Was glauben Sie, wie viel haben die anderen Gruppenmitglieder im Durchschnitt gespart?
-                    </p>
-
-                    <hr class="my-4">
-
-
-                    <p class="mb-4">
+                    <p class="mb-1">
                         <small>
-                            Wenn Sie mit Ihrer vermutung richtig liegen (was auch immer das bedeutet) dann bekommen Sie
-                            am Ende dieser Studie zusätzlich 10 Punkte.
+                            Bevor Sie mit der ersten Runde beginnen, haben wir noch eine Frage an Sie. Bei der
+                            Beantwortung der Frage können Sie Punkte verdienen, die Sie am Ende des Experiments
+                            gutgeschrieben bekommen.
                         </small>
                     </p>
 
-                    <div class="form-group row mb-4">
+                    <hr class="mb-4">
+
+                    <p class="card-text lead mb-1">
+                        Was glauben Sie, wie viel haben die anderen Gruppenmitglieder insgesamt sparen werden?
+                    </p>
+
+                    <hr class="mt-4">
+
+
+                    <p class="mt-1">
+                        <small>
+                            Je besser Sie schätzen, desto mehr Punkte können Sie verdienen: Wenn Sie genau richtig
+                            liegen, bekommen Sie {{ Constants.elicitation_bonus }} Punkte gutgeschrieben. Wenn Sie sich
+                            um einige Punkte, zum Beispiel um 5 Punkte, verschätzen, bekommen Sie 30-5=25 Punkte
+                            gutgeschrieben. Wenn Sie sich hingegen um {{ Constants.elicitation_bonus }} Punkte oder mehr
+                            verschätzen, bekommen Sie für Ihr die Beantwortung dieser Frage nichts.
+                        </small>
+                    </p>
+
+                    <div class="form-group row mt-5 mb-4">
                         <div class="col">
-                            <input type="number" class="form-control float-right" placeholder="Ich schätze..." id="id_belief" name="belief" min="0" required>
+                            <input type="number" class="form-control float-right" placeholder="Ich schätze..." id="id_belief" name="belief" min="0" max="60" required
+                            data-container="body" data-toggle="popover" data-placement="bottom"
+                                   data-content="Weil in dieser Runde jeder Ihrer drei Mitspieler ebenfalls 20 Punkte hat, sind Antworten
+                            zwischen 0 und 60 Punkten möglich.">
                         </div>
                         <div class="col">
                             <button type="submit" id="" class="btn-primary btn float-left">
