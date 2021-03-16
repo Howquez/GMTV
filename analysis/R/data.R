@@ -1,15 +1,13 @@
 # read raw data
-sim1 <- read.csv("../data/simulation/2etf5rjr.csv", stringsAsFactors = FALSE) %>% data.table()
-sim2 <- read.csv("../data/simulation/m6rcza66.csv", stringsAsFactors = FALSE) %>% data.table()
-sim3 <- read.csv("../data/simulation/yk7fjybl.csv", stringsAsFactors = FALSE) %>% data.table()
+sim1 <- read.csv("../data/simulation/jawroz7g.csv", stringsAsFactors = FALSE) %>% data.table()
+sim2 <- read.csv("../data/simulation/etvc9q2x.csv", stringsAsFactors = FALSE) %>% data.table()
 
 
 # pretend we had a treatment
 sim1[, session.code := "control"]
 sim2[, session.code := "treatment"]
-sim3[, session.code := "treatment"]
 
-dt <- rbindlist(list(sim1, sim2, sim3),
+dt <- rbindlist(list(sim1, sim2),
                 use.names = FALSE)
 
 # or use the data gathered in a demo session
@@ -24,7 +22,7 @@ ct <- dt[, ..controlVariables]
 
 
 # main data frame
-mRegex <- "participant\\.code$|participant\\.time_started|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active"
+mRegex <- "participant\\.code$|participant\\.time_started|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active|EWE|disaster"
 mainVariables <- str_subset(string = names(dt),
                             pattern = mRegex)
 mt <- dt[, ..mainVariables]
@@ -45,12 +43,12 @@ names(mt)[names(mt) == "session.code"] <- "treatment"
 
 # DT Magic: calculate averages by group 
 cluster <- c("treatment", "groupID")
-outcomes <- c("contribution", "endowment", "share", "stock", "gain", "bot_active")
+outcomes <- c("contribution", "endowment", "share", "stock", "gain", "bot_active", "disaster", "EWE")
 
 DTs <- list()
 for(outcome in outcomes){
-  if(outcome == "bot_active"){
-    var = names(mt) %>% str_subset(pattern = "group\\.bot_active$")
+  if(outcome == "bot_active" | outcome == "disaster" | outcome == "EWE"){
+    var = names(mt) %>% str_subset(pattern = glue("group\\.{outcome}$"))
   } else {
     var = names(mt) %>% str_subset(pattern = glue("player\\.{outcome}$"))
   }

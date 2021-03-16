@@ -22,7 +22,7 @@ Dynamic Public Goods Game where the current round's earnings determine the next 
 
 class Constants(BaseConstants):
     name_in_url = "dPGG"
-    players_per_group = 3
+    players_per_group = 3 # adjust Constants.group_size in Intro App when adjusting this
     num_others_per_group = players_per_group - 1
     num_rounds = 15
     initial_endowment = 20

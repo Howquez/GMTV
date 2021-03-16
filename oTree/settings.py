@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         display_name="dPGG Replication",
         num_rounds=10,
         num_demo_participants=3,
-        risk=0.0,
+        risk=0.33,
         app_sequence=["Intro", "dPGG", "Outro"]
     ), dict(
         name="risky_dPGG",
