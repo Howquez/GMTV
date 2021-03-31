@@ -52,16 +52,11 @@
                         <div id="container"></div>
                     </figure>
 
-                    <p><small>
-                        Runden, in denen Extremwetterereignisse aufgetreten sind, sind in der Tabelle farblich markiert:
-                        Rot, wenn ein Schaden verursacht wurde und grün, wenn das Extremwetterereigniss folgenlos blieb.
-                    </small></p>
-
                     <table class="table table-hover table-responsive-md">
                         <thead>
                             <td>Runde</td>
                             <td>Guthaben</td>
-                            <td>Investition</td>
+                            <td>Beitrag</td>
                             <td>Dividende</td>
                             <td>Ergebnis</td>
                         </thead>
@@ -69,22 +64,14 @@
                             {% for p in player.in_all_rounds %}
                             <tr>
                                 <td><small>
-                                    {% if p.group.EWE %}
-                                        {% if p.group.disaster %}
-                                            <span class="badge badge-danger" data-toggle="tooltip" data-placement="bottom" title="Schaden durch Extremwetterereignis">
-                                        {% else %}
-                                            <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Extremwetterereignis ohne Schaden">
-                                        {% endif %}
-                                    {% else %}
-                                        <span class="badge badge-light">
-                                    {% endif %}
+                                    <span class="badge badge-light">
                                         #{{ p.round_number }}
                                     </span>
                                 </small></td>
-                                <td><small>{{ p.endowment }}</small></td>
-                                <td><small>{{ p.contribution }}</small></td>
-                                <td><small>{{ p.group.individual_share }}</small></td>
-                                <td><small>{{ p.stock }}</small></td>
+                                <td class="text-center"><small>{{ p.endowment }}</small></td>
+                                <td class="text-center"><small>{{ p.contribution }}</small></td>
+                                <td class="text-center"><small>{{ p.group.individual_share }}</small></td>
+                                <td class="text-center" data-toggle="tooltip" data-placement="top" title="={{ p.endowment }}-{{ p.contribution }}+{{ p.group.individual_share }}"><small> {{ p.stock }} </small></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -115,12 +102,9 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link back-and-forth" id="part3-tab" data-toggle="tab" href="#part3" role="tab" aria-controls="part3"> Aufbau </a>
+                            <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Aufbau </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link back-and-forth" id="part4-tab" data-toggle="tab" href="#part4" role="tab" aria-controls="part4"> Beispiele </a>
-                        </li>
 
                     </ul>
                 </div>
@@ -136,10 +120,10 @@
                                     </span>
                                 </h5>
                                 <p>
-                                    Dies ist eine Studie, die Ihre Entscheidungen innerhalb einer Gruppe untersucht. Wenn Sie die
-                                    folgenden Instruktionen aufmerksam lesen, können Sie durch Ihre Entscheidungen einen Bonus
-                                    verdienen. Der Betrag vom Bonus hängt dabei sowohl von Ihren Entscheidungen als auch von den
-                                    Entscheidungen der anderen Teilnehmer in Ihrer Gruppe ab.
+                                    Sie nehmen jetzt an einer Studie der Hamburger Universitäten teil. Wenn Sie die Instruktionen aufmerksam
+                                    lesen und befolgen, können Sie einen beträchtlichen Betrag verdienen, der von Ihren
+                                    Entscheidungen und den Entscheidungen weiterer Teilnehmer abhängt. Dieser Betrag wird Ihnen am
+                                    Ende des Studie genannt und ausgezahlt.
                                 </p>
 
                                 <h5>
@@ -148,11 +132,9 @@
                                     </span>
                                 </h5>
                                 <p>
-                                    Während der gesamten Studie fällen Sie Entscheidungen über Punkte, die am Ende der Studie in
-                                    Euro umgerechnet werden. Der Wechselkurs beträgt
-                                    <u>{{ session.config.real_world_currency_per_point }} Euro für jeden Punkt</u>.
-                                    Generell gilt also, dass sie umso mehr Geld verdienen, je mehr Punkte Sie im Laufe der Studie
-                                    verdienen.
+                                    Während der gesamten Studie werden Sie Entscheidungen über Punkte fällen. Am Ende des
+                                    Studie werden alle Punkte zu einem Wechselkurs von 5 Cent je Punkt umgerechnet. Zusätzlich
+                                    erhalten sie eine Pünktlichkeitsprämie in Höhe von {{ session.config.participation_fee }}.
                                 </p>
 
                                 <h5>
@@ -164,24 +146,7 @@
                                     Es ist wichtig, dass Sie konzentriert und ohne Unterbrechungen an der Studie teilnehmen.
                                     Sollten Sie die Studie frühzeitig abbrechen oder länger als 3 Minuten keine Entscheidung treffen,
                                     dann können wir Ihre Daten sowie die Daten Ihrer Gruppenmitglieder nicht auswerten. Deshalb
-                                    können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen. <br><br>
-
-                                    Sollte ein Gruppenmitglied frühzeitig abbrechen, so werden wir diese Person durch einen Bot,
-                                    also durch ein Computerprogramm ersetzen, sodass Sie trotzdem zum Ende der Studie gelangen
-                                    können. Wir werden Sie in diesem Fall darüber informieren, dass ein Gruppenmitglied durch einen
-                                    Bot ersetzt wurde.
-                                </p>
-
-                                <h5>
-                                    <span class="badge badge-content mt-4">
-                                        Aufbau
-                                    </span>
-                                </h5>
-                                <p>
-                                    Nachdem Sie die Instruktionen gelesen und Verständnisfragen beantwortet haben, beginnt der Kern
-                                    dieser Studie, in dem Sie eine Aufgabe in mehreren Runden durchlafen werden. Im Anschluss daran
-                                    beantworten Sie ein paar Fragen zu Ihrer Person. Danach bekommen Sie angezeigt, wie viel Sie in
-                                    dieser Studie verdient haben.
+                                    können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen.
                                 </p>
 
                             </div>
@@ -189,29 +154,29 @@
 
 
                         <!-- Part 2: Aufbau  -->
-                        <div class="tab-pane" id="part3" role="tabpanel" aria-labelledby="part3-tab">
+                        <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
                             <div class="card-body">
                                 <h5>
                                     <span class="badge badge-content mt-4">
-                                        Gruppen
+                                        Runden & Gruppen
                                     </span>
                                 </h5>
                                 <p>
-                                    In Studie befinden Sie sich ein einer Gruppe bestehend aus insgesamt
-                                    {{ Constants.players_per_group }} Personen. Über den Verlauf der Studie wird sich die
-                                    Gruppenzusammensetzung nicht ändern. Sie werden also immer mit denselben
-                                    {{ Constants.num_others_per_group }} Personen interagieren.
+                                    Die Studie besteht aus {{ session.config.num_rounds }} Entscheidungsrunden.
+                                    Zu Beginn der Studie werden Sie mit {{ Constants.num_others_per_group }} weiteren
+                                    Teilnehmern gruppiert. In einer Gruppe sind daher {{ Constants.players_per_group }} Personen, inklusive
+                                    Ihnen. Die Zusammensetzung der Gruppe wird sich für die Dauer der Studie nicht verändern.
+                                    Weil die Studie anonym ist, kennen Sie Ihre Gruppenmitglieder nicht und Ihre
+                                    Gruppenmitglieder kennen Sie nicht.
                                 </p>
 
                                 <h5>
                                     <span class="badge badge-content mt-4">
-                                        Runden
+                                        Startguthaben
                                     </span>
                                 </h5>
                                 <p>
-                                    Die Aufgabe besteht aus {{ session.config.num_rounds }} Runden. In jeder Runde stehen Sie, sowie
-                                    die anderen Teilnehmer in Ihrer Gruppe, vor derselben Entscheidungssituation: Sie müssen abwägen,
-                                    ob und wie viele Punkte Sie investieren wollen.
+                                    Vor der ersten Runde bekommen Sie ein Guthaben von 20 Punkten.
                                 </p>
 
                                 <h5>
@@ -220,40 +185,60 @@
                                     </span>
                                 </h5>
                                 <p>
-                                    Sie müssen also in jeder Runde entscheiden, wie viele Punkte Sie investieren wollen. Dabei können
-                                    Sie 0 Punkte (also nichts), ihr gesamtes Guthaben oder einen Betrag dazwischen investieren.
-                                    Investierte Beträge bringen eine Rendite, die auf alle Gruppenmitglieder aufgeteilt wird.
-                                    Nicht investierte Restbeträge werden Ihrem Guthaben der nächsten Runde unverändert
-                                    gutgeschrieben.
+                                    Zu Beginn der ersten Runde werden Sie gebeten, Ihr Guthaben entweder zu einem Gruppenprojekt
+                                    beizutragen oder es zurückzulegen. Punkte, die Sie zurücklegen, haben keinen Ertrag.
+                                    Zurückgelegte Punkte werden also einfach behalten und stehen Ihnen zu Beginn der nächsten Runde
+                                    unverändert zur Verfügung. Niemand außer Ihnen profitiert von Ihren zurückgelegten Punkten.
+                                    <br><br>
+                                    Die Punkte, die Sie zu dem Gruppenprojekt beitragen, werden zu den Beiträgen der anderen
+                                    {{ Constants.num_others_per_group }} Gruppenmitglieder gerechnet. Die Summe der Beiträge
+                                    hat einen Ertrag von {{ Constants.efficiency_factor }} (also eine Rendite von
+                                    {{ Constants.rate_of_return }}%) und wird anschließend in Form einer Dividende gleichmäßig auf
+                                    alle Gruppenmitglieder aufgeteilt. Dementsprechend profitieren alle Gruppenmitglieder
+                                    gleichermaßen von den Beiträgen und der Rendite. Das heißt, dass die Summe
+                                    aller Beiträge einer Runde zusammengezählt und dann mit {{ Constants.efficiency_factor }}
+                                    multipliziert wird, bevor sie
+                                    zu gleichen Teilen auf alle Gruppenmitglieder aufgeteilt wird.
+                                    Dementsprechend ist Ihre Dividende am Ende der ersten Runde die folgende:
+                                </p>
+                                $$\frac{\text{Beitragssumme} \times {{ Constants.efficiency_factor }} }{ {{ Constants.players_per_group }} }$$
+
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Erträge
+                                    </span>
+                                </h5>
+                                <p>
+                                    Ihr Guthaben zu Beginn der zweiten Runde entspricht Ihren zurückgelegten Punkten sowie Ihrer
+                                    Dividende aus der ersten Runde.
+
+                                    Zu Beginn der zweiten Runde werden Sie dann wieder gefragt, wie viele Punkte Sie zurücklegen und
+                                    wie viele Punkte Sie beitragen wollen. Zurückgelegte und beigetragene Punkte funktionieren dabei exakt
+                                    genauso wie in der ersten Runde auch: Zurückgelegte Punkte werden bis zur Folgerunde unverändert behalten
+                                    und das Ergebnis der Beiträge wird in Form einer Dividende auf alle Gruppenmitglieder
+                                    ausgezahlt.
+
+                                    Alle weiteren Runden folgen derselben Struktur: Ihr Guthaben zu Beginn einer Runde entspricht
+                                    den zurückgelegten Punkten und der Dividende der Vorrunde.
                                 </p>
 
                                 <h5>
                                     <span class="badge badge-content mt-4">
-                                        Rendite
+                                        Informationen
                                     </span>
                                 </h5>
                                 <p>
-                                    Die Beträge, die Sie oder Ihre Gruppenmitglieder investieren, haben eine Rendite von
-                                    werden mit {{ Constants.rate_of_return }}%. Das heißt, dass die Gesamtinvestionen (also alle
-                                    in Ihrer Gruppe getätigten Investitionen) der jeweiligen Runde mit
-                                    {{ Constants.efficiency_factor }} multipliziert werden. Das Ergebnis (also die
-                                    Gesamtinvestitionen plus die Rendite) wird dann zu gleichen Teilen auf alle Gruppenmitglieder
-                                    aufgeteilt. Sie bekommen also einen Ertrag von:
+                                    In jeder Runde werden Sie über Folgendes informiert:
                                 </p>
-                                $$\frac{\text{Gesamtinvestitionen} \times {{ Constants.efficiency_factor }} }{ {{ Constants.players_per_group }} }$$
-                                <h5>
-                                    <span class="badge badge-content mt-4">
-                                        Guthaben
-                                    </span>
-                                </h5>
+                                <ul>
+                                    <li>Das Guthaben der jeweiligen Gruppenmitglieder zu Beginn der Vorrunde</li>
+                                    <li>Die Beiträge der jeweiligen Gruppenmitglieder in der Vorrunde</li>
+                                    <li>Die Dividende in der Vorrunde</li>
+                                    <li>Das Guthaben der jeweiligen Gruppenmitglieder zu Beginn der aktuellen Runde</li>
+                                </ul>
                                 <p>
-                                    Zu Beginn der ersten Runde bekommen Sie ein Guthaben von {{ Constants.initial_endowment }} Punkten.
-                                    Ihr Guthaben in der zweiten Runde hängt davon ab, wie viel Sie in der ersten Runde verdienen.
-                                    Das heißt: Ihr Guthaben in zweiten Runde besteht aus den Punkten, die Sie in der ersten Runde
-                                    nicht investiert haben, sowie Ihrem Anteil aus dem Ertrag der Investitionen aus der ersten Runde.
-                                    Das Guthaben der zweiten Runde können Sie dann wieder für Investitionen verwenden, wenn
-                                    Sie möchten. Der Ertrag aus den Gesamtinvestitionen, sowie Ihr nicht-investiertes Guthaben steht
-                                    Ihnen dann wiederum in der dritten Runde zur Verfügung und so weiter.
+                                    Alle weiteren Gruppenmitglieder erhalten exakt die gleichen Instruktionen wie Sie.
                                 </p>
 
 
@@ -263,78 +248,22 @@
                                     </span>
                                 </h5>
                                 <p>
-                                    Am Ende der Studie bekommen Sie dann das Guthaben, dass Sie nach der letzten Runde haben,
-                                    als Bonus ausgezahlt. Dafür werden die Punkte gemäß des Wechselkurses
-                                    ({{ session.config.real_world_currency_per_point }} Euro für jeden Punkt) in Euro umgerechnet.
-                                </p>
-
-                            </div>
-                        </div>
-
-
-                        <!-- Part 4: Beispiele -->
-                        <div class="tab-pane" id="part4" role="tabpanel" aria-labelledby="part4-tab">
-                            <div class="card-body">
-                                <h5>
-                                    <span class="badge badge-content mt-4">
-                                        Beispiel 1
-                                    </span>
-                                </h5>
-                                <p>
-                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie
-                                    und ihre beiden Gruppenmitglieder investieren jeweils 10 Punkte. Dann betragen die
-                                    Gesamtinvestitionen 30 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben von
-                                    23 Punkten. Warum? Weil Sie in dieser Runde 10 Punkte behalten (also nicht
-                                    investierten) und weil die insgesamt 30 investierten Punkte eine Rendite von 7,5 Punkten
-                                    einbringen. Daraus ergibt sich ein Investitions<u>ertrag</u> von 37,5 Punkten,
-                                    der zu gleichen Teilen auf alle 3 Gruppenmitglieder aufgeteilt wird und jedem
-                                    Gruppenmitglied 12,5 (also gerundet 8) Punkte einbringt.
+                                    Am Ende der Studie bekommen Sie einen Verdienst, der sich, wenn Sie alle Runden durchlaufen und
+                                    alle Fragen beantortet haben, aus den folgenden Bestandteilen
+                                    zusammensetzt: Zum einen bekommen Sie die Pünktlichkeitsprämie in Höhe von
+                                    {{ session.config.participation_fee }}. Darüber hinaus bekommen Sie einen Verdienst aus der
+                                    Schätzaufgabe sowie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
+                                    (also am Ende der letzten) Runde haben.
                                 </p>
 
                                 <h5>
                                     <span class="badge badge-content mt-4">
-                                        Beispiel 2
+                                        Weiterer Verlauf
                                     </span>
                                 </h5>
                                 <p>
-                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie investieren nichts
-                                    und ihre beiden Gruppenmitglieder investieren jeweils 10 Punkte. Dann betragen die
-                                    Gesamtinvestitionen 20 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben von
-                                    29 Punkten. Warum? Weil Sie in dieser Runde 20 Punkte behalten (also nicht
-                                    investierten) und weil die insgesamt 20 investierten Punkte eine Rendite von 5 Punkten
-                                    einbringen. Daraus ergibt sich ein Investitions<u>ertrag</u> von 25 Punkten,
-                                    der zu gleichen Teilen auf alle 3 Gruppenmitglieder aufgeteilt wird und jedem
-                                    Gruppenmitglied 8,3 (also aufgerundet 9) Punkte einbringt.
-                                </p>
-
-                                <h5>
-                                    <span class="badge badge-content mt-4">
-                                        Beispiel 3
-                                    </span>
-                                </h5>
-                                <p>
-                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie investieren 10
-                                    Punkte und ihre beiden Gruppenmitglieder investieren jeweils nichts. Dann betragen
-                                    die Gesamtinvestitionen 10 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben
-                                    von 15 Punkten. Warum? Weil Sie in dieser Runde 10 Punkte behalten (also nicht
-                                    investieren) und weil die insgesamt 10 investierten Punkte eine Rendite von 2,5 Punkten
-                                    einbringen. Daraus ergibt sich ein Investitions<u>ertrag</u> von 12,5 Punkten,
-                                    der zu gleichen Teilen auf alle 3 Gruppenmitglieder aufgeteilt wird und jedem
-                                    Gruppenmitglied 4,2 (also aufgerundet 5) Punkte einbringt.
-                                </p>
-
-                                <h5>
-                                    <span class="badge badge-content mt-4">
-                                        Beispiel 4
-                                    </span>
-                                </h5>
-                                <p>
-                                    Angenommen Sie haben ein Guthaben von 20 Punkten. Angenommen Sie investieren nichts
-                                    Punkte und ihre beiden Gruppenmitglieder investieren ebenfalls nichts. Dann betragen
-                                    die Gesamtinvestitionen 0 Punkte. Dann haben Sie in der nächsten Runde ein Guthaben
-                                    von 20 Punkten. Warum? Weil Sie in dieser Runde 20 Punkte behalten (also nicht
-                                    investieren) und weil die insgesamt 0 investierten Punkte eine Rendite von 0 Punkten
-                                    einbringen.
+                                    Nach den {{ session.config.num_rounds }} Runden werden wir Sie bitten, einen kurzen Fragebogen
+                                    auszufüllen. Im Anschluss daran werden Sie über Ihre Auszahlung informiert.
                                 </p>
 
                             </div>
@@ -349,7 +278,6 @@
             </div>
         </div>
     </div>
-
 </body>
 {% endblock %}
 

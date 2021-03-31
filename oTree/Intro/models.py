@@ -24,10 +24,10 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 1
 
-    group_size = 3
+    group_size = 4
     num_others_per_group = group_size - 1
     initial_endowment = 20
-    efficiency_factor = 1.25 # (MPCR) Marginal Per Capita Return per round
+    efficiency_factor = 1.5 # (MPCR) Marginal Per Capita Return per round
     rate_of_return = (efficiency_factor - 1)*100
 
 
@@ -67,14 +67,14 @@ class Player(BasePlayer):
         if value != int(Constants.initial_endowment * Constants.efficiency_factor):
             return "Leider falsch."
 
-    CQ3_1 = models.IntegerField(doc="Comprehension Question 3.1", initial=int(40 + Constants.efficiency_factor * 60 / Constants.group_size), blank=True)
+    CQ3_1 = models.IntegerField(doc="Comprehension Question 3.1", initial=int(30 + Constants.efficiency_factor * 40 / Constants.group_size), blank=True)
     def CQ3_1_error_message(self, value):
-        if value != int(40 + Constants.efficiency_factor * 60 / Constants.group_size):
+        if value != int(30 + Constants.efficiency_factor * 40 / Constants.group_size):
             return "Leider falsch."
 
-    CQ3_2 = models.IntegerField(doc="Comprehension Question 3.2", initial=int(40 - 12 + Constants.efficiency_factor * (60+12) / Constants.group_size), blank=True)
+    CQ3_2 = models.IntegerField(doc="Comprehension Question 3.2", initial=int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size), blank=True)
     def CQ3_2_error_message(self, value):
-        if value != int(40 - 12 + Constants.efficiency_factor * (60+12) / Constants.group_size):
+        if value != int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size):
             return "Leider falsch."
 
     MCQ_1 = models.StringField(

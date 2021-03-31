@@ -19,7 +19,7 @@
 // create dummy data for instructions
     if (template == "instructions"){
         current_round = 4;
-        endowments = [20, 21, 27, 35]
+        endowments = [20, 21, 27, 28]
     }
 
 // get categories, i.e. the rounds
@@ -137,7 +137,7 @@ var chart = Highcharts.chart('container', {
         data: series,
         showInLegend: show_in_legend
     },{
-        name: "Grundbetrag",
+        name: "Pünktlichkeitsprämie",
         data: flat,
         color: "#00fad1",
         showInLegend: show_in_legend,

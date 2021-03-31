@@ -13,9 +13,10 @@ class PlayerBot(Bot):
                 yield pages.dPGG_Belief, dict(belief=random.randint(int(self.player.endowment/2),
                                                                     self.player.endowment)
                                               )
-            yield Submission(pages.dPGG_Decision,
-                             dict(contribution=random.randint(int(self.player.endowment/5),
-                                                              int(self.player.endowment/5*3))
+            yield Submission(pages.dPGG_Decision, # in Gächter et al, subjects first contribute around 60%, then 30%
+                             dict(contribution=int((100 - 6 * self.round_number)/100 * random.randint(int(self.player.endowment/5*2.5), #HI==2.5,LO==2
+                                                                                                       int(self.player.endowment/5*5))  #HI==5,  LO==3.5
+                                                   )
                                   ),
                              check_html=False)
             if self.round_number == self.session.config["num_rounds"]:

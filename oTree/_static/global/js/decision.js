@@ -23,9 +23,9 @@ document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || null;
     document.getElementById("submit_button").className = "btn-primary btn float-left"
     if (input > 0){
-        document.getElementById("submit_button").innerHTML = "Absenden";
+        document.getElementById("submit_button").innerHTML = "Beitragen";
     } else {
-        document.getElementById("submit_button").innerHTML = "Alles Sparen";
+        document.getElementById("submit_button").innerHTML = "Alles zurücklegen";
         document.getElementById("id_contribution").value = null;
     }
 });

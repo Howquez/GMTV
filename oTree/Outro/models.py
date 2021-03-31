@@ -40,10 +40,10 @@ class Player(BasePlayer):
     PQ04 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Ich bin sehr auf andere angewiesen.", doc="I am very dependent on others")
     PQ05 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Ich bin grundsätzlich glücklich.", doc="Generally speaking, I am happy")
     PQ06 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Arbeit spielt eine wichtige Rolle in meinem Leben.", doc="Work plays a very important role in my life")
-    PQ07 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Familie spielt eine wichtige Rolle in meinem Leben.", doc="Family plays a very important role in my life")
-    PQ08 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Freunde spielt eine wichtige Rolle in meinem Leben.", doc="Friends play a very important role in my life")
-    PQ09 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Religion spielt eine wichtige Rolle in meinem Leben.", doc="Religion plays a very important role in my life")
-    PQ10 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Politik spielt eine wichtige Rolle in meinem Leben.", doc="Politics plays a very important role in my life")
+    PQ07 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Familie spielt eine sehr wichtige Rolle in meinem Leben.", doc="Family plays a very important role in my life")
+    PQ08 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Freunde spielen eine sehr wichtige Rolle in meinem Leben.", doc="Friends play a very important role in my life")
+    PQ09 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Religion spielt eine sehr wichtige Rolle in meinem Leben.", doc="Religion plays a very important role in my life")
+    PQ10 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Politik spielt eine sehr wichtige Rolle in meinem Leben.", doc="Politics plays a very important role in my life")
     PQ11 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Grundsätzlich kann man anderen vertrauen.", doc="Generally, most people can be trusted")
     PQ12 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Langfristig lohnt sich harte Arbeit.", doc="In the long run, hard work brings a better life")
     PQ13 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Der Staat sollte sich darum kümmern, dass es den Leuten besser geht.", doc="The government should take responsibility that people are better provided for")
@@ -62,35 +62,44 @@ class Player(BasePlayer):
                                 ],
                                 widget=widgets.RadioSelect)
 
-    Education = models.StringField(doc="Respondent's highest educational degree",
-                                   label="Welchen beruflichen Ausbildungsabbschluss haben Sie?",
-                                   choices=[
-                                       ["student", "Ich bin noch in beruflicher Ausbildung (Studium oder Ausbildung)"],
-                                       ["none",
-                                        "Ich habe keinen beruflichen Abschluss und bin nicht in beruflicher Ausbildung"],
-                                       ["apprenticeship",
-                                        "Ich habe eine beruflich-betriebliche Berufsausbildung (Lehre) abgeschlossen"],
-                                       ["highschool",
-                                        "Ich habe eine beruflich-schulische Ausbildung (Berufsfachschule, Handelsschule) abgeschlossen"],
-                                       ["applied highschool",
-                                        "Ich habe eine Ausbildung an einer Fachschule, Meister-, Technikerschule, Berufs- oder Fachakademie abgeschlossen"],
-                                       ["applied uni", "Ich habe einen Fachhochschulabschluss"],
-                                       ["uni", "Ich habe einen Hochschulabschluss"]
-                                   ],
-                                   widget=widgets.RadioSelect)
+    Education = models.IntegerField(doc="Respondent's highest educational degree",
+                                    label="Bitte wählen Sie den höchsten Bildungsabschluss, den Sie bisher erreicht haben.",
+                                    # "Welchen beruflichen Ausbildungsabbschluss haben Sie?",
+                                    choices=[
+                                        [0, "Schule beendet ohne Abschluss"],
+                                        [1, "Noch Schüler"],
+                                        [2, "Volks-, Hauptschulabschluss, Quali "],
+                                        [3, "Mittlere Reife, Realschul- oder gleichwertiger Abschluss"],
+                                        [4, "Abgeschlossene Lehre"],
+                                        [5, "Fachabitur, Fachhochschulreife"],
+                                        [6, "Fachhochschul-/Hochschulabschluss"],
+                                        [7, "Abitur, Hochschulreife"],
+                                        [8, "Anderer Abschluss"],
+                                    ],
+                                    widget=widgets.RadioSelect)
 
     Income = models.IntegerField(doc="Respondent's income",
-                                 label="Bitte nennen Sie Ihr ungefähres jährliches Nettoeinkommen.",
-                                 blank=True)
+                                 label="Welches monatliche Budget haben Sie zur Verfügung? Bitte geben Sie Ihr monatliches Nettoeinkommen an.",
+                                 choices=[
+                                     [0, "0-500 €"],
+                                     [1, "501-1.000 €"],
+                                     [2, "1.001-2.000 €"],
+                                     [3, "2.001-3.000 €"],
+                                     [4, "3.001-4.000 €"],
+                                     [5, "mehr als 4.000 €"],
+                                     [9999, "keine Angabe"]
+                                 ],
+                                 blank=True,
+                                 widget=widgets.RadioSelect)
 
     # Task Comprehension
-    Comprehension = models.StringField(doc="Respondent's understanding of the tasks",
+    Comprehension = models.IntegerField(doc="Respondent's understanding of the tasks",
                                        label="Haben Sie die Aufgaben gut verstanden?",
                                        choices=[
-                                           ["no", "Nein"],
-                                           ["rather not", "Eher nicht"],
-                                           ["rather yes", "Eher schon"],
-                                           ["yes", "Ja"]
+                                           [0, "Nein"],
+                                           [1, "Eher nicht"],
+                                           [2, "Eher schon"],
+                                           [3, "Ja"]
                                        ],
                                        widget=widgets.RadioSelect)
 

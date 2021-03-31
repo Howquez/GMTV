@@ -22,11 +22,11 @@ Dynamic Public Goods Game where the current round's earnings determine the next 
 
 class Constants(BaseConstants):
     name_in_url = "dPGG"
-    players_per_group = 3 # adjust Constants.group_size in Intro App when adjusting this
+    players_per_group = 2 # adjust Constants.group_size in Intro App when adjusting this
     num_others_per_group = players_per_group - 1
     num_rounds = 15
     initial_endowment = 20
-    efficiency_factor = 1.25 # (MPCR) Marginal Per Capita Return per round
+    efficiency_factor = 1.5 # /4 = (MPCR) Marginal Per Capita Return per round
     rate_of_return = (efficiency_factor - 1)*100
 
     safe_rounds = 2 # number of rounds without any risk
@@ -153,7 +153,7 @@ class Group(BaseGroup):
                     others_contribution = (self.total_contribution - p.contribution)
                     # vars for Outro
                     p.participant.vars["guess"] = 0
-                    p.participant.vars["others_average_contribution"] = others_contribution
+                    p.participant.vars["others_contribution"] = others_contribution
                     p.participant.vars["belief"] = p.belief
                     p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(self.session)
                     # actual payoff operation

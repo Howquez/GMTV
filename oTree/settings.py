@@ -5,14 +5,14 @@ SESSION_CONFIGS = [
         name="dPGG",
         display_name="dPGG Replication",
         num_rounds=10,
-        num_demo_participants=3,
-        risk=0.33,
+        num_demo_participants=2,
+        risk=0.0,
         app_sequence=["Intro", "dPGG", "Outro"]
     ), dict(
         name="risky_dPGG",
         display_name="dPGG with risk & without instructions",
         num_rounds=10,
-        num_demo_participants=3,
+        num_demo_participants=4,
         risk=0.33,
         app_sequence=["dPGG", "Outro"]
     ),
@@ -24,7 +24,7 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=0.05, participation_fee=2.00, doc=""
+    real_world_currency_per_point=0.05, participation_fee=5.00, doc=""
 )
 
 # ISO-639 code
