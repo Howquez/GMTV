@@ -1,0 +1,13 @@
+participant.id_in_session,participant.code,participant.label,participant._is_bot,participant._index_in_pages,participant._max_page_index,participant._current_app_name,participant._current_page_name,participant.time_started,participant.visited,participant.mturk_worker_id,participant.mturk_assignment_id,participant.payoff,player.id_in_group,player.window_width,player.window_height,player.browser,player.CQ1_1,player.CQ1_2,player.CQ2_1,player.CQ2_2,player.CQ3_1,player.CQ3_2,player.MCQ_1,player.MCQ_2,player.payoff,group.id_in_subsession,subsession.round_number,session.code,session.label,session.mturk_HITId,session.mturk_HITGroupId,session.comment,session.is_demo
+1,7z56m5m5,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.304047+00:00,1,,,187,1,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+2,gu989wg4,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.374319+00:00,1,,,211,2,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+3,ouk2jj0p,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.404797+00:00,1,,,215,3,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+4,2uung4wr,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.438162+00:00,1,,,177,4,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+5,an5o5q3d,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.471952+00:00,1,,,184,5,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+6,bnf2jyt0,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.500656+00:00,1,,,175,6,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+7,se6rhfen,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.543437+00:00,1,,,191,7,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+8,ns2ffck4,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.576195+00:00,1,,,206,8,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+9,l6n2bm41,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.607570+00:00,1,,,188,9,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+10,cghf0nkp,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.639836+00:00,1,,,210,10,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+11,c1pssufc,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.676230+00:00,1,,,191,11,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0
+12,6kivsq0v,,1,82,82,Outro,Outro_Final,2021-03-25 09:14:11.705101+00:00,1,,,181,12,1,1,Chrome Canary,20,20,25,25,65,58,,,0,1,1,5soat2j8,,,,,0

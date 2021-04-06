@@ -1,7 +1,7 @@
 ---
 title: "Gächter et al (2007, JPE) replication"
 description: |
-  A new article created using the Distill format.
+  Reproducing Gächter et al.'s Visualizations.
 author:
   - name: Hauke Roggenkamp 
     affiliation: CLICCS
@@ -32,9 +32,9 @@ DT <- read_dta(file="../data/gaechteretal/GMTV-data.dta") %>% data.table()
 
 # Background 
 
-In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The current demo version of the experiments can be found [here](https://cliccs.herokuapp.com/).^[Some of the demo experiments will model three-player games as this is the maximum number of players one can open in split-screen mode.] One of these experiments will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances) to allow for comparisons. I'll therefore run seesions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of 20 points and a group account with a return of $1.5$, such that:
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The current demo version of the experiments can be found [here](https://cliccs.herokuapp.com/).^[Some of the demo experiments will model three-player games as this is the maximum number of players one can open in split-screen mode.] One of these experiments will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances) to allow for comparisons. I'll therefore run sessions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of 20 points and a group account with a return of $1.5$, such that:
 $$
-N_i^{t+1}=N-i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
+N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
 $$
 
 To this end, I aim to incorporate Gächter et al's data into my analysis.
@@ -89,18 +89,21 @@ With a sum of contributions being 35 and a return of contributions of $1.5$, eac
 
 To resemble the oTree data, the orginal data has to be transformed a little. therefore, variables will be renamed, variables (such as ```stock```[^Gächter et al called this variable _Wealth_] and ```gain```) will be created and, most notbaly, the unit of observations will be groups such that subject-level variables will be dropped.
 
-```{r}
+```{r writeData}
 
 gaechter <- noPunish10[order(gr_id, per),
            .(treatment = "noPunish10", 
              groupID = gr_id, 
              round = per,
-             contribution = sum,
-             endowment = gdp,
+             contribution = sum/4,
+             endowment = gdp/4,
              share = mean,
-             stock = gdp + ceiling(sum/4*1.5)*4-sum,
-             gain = ceiling(sum/4*1.5)*4-sum,
-             bot_active = 0)] %>% unique()
+             stock = (gdp + ceiling(sum/4*1.5)*4-sum)/4,
+             gain = (ceiling(sum/4*1.5)*4-sum)/4,
+             bot_active = 0,
+             disaster = 0,
+             EWE = 0,
+             noComprehension = 0)] %>% unique()
 
 gaechter %>%
   head(n = 12) %>%
@@ -109,6 +112,10 @@ gaechter %>%
   kable_paper("hover", 
               full_width = TRUE,
               fixed_thead = TRUE)
+
+save(gaechter, file = "../data/processed/gaechter2017.rda")
+write.csv(gaechter, file ="../data/processed/gaechter2017.csv")
+
 ```
 
 # Visualizations

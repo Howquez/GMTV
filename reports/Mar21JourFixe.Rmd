@@ -1,0 +1,185 @@
+---
+title: "Gächter et al (2007, JPE) replication"
+description: |
+  Reproducing Gächter et al.'s Visualizations.
+author:
+  - name: Hauke Roggenkamp 
+    affiliation: CLICCS
+    affiliation_url: https://www.cliccs.uni-hamburg.de/
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+    code_folding: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(data.table)
+library(tidyverse)
+library(kableExtra)
+
+library(Rmisc)
+library(wesanderson)
+
+base::load(file = "../data/processed/simulations.rda") 
+base::load(file = "../data/processed/demoSession.rda") 
+base::load(file = "../data/processed/gaechter2017.rda") 
+```
+
+
+# Background
+
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), we plan to run a series of remote online experiments using oTree [@oTree]. One of these experiments will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances) to allow for comparisons. 
+
+# Replication
+
+## Model
+
+We'll therefore run sessions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of $N_i^1 = 20$ points $T=10$ periods, a private account with a return of $1$ and a group account with a return of $1.5$ ($\Rightarrow$ MPCR $= \frac{1.5}{4}$), such that:
+$$
+N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
+$$
+**Proposition 1:** Consider the public good game with growth as defined above. The unique SPE of the game is such that all players contribute 0 throughout the entire game (both on and off the equilibrium path).^[See @GACHTER2017's Appendix for a formal proof.]
+
+## Data 
+
+The resulting data looks as follows. Each row represents a group, not a player. The displayed ```treatment``` names reflect the risk of extreme weather events as well as the share of current endowments contributed. ```Hi033``` indicates that the simulated subjects contributed a relatively high share of endowments facing a risk of 33 percent. In contrast, ```Lo000``` was parameterized such that there were no extreme weather events and contributions were relatively low. ```noPunish10``` represents @GACHTER2017's data from the no punish treatment with ten periods.^[The data were collected in sessions 5, 8 and 9 -- yielding 23 observations.] 
+
+The ```contribution``` shows a group's average contribution and the ```endowment``` their average endowment at the beginning of a period. The reported ```share``` is the fraction of both. ```stock``` is the group's average income at the end of the period and gain lists the difference between the ```stock``` and ```endowment```.
+
+```{r combineData}
+combined <- rbindlist(list(longDT[treatment == "Hi000"],# | treatment == "Lo000"], 
+                           gaechter,
+                           demoSession))
+
+combined[treatment == "demoSession"] %>%
+  # head(n = 9) %>%
+  kbl() %>% 
+  scroll_box(height = "400px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+```
+
+
+```{r vizSetup, include = FALSE}
+layout <- theme(panel.background = element_rect(fill = "white"),
+                panel.grid = element_line(colour="gray", size=0),
+                panel.grid.major.y = element_line(colour="gray", size=0.25),
+                legend.key = element_rect(fill = "white"),
+                axis.line.x.bottom = element_line(size = 0.25),
+                axis.line.y.left = element_line(size = 0.25),
+                plot.margin = unit(c(1,1,1,1), "cm"),
+                legend.title = element_blank()
+                )
+```
+
+## Visualization
+
+The following graph displays the zero risk treatments together with @GACHTER2017's data. The original ```noPunish10``` data lies between both sets of simulations. 
+
+```{r plotShare}
+plotDT <- summarySE(data = combined, 
+                      measurevar = "share", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "share"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+    scale_color_manual(values = wes_palette("GrandBudapest1")) +
+    geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) +
+    labs(y = "Share of Current Endowment contributed")
+```
+
+
+The different shares of contributions result in very different absolute contributions. The following graph illustrates the resulting heterogeneity between treatments.
+
+```{r plotContribution}
+plotDT <- summarySE(data = combined, 
+                      measurevar = "contribution", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "contribution"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+    scale_color_manual(values = wes_palette("GrandBudapest1")) +
+    geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+    labs(y = "Average Amount of Points contributed")
+```
+
+
+Finally, one finds the same pattern in ```Wealth``` levels:
+
+```{r plotStock}
+plotDT <- summarySE(data = combined, 
+                      measurevar = "stock", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "stock"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+    scale_color_manual(values = wes_palette("GrandBudapest1")) +
+    geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+    labs(y = "Wealth")
+```
+
+
+# Incorporating Risk or Uncertainty
+
+The basic idea is that, in every period, there is a (known or unknown)^[TBD] constant probability of an extreme weather event (EWE) occurring in a group denoted by $r=prob(\text{EWE}=1)$. Such an extreme weather event can bring about some endogenous damage $D$. The question we are discussing is what $D$ should look like.
+
+
+We can either model $D$ as some weighted punishment, that is: 
+$$
+N_i^{t+1}=
+\begin{cases}
+N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t, & \text{if EWE}=0 \\
+N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t - D \Big(1-\frac{\sum_{j=1}^4 c_j^t}{\sum_{j=1}^4 N_j^t}\Big) & \text{else}
+\end{cases}
+$$
+
+or as a weight itself:
+$$
+N_i^{t+1}=
+\begin{cases}
+N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t, & \text{if EWE}=0 \\
+\Big(N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t\Big) \cdot \frac{\sum_{j=1}^4 c_j^t}{\sum_{j=1}^4 N_j^t}, & \text{else}
+\end{cases}
+$$
+
+We can also model it entirely different (suggestions?). The most important consideration is that we have to find a $D$ and $r$ such that, given the original group size of 4, the corresponding MPCR $=\frac{1.5}{4}$ and $0 \leq c_i^t \leq N_i^t \leq\sum_{j=1}^4 N_j^t$, the game remains characterized as a dilemma where individual and collective interest are in conflict.

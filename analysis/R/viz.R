@@ -1,3 +1,10 @@
+# Load Data -----
+base::load(file = "../data/processed/simulations.rda") 
+base::load(file = "../data/processed/gaechter2017.rda") 
+
+# run Markdown files -----
+rmarkdown::render("../reports/simulations.Rmd")
+
 # Themes -----
 layout <- theme(panel.background = element_rect(fill = "white"),
                 panel.grid = element_line(colour="gray", size=0),
@@ -22,17 +29,16 @@ for(outcome in outcomes){
                       .drop = TRUE)
   
   temp <- plotDT[, outcome]
-
+  
   # plot
   plot <- ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + # linetype = treatment
     layout +
     geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
     geom_line() +
     # geom_point() + 
-    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_x_continuous(name="Period",  breaks = 1:10, limits = c(1, 10.5)) +
     scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-    labs(y = outcome %>% str_to_title()) +
-    scale_color_manual(values = wes_palette("Moonrise3", n = 2))
+    labs(y = outcome %>% str_to_title())
 
   plotTitle <- glue("plot{str_to_title(outcome)}")
   # assign(x = plotTitle,
