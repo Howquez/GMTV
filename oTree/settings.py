@@ -8,14 +8,7 @@ SESSION_CONFIGS = [
         num_demo_participants=2,
         risk=0.0,
         app_sequence=["Intro", "dPGG", "Outro"]
-    ), dict(
-        name="risky_dPGG",
-        display_name="dPGG with risk & without instructions",
-        num_rounds=10,
-        num_demo_participants=4,
-        risk=0.33,
-        app_sequence=["dPGG", "Outro"]
-    ),
+    )
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
