@@ -1,11 +1,17 @@
 ---
-title: "Gächter et al (2007, JPE) replication"
+title: "Replicate and extend Gächter et al's (2007, JPE) dynamic public goods game"
 description: |
-  Reproducing Gächter et al.'s Visualizations.
+  Draft.
 author:
   - name: Hauke Roggenkamp 
     affiliation: CLICCS
     affiliation_url: https://www.cliccs.uni-hamburg.de/
+  - name: Stefan Traub 
+    affiliation: Helmut Schmidt University
+    affiliation_url: https://www.hsu-hh.de/en/
+  - name: Michael Berlemann 
+    affiliation: Helmut Schmidt University
+    affiliation_url: https://www.hsu-hh.de/en/
 date: "`r Sys.Date()`"
 bibliography: biblio.bib
 output:
@@ -26,15 +32,16 @@ library(kableExtra)
 library(Rmisc)
 library(wesanderson)
 
-# base::load(file = "../data/processed/simulations.rda") 
-base::load(file = "../data/processed/rda/demoSession.rda") 
+base::load(file = "../data/processed/rda/replication2021.rda") 
 base::load(file = "../data/processed/rda/gaechter2017.rda") 
 ```
 
 
 # Background
 
-In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), we plan to run a series of remote online experiments using oTree [@oTree]. One of these experiments will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances) to allow for comparisons. 
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), we plan to run a series of remote online experiments using oTree [@oTree]. One of these experiments will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
+
+This report first reproduces the main visualizations from the original paper using @GACHTER2017's data as well as data simulated by rather simple oTree bots. Afterwards, a very broad idea of an additional treatment is drafted.
 
 # Replication
 
@@ -53,11 +60,11 @@ The resulting data looks as follows. Each row represents a group, not a player. 
 The ```contribution``` shows a group's average contribution and the ```endowment``` their average endowment at the beginning of a period. The reported ```share``` is the fraction of both. ```stock``` is the group's average income at the end of the period and gain lists the difference between the ```stock``` and ```endowment```.
 
 ```{r combineData}
-combined <- rbindlist(list(longDT[treatment == "Hi000"],# | treatment == "Lo000"], 
-                           gaechter,
-                           demoSession))
+combined <- rbindlist(list(gaechter,
+                           replication),
+                      use.names = TRUE)
 
-combined[treatment == "demoSession"] %>%
+combined %>%
   # head(n = 9) %>%
   kbl() %>% 
   scroll_box(height = "400px") %>%
@@ -81,7 +88,7 @@ layout <- theme(panel.background = element_rect(fill = "white"),
 
 ## Visualization
 
-The following graph displays the zero risk treatments together with @GACHTER2017's data. The original ```noPunish10``` data lies between both sets of simulations. 
+The following graphs display simulated data together with @GACHTER2017's data. 
 
 ```{r plotShare}
 plotDT <- summarySE(data = combined, 
@@ -101,9 +108,8 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
     geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
     geom_line() +
     geom_point() + 
-    scale_x_continuous(name="Period",  breaks = 1:15) +
     scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) +
-    labs(y = "Share of Current Endowment contributed")
+    labs(y = "Share of Current Endowment contributed", x = "Period")
 ```
 
 
@@ -127,9 +133,8 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
     geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
     geom_line() +
     geom_point() + 
-    scale_x_continuous(name="Period",  breaks = 1:15) +
     scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-    labs(y = "Average Amount of Points contributed")
+    labs(y = "Average Amount of Points contributed", x = "Period")
 ```
 
 
@@ -153,13 +158,35 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
     geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
     geom_line() +
     geom_point() + 
-    scale_x_continuous(name="Period",  breaks = 1:15) +
     scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
-    labs(y = "Wealth")
+    labs(y = "Wealth", x = "Period")
 ```
 
+Finally, the gini plot looks as follows:
 
-# Incorporating Risk or Uncertainty
+```{r plotGini}
+plotDT <- summarySE(data = combined, 
+                      measurevar = "gini", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "gini"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    scale_fill_manual(values = wes_palette("GrandBudapest1")) +
+    scale_color_manual(values = wes_palette("GrandBudapest1")) +
+    geom_errorbar(aes(ymin=temp-se, ymax=temp+se), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) +
+    labs(y = "Wealth", x = "Period")
+```
+
+# Incorporating Extreme Weather Events
 
 The basic idea is that, in every period, there is a (known or unknown)^[TBD] constant probability of an extreme weather event (EWE) occurring in a group denoted by $r=prob(\text{EWE}=1)$. Such an extreme weather event can bring about some endogenous damage $D$. The question we are discussing is what $D$ should look like.
 

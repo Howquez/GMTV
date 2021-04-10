@@ -1,0 +1,319 @@
+---
+title: "1. Original Data"
+description: |
+  Reproducing Gächter et al.'s main findings.
+author:
+  - name: Hauke Roggenkamp 
+    url: https://github.com/Howquez
+    affiliation: CLICCS
+    affiliation_url: https://www.cliccs.uni-hamburg.de/
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+    code_folding: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(haven)
+library(data.table)
+library(magrittr)
+library(kableExtra)
+library(DescTools) # gini coefficient
+library(downloadthis)
+library(Rmisc)
+library(ggplot2)
+library(wesanderson)
+
+DT <- read_dta(file="../data/gaechteretal/GMTV-data.dta") %>% data.table()
+```
+
+# Background 
+
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
+
+This report is the first in a series of reports covering this project. It prepares the original data and replicates main visualizations & tables.
+
+# Original Data
+
+The data can be found in the supplementary materials they provide in their [online appendix](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115).
+
+```{r data, include = FALSE}
+noPunish10 <- DT[exp_num == 5 | exp_num == 8 | exp_num == 9]
+```
+
+Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a ```data.table``` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
+
+For this purpose only a few variables are relevant:
+
+- ```exp_num``` is a session identifier
+- ```per``` denotes the period
+- ```gr_id``` is a group identifier (carrying treatment information)
+- ```subj_id``` is a subject identifier
+- ```tokens``` reports a subject's endowment in a period
+- ```other[1-3]``` report the other group members' endowments in a period
+- ```gdp ``` equals the sum of endowments of a group in a period
+- ```putin``` reports a subject's contribution in a period
+- ```pu[1-3]``` report the other group members' contributions in a period
+- ```sum``` equals the sum of contributions of a group in a period.
+- ```gini``` reports a group's Gini coefficient in a period.
+- ```mean``` reports the fraction of sum/gdp -- but only in some cases.
+
+As a consequence, the first few rows of the data look as follows:
+
+```{r showData, layout = "l-body-outset"}
+noPunish10[,
+           gini2 := Gini(c(tokens, other1, other2, other3)),
+           by = .(subj_id, per)]
+
+noPunish10[order(gr_id, per),
+           .(exp_num, gr_id, per, subj_id, # IDs
+             tokens, other1, other2, other3, gdp, #endowments
+             putin, pu1, pu2, pu3, sum, mean, # contributions
+             gini, gini2
+           )] %>% 
+  head(n = 15) %>%
+  kbl() %>% 
+  # scroll_box(height = "200px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+
+```
+
+We see group 501 in the first two periods where subjects 511 to 514 start with an initial endowment of 20 which makes a GDP of 80. Subject 511 does not contribute (as represented in ```putin==0``` in the first row and ```pu1==0```in rows 2 to 4) while the others contribute 5, 15 and 15 in the first period, respectively. The ```sum``` of contributions therefore equals 35 period 1.
+
+With a sum of contributions being 35 and a return of contributions of 1.5, each subject receives ```ceil(13.125)``` =14 points from the group project such that the next period's ```gdp``` equals 101.
+
+Unfortunately, the Gini coefficient (```gini```) is a little off as one can see in the second period: Even though this is a group level variable, the group has three different coefficient in the same period. For this reason, I re-calculated the coefficient and called it ```gini2```.
+
+# Data Manipulation
+
+To resemble the oTree data, the original data has to be transformed a little. Therefore, some variables will be renamed, variables (such as ```stock```^[Gächter et al. called this variable _Wealth_] and ```gain```) will be created and, most notably, the unit of observations will be groups such that subject-level variables will be dropped.^[In addition, I will ignore the original Gini coefficient and use mine instead.]
+
+```{r writeData}
+
+noPunish10[,
+           share := sum/gdp,
+           by = .(subj_id, per)]
+
+gaechter <- noPunish10[order(gr_id, per),
+           .(treatment = "noPunish10", 
+             session.code = exp_num,
+             groupID = gr_id, 
+             round = per,
+             contribution = sum,
+             endowment = gdp,
+             share = mean, # share,
+             stock = (gdp + ceiling(sum/4*1.5)*4-sum),
+             gain = (ceiling(sum/4*1.5)*4-sum),
+             gini = gini2,
+             bot_active = 0,
+             # disaster = 0,
+             # EWE = 0,
+             noComprehension = 0)] %>% unique()
+
+gaechter %>%
+  head(n = 15) %>%
+  kbl() %>% 
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+
+save(gaechter, file = "../data/processed/rda/gaechter2017.rda")
+write.csv(gaechter, file ="../data/processed/csv/gaechter2017.csv")
+
+```
+
+```{r downloadData}
+gaechter %>%
+      download_this(
+        output_name = "Gaechter2017noPunish10",
+        output_extension = ".csv", # CSV output
+        button_label = "Download csv",
+        button_type = "default"
+        )
+```
+
+# Visualizations
+
+```{r}
+layout <- theme(panel.background = element_rect(fill = "white"),
+                panel.grid = element_line(colour="gray", size=0),
+                panel.grid.major.y = element_line(colour="gray", size=0.25),
+                legend.key = element_rect(fill = "white"),
+                axis.line.x.bottom = element_line(size = 0.25),
+                axis.line.y.left = element_line(size = 0.25),
+                plot.margin = unit(c(1,1,1,1), "cm"),
+                legend.title = element_blank()
+                )
+```
+
+
+```{r plotContribution}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "contribution", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "contribution"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 150)) +
+    labs(y = "Average Amount of Points contributed") +
+    scale_color_manual(values = wes_palette("Moonrise3"))
+```
+
+```{r plotShare}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "share", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "share"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) +
+    labs(y = "Share of Current Endowment contributed") +
+    scale_color_manual(values = wes_palette("Moonrise3"))
+```
+
+```{r plotStock}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "stock", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "stock"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+    labs(y = "Wealth") +
+    scale_color_manual(values = wes_palette("Moonrise3"))
+```
+
+```{r plotGini}
+plotDT <- summarySE(data = gaechter, 
+                      measurevar = "gini", 
+                      groupvars=c("treatment", "round"),
+                      na.rm = FALSE,
+                      conf.interval = 0.95,
+                      .drop = TRUE)
+  
+temp <- plotDT[, "gini"]
+
+# plot
+ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatment)) + 
+    layout +
+    geom_errorbar(aes(ymin=temp-ci, ymax=temp+ci), width=.25, alpha = 0.5) +
+    geom_line() +
+    geom_point() + 
+    scale_x_continuous(name="Period",  breaks = 1:15) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 0.4)) +
+    labs(y = "Gini coefficient") +
+    scale_color_manual(values = wes_palette("Moonrise3"))
+```
+
+# Tables 
+
+```{r regressions}
+# reg gdp punish if longgame==0  & treat<3 & per==10, cluster(gr_id)
+lm(gdp ~ punish, data = DT[longgame==0 & treat < 3 & per==10])
+```
+
+# Discussion
+
+Even though the figures above were created using the original data, they do not look the same as the original figures. This becomes obvious if one looks at the figures that visualize the contributions. The arising question therefore is whether I made a mistake in processing and interpreting the data. After all I thought to have found wrong Gini coefficients and struggle to interpret the ```mean``` of the original data.
+
+
+# First round
+
+Eventually, we'll also be interested in the participants' first round's behavior, as it indicates their willingness to cooperate before they interact with one another. As a consequence, we can compare all noPunish sessions, regardless of whether they ran for 10 or 15 rounds.
+
+```{r firstRound}
+noPunish <- DT[exp_num == 1 | exp_num == 3 | # noPunish15
+                 exp_num == 5 | exp_num == 8 | exp_num == 9] # noPunish10
+
+temp <- noPunish[per == 1]
+temp <- temp[,
+             treatment := "noPunish10"]
+temp <- temp[exp_num == 1 | exp_num == 3,
+             treatment := "noPunish15"]
+
+gaechterFirstRound <- temp[,
+                           .(participant.code = subj_id,
+                             treatment,
+                             session.code = exp_num,
+                             groupID = gr_id,
+                             belief = NA,
+                             othersContribution = sumputin - putin,
+                             ownContribution = putin,
+                             fairness = NA,
+                             trust = NA,
+                             comprehension = NA)]
+
+rm(list = c("temp"))
+
+# save data
+fileName <- "gaechter2017"
+save(gaechterFirstRound, 
+     file = paste0("../data/processed/rda/", fileName, "_R1", ".rda"))
+write.csv(gaechterFirstRound, 
+          file = paste0("../data/processed/csv/", fileName, "_R1", ".csv"))
+```
+
+`r NROW(gaechterFirstRound)` participants yield `r NROW(gaechterFirstRound)` independent observations that are stored in a data table called ```gaechterFirstRound```. These observations are displayed below and can, once more, be downloaded by a click on the button. As before, the data is also saved in ```../data/processed/```.
+
+```{r displayFirstRound}
+# display data
+gaechterFirstRound %>%
+  head(n = 15) %>%
+  kbl() %>% 
+  # scroll_box(height = "200px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+
+# create download button
+gaechterFirstRound %>%
+      download_this(
+        output_name = "gaechter2017_R1",
+        output_extension = ".csv", # CSV output
+        button_label = "Download csv",
+        button_type = "default"
+        )
+```
+
+# Outlook
+
+Having replicated Gaechter et al.'s main figures (more or less) the next step is to prepare the data we obtain in our experiment for the analysis. This will be done in the second report using simulated data.^[Eventually, one can use that report and apply it to the actual data.]
+

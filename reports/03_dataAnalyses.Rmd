@@ -1,0 +1,51 @@
+---
+title: "3. Analyses Plan"
+description: |
+  Analyze and compare data
+author:
+  - name: Hauke Roggenkamp 
+    url: https://github.com/Howquez
+    affiliation: CLICCS
+    affiliation_url: https://www.cliccs.uni-hamburg.de/
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+    code_folding: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(data.table)
+library(magrittr)
+library(kableExtra)
+library(downloadthis)
+```
+
+
+# Background 
+
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
+
+This report is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
+
+```{r readData}
+load(file="../data/processed/rda/gaechter2017.rda")        # read gaechter
+load(file="../data/processed/rda/gaechter2017_R1.rda")     # read gaechterFirstRound
+load(file="../data/processed/rda/replication2021.rda")     # read replication
+load(file="../data/processed/rda/replication2021_R1.rda")  # read replicationFirstRound
+```
+
+```{r cbind}
+main <- rbindlist(list(replication, gaechter), 
+                  use.names = TRUE)
+
+R1   <- rbindlist(list(replicationFirstRound, gaechterFirstRound), 
+                  use.names = TRUE)
+```
+
+

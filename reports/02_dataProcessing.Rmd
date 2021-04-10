@@ -1,0 +1,277 @@
+---
+title: "2. Simulated Data"
+description: |
+  Making the raw oTree output tangible.
+author:
+  - name: Hauke Roggenkamp 
+    url: https://github.com/Howquez
+    affiliation: CLICCS
+    affiliation_url: https://www.cliccs.uni-hamburg.de/
+date: "`r Sys.Date()`"
+bibliography: biblio.bib
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+    code_folding: true
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = FALSE)
+library(data.table)
+library(magrittr)
+library(stringr)
+library(glue)
+library(DescTools) # gini coefficient
+library(kableExtra)
+library(downloadthis)
+```
+
+# Background 
+
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
+
+This report is the second in a series of reports covering this project. It explains how simulated data is processed and prepared for analyses.
+
+# Simulations
+
+```{r loadData}
+# read simulated data
+DT <- read.csv("../data/simulation/all_apps_wide.csv", stringsAsFactors = FALSE) %>%
+  data.table()
+```
+
+I simulated `r NROW(DT)` participants. To do so, I wrote oTree bots that follow rather simple rules and act mostly random. As a consequence, this data yields no information apart from the structure of the data itself.
+
+Eventually, this report can also be used to process real data. This only requires us to load a different data set.^[It may also require us to merge multiple data sets -- that depends on whether the lab delivers one or several data sets and remains to be discussed.]
+
+## First round
+
+Eventually, we'll be interested in the participants' first round's behavior, as it indicates their willingness to cooperate before they interact with one another. As a consequence, `r NROW(DT)` participants yield `r NROW(DT)` observations that shall be stored in a data table called ```replicationFirstRound```. This table carries information on a participant's ```belief``` about the sum of other group members' contributions, their actual contribution ```othersContribution```, the participant's ```ownContribution```, some fairness measure that equals the difference between the own contribution and the expected average contribution of others and a trust measure^["Generally, others can be trusted". Likert scale ranging from 0 (do not agree) to 6 (agree).] obtained from the personality test at the end of the experiment.
+
+```{r firstRound}
+# create data table 
+replicationFirstRound <- DT[,
+                 .(participant.code,
+                   treatment = "replication",
+                   session.code,
+                   groupID = dPGG.1.group.id_in_subsession,
+                   belief = dPGG.1.player.belief,
+                   othersContribution = dPGG.1.group.total_contribution - dPGG.1.player.contribution,
+                   ownContribution = dPGG.1.player.contribution,
+                   fairness = dPGG.1.player.contribution - dPGG.1.player.belief/3,
+                   trust = Outro.1.player.PQ11,
+                   comprehension = Outro.1.player.Comprehension)]
+
+# save data
+fileName <- "replication2021"
+save(replicationFirstRound, file = paste0("../data/processed/rda/", fileName, "_R1", ".rda"))
+write.csv(replicationFirstRound, file = paste0("../data/processed/csv/", fileName, "_R1", ".csv"))
+
+# display data
+replicationFirstRound %>%
+  head(n = 12) %>%
+  kbl() %>% 
+  # scroll_box(height = "200px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+
+# create download button
+replicationFirstRound %>%
+      download_this(
+        output_name = glue("{Sys.Date()}_Simulation_firstRound"),
+        output_extension = ".csv", # CSV output
+        button_label = "Download csv",
+        button_type = "default"
+        )
+```
+
+The data is saved in two formats (```csv``` and ```rda```) in ```../data/processed/```. If you have not downloaded the repository and access the html file, you can also obtain a csv-file by clicking on the button above.
+
+
+## All rounds
+
+Because we are most interested in the dynamics of the game, the most important data frame shall reflect the interactions within groups over time. I'll subset the data using a regular expression such that one obtains the initial belief as well as endowments, contributions, gains and stocks for each individual (preliminarily).^[There will also be information on the respondent's self stated comprehension of the task as well as a dummy indicating whether a bot was active (which implies that some group member dropped out.)] ^[In addition the data table contains a ```participant.code```, a ```session.code``` as well as some group and individual ID for identification and merging purposes.]
+
+```{r subsetData}
+
+# most relevant variables
+mRegex <- "participant\\.code$|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|^dPGG.1.player.id_in_group$|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active|Comprehension"
+mainVariables <- str_subset(string = names(DT),
+                            pattern = mRegex)
+subset <- DT[, ..mainVariables]
+```
+
+Because the the endowments are dynamic, the contributions may vary within and across groups. For this reason, a ```share``` (reporting the share of a respondent's current endowment contributed) is calculated. The first few rows of the data table look as follows:
+
+```{r newVars}
+
+# refactor groupID such that it also contains treatment-info
+subset[,
+   groupID := paste(session.code, dPGG.1.group.id_in_subsession, 
+                    sep = "_")]
+
+# add share as contribution/endowment
+for(round in 1:15){
+  contribution <- glue("dPGG.{round}.player.contribution")
+  endowment <- glue("dPGG.{round}.player.endowment")
+  subset[, glue("dPGG.{round}.player.share") := subset[[contribution]]/subset[[endowment]] ]
+}
+
+# add treatment variable
+subset[,
+       treatment := "replication"]
+
+
+# display data
+subset %>%
+  head(n = 12) %>%
+  kbl() %>% 
+  scroll_box(width = "100%") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+```
+
+
+To obtain a long (instead of a wide) table that reports these variables for independent observations over time, the data hast be be transformed and aggregated. Instead of listing individuals, it shall list groups over time.^[These steps are eliminating lots of information. If one desires an extensive data table containing individual- and group-level information over time, one can merge the resulting table with the small grained data.]
+
+This process takes a few steps:
+
+```{r calcAverages}
+cluster <- c("treatment", "session.code", "groupID")
+outcomes <- c("contribution", "endowment", "share", "stock", "gain", "bot_active")
+# outcome = "contribution"
+DTs <- list()
+for(outcome in outcomes){
+  if(outcome == "bot_active"){
+    var = names(subset) %>% str_subset(pattern = glue("group\\.{outcome}$"))
+  } else {
+    var = names(subset) %>% str_subset(pattern = glue("player\\.{outcome}$"))
+  }
+
+
+  # calculate either averages or the sum per round per group
+  if(outcome == "share"){
+    aggregates = subset[, 
+                lapply(.SD, mean, na.rm=TRUE), 
+                by = cluster, 
+                .SDcols=var
+                ]
+  } else {
+    aggregates = subset[, 
+                lapply(.SD, sum, na.rm=TRUE), 
+                by = cluster, 
+                .SDcols=var
+                ]
+  }
+  
+  
+  # transform from wide to long
+  meltedAggregates <- melt(aggregates, id.vars = cluster, measure.vars = var)
+  DTname <- glue("{str_to_title(outcome)}")
+  DTs[[DTname]] <- meltedAggregates
+  rm(list = c("DTname", "meltedAggregates", "aggregates", "var", "outcome"))
+}
+```
+
+
+```{r renameVars}
+for(i in 1:length(outcomes)){
+  DTs[[i]] <- DTs[[i]][,
+                       .(treatment,
+                         session.code,
+                         groupID,
+                         round = str_replace_all(string = variable,
+                                                 pattern = "\\D", 
+                                                 replacement="") %>% as.integer(),
+                         value # to be renamed afterwards
+                       )
+  ]
+  # rename "value" to outcome variable
+  setnames(DTs[[i]], old = "value", new = outcomes[i])
+}
+```
+
+Also, the Gini coefficient has to be calculated to measure inequality within groups.
+
+```{r calcGini}
+# it would make more sense to calculate the stocks' gini but gaechter et al use the endowments
+var = names(subset) %>% str_subset(pattern = "player\\.endowment$")
+gini = subset[,
+              lapply(.SD, Gini, na.rm=TRUE), 
+                by = cluster, 
+                .SDcols=var
+              ]
+Gini <- melt(gini, id.vars = cluster, measure.vars = var)
+
+DTs[["Gini"]] <- Gini[,
+                    .(treatment,
+                      session.code,
+                      groupID,
+                      round = str_replace_all(string = variable,
+                                              pattern = "\\D", 
+                                              replacement="") %>% as.integer(),
+                      gini = value
+                       )]
+rm(list = c("var", "gini", "Gini"))
+```
+
+
+Finally, the data that was stored in a list will be reduced to a single data table.
+
+```{r finalData}
+replication <- Reduce(function(...) merge(..., by=c(cluster, "round"), all = TRUE), DTs)
+```
+
+```{r misc}
+# flag observations where at least one participant did not understand the game
+noComp <- subset[Outro.1.player.Comprehension == 0,
+                 groupID] %>% unique()
+replication[,
+     noComprehension := 0]
+replication[groupID %in% noComp,
+     noComprehension := 1]
+
+
+# drop observations (i.e. groups in rounds) with dropouts (bot_active == 1) and
+# where round > 10
+replication <- replication[bot_active == 0 & round <= 10]
+```
+
+The result contains ```NROW(DT)/4``` observations in 10 rounds and is saved as a ```csv``` and as a ```rda``` file in ```../data/processed/```.
+
+```{r saveData}
+save(replication, file = paste0("../data/processed/rda/", fileName, ".rda"))
+write.csv(replication, file = paste0("../data/processed/csv/", fileName, ".csv"))
+```
+
+The first few rows look as follows. The full data set can be downloaded with a click on the button below (in case you only have access to this ```html``` file).
+
+```{r displayData}
+replication %>%
+  head(n = 12) %>%
+  kbl() %>% 
+  # scroll_box(height = "200px") %>%
+  kable_paper("hover", 
+              full_width = TRUE,
+              fixed_thead = TRUE)
+```
+
+```{r downloadData}
+replication %>%
+      download_this(
+        output_name = glue("{Sys.Date()}_Simulation"),
+        output_extension = ".csv", # CSV output
+        button_label = "Download csv",
+        button_type = "default"
+        )
+```
+
+
+# Outlook
+
+The next step is to reproduce Gaechter et al.'s figures and tables and to compare our results to their results. This will be done in the third report.
+
