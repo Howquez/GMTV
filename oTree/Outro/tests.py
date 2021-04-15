@@ -28,7 +28,7 @@ class PlayerBot(Bot):
                                             PQ14=random.randint(0, 6))
         yield pages.Outro_Covariates, dict(Age=random.randint(18, 66),
                                            Gender="diverse",
-                                           Education="uni",
-                                           Income=random.randint(20000, 50000))
+                                           Education=random.randint(0, 8),
+                                           Income=random.randint(0, 5))
         yield pages.Outro_CLICCS, dict(CLICCS1="lorem ipsum 1", CLICCS2="lorem ipsum 2")
 

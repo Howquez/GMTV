@@ -23,12 +23,21 @@
     <span class="badge badge-secondary">
         Zwischenfrage
     </span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#666666" class="bi bi-headset" viewBox="0 0 16 16" data-toggle="modal" data-target="#contactModal" id="contact_icon">
+        <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z"/>
+    </svg>
 
 </nav>
 
 
-<!-- Hidden tracking Fields -->
-<input type="hidden" name="review_instructions" id="id_review_instructions" value="0"/>
+<!-- timeout Alert -->
+<div class="alert alert-danger alert-dismissible fade" id="timeoutModal" role="alert">
+    <strong>Bitte fällen Sie eine Entscheidung.</strong> Für Ihre Eingabe in dieser Runde verbleiben Ihnen nur noch
+    30 Sekunden.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 
 
 <!-- Decision Card -->
@@ -278,6 +287,40 @@
             </div>
         </div>
     </div>
+
+
+<!-- Contact Modal -->
+<div class="modal fade bd-modal-lg" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p class="lead">
+                    Bei Fragen können Sie sich an uns wenden.
+                </p>
+                <address>
+                    WISO Research Lab <br><br>
+                    Faculty of Business, Economics and Social Sciences <br>
+                    Universität Hamburg <br>
+                    Von-Melle-Park 5 <br>
+                    Raum 2155 <br>
+                    20144 Hamburg <br><br>
+                    <a href="mailto:forschungslabor.wiso@uni-hamburg.de?subject=CLICCS B5 Umfrage">forschungslabor.wiso@uni-hamburg.de</a><br>
+                    <a href="tel:+4940428385884">+49 40 42838-5884</a>
+                </address>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 {% endblock %}

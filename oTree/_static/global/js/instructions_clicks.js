@@ -7,6 +7,11 @@ function countClicks(button){
 	document.getElementById(element).value = newValue;
 }
 
+document.getElementById("contact_icon").addEventListener("click", function() {
+    countClicks("contact");
+}, false);
+
 document.getElementById("instructions_icon").addEventListener("click", function() {
     countClicks("instructions");
 }, false);
+

@@ -7,8 +7,7 @@ if (template == "instructions"){
     var current_endowment = endowments[current_round - 1]
 }
 
-console.log(current_endowment)
-
+// change border color as feedback for invalid inputs
 document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || 0;
     if (input > current_endowment){

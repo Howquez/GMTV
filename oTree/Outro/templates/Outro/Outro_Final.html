@@ -43,7 +43,7 @@
                         <p class="lead">
                             Für Ihre Bereitschaft an der Studie teilzunehmen, die korrekte Beantwortung der
                             Verständnisfragen und Ihre Geduld bekommen Sie <strong> {{ final_payoff }} </strong>
-                            ausgezahlt.
+                            ausgezahlt. Die Entlohnung erfolgt nach Beendigung der Studie zeitnah per SEPA-Überweisung.
                         </p>
                     </div>
                     {% else %}
@@ -52,6 +52,7 @@
                         <p class="lead">
                             Die Studie ist jetzt beendet.
                             Sie bekommen <strong>{{ final_payoff }}</strong><sup>*</sup> ausgezahlt.
+                            Die Entlohnung erfolgt nach Beendigung der Studie zeitnah per SEPA-Überweisung.
                         </p>
                         <hr class="my-4">
                         <figure class="highcharts-figure mb-3 mt-5">
@@ -68,7 +69,7 @@
                         </small>
                         <small>
                             Für Ihre Schätzung haben wir Ihnen deshalb, zusätzlich zu Ihrem Kontostand und der
-                            Pünktlichkeitsprämie, {{ participant.vars.guess }} gutgeschrieben.
+                            Pünktlichkeitsprämie, {{ participant.vars.belief_money }} gutgeschrieben.
                         </small>
 
                     </div>

@@ -15,5 +15,5 @@ class PlayerBot(Bot):
                                              CQ2_1=int(Constants.initial_endowment * Constants.efficiency_factor),
                                              CQ2_2=int(Constants.initial_endowment * Constants.efficiency_factor),
                                              #MCQ_1=['2', '3'], MCQ_2=['2', '3'],
-                                             CQ3_1=int(40 + Constants.efficiency_factor * 60 / Constants.group_size),
-                                             CQ3_2=int(40 - 12 + Constants.efficiency_factor * (60+12) / Constants.group_size))
+                                             CQ3_1=int(30 + Constants.efficiency_factor * 40 / Constants.group_size),
+                                             CQ3_2=int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size))

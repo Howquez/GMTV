@@ -5,7 +5,7 @@ SESSION_CONFIGS = [
         name="dPGG",
         display_name="dPGG Replication",
         num_rounds=10,
-        num_demo_participants=2,
+        num_demo_participants=4,
         risk=0.0,
         app_sequence=["Intro", "dPGG", "Outro"]
     )

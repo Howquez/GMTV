@@ -4,6 +4,7 @@ console.log("basics ready!")
 let template = js_vars.template || 0;
 let endowments = js_vars.endowments || 0;
 let current_round  = js_vars.current_round || 0;
+let timeout  = js_vars.timeout || 999999999999;
 
 // tooltip
 $(function () {
@@ -26,20 +27,17 @@ if (template == "results" || template == "final"){
 }
 });
 
-// change button text on input
-if (document.getElementById("id_contribution")){
-    document.getElementById("id_contribution").addEventListener('input', () => {
-    input = parseInt(document.getElementById("id_contribution").value) || 0;
-    if (input > 0){
-        document.getElementById("submit_button").innerHTML = "Weiter";
-    } else {
-        document.getElementById("submit_button").innerHTML = "<small>Weiter ohne Investition</small>";
-        document.getElementById("id_contribution").value = 0;
-    }
-});
-}
-
 // submit in case you don't use buttons
 function submitPage() {
     document.forms[0].submit()
 }
+
+// timer & alert
+setTimeout(
+    function () {
+        if (template == "decision"){
+            document.getElementById("timeoutModal").classList.add("show")
+        }
+    },
+    (timeout - 0.5) * 60 * 1000
+);

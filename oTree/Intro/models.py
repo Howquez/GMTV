@@ -77,30 +77,30 @@ class Player(BasePlayer):
         if value != int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size):
             return "Leider falsch."
 
-    MCQ_1 = models.StringField(
-        widget=CheckboxSelectMultiple(
-            choices=(
-                (1, "Ihr Guthaben zu Beginn der Folgerunde beträgt 40 Punkte."),
-                (2, "Ihr Guthaben zu Beginn der Folgerunde beträgt 35 Punkte."),
-                (3, "Sie bekommen einen Ertrag von 25 Punkten ausgezahlt."),
-            )
-        ), blank = True
-    )
+    # MCQ_1 = models.StringField(
+    #     widget=CheckboxSelectMultiple(
+    #         choices=(
+    #             (1, "Ihr Guthaben zu Beginn der Folgerunde beträgt 40 Punkte."),
+    #             (2, "Ihr Guthaben zu Beginn der Folgerunde beträgt 35 Punkte."),
+    #             (3, "Sie bekommen einen Ertrag von 25 Punkten ausgezahlt."),
+    #         )
+    #     ), blank = True
+    # )
     # def MCQ_1_error_message(self, value):
     #     pattern = re.compile("^\[\'2\', \'3\'\]$")
     #     if pattern.search(value) == None:
     #         return "Leider falsch."
 
-    MCQ_2 = models.StringField(
-        widget=CheckboxSelectMultiple(
-            choices=(
-                (1, "Sie investieren Ihr gesamtes Guthaben und Ihre Gruppenmitglieder nichts."),
-                (2, "Sie und Ihre Gruppenmitglieder investieren jeweils z.B. 10 Punkte."),
-                (3, "Ihre Gruppenmitglieder investieren ihr gesamtes Guthaben und Sie nichts."),
-                (4, "Weder Sie noch Ihre Gruppenmitglieder investieren."),
-            )
-        ), blank = True
-    )
+    # MCQ_2 = models.StringField(
+    #     widget=CheckboxSelectMultiple(
+    #         choices=(
+    #             (1, "Sie investieren Ihr gesamtes Guthaben und Ihre Gruppenmitglieder nichts."),
+    #             (2, "Sie und Ihre Gruppenmitglieder investieren jeweils z.B. 10 Punkte."),
+    #             (3, "Ihre Gruppenmitglieder investieren ihr gesamtes Guthaben und Sie nichts."),
+    #             (4, "Weder Sie noch Ihre Gruppenmitglieder investieren."),
+    #         )
+    #     ), blank = True
+    # )
     # def MCQ_2_error_message(self, value):
     #     pattern = re.compile("^\[\'2\', \'3\'\]$")
     #     if pattern.search(value) == None:

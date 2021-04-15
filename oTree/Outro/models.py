@@ -44,7 +44,7 @@ class Player(BasePlayer):
     PQ08 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Freunde spielen eine sehr wichtige Rolle in meinem Leben.", doc="Friends play a very important role in my life")
     PQ09 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Religion spielt eine sehr wichtige Rolle in meinem Leben.", doc="Religion plays a very important role in my life")
     PQ10 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Politik spielt eine sehr wichtige Rolle in meinem Leben.", doc="Politics plays a very important role in my life")
-    PQ11 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Grundsätzlich kann man anderen vertrauen.", doc="Generally, most people can be trusted")
+    PQ11 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Grundsätzlich kann man anderen vertrauen.", doc="Generally, others can be trusted")
     PQ12 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Langfristig lohnt sich harte Arbeit.", doc="In the long run, hard work brings a better life")
     PQ13 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Der Staat sollte sich darum kümmern, dass es den Leuten besser geht.", doc="The government should take responsibility that people are better provided for")
     PQ14 = models.IntegerField(widget=widgets.RadioSelect, choices=[0, 1, 2, 3, 4, 5, 6], label="Einkommen sollten weniger ungleich sein.", doc="Incomes should be made more equal")
