@@ -45,7 +45,7 @@
                             Verständnisfragen und Ihre Geduld bekommen Sie <strong> {{ final_payoff }} </strong>
                             ausgezahlt. Die Entlohnung erfolgt nach Beendigung der Studie zeitnah per SEPA-Überweisung.
                         </p>
-                    </div>
+
                     {% else %}
                     <div class="card-body">
                         <h1 class="display-4 mb-5">Vielen Dank für Ihre Teilnahme.</h1>
@@ -66,15 +66,19 @@
                             anderen Gruppenmitglieder zusammen {{ participant.vars.belief }}
                             Punkte beitragen. Tatsächlich haben die anderen Mitglieder insgesamt
                             {{ participant.vars.others_contribution }} Punkte beigetragen.
-                        </small>
-                        <small>
                             Für Ihre Schätzung haben wir Ihnen deshalb, zusätzlich zu Ihrem Kontostand und der
                             Pünktlichkeitsprämie, {{ participant.vars.belief_money }} gutgeschrieben.
                         </small>
 
-                    </div>
-
                     {% endif %}
+
+                        <div class="d-flex justify-content-center my-4">
+                            <a class="btn btn-primary" href="#" role="button" style="border-radius: 40px;">
+                                Zur Zahlungsabwicklung
+                            </a>
+                        </div>
+
+                    </div>
                 {% endif %}
             </div>
         </div>

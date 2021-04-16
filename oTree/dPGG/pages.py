@@ -67,18 +67,15 @@ class dPGG_Decision(Page):
                 return True
 
     def vars_for_template(self):
-        disaster = 0
         EWE = 0
         diff = 0
         bot_active = False
         if self.round_number > 1:
             EWE = self.group.in_round(self.round_number - 1).EWE
-            disaster = self.group.in_round(self.round_number - 1).disaster
             diff = self.player.in_round(self.round_number - 1).gain
             bot_active = self.group.in_round(self.round_number - 1).bot_active
         return dict(
             EWE = EWE,
-            disaster = disaster,
             diff=diff,
             bot_active=bot_active,
             previous_round=self.round_number - 1,

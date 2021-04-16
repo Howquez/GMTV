@@ -145,10 +145,10 @@
                         </span>
                     </h5>
                     <p>
-                        Sie nehmen jetzt an einer Studie der Hamburger Universitäten teil. Wenn Sie die Instruktionen aufmerksam
-                        lesen und befolgen, können Sie einen beträchtlichen Betrag verdienen, der von Ihren
-                        Entscheidungen und den Entscheidungen weiterer Teilnehmer abhängt. Dieser Betrag wird Ihnen am
-                        Ende des Studie genannt und ausgezahlt.
+                        Sie nehmen jetzt an einer Studie der Hamburger Universitäten teil. Wenn Sie die Instruktionen
+                        aufmerksam lesen und befolgen, können Sie einen beträchtlichen Betrag verdienen, der von Ihren
+                        Entscheidungen und den Entscheidungen weiterer Teilnehmer_innen abhängt. Dieser Betrag wird
+                        Ihnen am Ende des Studie genannt und ausgezahlt.
                     </p>
 
                     <h5>
@@ -169,9 +169,9 @@
                     </h5>
                     <p>
                         Es ist wichtig, dass Sie konzentriert und ohne Unterbrechungen an der Studie teilnehmen.
-                        Sollten Sie die Studie frühzeitig abbrechen oder länger als 3 Minuten keine Entscheidung treffen,
-                        dann können wir Ihre Daten sowie die Daten Ihrer Gruppenmitglieder nicht auswerten. Deshalb
-                        können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen.
+                        Sollten Sie die Studie frühzeitig abbrechen oder länger als 10 bzw. 4 Minuten keine Entscheidung
+                        treffen, dann können wir Ihre Daten sowie die Daten Ihrer Gruppenmitglieder nicht auswerten.
+                        Deshalb können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen.
                     </p>
 
 
@@ -215,9 +215,9 @@
                     <p>
                         Die Studie besteht aus {{ session.config.num_rounds }} Entscheidungsrunden.
                         Zu Beginn der Studie werden Sie mit {{ Constants.num_others_per_group }} weiteren
-                        Teilnehmern gruppiert. In einer Gruppe sind daher {{ Constants.group_size }} Personen, inklusive
-                        Ihnen. Die Zusammensetzung der Gruppe wird sich für die Dauer der Studie nicht verändern.
-                        Weil die Studie anonym ist, kennen Sie Ihre Gruppenmitglieder nicht und Ihre
+                        Teilnehmer_innen gruppiert. In einer Gruppe sind daher {{ Constants.group_size }} Personen,
+                        inklusive Ihnen. Die Zusammensetzung der Gruppe wird sich für die Dauer der Studie nicht
+                        verändern. Weil die Studie anonym ist, kennen Sie Ihre Gruppenmitglieder nicht und Ihre
                         Gruppenmitglieder kennen Sie nicht.
                     </p>
 
@@ -262,13 +262,13 @@
                     </h5>
                     <p>
                         Ihr Guthaben zu Beginn der zweiten Runde entspricht Ihren zurückgelegten Punkten sowie Ihrer
-                        Dividende aus der ersten Runde.
+                        Dividende aus der ersten Runde.<br><br>
 
                         Zu Beginn der zweiten Runde werden Sie dann wieder gefragt, wie viele Punkte Sie zurücklegen und
-                        wie viele Punkte Sie beitragen wollen. Zurückgelegte und beigetragene Punkte funktionieren dabei exakt
-                        genauso wie in der ersten Runde auch: Zurückgelegte Punkte werden bis zur Folgerunde unverändert behalten
-                        und das Ergebnis der Beiträge wird in Form einer Dividende auf alle Gruppenmitglieder
-                        ausgezahlt.
+                        wie viele Punkte Sie beitragen wollen. Zurückgelegte und beigetragene Punkte funktionieren dabei
+                        exakt genauso wie in der ersten Runde auch: Zurückgelegte Punkte werden bis zur Folgerunde
+                        unverändert behalten und das Ergebnis der Beiträge wird in Form einer Dividende auf alle
+                        Gruppenmitglieder ausgezahlt.<br><br>
 
                         Alle weiteren Runden folgen derselben Struktur: Ihr Guthaben zu Beginn einer Runde entspricht
                         den zurückgelegten Punkten und der Dividende der Vorrunde.
@@ -322,6 +322,35 @@
                         {{ session.config.participation_fee }}. Darüber hinaus bekommen Sie einen Verdienst aus der
                         Schätzaufgabe sowie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
                         (also am Ende der letzten) Runde haben.
+                    </p>
+                    <p>
+                        <strong>
+                            Dementsprechend ist ihr Verdienst umso höher, je mehr Guthaben Sie zum Ende der letzten Runde
+                            haben.
+                        </strong>
+                    </p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
+                            Inaktivität
+                        </span>
+                    </h5>
+                    <p>
+                        In der ersten Runde haben Sie 10 Minuten Zeit, um Ihre Entscheidungen zu fällen. In allen
+                        folgenden Runden haben Sie maximal vier Minuten. 30 Sekunden vor Ablauf der jeweiligen Frist,
+                        weisen wir Sie auf die Zeit hin.
+                    </p>
+                    <p>
+                        Diese Fristen sind notwendig, damit Ihre Gruppenmitglieder nicht zu lange auf Ihre
+                        Entscheidungen warten müssen. Sollten Sie länger als 4 bzw. 10 Minuten inaktiv sein, werden
+                        Sie von der Studie ausgeschlossen und durch einen Bot ersetzt, der Entscheidungen für Sie trifft,
+                        damit Ihre Gruppenmitglieder fortfahren können. Diese werden dann darüber benachrichtigt, dass
+                        Sie durch einen Bot ersetzt wurden.
+                    </p>
+                    <p>
+                        Wie oben bereits erwähnt, können wir Ihre Daten nicht verwenden, dann Sie aufgrund von
+                        Inaktivität von der Studie ausgeschlossen werden. Deshalb können wir Ihnen in dem Fall kein Geld
+                        auszahlen.
                     </p>
 
 
@@ -567,7 +596,7 @@
                                     <p>
                                         Zu Beginn der ersten Runde bekommen alle Gruppenmitglieder ein Guthaben in Höhe
                                         von {{ Constants.initial_endowment }} Punkten.
-                                        <strong>Angenommen niemand aus Ihrer Gruppe investiert
+                                        <strong>Angenommen niemand aus Ihrer Gruppe trägt etwas bei
                                             (auch Sie nicht)...</strong>
                                     </p>
                                     {% formfield player.CQ1_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde?</small>"  %}
@@ -587,7 +616,7 @@
                                         Zu Beginn der ersten Runde bekommen alle Gruppenmitglieder ein Guthaben in Höhe
                                         von {{ Constants.initial_endowment }} Punkten.
                                         <strong>Angenommen alle aus Ihrer Gruppe
-                                        investieren alles (auch Sie)...</strong>
+                                        tragen alles bei (auch Sie)...</strong>
                                     </p>
                                     {% formfield player.CQ2_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde?</small>"  %}
                                     {% formfield player.CQ2_2 label="<small>Wie hoch ist das Guthaben von einem anderen Gruppenmitglied zu Beginn der Folgerunde?</small>" %}
@@ -608,10 +637,10 @@
                                     <p>
                                         Stellen Sie sich vor, zu Beginn einer beliebigen Runde ein Guthaben in Höhe von
                                         30 Punkten zu haben und dass Ihre Gruppenmitglieder insgesamt 40 Punkte
-                                        investieren.
+                                        beitragen.
                                     </p>
-                                    {% formfield player.CQ3_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde, wenn Sie 0 Punkte investieren?</small>"  %}
-                                    {% formfield player.CQ3_2 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde, wenn Sie 16 Punkte investieren?</small>" %}
+                                    {% formfield player.CQ3_1 label="<small>Wie hoch ist Ihr Guthaben dann zu Beginn der Folgerunde, wenn Sie 0 Punkte beitragen?</small>"  %}
+                                    {% formfield player.CQ3_2 label="<small>Angenommen Sie entscheiden sich nun doch etwas beizutragen, ist Ihr Guthaben zu Beginn der Folgerunde dann höher oder niedriger?</small>" %}
                                 </div>
                             </div>
                         </div>

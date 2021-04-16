@@ -69,7 +69,6 @@ class Group(BaseGroup):
 
     residual = models.BooleanField(initial=False, doc="if true, group is incomplete")
     EWE = models.BooleanField(initial=False, doc="if true, extreme weather event occurred")
-    disaster = models.BooleanField(initial=False, doc="if true, the EWE has negative effects on stock ")
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.IntegerField(doc="individual share each player receives from this round's contributions")
@@ -92,14 +91,11 @@ class Group(BaseGroup):
             if self.round_number > Constants.safe_rounds:
                 if self.session.config["risk"] > random.uniform(0, 1):
                     self.EWE = True
-                    if self.total_contribution < Constants.threshold * self.wealth:
-                        self.disaster = True
 
     def set_payoffs(self):
 
         # call  methods
         self.set_group_variables()
-        self.set_disaster()
 
         # calculate player-level-variables
         for p in self.get_players():
@@ -117,10 +113,6 @@ class Group(BaseGroup):
                 p.gross_gain = self.individual_share - p.contribution
 
                 p.stock = p.endowment + p.gross_gain
-
-                # implement basic disaster damage
-                if self.disaster:
-                    p.stock = int(math.ceil(p.stock * 0.5))
 
                 p.gain = p.stock - p.endowment
 
@@ -151,7 +143,7 @@ class Group(BaseGroup):
                 if p.participant.vars["belief_money"] >= 0:
                     if not p.is_dropout:
                         if self.round_number == self.session.config["num_rounds"]:
-                            p.payoff = c(p.payoff + p.participant.vars["belief_money"])
+                            p.payoff = c(p.payoff + p.participant.vars["belief_money"]/ self.session.config["real_world_currency_per_point"])
 
 
                 # Make sure participants do not earn anything if they drop out in two steps:

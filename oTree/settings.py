@@ -2,8 +2,8 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name="dPGG",
-        display_name="dPGG Replication",
+        name="GMTV",
+        display_name="GMTV Replication",
         num_rounds=10,
         num_demo_participants=4,
         risk=0.0,

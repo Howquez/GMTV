@@ -72,10 +72,19 @@ class Player(BasePlayer):
         if value != int(30 + Constants.efficiency_factor * 40 / Constants.group_size):
             return "Leider falsch."
 
-    CQ3_2 = models.IntegerField(doc="Comprehension Question 3.2", initial=int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size), blank=True)
-    def CQ3_2_error_message(self, value):
-        if value != int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size):
-            return "Leider falsch."
+    CQ3_2 = models.BooleanField(doc="Comprehension Question 3.2",
+                                widget=widgets.RadioSelect,
+                                choices=[
+                                    [False, "weiß nicht"],
+                                    [True, "niedriger"],
+                                    [False, "höher"]
+                                ]
+                                )
+
+    # CQ3_2 = models.IntegerField(doc="Comprehension Question 3.2", initial=int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size), blank=True)
+    # def CQ3_2_error_message(self, value):
+    #     if value != int(30 - 16 + Constants.efficiency_factor * (40+16) / Constants.group_size):
+    #         return "Leider falsch."
 
     # MCQ_1 = models.StringField(
     #     widget=CheckboxSelectMultiple(

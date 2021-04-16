@@ -105,25 +105,14 @@
                     {% endif %}
 
                     {% if EWE %}
-                        {% if disaster %}
-                            <div class="alert alert-danger mb-4 mt-4 alert-dismissible fade show" role="alert">
-                                Es ist ein Extremwetterereignis eingetreten. Dieses hat Guthaben von Ihnen und den übrigen
-                                Gruppenmitgliedern um die Hälfte reduziert.
+                        <div class="alert alert-success mb-4 mt-4 alert-dismissible fade show" role="alert">
+                            Es ist ein Extremwetterereignis eingetreten. Dieses hatte aber keine Auswirkungen auf
+                            das Guthaben von Ihnen oder den übrigen Gruppenmitgliedern.
 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% else %}
-                            <div class="alert alert-success mb-4 mt-4 alert-dismissible fade show" role="alert">
-                                Es ist ein Extremwetterereignis eingetreten. Dieses hatte aber keine Auswirkungen auf
-                                das Guthaben von Ihnen oder den übrigen Gruppenmitgliedern.
-
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endif %}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     {% endif %}
 
                     <p class="card-text lead mb-1">
@@ -283,7 +272,7 @@
                                 <p>
                                     Sie nehmen jetzt an einer Studie der Hamburger Universitäten teil. Wenn Sie die Instruktionen aufmerksam
                                     lesen und befolgen, können Sie einen beträchtlichen Betrag verdienen, der von Ihren
-                                    Entscheidungen und den Entscheidungen weiterer Teilnehmer abhängt. Dieser Betrag wird Ihnen am
+                                    Entscheidungen und den Entscheidungen weiterer Teilnehmer_innen abhängt. Dieser Betrag wird Ihnen am
                                     Ende des Studie genannt und ausgezahlt.
                                 </p>
 
@@ -325,7 +314,7 @@
                                 <p>
                                     Die Studie besteht aus {{ session.config.num_rounds }} Entscheidungsrunden.
                                     Zu Beginn der Studie werden Sie mit {{ Constants.num_others_per_group }} weiteren
-                                    Teilnehmern gruppiert. In einer Gruppe sind daher {{ Constants.players_per_group }} Personen, inklusive
+                                    Teilnehmern_innen gruppiert. In einer Gruppe sind daher {{ Constants.players_per_group }} Personen, inklusive
                                     Ihnen. Die Zusammensetzung der Gruppe wird sich für die Dauer der Studie nicht verändern.
                                     Weil die Studie anonym ist, kennen Sie Ihre Gruppenmitglieder nicht und Ihre
                                     Gruppenmitglieder kennen Sie nicht.
@@ -425,6 +414,29 @@
                                 <p>
                                     Nach den {{ session.config.num_rounds }} Runden werden wir Sie bitten, einen kurzen Fragebogen
                                     auszufüllen. Im Anschluss daran werden Sie über Ihre Auszahlung informiert.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Inaktivität
+                                    </span>
+                                </h5>
+                                <p>
+                                    In der ersten Runde haben Sie 10 Minuten Zeit, um Ihre Entscheidungen zu fällen. In allen
+                                    folgenden Runden haben Sie maximal vier Minuten. 30 Sekunden vor Ablauf der jeweiligen Frist,
+                                    weisen wir Sie auf die Zeit hin.
+                                </p>
+                                <p>
+                                    Diese Fristen sind notwendig, damit Ihre Gruppenmitglieder nicht zu lange auf Ihre
+                                    Entscheidungen warten müssen. Sollten Sie länger als 4 bzw. 10 Minuten inaktiv sein, werden
+                                    Sie von der Studie ausgeschlossen und durch einen Bot ersetzt, der Entscheidungen für Sie trifft,
+                                    damit Ihre Gruppenmitglieder fortfahren können. Diese werden dann darüber benachrichtigt, dass
+                                    Sie durch einen Bot ersetzt wurden.
+                                </p>
+                                <p>
+                                    Wie oben bereits erwähnt, können wir Ihre Daten nicht verwenden, dann Sie aufgrund von
+                                    Inaktivität von der Studie ausgeschlossen werden. Deshalb können wir Ihnen in dem Fall kein Geld
+                                    auszahlen.
                                 </p>
 
                             </div>
