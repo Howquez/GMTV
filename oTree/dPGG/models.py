@@ -34,7 +34,7 @@ class Constants(BaseConstants):
     belief_elicitation_round = 1
     elicitation_bonus = 30 # points
     timeout = 4 # minutes
-    patience = 6 # minutes
+    patience = 8 # minutes
     patience_bonus = 20 # points
 
 
