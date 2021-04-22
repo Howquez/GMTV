@@ -94,7 +94,7 @@ class Player(BasePlayer):
 
     # Task Comprehension
     Comprehension = models.IntegerField(doc="Respondent's understanding of the tasks",
-                                       label="Haben Sie die Aufgaben gut verstanden?",
+                                       label="Haben Sie die Aufgabe (der letzten 10 Runden) gut verstanden?",
                                        choices=[
                                            [0, "Nein"],
                                            [1, "Eher nicht"],
