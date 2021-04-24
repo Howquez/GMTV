@@ -110,3 +110,8 @@ class Player(BasePlayer):
     CLICCS2 = models.LongStringField(doc="CLICCS' common question #2",
                                      label="Wie gehen Sie damit um?",
                                      blank=True)
+
+    # donation
+    donation = models.CurrencyField(doc="Donation",
+                                    label="Möchten Sie einen Teil Ihres Verdienstes spenden? Wenn ja, wie viel?",
+                                    blank=True)

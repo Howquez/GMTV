@@ -8,6 +8,12 @@ SESSION_CONFIGS = [
         num_demo_participants=4,
         risk=0.0,
         app_sequence=["Intro", "dPGG", "Outro"]
+    ), dict(
+        name="BRET",
+        display_name="Bomb Risk Elicitation Task",
+        num_rounds=10,
+        num_demo_participants=1,
+        app_sequence=["bret"]
     )
 ]
 
