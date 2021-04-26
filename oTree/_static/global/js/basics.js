@@ -27,10 +27,10 @@ if (template == "results" || template == "final"){
 }
 });
 
-// submit in case you don't use buttons
+/*// submit in case you don't use buttons
 function submitPage() {
     document.forms[0].submit()
-}
+}*/
 
 // timer & alert
 setTimeout(

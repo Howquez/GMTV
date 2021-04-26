@@ -9,11 +9,11 @@ SESSION_CONFIGS = [
         risk=0.0,
         app_sequence=["Intro", "dPGG", "Outro"]
     ), dict(
-        name="BRET",
-        display_name="Bomb Risk Elicitation Task",
+        name="HLPL",
+        display_name="Hault & Laury Price List",
         num_rounds=10,
         num_demo_participants=1,
-        app_sequence=["bret"]
+        app_sequence=["HLPL"]
     )
 ]
 
