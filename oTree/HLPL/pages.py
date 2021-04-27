@@ -4,7 +4,39 @@ from .models import Constants
 
 
 class MyPage(Page):
-    pass
+    form_model = "player"
+
+    def get_form_fields(self):
+
+        # unzip list of form_fields from <mpl_choices> list
+        form_fields = [list(t) for t in zip(*self.participant.vars['mpl_choices'])][1]
+        form_fields.extend(["review_instructions", "review_contact"])
+        return form_fields
+
+    def vars_for_template(self):
+        return dict(
+            choices=self.player.participant.vars["mpl_choices"]
+        )
+
+    def js_vars(self):
+        return dict(
+            template="risk",
+        )
+
+    def before_next_page(self):
+        form_fields = [list(t) for t in zip(*self.participant.vars['mpl_choices'])][1]
+        indices = [list(t) for t in zip(*self.participant.vars['mpl_choices'])][0]
+
+        for j, choice in zip(indices, form_fields):
+            choice_i = getattr(self.player, choice)
+            self.participant.vars['mpl_choices_made'][j - 1] = choice_i
+
+        # set payoff
+        self.player.set_payoffs()
+        # determine consistency
+        self.player.set_consistency()
+        # set switching row
+        self.player.set_switching_row()
 
 
 class ResultsWaitPage(WaitPage):

@@ -41,3 +41,12 @@ setTimeout(
     },
     (timeout - 0.5) * 60 * 1000
 );
+
+// open modal onload
+if (template == "risk"){
+    var riskInstructions = document.getElementById("instructionsModal")
+
+    $(document).ready(function(){
+        $(riskInstructions).modal("show")
+    });
+}
