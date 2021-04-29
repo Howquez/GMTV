@@ -88,7 +88,7 @@ class Player(BasePlayer):
         else:
             self.payoff = self.participant.vars["mpl_index_to_pay"]*10
 
-        self.participant.vars["mpl_payoff"] = self.payoff
+        self.participant.vars["mpl_payoff"] = c(self.payoff).to_real_world_currency(self.session)
 
 
 

@@ -18,7 +18,7 @@ $(function () {
 
 // reverse the table's order
 $(function(){
-if (template == "results" || template == "final"){
+if (template == "results"){ //
     $("tbody").each(function(elem,index){
       var arr = $.makeArray($("tr",this).detach());
       arr.reverse();

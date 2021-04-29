@@ -92,16 +92,6 @@ class Player(BasePlayer):
                                  blank=True,
                                  widget=widgets.RadioSelect)
 
-    # Task Comprehension
-    Comprehension = models.IntegerField(doc="Respondent's understanding of the tasks",
-                                       label="Haben Sie die Aufgabe (der letzten 10 Runden) gut verstanden?",
-                                       choices=[
-                                           [0, "Nein"],
-                                           [1, "Eher nicht"],
-                                           [2, "Eher schon"],
-                                           [3, "Ja"]
-                                       ],
-                                       widget=widgets.RadioSelect)
 
     # CLICCS common questions
     CLICCS1 = models.LongStringField(doc="CLICCS' common question #1",

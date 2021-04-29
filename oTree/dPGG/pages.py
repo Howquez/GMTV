@@ -128,10 +128,45 @@ class dPGG_Results(Page):
             num_rounds=self.session.config["num_rounds"],
         )
 
+
+
+class dPGG_Comprehension(Page):
+
+    form_model = "player"
+    form_fields = ["comprehension"]
+
+    def is_displayed(self):
+        if not self.participant.vars["is_residual_player"]:
+            if self.round_number >= self.session.config["num_rounds"]:
+                return True
+
+    def get_timeout_seconds(self):
+        if self.participant.vars.get("is_dropout"):
+            return 1  # instant timeout, 1 second
+
+
+
+class dPGG_Donation(Page):
+
+    form_model = "player"
+    form_fields = ["donation"]
+
+    def is_displayed(self):
+        if not self.participant.vars["is_residual_player"]:
+            if self.round_number >= self.session.config["num_rounds"]:
+                return True
+
+    def get_timeout_seconds(self):
+        if self.participant.vars.get("is_dropout"):
+            return 1  # instant timeout, 1 second
+
+    def before_next_page(self):
+        self.player.make_donation()
+        self.player.belief_bonus()
+
     def app_after_this_page(self, upcoming_apps):
         if self.round_number >= self.session.config["num_rounds"]:
             return upcoming_apps[0]
-
 
 
 
@@ -139,4 +174,6 @@ page_sequence = [dPGG_InitialWaitPage,
                  dPGG_Belief,
                  dPGG_Decision,
                  ResultsWaitPage,
-                 dPGG_Results]
+                 dPGG_Results,
+                 dPGG_Comprehension,
+                 dPGG_Donation]

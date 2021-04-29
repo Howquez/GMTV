@@ -93,7 +93,7 @@
 
 
     <!-- Landscape View Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="landscapeModal" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -126,6 +126,22 @@
 
         </div>
     </div>
+
+    {% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show my-5" role="alert">
+        <br>
+        <p>
+            Bei der Beantwortung der Verständnisfragen ist Ihnen ein Fehler unterlaufen. Versuchen Sie es bitte noch
+            einmal.
+        </p>
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">
+                &times;
+            </span>
+        </button>
+    </div>
+    {% endif %}
 
     <!-- Instructions -->
     <div class="card mt-5">

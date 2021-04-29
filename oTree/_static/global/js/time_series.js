@@ -52,7 +52,7 @@
 		suffix = " Euro";
 		plot_line_width = 0;
 		show_in_legend = true;
-		plot_height = 6;
+		plot_height = 4;
 		max = num_rounds - 1;
 	}
 
@@ -135,13 +135,13 @@ var chart = Highcharts.chart('container', {
     series: [{
         name: "Kontostand",
         data: series,
-        showInLegend: show_in_legend
+        showInLegend: false //show_in_legend
     },{
         name: "Pünktlichkeitsprämie",
         data: flat,
         color: "#00fad1",
-        showInLegend: show_in_legend,
-        visible: template == "final"
+        showInLegend: false, //show_in_legend,
+        visible: false //template == "final"
     }]
 });
 

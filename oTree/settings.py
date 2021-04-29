@@ -5,9 +5,9 @@ SESSION_CONFIGS = [
         name="GMTV",
         display_name="GMTV Replication",
         num_rounds=10,
-        num_demo_participants=4,
+        num_demo_participants=2,
         risk=0.0,
-        app_sequence=["Intro", "dPGG", "Outro"]
+        app_sequence=["Intro", "dPGG", "HLPL", "Outro"]
     ), dict(
         name="HLPL",
         display_name="Hault & Laury Price List",
@@ -23,7 +23,9 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=0.05, participation_fee=5.00, doc=""
+    real_world_currency_per_point=0.05,
+    participation_fee=5.00,
+    doc=""
 )
 
 # ISO-639 code

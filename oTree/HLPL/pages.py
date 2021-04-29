@@ -3,7 +3,7 @@ from ._builtin import Page, WaitPage
 from .models import Constants
 
 
-class MyPage(Page):
+class HLPL_Decision(Page):
     form_model = "player"
 
     def get_form_fields(self):
@@ -38,13 +38,4 @@ class MyPage(Page):
         # set switching row
         self.player.set_switching_row()
 
-
-class ResultsWaitPage(WaitPage):
-    pass
-
-
-class Results(Page):
-    pass
-
-
-page_sequence = [MyPage, ResultsWaitPage, Results]
+page_sequence = [HLPL_Decision]

@@ -22,7 +22,7 @@ Dynamic Public Goods Game where the current round's earnings determine the next 
 
 class Constants(BaseConstants):
     name_in_url = "dPGG"
-    players_per_group = 4 # adjust Constants.group_size in Intro App when adjusting this
+    players_per_group = 2 # adjust Constants.group_size in Intro App when adjusting this
     num_others_per_group = players_per_group - 1
     num_rounds = 10
     initial_endowment = 20
@@ -99,7 +99,7 @@ class Group(BaseGroup):
 
         # calculate player-level-variables
         for p in self.get_players():
-            # players who were stuck on the initial wait page due to group member's drop outs have 0-earnings as well as
+            # players who were stuck on the initial wait page due to group member's drop outs have 0-earnings plus a
             # little bonus implemented as a payoff in the last round
             if p.participant.vars["is_residual_player"]:
                 p.stock = 0
@@ -108,43 +108,43 @@ class Group(BaseGroup):
                 # give them a patience bonus
                 if self.round_number == self.session.config["num_rounds"]:
                     p.payoff = c(Constants.patience_bonus)
-            # all the others essentially earn their gains (which can be negative)
+
+            # all the others essentially earn their gains
             else:
                 p.gross_gain = self.individual_share - p.contribution
 
                 p.stock = p.endowment + p.gross_gain
 
-                p.gain = p.stock - p.endowment
+                p.gain = p.stock - p.endowment # this may differ from gross_gain if damages (due to EWE arise)
 
                 # p.participant.vars["stock"].append(round(p.stock*self.session.config["real_world_currency_per_point"], 1))
                 p.participant.vars["stock"].append(p.stock)
                 p.participant.vars["euros"].append(c(p.stock).to_real_world_currency(self.session))
 
-
-                # payoff
                 if p.round_number == 1:
                     p.payoff = c(p.stock)
                 else:
                     p.payoff = c(p.gain)
 
-                # add payoff if belief was correct
+
+
+                # add payoff from belief elicitation
                 if self.round_number == Constants.belief_elicitation_round:
                     others_contribution = (self.total_contribution - p.contribution)
+                    bonus = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
+                    p.participant.vars["belief_bonus"] = bonus
+                    p.participant.vars["belief_payoff"] = c(bonus).to_real_world_currency(self.session)
+
+
                     # vars for Outro
-                    p.participant.vars["guess"] = 0
-                    p.participant.vars["others_contribution"] = others_contribution
-                    p.participant.vars["belief"] = p.belief
-                    p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(
-                        self.session)
+                    # p.participant.vars["guess"] = 0
+                    # p.participant.vars["others_contribution"] = others_contribution
+                    # p.participant.vars["belief"] = p.belief
+                    # p.participant.vars["belief_bonus"] = c(Constants.elicitation_bonus).to_real_world_currency(
+                    #     self.session)
+
                     # actual payoff operation
-                    guess = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
-                    p.participant.vars["belief_money"] = guess.to_real_world_currency(self.session)
-
-                if p.participant.vars["belief_money"] >= 0:
-                    if not p.is_dropout:
-                        if self.round_number == self.session.config["num_rounds"]:
-                            p.payoff = c(p.payoff + p.participant.vars["belief_money"]/ self.session.config["real_world_currency_per_point"])
-
+                    #.to_real_world_currency(self.session)
 
                 # Make sure participants do not earn anything if they drop out in two steps:
                 #1: if they are marked as a dropout, they shouldn't earn anything
@@ -154,21 +154,33 @@ class Group(BaseGroup):
                         if self.round_number == 1:
                             p.payoff = - (self.session.config["participation_fee"] / self.session.config["real_world_currency_per_point"])
 
-                #2: in their last round, also substract the participation fee and belief earnings
-                    # if self.round_number == self.session.config["num_rounds"]:
-                    #     p.payoff = c(- self.session.config["participation_fee"]/self.session.config["real_world_currency_per_point"])
-
                 #2: substract their endowment, as well as the participation fee and the belief elicitation bonus
                 # immediately after their dropout
                 if self.round_number > 1:
                     if not p.is_dropout == p.in_round(self.round_number - 1).is_dropout:
                         p.payoff = - (p.endowment + self.session.config["participation_fee"]/self.session.config["real_world_currency_per_point"])
 
+                # store payoff in participant var
+                if self.round_number == self.session.config["num_rounds"]:
+                    p.participant.vars["dPGG_payoff"] = c(p.stock).to_real_world_currency(self.session)
+                    p.participant.vars["showup_fee"] = self.session.config['participation_fee']
 
 
 
 
 class Player(BasePlayer):
+
+    comprehension = models.IntegerField(doc="Respondent's understanding of the tasks",
+                                        label="Haben Sie die Aufgabe gut verstanden?",
+                                        choices=[
+                                            [0, "Nein"],
+                                            [1, "Eher nicht"],
+                                            [2, "Eher schon"],
+                                            [3, "Ja"]
+                                        ],
+                                        widget=widgets.RadioSelect)
+
+    donation = models.IntegerField(doc="Participant's donation (in points) for carbon offsetting")
 
     review_instructions = models.IntegerField(doc="Counts the number of times a player reviews instructions.",
                                               initial=0,
@@ -203,6 +215,19 @@ class Player(BasePlayer):
             return Constants.initial_endowment
         else:
             return self.in_round(self.round_number - 1).stock
+
+    def donation_max(self):
+        return self.stock
+
+    def make_donation(self):
+        self.payoff = self.payoff - self.donation
+        self.participant.vars["donation"] = c(self.donation).to_real_world_currency(self.session)
+
+    def belief_bonus(self):
+        if self.participant.vars["belief_bonus"] >= 0:
+            if not self.is_dropout:
+                if self.round_number == self.session.config["num_rounds"]:
+                    self.payoff = self.payoff + self.participant.vars["belief_bonus"]
 
     def waiting_too_long(self):
         return time.time() - self.participant.vars['wait_page_arrival'] > Constants.patience * 60

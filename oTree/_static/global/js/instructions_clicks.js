@@ -15,3 +15,7 @@ document.getElementById("instructions_icon").addEventListener("click", function(
     countClicks("instructions");
 }, false);
 
+document.getElementById("instructions_text").addEventListener("click", function() {
+    countClicks("instructions");
+}, false);
+
