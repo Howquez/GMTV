@@ -61,7 +61,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Aufbau </a>
+                <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Gruppenentscheidungen </a>
             </li>
 
             <li class="nav-item">
@@ -169,6 +169,29 @@
 
                     <h5>
                         <span class="badge badge-content mt-4">
+                            Aufbau
+                        </span>
+                    </h5>
+                    <p>
+                        Die Studie besteht aus mehreren Teilen. Sie werden
+                    </p>
+                    <ol>
+                        <li>mit einer Schätzaufgabe konfrontiert,</li>
+                        <li>Entscheidungen in einer Gruppe treffen,</li>
+                        <li>Risikoabwägungen machen und</li>
+                        <li>einen kurzen Fragebogen beantworten.</li>
+                    </ol>
+                    <p>
+                        Sie können in allen Aufgaben mit Ausnahme vo dem Fragebogen und in Abhängigkeit von Ihren
+                        Entscheidungen Geld verdienen.
+                    </p>
+                    <p>
+                        Die folgenden Seiten werden Ihnen die Gruppenentscheidungen erklären. Alles Weitere wird Ihnen
+                        danach erklärt.
+                    </p>
+
+                    <h5>
+                        <span class="badge badge-content mt-4">
                             Wechselkurs
                         </span>
                     </h5>
@@ -217,10 +240,10 @@
             </div>
 
 
-            <!-- Part 2: Aufbau  -->
+            <!-- Part 2: Gruppenentscheidungen  -->
             <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
                 <div class="card-header bg-white border-bottom-0 mt-3 sticky-top">
-                    <p class="h4">Aufbau</p>
+                    <p class="h4">Gruppenentscheidungen</p>
                 </div>
                 <div class="card-body">
                     <h5>
@@ -318,13 +341,7 @@
                         Vor der ersten Runde werden wir Sie fragen, was Sie glauben, wie viel die anderen
                         Gruppenmitglieder zum Gruppenprojekt beitragen werden. Für Ihre Schätzung werden Sie entlohnt:
                         Je besser Sie schätzen, desto mehr Punkte können Sie in der Schätzaufgabe verdienen.
-                        Wie genau Sie entlohnt werden, wird Ihnen dann erklärt.
                     </p>
-                    <p>
-                        Nach den {{ session.config.num_rounds }} Runden werden wir Sie bitten, einen kurzen Fragebogen
-                        auszufüllen. Im Anschluss daran werden Sie über Ihre Auszahlung informiert.
-                    </p>
-
 
                     <h5>
                         <span class="badge badge-content mt-4">
@@ -338,12 +355,11 @@
                         {{ session.config.participation_fee }}. Darüber hinaus bekommen Sie einen Verdienst aus der
                         Schätzaufgabe sowie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
                         (also am Ende der letzten) Runde haben.
-                    </p>
-                    <p>
                         <strong>
                             Dementsprechend ist ihr Verdienst umso höher, je mehr Guthaben Sie zum Ende der letzten Runde
                             haben.
                         </strong>
+                        Zusätzlich bekommen Sie den Verdienst aus der Risikoabwägung.
                     </p>
 
                     <h5>
