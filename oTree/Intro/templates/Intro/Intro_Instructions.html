@@ -86,12 +86,6 @@
 
     </nav>
 
-    <!-- Hidden Tracking Fields -->
-    <input type="hidden" name="window_width" id="id_window_width" value="0"/>
-    <input type="hidden" name="window_height" id="id_window_height" value="0"/>
-    <input type="hidden" name="browser" id="id_browser" value="0"/>
-
-
     <!-- Landscape View Modal -->
     <div class="modal fade" id="landscapeModal" role="dialog">
         <div class="modal-dialog">
@@ -331,7 +325,7 @@
                         Alle weiteren Gruppenmitglieder erhalten exakt die gleichen Instruktionen wie Sie.
                     </p>
 
-
+                    {% if session.config.belief_elicitation %}
                     <h5>
                         <span class="badge badge-content mt-4">
                             Weiterer Verlauf
@@ -342,6 +336,7 @@
                         Gruppenmitglieder zum Gruppenprojekt beitragen werden. Für Ihre Schätzung werden Sie entlohnt:
                         Je besser Sie schätzen, desto mehr Punkte können Sie in der Schätzaufgabe verdienen.
                     </p>
+                    {% endif %}
 
                     <h5>
                         <span class="badge badge-content mt-4">
@@ -352,9 +347,16 @@
                         Am Ende der Studie bekommen Sie einen Verdienst, der sich, wenn Sie alle Runden durchlaufen und
                         alle Fragen beantortet haben, aus den folgenden Bestandteilen
                         zusammensetzt: Zum einen bekommen Sie die Pünktlichkeitsprämie in Höhe von
-                        {{ session.config.participation_fee }}. Darüber hinaus bekommen Sie einen Verdienst aus der
+                        {{ session.config.participation_fee }}.
+
+                        {% if session.config.belief_elicitation %}
+                        Darüber hinaus bekommen Sie einen Verdienst aus der
                         Schätzaufgabe sowie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
                         (also am Ende der letzten) Runde haben.
+                        {% else %}
+                        Darüber hinaus bekommen Sie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
+                        (also am Ende der letzten) Runde haben.
+                        {% endif %}
                         <strong>
                             Dementsprechend ist ihr Verdienst umso höher, je mehr Guthaben Sie zum Ende der letzten Runde
                             haben.
@@ -380,7 +382,7 @@
                         Sie durch einen Bot ersetzt wurden.
                     </p>
                     <p>
-                        Wie oben bereits erwähnt, können wir Ihre Daten nicht verwenden, dann Sie aufgrund von
+                        Wie oben bereits erwähnt, können wir Ihre Daten nicht verwenden, wenn Sie aufgrund von
                         Inaktivität von der Studie ausgeschlossen werden. Deshalb können wir Ihnen in dem Fall kein Geld
                         auszahlen.
                     </p>

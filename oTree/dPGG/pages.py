@@ -20,8 +20,9 @@ class dPGG_Belief(Page):
 
     def is_displayed(self):
         if not self.participant.vars["is_residual_player"]:
-            if self.round_number == Constants.belief_elicitation_round:
-                return True
+            if self.session.config["belief_elicitation"]:
+                if self.round_number == Constants.belief_elicitation_round:
+                    return True
 
     def js_vars(self):
         return dict(
@@ -131,7 +132,6 @@ class dPGG_Results(Page):
 
 
 class dPGG_Comprehension(Page):
-
     form_model = "player"
     form_fields = ["comprehension"]
 

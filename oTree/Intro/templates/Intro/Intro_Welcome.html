@@ -5,16 +5,27 @@
     <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block scripts %}
+<script src="{% static 'global/js/general_information.js' %}"></script>
+{% endblock %}
+
 
 {% block content %}
 <body onload="">
 <img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
 
 
+<!-- Hidden Tracking Fields -->
+    <input type="hidden" name="window_width" id="id_window_width" value="0"/>
+    <input type="hidden" name="window_height" id="id_window_height" value="0"/>
+    <input type="hidden" name="browser" id="id_browser" value="0"/>
+
+
+<!-- Content -->
     <div class="card mt-5">
         <div class="card-body">
             <h1 class="display-4">Willkommen!</h1>
-            <p class="lead">Vielen Dank für Ihre Bereitschaft an der Studie teilzunehmen.</p>
+            <p class="lead">Vielen Dank für Ihre Bereitschaft, an der Studie teilzunehmen.</p>
 
             <table class="table mt-5 mb-5 table-responsive">
                 <tbody>
@@ -37,8 +48,8 @@
                         <tr>
                         <th scope="row">Technische Vorraussetzungen</th>
                         <td>
-                            Die Studie funktioniert sowohl auf Smartphones und Tablets als auch auf Laptops und PCs. Außerdem
-                            funktioniert sie in allen modernen Browsern. Für einen möglichst reibungslosen Ablauf raten wir
+                            Die Studie funktioniert sowohl auf Smartphones und Tablets als auch auf Laptops und PCs
+                            sowie in allen modernen Browsern. Für einen möglichst reibungslosen Ablauf raten wir
                             dazu, einen Laptop oder PC mit stabiler Internetverbindung zu benutzen.
                         </td>
                     </tr>

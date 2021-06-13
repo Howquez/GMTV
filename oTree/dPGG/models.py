@@ -130,10 +130,13 @@ class Group(BaseGroup):
 
                 # add payoff from belief elicitation
                 if self.round_number == Constants.belief_elicitation_round:
-                    others_contribution = (self.total_contribution - p.contribution)
-                    bonus = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
-                    p.participant.vars["belief_bonus"] = bonus
-                    p.participant.vars["belief_payoff"] = c(bonus).to_real_world_currency(self.session)
+                    if self.session.config["belief_elicitation"]:
+                        others_contribution = (self.total_contribution - p.contribution)
+                        bonus = c(Constants.elicitation_bonus - abs(p.belief - others_contribution))
+                        p.participant.vars["belief_bonus"] = bonus
+                        p.participant.vars["belief_payoff"] = c(bonus).to_real_world_currency(self.session)
+                    else:
+                        p.participant.vars["belief_bonus"] = 0
 
 
                     # vars for Outro

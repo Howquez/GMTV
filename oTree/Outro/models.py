@@ -72,14 +72,14 @@ class Player(BasePlayer):
                                         [3, "Mittlere Reife, Realschul- oder gleichwertiger Abschluss"],
                                         [4, "Abgeschlossene Lehre"],
                                         [5, "Fachabitur, Fachhochschulreife"],
-                                        [6, "Fachhochschul-/Hochschulabschluss"],
-                                        [7, "Abitur, Hochschulreife"],
+                                        [6, "Abitur, Hochschulreife"],
+                                        [7, "Fachhochschul-/Hochschulabschluss"],
                                         [8, "Anderer Abschluss"],
                                     ],
                                     widget=widgets.RadioSelect)
 
     Income = models.IntegerField(doc="Respondent's income",
-                                 label="Welches monatliche Budget haben Sie zur Verfügung? Bitte geben Sie Ihr monatliches Nettoeinkommen an.",
+                                 label="Wie hoch war das gesamte Einkommen aller Mitglieder Ihres Haushalts im letzten Monat?",
                                  choices=[
                                      [0, "0-500 €"],
                                      [1, "501-1.000 €"],

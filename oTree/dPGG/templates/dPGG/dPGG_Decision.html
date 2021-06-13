@@ -401,9 +401,21 @@
                                     Am Ende der Studie bekommen Sie einen Verdienst, der sich, wenn Sie alle Runden durchlaufen und
                                     alle Fragen beantortet haben, aus den folgenden Bestandteilen
                                     zusammensetzt: Zum einen bekommen Sie die Pünktlichkeitsprämie in Höhe von
-                                    {{ session.config.participation_fee }}. Darüber hinaus bekommen Sie einen Verdienst aus der
+                                    {{ session.config.participation_fee }}.
+
+                                    {% if session.config.belief_elicitation %}
+                                    Darüber hinaus bekommen Sie einen Verdienst aus der
                                     Schätzaufgabe sowie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
                                     (also am Ende der letzten) Runde haben.
+                                    {% else %}
+                                    Darüber hinaus bekommen Sie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
+                                    (also am Ende der letzten) Runde haben.
+                                    {% endif %}
+                                    <strong>
+                                        Dementsprechend ist ihr Verdienst umso höher, je mehr Guthaben Sie zum Ende der letzten Runde
+                                        haben.
+                                    </strong>
+                                    Zusätzlich bekommen Sie den Verdienst aus der Risikoabwägung.
                                 </p>
 
                                 <h5>

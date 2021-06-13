@@ -7,6 +7,7 @@ SESSION_CONFIGS = [
         num_rounds=10,
         num_demo_participants=2,
         risk=0.0,
+        belief_elicitation=False,
         app_sequence=["Intro", "dPGG", "HLPL", "Outro"]
     ), dict(
         name="HLPL",

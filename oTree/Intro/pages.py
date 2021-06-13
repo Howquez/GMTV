@@ -5,14 +5,13 @@ import time
 
 
 class Intro_Welcome(Page):
-    pass
+    form_model = "player"
+    form_fields = ["window_width", "window_height", "browser"]
+
 
 class Intro_Instructions(Page):
     form_model = "player"
-    form_fields = ["window_width", "window_height", "browser",
-                   "CQ1_1", "CQ1_2", "CQ2_1", "CQ2_2", "CQ3_1", "CQ3_2",
-                   # "MCQ_1", "MCQ_2"
-                   ]
+    form_fields = ["CQ1_1", "CQ1_2", "CQ2_1", "CQ2_2", "CQ3_1", "CQ3_2"]
 
     def js_vars(self):
         return dict(

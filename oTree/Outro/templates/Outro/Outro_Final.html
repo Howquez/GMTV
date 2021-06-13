@@ -77,10 +77,12 @@
                                         <td scope="row"><small>Pünktlichkeitsprämie</small></td>
                                         <td class="text-right"><small>+{{ participant.vars.showup_fee }}</small></td>
                                     </tr>
+                                    {% if session.config.belief_elicitation %}
                                     <tr>
                                         <td scope="row"><small>Schätzaufgabe</small></td>
                                         <td class="text-right"><small>+{{ participant.vars.belief_payoff }}</small></td>
                                     </tr>
+                                    {% endif %}
                                     <tr>
                                         <td scope="row"><small>Gruppenentscheidungen</small></td>
                                         <td class="text-right"><small>+{{ participant.vars.dPGG_payoff }}</small></td>
@@ -95,7 +97,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row"><small>Summe</small></th>
-                                        <th class="text-right"><small>+{{ final_payoff }}</small></th>
+                                        <th class="text-right"><small>={{ final_payoff }}</small></th>
                                     </tr>
                                 </tbody>
                             </table>
