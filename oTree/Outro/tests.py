@@ -6,12 +6,6 @@ import random
 
 class PlayerBot(Bot):
     def play_round(self):
-        # yield pages.Outro_Comprehension, dict(Comprehension="yes")
-        if random.randint(0, 100) > 90:
-            a = 0
-        else:
-            a = random.randint(1, 3)
-        yield pages.Outro_Comprehension, dict(Comprehension=a)
         yield pages.Outro_Personality, dict(PQ01=random.randint(0, 6),
                                             PQ02=random.randint(0, 6),
                                             PQ03=random.randint(0, 6),
