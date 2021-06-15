@@ -11,6 +11,7 @@
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 <script src="{% static 'global/js/basics.js' %}"></script>
+<script src="{% static 'global/js/donation.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -41,7 +42,7 @@
                 <div class="card-body">
 
                     <p class="card-text lead mb-1">
-                        Möchten Sie Ihrenn CO<sub>2</sub>Fußabdruck (oder Teile davon) ausgleichen?
+                        Möchten Sie zum Klimaschutz beitragen?
                     </p>
 
                     <hr class="mt-4">
@@ -50,8 +51,7 @@
                     <p class="mt-1">
                         <small>
                             Falls ja, können Sie unten einen Teil Ihrer Einnahmen aus den letzten 10 Runden (also bis zu
-                            {{ player.stock }} Punkte) für einen Emissionsausgleich spenden. Von den Spenden aller
-                            Teilnehmer_innen werden wir
+                            {{ player.stock }} Punkte) spenden. Von den Spenden aller Teilnehmer_innen werden wir
                             <a href="https://www.compensators.org/wie-geht-das/" target="_blank">
                                 Verschmutzungs-Zertifikate aus dem Europäischen Emissionshandel kaufen und diese
                                 dauerhaft stilllegen.
@@ -62,8 +62,9 @@
                             <br><br>
                         </small>
                         <small>
-                            Insofern senkt Ihr Beitrag die effektive Obergrenze für die erlaubten Emissionen innerhalb
-                            Europas.
+                            Dadurch verkleinert sich die gesamte Menge der europäischen CO<sub>2</sub>-Emissionen.
+                            Auf diese Weise schützen Sie das Klima. Was Sie in dieser Studie tun, hat daher einen
+                            direkten Einfluss auf das Klima.
                             <br><br>
                         </small>
                         <small>
@@ -75,6 +76,13 @@
                             einsehen können. Notieren Sie sich diesen Code (<samp>{{ participant.code }}</samp>), um Ihre Spende zuordnen zu können.
                         </small>
                     </p>
+
+                    <label id="CO2kg">
+                        <small>
+                            Durch eine Spende in Höhe von 20 Punkten würden Sie die europäischen Emissionen um ca. 16 kg
+                            verringern.
+                        </small>
+                    </label>
 
                     <div class="form-group row mt-5 mb-4">
                         <div class="col">
@@ -88,6 +96,7 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

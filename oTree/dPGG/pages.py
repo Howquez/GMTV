@@ -156,6 +156,11 @@ class dPGG_Donation(Page):
             if self.round_number >= self.session.config["num_rounds"]:
                 return True
 
+    def js_vars(self):
+        return dict(
+            exchange_rate=self.session.config["real_world_currency_per_point"],
+        )
+
     def get_timeout_seconds(self):
         if self.participant.vars.get("is_dropout"):
             return 1  # instant timeout, 1 second
