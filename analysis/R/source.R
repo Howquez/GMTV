@@ -5,4 +5,10 @@ source("R/data.R")
 source("R/gaechteretal.R", echo = TRUE)
 source("R/viz.R")
 
-# create_article("../reports/Mar21JourFixe.Rmd")
+# install.packages("DescTools")
+# library(DescTools)
+# create_article("../reports/researchProposal.Rmd")
+
+rmarkdown::render(input = "../reports/Treatments.Rmd",
+                  output_format = "all",
+                  output_file = "Treatments")

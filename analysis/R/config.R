@@ -11,11 +11,18 @@ listOfPackages <- c("renv",          # package management
                     "lubridate",     # working with dates
                     "plotly",        # interactive visualizations
                     "wesanderson",   # color palette
-                    "highcharter",   # get nice viz
+                    "gridExtra",
+                    "patchwork",
+                    "highcharter",   # get nice interactive viz
                     "Rmisc",         # Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
                     "data.table",
-                    "magrittr"       # get %>% and %<>% operators
+                    "magrittr",      # get %>% and %<>% operators
+                    "sjPlot",        # regression tables
+                    "stargazer",     # regression tables
+                    "plm",           # clustered standard errors
+                    "lmtest"
                     )
+
 
 newPackages <- listOfPackages[!(listOfPackages %in% installed.packages()[, "Package"])]
 
@@ -27,4 +34,4 @@ for(package in listOfPackages){
   require(package, character.only = TRUE)
 }
 
-# snapshot()
+# renv::snapshot()

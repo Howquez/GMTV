@@ -79,7 +79,7 @@ class Player(BasePlayer):
                                     widget=widgets.RadioSelect)
 
     Income = models.IntegerField(doc="Respondent's income",
-                                 label="Wie hoch war das gesamte Einkommen aller Mitglieder Ihres Haushalts im letzten Monat?",
+                                 label="Welches monatliche Budget haben Sie zur Verfügung? Bitte geben Sie Ihr eigenes monatliches Nettoeinkommen an.",
                                  choices=[
                                      [0, "0-500 €"],
                                      [1, "501-1.000 €"],

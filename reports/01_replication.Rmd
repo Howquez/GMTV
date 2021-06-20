@@ -62,11 +62,17 @@ For this purpose only a few variables are relevant:
 - ```pu[1-3]``` report the other group members' contributions in a period
 - ```sum``` equals the sum of contributions of a group in a period.
 - ```gini``` reports a group's Gini coefficient in a period.
-- ```mean``` reports the fraction of sum/gdp -- but only in some cases.
+- ```mean``` reports the fraction of sum/lagged(gdp).
+
+Additionally, I compute two new measures, ```gini2``` as well as ```share```. The new ```gini2``` differs from the original as it is constant within groups. ```share``` is equivalent to the original mean but relies on the current gdp instead of the past one as a denominator.
 
 As a consequence, the first few rows of the data look as follows:
 
 ```{r showData, layout = "l-body-outset"}
+noPunish10[,
+           share := sum/gdp,
+           by = .(subj_id, per)]
+
 noPunish10[,
            gini2 := Gini(c(tokens, other1, other2, other3)),
            by = .(subj_id, per)]
@@ -74,7 +80,7 @@ noPunish10[,
 noPunish10[order(gr_id, per),
            .(exp_num, gr_id, per, subj_id, # IDs
              tokens, other1, other2, other3, gdp, #endowments
-             putin, pu1, pu2, pu3, sum, mean, # contributions
+             putin, pu1, pu2, pu3, sum, mean, share, # contributions
              gini, gini2
            )] %>% 
   head(n = 15) %>%
@@ -90,11 +96,11 @@ We see group 501 in the first two periods where subjects 511 to 514 start with a
 
 With a sum of contributions being 35 and a return of contributions of 1.5, each subject receives ```ceil(13.125)``` =14 points from the group project such that the next period's ```gdp``` equals 101.
 
-Unfortunately, the Gini coefficient (```gini```) is a little off as one can see in the second period: Even though this is a group level variable, the group has three different coefficient in the same period. For this reason, I re-calculated the coefficient and called it ```gini2```.
+The Gini coefficient (```gini```) is a little off as one can see in the second period: Even though this is a group level variable, the group has three different coefficient in the same period. With the same absolute amount of contributions as in the first period,the second period ```mean``` (based on the past ```gdp```) is larger than ```share``` in the second period, because the ```gdp``` grew.
 
 # Data Manipulation
 
-To resemble the oTree data, the original data has to be transformed a little. Therefore, some variables will be renamed, variables (such as ```stock```^[Gächter et al. called this variable _Wealth_] and ```gain```) will be created and, most notably, the unit of observations will be groups such that subject-level variables will be dropped.^[In addition, I will ignore the original Gini coefficient and use mine instead.]
+To resemble the oTree data, the original data has to be transformed a little. Therefore, some variables will be renamed, variables (such as ```stock```^[The income at the end of a period.] and ```gain```^[The tokens earned in a period.]) will be created and, most notably, the unit of observations will be groups such that subject-level variables will be dropped.
 
 ```{r writeData}
 
@@ -274,10 +280,8 @@ gaechterFirstRound <- temp[,
                              treatment,
                              session.code = exp_num,
                              groupID = gr_id,
-                             belief = NA,
                              othersContribution = sumputin - putin,
                              ownContribution = putin,
-                             fairness = NA,
                              trust = NA,
                              comprehension = NA)]
 
@@ -312,6 +316,9 @@ gaechterFirstRound %>%
         button_type = "default"
         )
 ```
+
+
+# Covariates
 
 # Outlook
 

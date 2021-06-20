@@ -48,7 +48,7 @@ Eventually, this report can also be used to process real data. This only require
 
 ## First round
 
-Eventually, we'll be interested in the participants' first round's behavior, as it indicates their willingness to cooperate before they interact with one another. As a consequence, `r NROW(DT)` participants yield `r NROW(DT)` observations that shall be stored in a data table called ```replicationFirstRound```. This table carries information on a participant's ```belief``` about the sum of other group members' contributions, their actual contribution ```othersContribution```, the participant's ```ownContribution```, some fairness measure that equals the difference between the own contribution and the expected average contribution of others and a trust measure^["Generally, others can be trusted". Likert scale ranging from 0 (do not agree) to 6 (agree).] obtained from the personality test at the end of the experiment.
+Eventually, we'll be interested in the participants' first round's behavior, as it indicates their willingness to cooperate before they interact with one another. As a consequence, `r NROW(DT)` participants yield `r NROW(DT)` observations that shall be stored in a data table called ```replicationFirstRound```. This table carries information on a participant's group members'  contributions ```othersContribution```, the participant's ```ownContribution``` and a trust measure^["Generally, others can be trusted". Likert scale ranging from 0 (do not agree) to 6 (agree).] obtained from the personality test at the end of the experiment.
 
 ```{r firstRound}
 # create data table 
@@ -57,12 +57,10 @@ replicationFirstRound <- DT[,
                    treatment = "replication",
                    session.code,
                    groupID = dPGG.1.group.id_in_subsession,
-                   belief = dPGG.1.player.belief,
                    othersContribution = dPGG.1.group.total_contribution - dPGG.1.player.contribution,
                    ownContribution = dPGG.1.player.contribution,
-                   fairness = dPGG.1.player.contribution - dPGG.1.player.belief/3,
                    trust = Outro.1.player.PQ11,
-                   comprehension = Outro.1.player.Comprehension)]
+                   comprehension = dPGG.10.player.comprehension)]
 
 # save data
 fileName <- "replication2021"
@@ -98,7 +96,7 @@ Because we are most interested in the dynamics of the game, the most important d
 ```{r subsetData}
 
 # most relevant variables
-mRegex <- "participant\\.code$|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|^dPGG.1.player.id_in_group$|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active|Comprehension"
+mRegex <- "participant\\.code$|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|^dPGG.1.player.id_in_group$|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active|10.player.comprehension|10.player.donation"
 mainVariables <- str_subset(string = names(DT),
                             pattern = mRegex)
 subset <- DT[, ..mainVariables]
@@ -114,7 +112,7 @@ subset[,
                     sep = "_")]
 
 # add share as contribution/endowment
-for(round in 1:15){
+for(round in 1:10){
   contribution <- glue("dPGG.{round}.player.contribution")
   endowment <- glue("dPGG.{round}.player.endowment")
   subset[, glue("dPGG.{round}.player.share") := subset[[contribution]]/subset[[endowment]] ]
@@ -228,7 +226,7 @@ replication <- Reduce(function(...) merge(..., by=c(cluster, "round"), all = TRU
 
 ```{r misc}
 # flag observations where at least one participant did not understand the game
-noComp <- subset[Outro.1.player.Comprehension == 0,
+noComp <- subset[dPGG.10.player.comprehension == 0,
                  groupID] %>% unique()
 replication[,
      noComprehension := 0]
@@ -270,6 +268,8 @@ replication %>%
         )
 ```
 
+
+# Covariates
 
 # Outlook
 

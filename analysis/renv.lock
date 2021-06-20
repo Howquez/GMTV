@@ -88,10 +88,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.12.5-7",
+      "Version": "0.13.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "43c4c783c3a051c704351ef8fc41fff0"
+      "Hash": "079cb1f03ff972b30401ed05623cbe92"
     },
     "rlang": {
       "Package": "rlang",
