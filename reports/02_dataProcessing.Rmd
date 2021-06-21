@@ -36,7 +36,7 @@ This report is the second in a series of reports covering this project. It expla
 
 # Simulations
 
-```{r loadData}
+```{r readData}
 # read simulated data
 DT <- read.csv("../data/simulation/all_apps_wide.csv", stringsAsFactors = FALSE) %>%
   data.table()
@@ -44,7 +44,7 @@ DT <- read.csv("../data/simulation/all_apps_wide.csv", stringsAsFactors = FALSE)
 
 I simulated `r NROW(DT)` participants. To do so, I wrote oTree bots that follow rather simple rules and act mostly random. As a consequence, this data yields no information apart from the structure of the data itself.
 
-Eventually, this report can also be used to process real data. This only requires us to load a different data set.^[It may also require us to merge multiple data sets -- that depends on whether the lab delivers one or several data sets and remains to be discussed.]
+Eventually, this report can also be used to process real data. This only requires us to read a different data set.^[It may also require us to merge multiple data sets -- that depends on whether the lab delivers one or several data sets and remains to be discussed.]
 
 ## First round
 
@@ -56,7 +56,7 @@ replicationFirstRound <- DT[,
                  .(participant.code,
                    treatment = "replication",
                    session.code,
-                   groupID = dPGG.1.group.id_in_subsession,
+                   groupID = paste(session.code, dPGG.1.group.id_in_subsession, sep = "_"),
                    othersContribution = dPGG.1.group.total_contribution - dPGG.1.player.contribution,
                    ownContribution = dPGG.1.player.contribution,
                    trust = Outro.1.player.PQ11,
@@ -224,6 +224,28 @@ Finally, the data that was stored in a list will be reduced to a single data tab
 replication <- Reduce(function(...) merge(..., by=c(cluster, "round"), all = TRUE), DTs)
 ```
 
+
+Next, we'll flag groups that are richer and poorer than the median group.
+
+```{r calcRich}
+
+median <- replication[round == 10,
+                      median(stock)]
+
+richGroups <- replication[round == 10 & stock > median,
+                          unique(groupID)] 
+
+poorGroups <- replication[round == 10 & stock < median,
+                          unique(groupID)]
+
+replication[groupID %in% richGroups,
+            rich := TRUE]
+
+replication[groupID %in% poorGroups,
+            rich := FALSE]
+
+```
+
 ```{r misc}
 # flag observations where at least one participant did not understand the game
 noComp <- subset[dPGG.10.player.comprehension == 0,
@@ -270,6 +292,49 @@ replication %>%
 
 
 # Covariates
+
+```{r createCovs}
+
+# add variables
+DT[, treatment := "replication"]
+
+DT[, groupID := paste(session.code, dPGG.1.group.id_in_subsession, 
+                    sep = "_")]
+
+# subset
+cRegex <- "participant.code|session.code|treatment|groupID|Outro.1.player|10.player.donation"
+covariates <- str_subset(string = names(DT),
+                            pattern = cRegex)
+CT <- DT[, ..covariates]
+
+# rename
+names(CT) <- names(CT) %>% 
+  str_replace_all(pattern =".*player\\.",
+                  replacement = "") %>%
+  str_to_lower()
+
+names(CT)[names(CT) == "groupid"] <- "groupID"
+
+# refactor
+CT[, donation := donation/20]
+
+CT[, gender := ifelse(test = gender == "female",
+                      yes  = 1,
+                      no   = 0)]
+
+
+
+replicationCovariates <- CT
+
+# write data
+fileName <- "replication2021"
+save(replicationCovariates, 
+     file = paste0("../data/processed/rda/", fileName, "_COVS", ".rda"))
+write.csv(replicationCovariates, 
+          file = paste0("../data/processed/csv/", fileName, "_COVS", ".csv"))
+
+# no display or download button as these data may qualify as PII
+```
 
 # Outlook
 

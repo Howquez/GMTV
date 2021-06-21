@@ -29,8 +29,12 @@ library(downloadthis)
 library(Rmisc)
 library(ggplot2)
 library(wesanderson)
+library(lubridate)
+```
 
+```{r readData}
 DT <- read_dta(file="../data/gaechteretal/GMTV-data.dta") %>% data.table()
+CT <- read_dta(file="../data/gaechteretal/GMTV-questionnaire-data.dta") %>% data.table()
 ```
 
 # Background 
@@ -45,6 +49,7 @@ The data can be found in the supplementary materials they provide in their [onli
 
 ```{r data, include = FALSE}
 noPunish10 <- DT[exp_num == 5 | exp_num == 8 | exp_num == 9]
+# noPunish10 <- DT[longgame == 0 & punish == 0 & exp_num <= 10]
 ```
 
 Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a ```data.table``` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
@@ -102,13 +107,12 @@ The Gini coefficient (```gini```) is a little off as one can see in the second p
 
 To resemble the oTree data, the original data has to be transformed a little. Therefore, some variables will be renamed, variables (such as ```stock```^[The income at the end of a period.] and ```gain```^[The tokens earned in a period.]) will be created and, most notably, the unit of observations will be groups such that subject-level variables will be dropped.
 
-```{r writeData}
-
+```{r manipulateData}
 noPunish10[,
            share := sum/gdp,
            by = .(subj_id, per)]
 
-gaechter <- noPunish10[order(gr_id, per),
+GMTV <- noPunish10[order(gr_id, per),
            .(treatment = "noPunish10", 
              session.code = exp_num,
              groupID = gr_id, 
@@ -124,22 +128,44 @@ gaechter <- noPunish10[order(gr_id, per),
              # EWE = 0,
              noComprehension = 0)] %>% unique()
 
-gaechter %>%
+
+# create rich indicator (just as highgdp in original data)
+median <- GMTV[round == 10,
+                   median(stock)]
+
+richGroups <- GMTV[round == 10 & stock > median,
+                       unique(groupID)] 
+
+poorGroups <- GMTV[round == 10 & stock < median,
+                       unique(groupID)]
+
+GMTV[groupID %in% richGroups,
+         rich := TRUE]
+
+GMTV[groupID %in% poorGroups,
+         rich := FALSE]
+
+
+# display data
+GMTV %>%
   head(n = 15) %>%
   kbl() %>% 
   kable_paper("hover", 
               full_width = TRUE,
               fixed_thead = TRUE)
 
-save(gaechter, file = "../data/processed/rda/gaechter2017.rda")
-write.csv(gaechter, file ="../data/processed/csv/gaechter2017.csv")
+```
+
+```{r writeData}
+save(GMTV, file = "../data/processed/rda/GMTV2017.rda")
+write.csv(GMTV, file ="../data/processed/csv/GMTV2017.csv")
 
 ```
 
 ```{r downloadData}
-gaechter %>%
+GMTV %>%
       download_this(
-        output_name = "Gaechter2017noPunish10",
+        output_name = "GMTV2017noPunish10",
         output_extension = ".csv", # CSV output
         button_label = "Download csv",
         button_type = "default"
@@ -162,7 +188,7 @@ layout <- theme(panel.background = element_rect(fill = "white"),
 
 
 ```{r plotContribution}
-plotDT <- summarySE(data = gaechter, 
+plotDT <- summarySE(data = GMTV, 
                       measurevar = "contribution", 
                       groupvars=c("treatment", "round"),
                       na.rm = FALSE,
@@ -184,7 +210,7 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
 ```
 
 ```{r plotShare}
-plotDT <- summarySE(data = gaechter, 
+plotDT <- summarySE(data = GMTV, 
                       measurevar = "share", 
                       groupvars=c("treatment", "round"),
                       na.rm = FALSE,
@@ -206,7 +232,7 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
 ```
 
 ```{r plotStock}
-plotDT <- summarySE(data = gaechter, 
+plotDT <- summarySE(data = GMTV, 
                       measurevar = "stock", 
                       groupvars=c("treatment", "round"),
                       na.rm = FALSE,
@@ -228,7 +254,7 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
 ```
 
 ```{r plotGini}
-plotDT <- summarySE(data = gaechter, 
+plotDT <- summarySE(data = GMTV, 
                       measurevar = "gini", 
                       groupvars=c("treatment", "round"),
                       na.rm = FALSE,
@@ -275,7 +301,7 @@ temp <- temp[,
 temp <- temp[exp_num == 1 | exp_num == 3,
              treatment := "noPunish15"]
 
-gaechterFirstRound <- temp[,
+GMTVFirstRound <- temp[,
                            .(participant.code = subj_id,
                              treatment,
                              session.code = exp_num,
@@ -288,18 +314,18 @@ gaechterFirstRound <- temp[,
 rm(list = c("temp"))
 
 # save data
-fileName <- "gaechter2017"
-save(gaechterFirstRound, 
+fileName <- "GMTV2017"
+save(GMTVFirstRound, 
      file = paste0("../data/processed/rda/", fileName, "_R1", ".rda"))
-write.csv(gaechterFirstRound, 
+write.csv(GMTVFirstRound, 
           file = paste0("../data/processed/csv/", fileName, "_R1", ".csv"))
 ```
 
-`r NROW(gaechterFirstRound)` participants yield `r NROW(gaechterFirstRound)` independent observations that are stored in a data table called ```gaechterFirstRound```. These observations are displayed below and can, once more, be downloaded by a click on the button. As before, the data is also saved in ```../data/processed/```.
+`r NROW(GMTVFirstRound)` participants yield `r NROW(GMTVFirstRound)` independent observations that are stored in a data table called ```GMTVFirstRound```. These observations are displayed below and can, once more, be downloaded by a click on the button. As before, the data is also saved in ```../data/processed/```.
 
 ```{r displayFirstRound}
 # display data
-gaechterFirstRound %>%
+GMTVFirstRound %>%
   head(n = 15) %>%
   kbl() %>% 
   # scroll_box(height = "200px") %>%
@@ -308,9 +334,9 @@ gaechterFirstRound %>%
               fixed_thead = TRUE)
 
 # create download button
-gaechterFirstRound %>%
+GMTVFirstRound %>%
       download_this(
-        output_name = "gaechter2017_R1",
+        output_name = "GMTV2017_R1",
         output_extension = ".csv", # CSV output
         button_label = "Download csv",
         button_type = "default"
@@ -319,6 +345,43 @@ gaechterFirstRound %>%
 
 
 # Covariates
+
+```{r subsetCovs}
+GMTVCovariates <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
+                         .(treatment = "noPunish10",
+                           session.code = exp_num,
+                           groupID = gr_id,
+                           participant.code = subj_id,
+                           gender,
+                           age = Sys.Date() %>% lubridate::year() - age,
+                           pq01 = q1,
+                           pq02 = q2,
+                           pq03 = q3,
+                           pq04 = q4,
+                           pq05 = q5,
+                           pq06 = q6,
+                           pq07 = q7,
+                           pq08 = q8,
+                           pq09 = q9,
+                           pq10 = q10,
+                           pq11 = q11,
+                           pq12 = q12,
+                           pq13 = q13,
+                           pq14 = q14,
+                           donation = don
+                           )]
+
+# write data
+fileName <- "GMTV2017"
+save(GMTVCovariates, 
+     file = paste0("../data/processed/rda/", fileName, "_COVS", ".rda"))
+write.csv(GMTVCovariates, 
+          file = paste0("../data/processed/csv/", fileName, "_COVS", ".csv"))
+
+# no display or download button as these data were not made available online by the authors
+```
+
+
 
 # Outlook
 

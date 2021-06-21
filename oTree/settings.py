@@ -5,17 +5,18 @@ SESSION_CONFIGS = [
         name="GMTV",
         display_name="GMTV Replication",
         num_rounds=10,
-        num_demo_participants=2,
+        num_demo_participants=4,
         risk=0.0,
         belief_elicitation=False,
         app_sequence=["Intro", "dPGG", "HLPL", "Outro"]
-    ), dict(
-        name="HLPL",
-        display_name="Hault & Laury Price List",
-        num_rounds=10,
-        num_demo_participants=1,
-        app_sequence=["HLPL"]
-    )
+    ),
+    #     dict(
+    #     name="HLPL",
+    #     display_name="Hault & Laury Price List",
+    #     num_rounds=10,
+    #     num_demo_participants=1,
+    #     app_sequence=["HLPL"]
+    # )
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

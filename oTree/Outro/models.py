@@ -102,6 +102,6 @@ class Player(BasePlayer):
                                      blank=True)
 
     # donation
-    donation = models.CurrencyField(doc="Donation",
-                                    label="Möchten Sie einen Teil Ihres Verdienstes spenden? Wenn ja, wie viel?",
-                                    blank=True)
+    # donation = models.CurrencyField(doc="Donation",
+    #                                 label="Möchten Sie einen Teil Ihres Verdienstes spenden? Wenn ja, wie viel?",
+    #                                 blank=True)

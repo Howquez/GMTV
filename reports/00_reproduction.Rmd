@@ -346,6 +346,7 @@ patchwork <- patchwork + plot_layout(guides = "collect")
 patchwork
 
 ```
+
 ```{r summary1, results = "asis", warning = FALSE}
 
 if(knitr::is_html_output()){

@@ -27,7 +27,6 @@ class Outro_CLICCS(Page):
 
 class Outro_Final(Page):
     form_model = "player"
-    form_fields = ["donation"]
 
     def vars_for_template(self):
         return dict(

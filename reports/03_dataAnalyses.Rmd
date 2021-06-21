@@ -26,6 +26,8 @@ library(kableExtra)
 library(downloadthis)
 library(ggplot2)
 library(wesanderson)
+library(patchwork)
+library(stargazer)
 ```
 
 
@@ -36,22 +38,30 @@ In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods 
 This report is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
 
 ```{r readData}
-load(file="../data/processed/rda/gaechter2017.rda")        # read gaechter
-load(file="../data/processed/rda/gaechter2017_R1.rda")     # read gaechterFirstRound
-load(file="../data/processed/rda/replication2021.rda")     # read replication
-load(file="../data/processed/rda/replication2021_R1.rda")  # read replicationFirstRound
+load(file="../data/processed/rda/GMTV2017.rda")          # read GMTV
+load(file="../data/processed/rda/GMTV2017_R1.rda")       # read GMTVFirstRound
+load(file="../data/processed/rda/GMTV2017_COVS.rda")     # read GMTVCovariates
+load(file="../data/processed/rda/replication2021.rda")       # read replication
+load(file="../data/processed/rda/replication2021_R1.rda")    # read replicationFirstRound
+load(file="../data/processed/rda/replication2021_COVS.rda")  # read replicationCovariates
 ```
 
 ```{r cbind}
-main <- rbindlist(list(replication, gaechter), 
+main <- rbindlist(list(replication, GMTV), 
                   use.names = TRUE)
 
-R1   <- rbindlist(list(replicationFirstRound, gaechterFirstRound), 
+R1   <- rbindlist(list(replicationFirstRound, GMTVFirstRound), 
                   use.names = TRUE)
+
+covs <- rbindlist(list(replicationCovariates, GMTVCovariates), 
+                  use.names = TRUE,
+                  fill = TRUE)
+
+rm(list = c("replication", "GMTV", "replicationFirstRound", "GMTVFirstRound", "GMTVCovariates", "replicationCovariates"))
 ```
 
 
-# Graphs
+# Results
 
 ```{r layout}
 layout <- theme(panel.background = element_rect(fill = "white"),
@@ -65,7 +75,10 @@ layout <- theme(panel.background = element_rect(fill = "white"),
                 )
 ```
 
-```{r firstRound}
+
+## First Round
+
+```{r firstRound, eval = FALSE}
 ggplot(R1, aes(y=othersContribution, x=belief)) +
   layout +
   geom_abline(intercept = 0, slope = 1, linetype="dashed", alpha = 0.66) +
@@ -91,3 +104,226 @@ ggplot(R1, aes(y=ownContribution, x=othersContribution/3)) +
   
 ```
 
+## Provision of the public good and wealth creation
+
+```{r plotContributions}
+
+SUM <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "contribution"]
+
+SUM[,
+    sum := round(contribution/4)]
+
+upperLimit <- SUM$contribution %>% max() %>% round() + 10
+
+p1 <- ggplot(data = SUM, 
+             aes(x = round, y = contribution, fill = treatment, color = treatment, lty = treatment)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Average Amount of Tokens contributed") +
+  scale_color_manual(values = wes_palette("GrandBudapest1"))
+
+rm(list = c("SUM"))
+```
+
+
+```{r plotShareOfContributions, fig.cap = "The average amount of tokens contributed over time in treatments."}
+
+SHARE <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "share"]
+
+upperLimit <- 1
+
+p2 <- ggplot(data = SHARE, 
+             aes(x = round, y = share, fill = treatment, color = treatment, lty = treatment)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Share of Current Endowment contributed") +
+  scale_color_manual(values = wes_palette("GrandBudapest1"))
+
+patchwork <- p1 + p2 & theme(legend.position = "bottom")
+patchwork <- patchwork + plot_layout(guides = "collect")
+patchwork
+
+rm(list = c("SHARE", "p1", "p2"))
+```
+
+
+```{r summary1, results = "asis", warning = FALSE, fig.cap = "test"}
+
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+replication <- main[treatment == "replication" & round == 10, stock]
+GMTV    <- main[treatment == "noPunish10" & round == 10, stock]
+
+
+rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
+temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
+                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
+
+stargazer(temp,
+          summary.stat = c("mean", "median","sd", "max", "min", "n"),
+          type = type, 
+          flip = TRUE, 
+          header=FALSE)
+
+rs1 <- wilcox.test(replication, GMTV)$p.value %>% round(digits = 4) %>% formatC(format = "f", digits = 4)
+
+```
+
+The rank sum test yields a p-Value of `r rs1` for the mean ```stock``` a.k.a _Wealth_ during the last period of the game.
+
+
+```{r tableStock, results = "asis", warning = FALSE}
+
+# create subsets
+main_all  <- main[round == 10]
+main_poor <- main[round == 10 & rich == FALSE]
+main_rich <- main[round == 10 & rich == TRUE]
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = stock ~ treatment, data = main_all),
+          lm(formula = stock ~ treatment, data = main_poor),
+          lm(formula = stock ~ treatment, data = main_rich),
+
+          column.labels = c("All", "Below median", "Above median"),
+          model.numbers = FALSE,
+          dep.var.labels = "Wealth (Table 2)",
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+```{r plotStock, fig.cap = "Average wealth over time across treatments."}
+STOCK <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "stock"]
+
+upperLimit <- STOCK$stock %>% max() %>% round() + 10
+
+ggplot(data = STOCK, 
+       aes(x = round, y = stock, fill = treatment, color = treatment, lty = treatment)) +
+          layout +
+          theme(legend.position="bottom") +
+          # geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:10) +
+          scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+          labs(y = "Wealth") +
+          scale_color_manual(values = wes_palette("GrandBudapest1"))
+
+rm(list = c("STOCK"))
+```
+
+
+## Inequality
+
+```{r plotInequality, fig.cap = "Average Gini coefficient over time across treatments."}
+GINI <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "gini"]
+
+upperLimit <- GINI$gini %>% max() %>% round(digits = 1) + 0.10
+
+ggplot(data = GINI, 
+       aes(x = round, y = gini, fill = treatment, color = treatment, lty = treatment)) +
+          layout +
+          theme(legend.position="bottom") +
+          # geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:10) +
+          scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+          labs(y = "Gini coefficient") +
+          scale_color_manual(values = wes_palette("GrandBudapest1"))
+
+rm(list = c("GINI"))
+```
+
+
+```{r tableGINI, results = "asis", warning = FALSE}
+
+# create subsets
+main_all  <- main[round == 10]
+main_poor <- main[round == 10 & rich == FALSE]
+main_rich <- main[round == 10 & rich == TRUE]
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = gini ~ treatment, data = main_all),
+          lm(formula = gini ~ treatment, data = main_poor),
+          lm(formula = gini ~ treatment, data = main_rich),
+
+          column.labels = c("All", "Below median", "Above median"),
+          model.numbers = FALSE,
+          dep.var.labels = "Wealth (Table 2)",
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+
+```{r summary2, results = "asis", warning = FALSE}
+
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+replication <- main[treatment == "replication" & round == 10, gini]
+GMTV    <- main[treatment == "noPunish10" & round == 10, gini]
+
+
+rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
+temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
+                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
+
+stargazer(temp,
+          summary.stat = c("mean", "median","sd", "max", "min", "n"),
+          type = type, 
+          flip = TRUE, 
+          header=FALSE)
+
+rs2 <- wilcox.test(replication, GMTV)$p.value %>% round(digits = 4) %>% formatC(format = "f", digits = 4)
+
+```
+
+The rank sum test yields a p-Value of `r rs2` for the mean ```gini``` during the last period of the game.
+
+
+## Sample Properties
