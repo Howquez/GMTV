@@ -371,6 +371,8 @@ GMTVCovariates <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
                            donation = don
                            )]
 
+GMTVCovariates[donation %>% is.na, donation := 0]
+
 # write data
 fileName <- "GMTV2017"
 save(GMTVCovariates, 

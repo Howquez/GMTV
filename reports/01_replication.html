@@ -92,8 +92,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--  https://schema.org/Article -->
-  <meta property="article:published" itemprop="datePublished" content="2021-06-21" />
-  <meta property="article:created" itemprop="dateCreated" content="2021-06-21" />
+  <meta property="article:published" itemprop="datePublished" content="2021-06-22" />
+  <meta property="article:created" itemprop="dateCreated" content="2021-06-22" />
   <meta name="article:author" content="Hauke Roggenkamp" />
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -114,7 +114,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","bibliography","output"]}},"value":[{"type":"character","attributes":{},"value":["1. Original Data"]},{"type":"character","attributes":{},"value":["Reproducing Gächter et al.'s main findings.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Hauke Roggenkamp"]},{"type":"character","attributes":{},"value":["https://github.com/Howquez"]},{"type":"character","attributes":{},"value":["CLICCS"]},{"type":"character","attributes":{},"value":["https://www.cliccs.uni-hamburg.de/"]}]}]},{"type":"character","attributes":{},"value":["2021-06-21"]},{"type":"character","attributes":{},"value":["biblio.bib"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","toc_float","code_folding"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]},{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","bibliography","output"]}},"value":[{"type":"character","attributes":{},"value":["1. Original Data"]},{"type":"character","attributes":{},"value":["Reproducing Gächter et al.'s main findings.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Hauke Roggenkamp"]},{"type":"character","attributes":{},"value":["https://github.com/Howquez"]},{"type":"character","attributes":{},"value":["CLICCS"]},{"type":"character","attributes":{},"value":["https://www.cliccs.uni-hamburg.de/"]}]}]},{"type":"character","attributes":{},"value":["2021-06-22"]},{"type":"character","attributes":{},"value":["biblio.bib"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","toc_float","code_folding"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]},{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1461,7 +1461,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"1. Original Data","description":"Reproducing Gächter et al.'s main findings.","authors":[{"author":"Hauke Roggenkamp","authorURL":"https://github.com/Howquez","affiliation":"CLICCS","affiliationURL":"https://www.cliccs.uni-hamburg.de/","orcidID":""}],"publishedDate":"2021-06-21T00:00:00.000+00:00","citationText":"Roggenkamp, 2021"}
+{"title":"1. Original Data","description":"Reproducing Gächter et al.'s main findings.","authors":[{"author":"Hauke Roggenkamp","authorURL":"https://github.com/Howquez","affiliation":"CLICCS","affiliationURL":"https://www.cliccs.uni-hamburg.de/","orcidID":""}],"publishedDate":"2021-06-22T00:00:00.000+00:00","citationText":"Roggenkamp, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1480,7 +1480,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="d-byline">
   Hauke Roggenkamp <a href="https://github.com/Howquez" class="uri">https://github.com/Howquez</a> (CLICCS)<a href="https://www.cliccs.uni-hamburg.de/" class="uri">https://www.cliccs.uni-hamburg.de/</a>
   
-<br />2021-06-21
+<br />2021-06-22
 </div>
 
 <div class="d-article">
@@ -3913,6 +3913,8 @@ Show code
                            pq14 <span class="op">=</span> <span class="va">q14</span>,
                            donation <span class="op">=</span> <span class="va">don</span>
                            <span class="op">)</span><span class="op">]</span>
+
+<span class="va">GMTVCovariates</span><span class="op">[</span><span class="va">donation</span> <span class="op">%&gt;%</span> <span class="va">is.na</span>, <span class="va">donation</span> <span class="op">:=</span> <span class="fl">0</span><span class="op">]</span>
 
 <span class="co"># write data</span>
 <span class="va">fileName</span> <span class="op">&lt;-</span> <span class="st">&quot;GMTV2017&quot;</span>

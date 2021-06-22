@@ -70,7 +70,8 @@ layout <- theme(panel.background = element_rect(fill = "white"),
                 legend.key = element_rect(fill = "white"),
                 axis.line.x.bottom = element_line(size = 0.25),
                 axis.line.y.left = element_line(size = 0.25),
-                plot.margin = unit(c(1,1,1,1), "cm"),
+                axis.title.y = element_text(size = rel(0.75)),
+                plot.margin = margin(c(0.25,0.25,0.25,0.25), "cm"),
                 legend.title = element_blank()
                 )
 ```
@@ -127,7 +128,8 @@ p1 <- ggplot(data = SUM,
   scale_x_continuous(name="",  breaks = 1:15) +
   scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
   labs(y = "Average Amount of Tokens contributed") +
-  scale_color_manual(values = wes_palette("GrandBudapest1"))
+  scale_color_manual(values = wes_palette("GrandBudapest1")) + 
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
 
 rm(list = c("SUM"))
 ```
@@ -153,9 +155,7 @@ p2 <- ggplot(data = SHARE,
   labs(y = "Share of Current Endowment contributed") +
   scale_color_manual(values = wes_palette("GrandBudapest1"))
 
-patchwork <- p1 + p2 & theme(legend.position = "bottom")
-patchwork <- patchwork + plot_layout(guides = "collect")
-patchwork
+p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 
 rm(list = c("SHARE", "p1", "p2"))
 ```
@@ -210,7 +210,7 @@ stargazer(lm(formula = stock ~ treatment, data = main_all),
 
           column.labels = c("All", "Below median", "Above median"),
           model.numbers = FALSE,
-          dep.var.labels = "Wealth (Table 2)",
+          dep.var.labels = "Wealth",
           header=FALSE,
           covariate.labels = c("Replication"),
 
@@ -220,13 +220,23 @@ stargazer(lm(formula = stock ~ treatment, data = main_all),
 
 ```{r plotStock, fig.cap = "Average wealth over time across treatments."}
 STOCK <- main[,
-            lapply(.SD, mean, na.rm = TRUE),
-            by = c("round", "treatment"),
-            .SDcols = "stock"]
+              lapply(.SD, mean, na.rm = TRUE),
+              by = c("round", "treatment"),
+              .SDcols = "stock"]
 
-upperLimit <- STOCK$stock %>% max() %>% round() + 10
+STOCKr <- main[rich == TRUE,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("round", "treatment"),
+               .SDcols = "stock"]
 
-ggplot(data = STOCK, 
+STOCKp <- main[rich == FALSE,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("round", "treatment"),
+               .SDcols = "stock"]
+
+upperLimit <- STOCKr$stock %>% max() %>% round() + 20
+
+p1 <- ggplot(data = STOCK, 
        aes(x = round, y = stock, fill = treatment, color = treatment, lty = treatment)) +
           layout +
           theme(legend.position="bottom") +
@@ -236,9 +246,36 @@ ggplot(data = STOCK,
           scale_x_continuous(name="",  breaks = 1:10) +
           scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
           labs(y = "Wealth") +
+          scale_color_manual(values = wes_palette("GrandBudapest1")) + 
+          theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+
+p2 <- ggplot(data = STOCKr, 
+       aes(x = round, y = stock, fill = treatment, color = treatment, lty = treatment)) +
+          layout +
+          theme(legend.position="bottom") +
+          # geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:10) +
+          scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+          labs(y = "Wealth (Rich)") +
           scale_color_manual(values = wes_palette("GrandBudapest1"))
 
-rm(list = c("STOCK"))
+p3 <- ggplot(data = STOCKp, 
+       aes(x = round, y = stock, fill = treatment, color = treatment, lty = treatment)) +
+          layout +
+          theme(legend.position="bottom") +
+          # geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:10) +
+          scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+          labs(y = "Wealth (Poor)") +
+          scale_color_manual(values = wes_palette("GrandBudapest1"))
+
+(p1 | (p2 / p3)) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+
+rm(list = c("STOCK", "STOCKr", "STOCKp", "p1", "p2", "p3"))
 ```
 
 
@@ -246,13 +283,23 @@ rm(list = c("STOCK"))
 
 ```{r plotInequality, fig.cap = "Average Gini coefficient over time across treatments."}
 GINI <- main[,
-            lapply(.SD, mean, na.rm = TRUE),
-            by = c("round", "treatment"),
-            .SDcols = "gini"]
+             lapply(.SD, mean, na.rm = TRUE),
+             by = c("round", "treatment"),
+             .SDcols = "gini"]
+
+GINIr <- main[rich == TRUE,
+              lapply(.SD, mean, na.rm = TRUE),
+              by = c("round", "treatment"),
+              .SDcols = "gini"]
+
+GINIp <- main[rich == FALSE,
+              lapply(.SD, mean, na.rm = TRUE),
+              by = c("round", "treatment"),
+              .SDcols = "gini"]
 
 upperLimit <- GINI$gini %>% max() %>% round(digits = 1) + 0.10
 
-ggplot(data = GINI, 
+p1 <- ggplot(data = GINI, 
        aes(x = round, y = gini, fill = treatment, color = treatment, lty = treatment)) +
           layout +
           theme(legend.position="bottom") +
@@ -261,10 +308,37 @@ ggplot(data = GINI,
           geom_point() +
           scale_x_continuous(name="",  breaks = 1:10) +
           scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
-          labs(y = "Gini coefficient") +
+          labs(y = "Gini Coefficient") +
+          scale_color_manual(values = wes_palette("GrandBudapest1")) + 
+          theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+
+p2 <- ggplot(data = GINIr, 
+       aes(x = round, y = gini, fill = treatment, color = treatment, lty = treatment)) +
+          layout +
+          theme(legend.position="bottom") +
+          # geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:10) +
+          scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+          labs(y = "Gini (Rich)") +
           scale_color_manual(values = wes_palette("GrandBudapest1"))
 
-rm(list = c("GINI"))
+p3 <- ggplot(data = GINIp, 
+       aes(x = round, y = gini, fill = treatment, color = treatment, lty = treatment)) +
+          layout +
+          theme(legend.position="bottom") +
+          # geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:10) +
+          scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+          labs(y = "Gini (Poor)") +
+          scale_color_manual(values = wes_palette("GrandBudapest1"))
+
+(p1 | (p2 / p3)) + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+
+rm(list = c("GINI", "GINIp", "GINIr", "p1", "p2", "p3"))
 ```
 
 
@@ -288,7 +362,7 @@ stargazer(lm(formula = gini ~ treatment, data = main_all),
 
           column.labels = c("All", "Below median", "Above median"),
           model.numbers = FALSE,
-          dep.var.labels = "Wealth (Table 2)",
+          dep.var.labels = "Gini",
           header=FALSE,
           covariate.labels = c("Replication"),
 
@@ -327,3 +401,67 @@ The rank sum test yields a p-Value of `r rs2` for the mean ```gini``` during the
 
 
 ## Sample Properties
+
+```{r matchOutcomes}
+covariates <- data.table::merge.data.table(x  = covs,
+                                           y  = main[round == 10, .(groupID, stock, gini)],
+                                           by = c("groupID"),
+                                           allow.cartesian = TRUE)
+```
+
+
+
+```{r tableCovariates, results = "asis", warning = FALSE}
+
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+olsStock1 <- lm(formula = stock ~ gender + age + pq01 + pq02 + pq03 + pq04 + pq05 + pq06 +
+                  pq07 +pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
+                data = covariates[treatment == "replication"])
+olsStock2  <- lm(formula = stock ~ gender + age,
+                data = covariates[treatment == "replication"])
+olsGINI1  <- lm(formula = gini ~ gender + age + pq01 + pq02 + pq03 + pq04 + pq05 + pq06 +
+                  pq07 + pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
+                data = covariates[treatment == "replication"])
+olsGINI2  <- lm(formula = gini ~ gender + age,
+                data = covariates[treatment == "replication"])
+
+stargazer(olsStock1, olsStock2,
+          olsGINI1, olsGINI2,
+          
+          se = list(coef(summary(olsStock1, cluster = c("groupID")))[, 2],
+                    coef(summary(olsStock2, cluster = c("groupID")))[, 2],
+                    coef(summary(olsGINI1,  cluster = c("groupID")))[, 2],
+                    coef(summary(olsGINI2,  cluster = c("groupID")))[, 2]),
+
+          column.labels   = c("Wealth", "Gini"),
+          dep.var.labels.include = FALSE,
+          column.separate = c(2, 2),
+          model.numbers = FALSE,
+          header=FALSE,
+          covariate.labels = c("female", "age", 
+                               "I am a quick thinker",
+                               "I get easily offended",
+                               "very satisfied",
+                               "very dependent",
+                               "generally happy",
+                               "work important",
+                               "family important",
+                               "friends important",
+                               "religion important",
+                               "politics important",
+                               "most people trusted",
+                               "hard work better",
+                               "government responsible",
+                               "incomes equal"),
+          notes = "Robust standard errors in parentheses, clustered by group ID.",
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```

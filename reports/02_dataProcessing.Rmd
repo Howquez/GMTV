@@ -317,6 +317,8 @@ names(CT)[names(CT) == "groupid"] <- "groupID"
 
 # refactor
 CT[, donation := donation/20]
+CT[donation %>% is.na, donation := 0]
+
 
 CT[, gender := ifelse(test = gender == "female",
                       yes  = 1,
