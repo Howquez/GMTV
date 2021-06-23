@@ -25,15 +25,15 @@ rmarkdown::render(input = "../reports/03_dataAnalyses.Rmd",
                   output_file = "03_Analyses")
 
 # Render PDF Report -----
-rmarkdown::render(input = "../reports/01_dataGMTV.Rmd",
-                  output_format = "pdf_document",
-                  output_dir = "../reports/pdf/",
-                  output_file = "01_GMTV")
-
-rmarkdown::render(input = "../reports/02_dataProcessing.Rmd",
-                  output_format = "pdf_document",
-                  output_dir = "../reports/pdf/",
-                  output_file = "02_Replication")
+# rmarkdown::render(input = "../reports/01_dataGMTV.Rmd",
+#                   output_format = "pdf_document",
+#                   output_dir = "../reports/pdf/",
+#                   output_file = "01_GMTV")
+# 
+# rmarkdown::render(input = "../reports/02_dataProcessing.Rmd",
+#                   output_format = "pdf_document",
+#                   output_dir = "../reports/pdf/",
+#                   output_file = "02_Replication")
 
 rmarkdown::render(input = "../reports/03_dataAnalyses.Rmd",
                   output_format = "pdf_document",
