@@ -302,7 +302,7 @@ DT[, groupID := paste(session.code, dPGG.1.group.id_in_subsession,
                     sep = "_")]
 
 # subset
-cRegex <- "participant.code|session.code|treatment|groupID|Outro.1.player|10.player.donation"
+cRegex <- "participant.code|session.code|treatment|groupID|Outro.1.player|10.player.donation|switching_row|inconsistent"
 covariates <- str_subset(string = names(DT),
                             pattern = cRegex)
 CT <- DT[, ..covariates]
@@ -319,12 +319,11 @@ names(CT)[names(CT) == "groupid"] <- "groupID"
 CT[, donation := donation/20]
 CT[donation %>% is.na, donation := 0]
 
-
 CT[, gender := ifelse(test = gender == "female",
                       yes  = 1,
                       no   = 0)]
 
-
+CT[, inconsistent := as.logical(inconsistent)]
 
 replicationCovariates <- CT
 

@@ -343,11 +343,29 @@ GMTVFirstRound %>%
         )
 ```
 
+# Risk
+
+```{r calcSwitchingPoint}
+GMTVRisk <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
+               .(participant.code = subj_id,
+                 e10, e20, e30, e40, e50, e60, e70,
+                 inconsistent = ifelse(test = e60 < e70 | e50 < e60 | e40 < e50 | e30 < e40 | e20 < e30 | e10 < e20,
+                                       yes  = TRUE,
+                                       no   = FALSE)
+                 )]
+
+GMTVRisk[,
+         switching_row := ifelse(test = inconsistent == TRUE,
+                                yes  = NA,
+                                no   = e10 + e20 + e30 + e40 + e50 + e60 + e70 + 1)
+         ]
+```
+
 
 # Covariates
 
 ```{r subsetCovs}
-GMTVCovariates <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
+temp <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
                          .(treatment = "noPunish10",
                            session.code = exp_num,
                            groupID = gr_id,
@@ -371,7 +389,15 @@ GMTVCovariates <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
                            donation = don
                            )]
 
-GMTVCovariates[donation %>% is.na, donation := 0]
+temp[donation %>% is.na, donation := 0]
+
+```
+
+```{r mergeAndWrite}
+
+GMTVCovariates <- data.table::merge.data.table(x = temp,
+                                               y = GMTVRisk[, .(participant.code, inconsistent, switching_row)],
+                                               by = c("participant.code"))
 
 # write data
 fileName <- "GMTV2017"
@@ -382,7 +408,6 @@ write.csv(GMTVCovariates,
 
 # no display or download button as these data were not made available online by the authors
 ```
-
 
 
 # Outlook

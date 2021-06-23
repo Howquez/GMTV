@@ -64,7 +64,7 @@ rm(list = c("replication", "GMTV", "replicationFirstRound", "GMTVFirstRound", "G
 
 ```{r layout}
 layout <- theme(panel.background = element_rect(fill = "white"),
-                panel.grid = element_line(colour="gray", size=0),
+                panel.grid = element_blank(),
                 panel.grid.major.y = element_line(colour="gray", size=0.25),
                 legend.key = element_rect(fill = "white"),
                 axis.line.x.bottom = element_line(size = 0.25),
@@ -392,12 +392,14 @@ covariates <- data.table::merge.data.table(x  = covs,
                                            y  = main[round == 10, .(groupID, stock, gini)],
                                            by = c("groupID"),
                                            allow.cartesian = TRUE)
+
+covariates[,
+           gender := gender %>% as.numeric()]
+
 ```
 
 
-
-```{r tableCovariates, results = "asis", warning = FALSE}
-
+```{r summary3, results = "asis"}
 
 # create table
 if(knitr::is_html_output()){
@@ -406,15 +408,32 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-olsStock1 <- lm(formula = stock ~ gender + age + pq01 + pq02 + pq03 + pq04 + pq05 + pq06 +
-                  pq07 +pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
+temp <- covariates[treatment == "replication",
+                   .(gender, age, switching_row, education, donation, pq01, pq02, pq03, pq04,
+                     pq05, pq06, pq07, pq08, pq09, pq10, pq11, pq12, pq13, pq14)]
+stargazer(temp, type = type, flip = FALSE)
+
+```
+
+
+```{r tableCovariates, results = "asis", warning = FALSE}
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+olsStock1 <- lm(formula = stock ~ gender + age + switching_row + pq01 + pq02 + pq03 + pq04 + 
+                  pq05 + pq06 + pq07 +pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
                 data = covariates[treatment == "replication"])
-olsStock2  <- lm(formula = stock ~ gender + age,
+olsStock2  <- lm(formula = stock ~ gender + age + switching_row,
                 data = covariates[treatment == "replication"])
-olsGINI1  <- lm(formula = gini ~ gender + age + pq01 + pq02 + pq03 + pq04 + pq05 + pq06 +
-                  pq07 + pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
+olsGINI1  <- lm(formula = gini ~ gender + age + switching_row + pq01 + pq02 + pq03 + pq04 +
+                  pq05 + pq06 + pq07 + pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
                 data = covariates[treatment == "replication"])
-olsGINI2  <- lm(formula = gini ~ gender + age,
+olsGINI2  <- lm(formula = gini ~ gender + age + switching_row,
                 data = covariates[treatment == "replication"])
 
 stargazer(olsStock1, olsStock2,
@@ -430,7 +449,7 @@ stargazer(olsStock1, olsStock2,
           column.separate = c(2, 2),
           model.numbers = FALSE,
           header=FALSE,
-          covariate.labels = c("female", "age", 
+          covariate.labels = c("female", "age", "risk",
                                "I am a quick thinker",
                                "I get easily offended",
                                "very satisfied",

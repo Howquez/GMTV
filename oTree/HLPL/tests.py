@@ -2,6 +2,7 @@ from otree.api import Currency as c, currency_range
 from . import pages
 from ._builtin import Bot
 from .models import Constants
+import random
 
 
 class PlayerBot(Bot):
@@ -11,7 +12,7 @@ class PlayerBot(Bot):
                                              choice_3="lottery",
                                              choice_4="lottery",
                                              choice_5="lottery",
-                                             choice_6="certainty",
+                                             choice_6= random.choice(["lottery", "certainty"]),
                                              choice_7="certainty",
                                              choice_8="certainty",
                                              choice_9="certainty",
