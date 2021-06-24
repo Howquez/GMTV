@@ -1,12 +1,6 @@
 rm(list = ls())
 
-# source("R/config.R")
-# source("R/data.R")
-# source("R/gaechteretal.R", echo = TRUE)
-# source("R/viz.R")
-
-library(rmarkdown)
-library(distill)
+source("R/config.R")
 
 # Render HTML Report -----
 rmarkdown::render(input = "../reports/01_dataGMTV.Rmd",

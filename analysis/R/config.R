@@ -20,7 +20,9 @@ listOfPackages <- c("renv",          # package management
                     "sjPlot",        # regression tables
                     "stargazer",     # regression tables
                     "plm",           # clustered standard errors
-                    "lmtest"
+                    "lmtest",
+                    "DescTools",     # gini coefficient
+                    "downloadthis"   # download button 4 HTML reports
                     )
 
 

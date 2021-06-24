@@ -196,8 +196,10 @@ for(i in 1:length(outcomes)){
 Also, the Gini coefficient has to be calculated to measure inequality within groups.
 
 ```{r calcGini}
-# it would make more sense to calculate the stocks' gini but gaechter et al use the endowments
-var = names(subset) %>% str_subset(pattern = "player\\.endowment$")
+# note that GMTV used start of period earnnings, i.e. endowments. We use end of period earnings, i.e. stock.
+# this adjustment has been considered in our processing of GMTVs data.
+
+var = names(subset) %>% str_subset(pattern = "player\\.stock$")
 gini = subset[,
               lapply(.SD, Gini, na.rm=TRUE), 
                 by = cluster, 

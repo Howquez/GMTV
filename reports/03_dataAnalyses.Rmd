@@ -37,12 +37,12 @@ In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods 
 This report is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
 
 ```{r readData}
-load(file="../data/processed/rda/GMTV2017.rda")          # read GMTV
-load(file="../data/processed/rda/GMTV2017_R1.rda")       # read GMTVFirstRound
-load(file="../data/processed/rda/GMTV2017_COVS.rda")     # read GMTVCovariates
-load(file="../data/processed/rda/replication2021.rda")       # read replication
-load(file="../data/processed/rda/replication2021_R1.rda")    # read replicationFirstRound
-load(file="../data/processed/rda/replication2021_COVS.rda")  # read replicationCovariates
+base::load(file="../data/processed/rda/GMTV2017.rda")              # read GMTV
+base::load(file="../data/processed/rda/GMTV2017_R1.rda")           # read GMTVFirstRound
+base::load(file="../data/processed/rda/GMTV2017_COVS.rda")         # read GMTVCovariates
+base::load(file="../data/processed/rda/replication2021.rda")       # read replication
+base::load(file="../data/processed/rda/replication2021_R1.rda")    # read replicationFirstRound
+base::load(file="../data/processed/rda/replication2021_COVS.rda")  # read replicationCovariates
 ```
 
 ```{r cbind}
