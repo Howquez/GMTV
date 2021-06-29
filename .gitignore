@@ -9,13 +9,13 @@ __temp*
 __pycache__/
 *.py[cod]
 .DS_Store
-*.otreezip
 .Rhistory
 .Rproj.user
-meetingNotes
+
 gaechterSupplementaryMaterials
 admin
 _legacy/
+
 
 GMTV-questionnaire-data.dta
 GMTV2017_COVS.csv
