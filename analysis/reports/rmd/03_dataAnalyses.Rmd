@@ -8,7 +8,7 @@ author:
     affiliation: CLICCS
     affiliation_url: https://www.cliccs.uni-hamburg.de/
 date: "`r Sys.Date()`"
-bibliography: biblio.bib
+bibliography: ../biblio.bib
 output:
   distill::distill_article:
     toc: true
@@ -37,12 +37,12 @@ In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods 
 This report is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
 
 ```{r readData}
-base::load(file="../data/processed/rda/GMTV2017.rda")              # read GMTV
-base::load(file="../data/processed/rda/GMTV2017_R1.rda")           # read GMTVFirstRound
-base::load(file="../data/processed/rda/GMTV2017_COVS.rda")         # read GMTVCovariates
-base::load(file="../data/processed/rda/replication2021.rda")       # read replication
-base::load(file="../data/processed/rda/replication2021_R1.rda")    # read replicationFirstRound
-base::load(file="../data/processed/rda/replication2021_COVS.rda")  # read replicationCovariates
+base::load(file="../../../data/processed/rda/GMTV2017.rda")              # read GMTV
+base::load(file="../../../data/processed/rda/GMTV2017_R1.rda")           # read GMTVFirstRound
+base::load(file="../../../data/processed/rda/GMTV2017_COVS.rda")         # read GMTVCovariates
+base::load(file="../../../data/processed/rda/replication2021.rda")       # read replication
+base::load(file="../../../data/processed/rda/replication2021_R1.rda")    # read replicationFirstRound
+base::load(file="../../../data/processed/rda/replication2021_COVS.rda")  # read replicationCovariates
 ```
 
 ```{r cbind}
@@ -168,7 +168,12 @@ stargazer(temp,
           flip = TRUE, 
           header=FALSE)
 
-rs1 <- wilcox.test(replication, GMTV)$p.value %>% round(digits = 4) %>% formatC(format = "f", digits = 4)
+rs1 <- wilcox.test(replication, 
+                   GMTV,
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
 
 ```
 
@@ -378,7 +383,12 @@ stargazer(temp,
           flip = TRUE, 
           header=FALSE)
 
-rs2 <- wilcox.test(replication, GMTV)$p.value %>% round(digits = 4) %>% formatC(format = "f", digits = 4)
+rs2 <- wilcox.test(replication, 
+                   GMTV,
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
 
 ```
 

@@ -71,7 +71,7 @@ layout <- theme(panel.background = element_rect(fill = "white"),
 
 In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
 
-This document explores the data provided by @GACHTER2017 and finds that some of the variables are a little off. In addition, it fails to replicate the orginal article's figures. The following chapter will describe the available data. Subsequently, [data excerpts](#Tables) will demonstrate that the original _Gini coefficient_ varies within groups (in selected periods) and the _share of current endowment contributed_ is calculated using the last round's endowment. [Afterwards](#Downloads), the data is processsed and made available for downloads.The [Visualizations](#Visualizations) chapter will then present the original figures as well as figures reproduced using the original and re-calculated variables to demonstrate differences.
+This document explores the data provided by @GACHTER2017 and finds that some of the variables are a little off. In addition, it fails to replicate the orginal article's figures. The following chapter will describe the available data. Subsequently, [data excerpts](#Tables) will demonstrate that the original _Gini coefficient_ varies within groups (in selected periods) and the _share of current endowment contributed_ is calculated using the last round's endowment. [Afterwards](#Downloads), the data is processed and made available for downloads.The [Visualizations](#Visualizations) chapter will then present the original figures as well as figures reproduced using the original and re-calculated variables to demonstrate differences.
 
 
 # Original Data
@@ -99,7 +99,7 @@ I add three new measures, namely: ```gini2```, ```mean2``` and ```gpd2```. ```gi
 
 ```{r createVars, include = FALSE}
 
-GMTV <- read_dta(file="../data/gaechteretal/GMTV-data.dta") %>% data.table()
+GMTV <- read_dta(file="../../data/gaechteretal/GMTV-data.dta") %>% data.table()
 
 # treatments
 

@@ -8,7 +8,7 @@ author:
     affiliation: CLICCS
     affiliation_url: https://www.cliccs.uni-hamburg.de/
 date: "`r Sys.Date()`"
-bibliography: biblio.bib
+bibliography: ../biblio.bib
 output:
   distill::distill_article:
     toc: true
@@ -33,11 +33,11 @@ library(lubridate)
 ```
 
 ```{r readData}
-DT <- read_dta(file="../data/gaechteretal/GMTV-data.dta") %>% data.table()
-CT <- read_dta(file="../data/gaechteretal/GMTV-questionnaire-data.dta") %>% data.table()
+DT <- read_dta(file="../../../data/gaechteretal/GMTV-data.dta") %>% data.table()
+CT <- read_dta(file="../../../data/gaechteretal/GMTV-questionnaire-data.dta") %>% data.table()
 ```
 
-# Background 
+# Background
 
 In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
 
@@ -52,24 +52,24 @@ noPunish10 <- DT[exp_num == 5 | exp_num == 8 | exp_num == 9]
 # noPunish10 <- DT[longgame == 0 & punish == 0 & exp_num <= 10]
 ```
 
-Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a ```data.table``` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
+Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a `data.table` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
 
 For this purpose only a few variables are relevant:
 
-- ```exp_num``` is a session identifier
-- ```per``` denotes the period
-- ```gr_id``` is a group identifier (carrying treatment information)
-- ```subj_id``` is a subject identifier
-- ```tokens``` reports a subject's endowment in a period
-- ```other[1-3]``` report the other group members' endowments in a period
-- ```gdp ``` equals the sum of endowments of a group in a period
-- ```putin``` reports a subject's contribution in a period
-- ```pu[1-3]``` report the other group members' contributions in a period
-- ```sum``` equals the sum of contributions of a group in a period.
-- ```gini``` reports a group's Gini coefficient in a period.
-- ```mean``` reports the fraction of sum/lagged(gdp).
+-   `exp_num` is a session identifier
+-   `per` denotes the period
+-   `gr_id` is a group identifier (carrying treatment information)
+-   `subj_id` is a subject identifier
+-   `tokens` reports a subject's endowment in a period
+-   `other[1-3]` report the other group members' endowments in a period
+-   `gdp` equals the sum of endowments of a group in a period
+-   `putin` reports a subject's contribution in a period
+-   `pu[1-3]` report the other group members' contributions in a period
+-   `sum` equals the sum of contributions of a group in a period.
+-   `gini` reports a group's Gini coefficient in a period.
+-   `mean` reports the fraction of sum/lagged(gdp).
 
-Additionally, I compute two new measures, ```gini2``` as well as ```share```. The new ```gini2``` differs from the original as it is constant within groups. ```share``` is equivalent to the original mean but relies on the current gdp instead of the past one as a denominator.
+Additionally, I compute two new measures, `gini2` as well as `share`. The new `gini2` differs from the original as it is constant within groups. `share` is equivalent to the original mean but relies on the current gdp instead of the past one as a denominator.
 
 As a consequence, the first few rows of the data look as follows:
 
@@ -93,31 +93,34 @@ noPunish10[,
            gini3 := Gini(c(stock0, stock1, stock2, stock3)),
            by = .(subj_id, per)]
 
-# show table
-noPunish10[order(gr_id, per),
-           .(exp_num, gr_id, per, subj_id, # IDs
-             tokens, other1, other2, other3, gdp, #endowments
-             putin, pu1, pu2, pu3, sum, mean, share, # contributions
-             gini, gini2, gini3
-           )] %>% 
-  head(n = 15) %>%
-  kbl() %>% 
-  # scroll_box(height = "200px") %>%
-  kable_paper("hover", 
-              full_width = TRUE,
-              fixed_thead = TRUE)
+if(knitr::is_html_output()){
+  # show table
+  noPunish10[order(gr_id, per),
+             .(exp_num, gr_id, per, subj_id, # IDs
+               tokens, other1, other2, other3, gdp, #endowments
+               putin, pu1, pu2, pu3, sum, mean, share, # contributions
+               gini, gini2, gini3
+             )] %>% 
+    head(n = 15) %>%
+    kbl() %>% 
+    # scroll_box(height = "200px") %>%
+    kable_paper("hover", 
+                full_width = TRUE,
+                fixed_thead = TRUE)
+  }
 
 ```
 
-We see group 501 in the first two periods where subjects 511 to 514 start with an initial endowment of 20 which makes a GDP of 80. Subject 511 does not contribute (as represented in ```putin==0``` in the first row and ```pu1==0```in rows 2 to 4) while the others contribute 5, 15 and 15 in the first period, respectively. The ```sum``` of contributions therefore equals 35 period 1.
+We see group 501 in the first two periods where subjects 511 to 514 start with an initial endowment of 20 which makes a GDP of 80. Subject 511 does not contribute (as represented in `putin==0` in the first row and `pu1==0`in rows 2 to 4) while the others contribute 5, 15 and 15 in the first period, respectively. The `sum` of contributions therefore equals 35 period 1.
 
-With a sum of contributions being 35 and a return of contributions of 1.5, each subject receives ```ceil(13.125)``` =14 points from the group project such that the next period's ```gdp``` equals 101.
+With a sum of contributions being 35 and a return of contributions of 1.5, each subject receives `ceil(13.125)` =14 points from the group project such that the next period's `gdp` equals 101.
 
-The Gini coefficient (```gini```) is a little off as one can see in the second period: Even though this is a group level variable, the group has three different coefficient in the same period. With the same absolute amount of contributions as in the first period,the second period ```mean``` (based on the past ```gdp```) is larger than ```share``` in the second period, because the ```gdp``` grew.
+The Gini coefficient (`gini`) is a little off as one can see in the second period: Even though this is a group level variable, the group has three different coefficient in the same period. With the same absolute amount of contributions as in the first period,the second period `mean` (based on the past `gdp`) is larger than `share` in the second period, because the `gdp` grew.
 
 # Data Manipulation
 
-To resemble the oTree data, the original data has to be transformed a little. Therefore, some variables will be renamed, variables (such as ```stock```^[The income at the end of a period.] and ```gain```^[The tokens earned in a period.]) will be created and, most notably, the unit of observations will be groups such that subject-level variables will be dropped.
+To resemble the oTree data, the original data has to be transformed a little. Therefore, some variables will be renamed, variables (such as `stock`^[The income at the end of a period.] and `gain`^[The tokens earned in a period.]) will be created and, most notably, the unit of observations will be groups such that subject-level variables will be dropped.
+
 
 ```{r manipulateData}
 noPunish10[,
@@ -157,31 +160,34 @@ GMTV[groupID %in% richGroups,
 GMTV[groupID %in% poorGroups,
          rich := FALSE]
 
-
-# display data
-GMTV %>%
-  head(n = 15) %>%
-  kbl() %>% 
-  kable_paper("hover", 
-              full_width = TRUE,
-              fixed_thead = TRUE)
+if(knitr::is_html_output()){
+  # display data
+  GMTV %>%
+    head(n = 15) %>%
+    kbl() %>% 
+    kable_paper("hover", 
+                full_width = TRUE,
+                fixed_thead = TRUE)
+  }
 
 ```
 
 ```{r writeData}
-save(GMTV, file = "../data/processed/rda/GMTV2017.rda")
-write.csv(GMTV, file ="../data/processed/csv/GMTV2017.csv")
+save(GMTV, file = "../../../data/processed/rda/GMTV2017.rda")
+write.csv(GMTV, file ="../../../data/processed/csv/GMTV2017.csv")
 
 ```
 
 ```{r downloadData}
-GMTV %>%
-      download_this(
-        output_name = "GMTV2017noPunish10",
-        output_extension = ".csv", # CSV output
-        button_label = "Download csv",
-        button_type = "default"
+if(knitr::is_html_output()){
+  GMTV %>%
+        download_this(
+          output_name = "GMTV2017noPunish10",
+          output_extension = ".csv", # CSV output
+          button_label = "Download csv",
+          button_type = "default"
         )
+  }
 ```
 
 # Visualizations
@@ -197,7 +203,6 @@ layout <- theme(panel.background = element_rect(fill = "white"),
                 legend.title = element_blank()
                 )
 ```
-
 
 ```{r plotContribution}
 plotDT <- summarySE(data = GMTV, 
@@ -287,17 +292,16 @@ ggplot(data = plotDT, aes(x = round, y = temp, fill = treatment, color = treatme
     scale_color_manual(values = wes_palette("Moonrise3"))
 ```
 
-# Tables 
 
-```{r regressions}
+
+```{r regressions, eval = FALSE}
 # reg gdp punish if longgame==0  & treat<3 & per==10, cluster(gr_id)
 lm(gdp ~ punish, data = DT[longgame==0 & treat < 3 & per==10])
 ```
 
 # Discussion
 
-Even though the figures above were created using the original data, they do not look the same as the original figures. This becomes obvious if one looks at the figures that visualize the contributions. The arising question therefore is whether I made a mistake in processing and interpreting the data. After all I thought to have found wrong Gini coefficients and struggle to interpret the ```mean``` of the original data.
-
+Even though the figures above were created using the original data, they do not look the same as the original figures. This becomes obvious if one looks at the figures that visualize the contributions.
 
 # First round
 
@@ -328,31 +332,34 @@ rm(list = c("temp"))
 # save data
 fileName <- "GMTV2017"
 save(GMTVFirstRound, 
-     file = paste0("../data/processed/rda/", fileName, "_R1", ".rda"))
+     file = paste0("../../../data/processed/rda/", fileName, "_R1", ".rda"))
 write.csv(GMTVFirstRound, 
-          file = paste0("../data/processed/csv/", fileName, "_R1", ".csv"))
+          file = paste0("../../../data/processed/csv/", fileName, "_R1", ".csv"))
 ```
 
-`r NROW(GMTVFirstRound)` participants yield `r NROW(GMTVFirstRound)` independent observations that are stored in a data table called ```GMTVFirstRound```. These observations are displayed below and can, once more, be downloaded by a click on the button. As before, the data is also saved in ```../data/processed/```.
+`r NROW(GMTVFirstRound)` participants yield `r NROW(GMTVFirstRound)` independent observations that are stored in a data table called `GMTVFirstRound`. These observations are displayed below and can, once more, be downloaded by a click on the button (HTML-only feature). As before, the data is also saved in `../../../data/processed/`.
 
 ```{r displayFirstRound}
-# display data
-GMTVFirstRound %>%
-  head(n = 15) %>%
-  kbl() %>% 
-  # scroll_box(height = "200px") %>%
-  kable_paper("hover", 
-              full_width = TRUE,
-              fixed_thead = TRUE)
 
-# create download button
-GMTVFirstRound %>%
-      download_this(
-        output_name = "GMTV2017_R1",
-        output_extension = ".csv", # CSV output
-        button_label = "Download csv",
-        button_type = "default"
+if(knitr::is_html_output()){
+  # display data
+  GMTVFirstRound %>%
+    head(n = 15) %>%
+    kbl() %>% 
+    # scroll_box(height = "200px") %>%
+    kable_paper("hover", 
+                full_width = TRUE,
+                fixed_thead = TRUE)
+
+  # create download button
+  GMTVFirstRound %>%
+        download_this(
+          output_name = "GMTV2017_R1",
+          output_extension = ".csv", # CSV output
+          button_label = "Download csv",
+          button_type = "default"
         )
+  }
 ```
 
 # Risk
@@ -372,7 +379,6 @@ GMTVRisk[,
                                 no   = e10 + e20 + e30 + e40 + e50 + e60 + e70 + 1)
          ]
 ```
-
 
 # Covariates
 
@@ -414,15 +420,13 @@ GMTVCovariates <- data.table::merge.data.table(x = temp,
 # write data
 fileName <- "GMTV2017"
 save(GMTVCovariates, 
-     file = paste0("../data/processed/rda/", fileName, "_COVS", ".rda"))
+     file = paste0("../../../data/processed/rda/", fileName, "_COVS", ".rda"))
 write.csv(GMTVCovariates, 
-          file = paste0("../data/processed/csv/", fileName, "_COVS", ".csv"))
+          file = paste0("../../../data/processed/csv/", fileName, "_COVS", ".csv"))
 
 # no display or download button as these data were not made available online by the authors
 ```
 
-
 # Outlook
 
 Having replicated Gaechter et al.'s main figures (more or less) the next step is to prepare the data we obtain in our experiment for the analysis. This will be done in the second report using simulated data.^[Eventually, one can use that report and apply it to the actual data.]
-

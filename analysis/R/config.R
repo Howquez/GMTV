@@ -37,3 +37,11 @@ for(package in listOfPackages){
 }
 
 # renv::snapshot()
+
+# read most recent data
+cFiles <- file.info(list.files(path = "../data/replication",
+                               recursive = TRUE,
+                               full.names = TRUE,
+                               pattern = "all_apps_wide.csv$"),
+                    extra_cols = FALSE)
+recentCSV <- cFiles[cFiles$mtime == max(cFiles$mtime), ] %>% row.names()

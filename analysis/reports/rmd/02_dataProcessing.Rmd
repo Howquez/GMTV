@@ -8,7 +8,7 @@ author:
     affiliation: CLICCS
     affiliation_url: https://www.cliccs.uni-hamburg.de/
 date: "`r Sys.Date()`"
-bibliography: biblio.bib
+bibliography: ../biblio.bib
 output:
   distill::distill_article:
     toc: true
@@ -34,17 +34,15 @@ In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods 
 
 This report is the second in a series of reports covering this project. It explains how simulated data is processed and prepared for analyses.
 
-# Simulations
+# Replication Data
 
 ```{r readData}
-# read simulated data
-DT <- read.csv("../data/simulation/all_apps_wide.csv", stringsAsFactors = FALSE) %>%
+# read replication data
+DT <- read.csv(paste("../..", recentCSV, sep = "/"), 
+               stringsAsFactors = FALSE) %>%
   data.table()
 ```
 
-I simulated `r NROW(DT)` participants. To do so, I wrote oTree bots that follow rather simple rules and act mostly random. As a consequence, this data yields no information apart from the structure of the data itself.
-
-Eventually, this report can also be used to process real data. This only requires us to read a different data set.^[It may also require us to merge multiple data sets -- that depends on whether the lab delivers one or several data sets and remains to be discussed.]
 
 ## First round
 
@@ -64,29 +62,31 @@ replicationFirstRound <- DT[,
 
 # save data
 fileName <- "replication2021"
-save(replicationFirstRound, file = paste0("../data/processed/rda/", fileName, "_R1", ".rda"))
-write.csv(replicationFirstRound, file = paste0("../data/processed/csv/", fileName, "_R1", ".csv"))
+save(replicationFirstRound, file = paste0("../../../data/processed/rda/", fileName, "_R1", ".rda"))
+write.csv(replicationFirstRound, file = paste0("../../../data/processed/csv/", fileName, "_R1", ".csv"))
 
-# display data
-replicationFirstRound %>%
-  head(n = 12) %>%
-  kbl() %>% 
-  # scroll_box(height = "200px") %>%
-  kable_paper("hover", 
-              full_width = TRUE,
-              fixed_thead = TRUE)
+if(knitr::is_html_output()){
+  # display data
+  replicationFirstRound %>%
+    head(n = 12) %>%
+    kbl() %>% 
+    # scroll_box(height = "200px") %>%
+    kable_paper("hover", 
+                full_width = TRUE,
+                fixed_thead = TRUE)
 
-# create download button
-replicationFirstRound %>%
-      download_this(
-        output_name = glue("{Sys.Date()}_Simulation_firstRound"),
-        output_extension = ".csv", # CSV output
-        button_label = "Download csv",
-        button_type = "default"
+  # create download button
+  replicationFirstRound %>%
+        download_this(
+          output_name = glue("{Sys.Date()}_Simulation_firstRound"),
+          output_extension = ".csv", # CSV output
+          button_label = "Download csv",
+          button_type = "default"
         )
+  }
 ```
 
-The data is saved in two formats (```csv``` and ```rda```) in ```../data/processed/```. If you have not downloaded the repository and access the html file, you can also obtain a csv-file by clicking on the button above.
+The data is saved in two formats (```csv``` and ```rda```) in ```../../../data/processed/```. If you have not downloaded the repository and access the html file, you can also obtain a csv-file by clicking on the button above (HTML-only feature).
 
 
 ## All rounds
@@ -122,15 +122,16 @@ for(round in 1:10){
 subset[,
        treatment := "replication"]
 
-
-# display data
-subset %>%
-  head(n = 12) %>%
-  kbl() %>% 
-  scroll_box(width = "100%") %>%
-  kable_paper("hover", 
-              full_width = TRUE,
-              fixed_thead = TRUE)
+if(knitr::is_html_output()){
+  # display data
+  subset %>%
+    head(n = 12) %>%
+    kbl() %>% 
+    scroll_box(width = "100%") %>%
+    kable_paper("hover", 
+                full_width = TRUE,
+                fixed_thead = TRUE)
+  }
 ```
 
 
@@ -263,33 +264,38 @@ replication[groupID %in% noComp,
 replication <- replication[bot_active == 0 & round <= 10]
 ```
 
-The result contains ```NROW(DT)/4``` observations in 10 rounds and is saved as a ```csv``` and as a ```rda``` file in ```../data/processed/```.
+The result contains ```NROW(DT)/4``` observations in 10 rounds and is saved as a ```csv``` and as a ```rda``` file in ```../../../data/processed/```.
 
 ```{r saveData}
-save(replication, file = paste0("../data/processed/rda/", fileName, ".rda"))
-write.csv(replication, file = paste0("../data/processed/csv/", fileName, ".csv"))
+save(replication, file = paste0("../../../data/processed/rda/", fileName, ".rda"))
+write.csv(replication, file = paste0("../../../data/processed/csv/", fileName, ".csv"))
 ```
 
 The first few rows look as follows. The full data set can be downloaded with a click on the button below (in case you only have access to this ```html``` file).
 
 ```{r displayData}
-replication %>%
-  head(n = 12) %>%
-  kbl() %>% 
-  # scroll_box(height = "200px") %>%
-  kable_paper("hover", 
-              full_width = TRUE,
-              fixed_thead = TRUE)
+
+if(knitr::is_html_output()){
+  replication %>%
+    head(n = 12) %>%
+    kbl() %>% 
+    # scroll_box(height = "200px") %>%
+    kable_paper("hover", 
+                full_width = TRUE,
+                fixed_thead = TRUE)
+  }
 ```
 
 ```{r downloadData}
-replication %>%
-      download_this(
-        output_name = glue("{Sys.Date()}_Simulation"),
-        output_extension = ".csv", # CSV output
-        button_label = "Download csv",
-        button_type = "default"
+if(knitr::is_html_output()){
+  replication %>%
+        download_this(
+          output_name = glue("{Sys.Date()}_Simulation"),
+          output_extension = ".csv", # CSV output
+          button_label = "Download csv",
+          button_type = "default"
         )
+  }
 ```
 
 
@@ -332,9 +338,9 @@ replicationCovariates <- CT
 # write data
 fileName <- "replication2021"
 save(replicationCovariates, 
-     file = paste0("../data/processed/rda/", fileName, "_COVS", ".rda"))
+     file = paste0("../../../data/processed/rda/", fileName, "_COVS", ".rda"))
 write.csv(replicationCovariates, 
-          file = paste0("../data/processed/csv/", fileName, "_COVS", ".csv"))
+          file = paste0("../../../data/processed/csv/", fileName, "_COVS", ".csv"))
 
 # no display or download button as these data may qualify as PII
 ```
