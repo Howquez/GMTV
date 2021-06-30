@@ -109,8 +109,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--/radix_placeholder_meta_tags-->
   
-  <meta name="citation_reference" content="citation_title=Growth and inequality in public good provision;citation_publication_date=2017;citation_volume=150;citation_doi=10.1016/j.jpubeco.2017.03.002;citation_issn=0047-2727;citation_author=Simon Gächter;citation_author=Friederike Mengel;citation_author=Elias Tsakas;citation_author=Alexander Vostroknutov" />
-  <meta name="citation_reference" content="citation_title=oTree-An open-source platform for laboratory, online, and field experiments;citation_publication_date=2016;citation_volume=9;citation_doi=10.1016/j.jbef.2015.12.001;citation_issn=2214-6350;citation_author=Daniel L. Chen;citation_author=Martin Schonger;citation_author=Chris Wickens" />
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
@@ -1505,7 +1503,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 Show code
 </summary>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>echo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>echo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span>
@@ -1519,7 +1518,7 @@ Show code
 </div>
 <h1 id="background">Background</h1>
 <p>In an attempt to incorporate uncertainty to <span class="citation" data-cites="GACHTER2017"><a href="#ref-GACHTER2017" role="doc-biblioref">Gächter et al.</a> (<a href="#ref-GACHTER2017" role="doc-biblioref">2017</a>)</span>’s dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree <span class="citation" data-cites="oTree">(<a href="#ref-oTree" role="doc-biblioref">Chen, Schonger, and Wickens 2016</a>)</span>. The first experiment will replicate Gächter et al.’s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found <a href="https://cliccs.herokuapp.com/">here</a>. Click <a href="https://github.com/Howquez/coopUncertainty">here</a> to visit the corresponding Github repository.</p>
-<p>This report is the second in a series of reports covering this project. It explains how simulated data is processed and prepared for analyses.</p>
+<p><a href="https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/02_dataProcessing.Rmd">This report</a> is the second in a series of reports covering this project. It explains how simulated data is processed and prepared for analyses.</p>
 <h1 id="replication-data">Replication Data</h1>
 <div class="layout-chunk" data-layout="l-body">
 <details>

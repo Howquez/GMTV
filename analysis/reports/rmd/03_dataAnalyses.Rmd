@@ -17,8 +17,8 @@ output:
     code_folding: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
 
 library(data.table)
 library(magrittr)
@@ -34,7 +34,7 @@ library(stargazer)
 
 In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
 
-This report is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
+[This report](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/03_dataAnalyses.Rmd) is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
 
 ```{r readData}
 base::load(file="../../../data/processed/rda/GMTV2017.rda")              # read GMTV
@@ -408,6 +408,7 @@ covariates[,
 
 ```
 
+In addition to the summary statistics a regression table for each covariate as a dependent variable is needed. The independent variable will then be the data source (i.e. GMTV vs replication).
 
 ```{r summary3, results = "asis"}
 

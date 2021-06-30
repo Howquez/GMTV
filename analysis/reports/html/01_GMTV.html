@@ -1513,11 +1513,11 @@ Show code
 </details>
 </div>
 <h1 id="background">Background</h1>
-<p>In an attempt to incorporate uncertainty to <span class="citation" data-cites="GACHTER2017"><a href="#ref-GACHTER2017" role="doc-biblioref">Gächter et al.</a> (<a href="#ref-GACHTER2017" role="doc-biblioref">2017</a>)</span>’s dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree <span class="citation" data-cites="oTree">(<a href="#ref-oTree" role="doc-biblioref">Chen, Schonger, and Wickens 2016</a>)</span>. The first experiment will replicate Gächter et al.’s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found <a href="https://cliccs.herokuapp.com/">here</a>. Click <a href="https://github.com/Howquez/coopUncertainty">here</a> to visit the corresponding Github repository.</p>
-<p>This report is the first in a series of reports covering this project. It prepares the original data and replicates main visualizations &amp; tables.</p>
+<p>In an attempt to incorporate uncertainty to <span class="citation" data-cites="GACHTER2017"><a href="#ref-GACHTER2017" role="doc-biblioref">Gächter et al.</a> (<a href="#ref-GACHTER2017" role="doc-biblioref">2017</a>)</span>’s dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree <span class="citation" data-cites="oTree">(<a href="#ref-oTree" role="doc-biblioref">Chen, Schonger, and Wickens 2016</a>)</span>. The first experiment will replicate Gächter et al.’s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found <a href="https://cliccs.herokuapp.com/">here</a>. Click <a href="https://github.com/Howquez/coopUncertainty/tree/July21Replication">here</a> to visit the corresponding Github repository.</p>
+<p><a href="https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/01_dataGMTV.Rmd">This report</a> is the first in a series of reports covering this project. It prepares the original data and replicates main visualizations &amp; tables.</p>
 <h1 id="original-data">Original Data</h1>
 <p>The data can be found in the supplementary materials they provide in their <a href="https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115">online appendix</a>.</p>
-<p>Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a <code>data.table</code> consisting of 23 observations and <span class="math inline">\(4 \times 10 \times 23=\)</span> 920 rows and 27 variables.</p>
+<p>Within the appendix, one learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a <code>data.table</code> consisting of 23 observations and <span class="math inline">\(4 \times 10 \times 23=\)</span> 920 rows and 27 variables.</p>
 <p>For this purpose only a few variables are relevant:</p>
 <ul>
 <li><code>exp_num</code> is a session identifier</li>
@@ -3530,7 +3530,11 @@ Show code
 <span class="va">GMTVRisk</span><span class="op">[</span>,
          <span class="va">switching_row</span> <span class="op">:=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span>test <span class="op">=</span> <span class="va">inconsistent</span> <span class="op">==</span> <span class="cn">TRUE</span>,
                                 yes  <span class="op">=</span> <span class="cn">NA</span>,
+<<<<<<< HEAD
                                 no   <span class="op">=</span> <span class="va">e10</span> <span class="op">+</span> <span class="va">e20</span> <span class="op">+</span> <span class="va">e30</span> <span class="op">+</span> <span class="va">e40</span> <span class="op">+</span> <span class="va">e50</span> <span class="op">+</span> <span class="va">e60</span> <span class="op">+</span> <span class="va">e70</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># because GMTV used a 7-point-likert scale</span>
+=======
+                                no   <span class="op">=</span> <span class="va">e10</span> <span class="op">+</span> <span class="va">e20</span> <span class="op">+</span> <span class="va">e30</span> <span class="op">+</span> <span class="va">e40</span> <span class="op">+</span> <span class="va">e50</span> <span class="op">+</span> <span class="va">e60</span> <span class="op">+</span> <span class="va">e70</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
+>>>>>>> 13b98786b02a7becbeb84b1b8691bd882d7e79cf
          <span class="op">]</span>
 </code></pre>
 </div>
