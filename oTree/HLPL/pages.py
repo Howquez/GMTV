@@ -7,7 +7,6 @@ class HLPL_Decision(Page):
     form_model = "player"
 
     def get_form_fields(self):
-
         # unzip list of form_fields from <mpl_choices> list
         form_fields = [list(t) for t in zip(*self.participant.vars['mpl_choices'])][1]
         form_fields.extend(["review_instructions", "review_contact"])
@@ -22,6 +21,10 @@ class HLPL_Decision(Page):
         return dict(
             template="risk",
         )
+
+    def get_timeout_seconds(self):
+        if self.participant.vars.get("is_dropout"):
+            return 1  # instant timeout, 1 second
 
     def before_next_page(self):
         form_fields = [list(t) for t in zip(*self.participant.vars['mpl_choices'])][1]
