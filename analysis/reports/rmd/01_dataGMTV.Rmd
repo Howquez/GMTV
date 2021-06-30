@@ -18,7 +18,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 
 library(haven)
 library(data.table)
@@ -39,9 +39,9 @@ CT <- read_dta(file="../../../data/gaechteretal/GMTV-questionnaire-data.dta") %>
 
 # Background
 
-In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty/tree/July21Replication) to visit the corresponding Github repository.
 
-This report is the first in a series of reports covering this project. It prepares the original data and replicates main visualizations & tables.
+[This report](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/01_dataGMTV.Rmd) is the first in a series of reports covering this project. It prepares the original data and replicates main visualizations & tables.
 
 # Original Data
 
@@ -52,7 +52,7 @@ noPunish10 <- DT[exp_num == 5 | exp_num == 8 | exp_num == 9]
 # noPunish10 <- DT[longgame == 0 & punish == 0 & exp_num <= 10]
 ```
 
-Within the appendix, one also learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a `data.table` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
+Within the appendix, one  learns that the NOPUNISH 10-period data were collected in sessions 5, 8 and 9. Subsetting the data correspondingly yields a `data.table` consisting of 23 observations and $4 \times 10 \times 23=$ `r NROW(noPunish10)` rows and 27 variables.
 
 For this purpose only a few variables are relevant:
 

@@ -9,8 +9,6 @@ from otree.api import (
     currency_range,
 )
 
-from django.forms.widgets import CheckboxSelectMultiple
-import re
 
 author = "Hauke Roggenkamp"
 
