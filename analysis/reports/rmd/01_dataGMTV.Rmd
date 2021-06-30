@@ -376,7 +376,7 @@ GMTVRisk <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
 GMTVRisk[,
          switching_row := ifelse(test = inconsistent == TRUE,
                                 yes  = NA,
-                                no   = e10 + e20 + e30 + e40 + e50 + e60 + e70 + 1)
+                                no   = e10 + e20 + e30 + e40 + e50 + e60 + e70 + 1 + 2) # because GMTV used a 7-point-likert scale
          ]
 ```
 

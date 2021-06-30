@@ -1,5 +1,5 @@
 ---
-title: "3. Analyses Plan"
+title: "3. Analysis Plan"
 description: |
   Analyze and compare data
 author:
@@ -425,6 +425,107 @@ stargazer(temp, type = type, flip = FALSE)
 
 ```
 
+```{r sampleDifferences1, results = "asis", warning = FALSE}
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = gender ~ treatment, data = covs),
+          lm(formula = age ~ treatment, data = covs),
+          lm(formula = switching_row ~ treatment, data = covs),
+          lm(formula = donation ~ treatment, data = covs),
+
+
+          column.labels = c("female", "age", "risk", "donations"),
+          model.numbers = FALSE,
+          dep.var.labels.include = FALSE,
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+```{r sampleDifferences2, results = "asis", warning = FALSE}
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = pq01 ~ treatment, data = covs),
+          lm(formula = pq02 ~ treatment, data = covs),
+          lm(formula = pq03 ~ treatment, data = covs),
+          lm(formula = pq04 ~ treatment, data = covs),
+          lm(formula = pq05 ~ treatment, data = covs),
+
+
+          column.labels = c("quick thinker", "easily offended", "very satisfied", "very dependent", "generally happy"),
+          model.numbers = FALSE,
+          dep.var.labels.include = FALSE,
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+```{r sampleDifferences3, results = "asis", warning = FALSE}
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = pq06 ~ treatment, data = covs),
+          lm(formula = pq07 ~ treatment, data = covs),
+          lm(formula = pq08 ~ treatment, data = covs),
+          lm(formula = pq09 ~ treatment, data = covs),
+          lm(formula = pq10 ~ treatment, data = covs),
+
+
+          column.labels = c("work important", "family important", "friends important", "religion important", "politics important"),
+          model.numbers = FALSE,
+          dep.var.labels.include = FALSE,
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+```{r sampleDifferences4, results = "asis", warning = FALSE}
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = pq11 ~ treatment, data = covs),
+          lm(formula = pq12 ~ treatment, data = covs),
+          lm(formula = pq13 ~ treatment, data = covs),
+          lm(formula = pq14 ~ treatment, data = covs),
+
+
+          column.labels = c("most people trusted", "hard work better", "government responsible", "incomes equal"),
+          model.numbers = FALSE,
+          dep.var.labels.include = FALSE,
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
 
 ```{r tableCovariates, results = "asis", warning = FALSE}
 
@@ -460,8 +561,8 @@ stargazer(olsStock1, olsStock2,
           model.numbers = FALSE,
           header=FALSE,
           covariate.labels = c("female", "age", "risk",
-                               "I am a quick thinker",
-                               "I get easily offended",
+                               "quick thinker",
+                               "easily offended",
                                "very satisfied",
                                "very dependent",
                                "generally happy",
