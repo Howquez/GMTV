@@ -3,6 +3,14 @@ Made with [oTree](https://www.sciencedirect.com/science/article/pii/S22146350160
 
 # 🤷‍ Cooperation in uncertain times
 
+## ▶️ How to 
+To replicate the analysis (once you have the necessary data), you have to follow these steps:
+
+- [ ] Store the data file called `all_aps_wide.csv` in `data/replication/`. The data that is currently stored in that folder is simulated. I left it in there for demo purposes. If you do not have actual data that was generated after June 30th, feel free to contact me.
+- [ ] Store the data file called `GMTV-questionnaire-data.dta` in `data/gaechteretal/`. You will have to request the data as it is not included in this repository. This is because the data was not (publicly) provided by Gächter et al. in the first place.
+- [ ] Make sure that you do have `data/gaechteretal/GMTV-data.dta`.
+- [ ] Open `analysis/analysis.Rproj`, navigate to `analysis/R/source.R` and run that script. It will first run the `config.R` file which loads the required packages. Subsequently, RMarkdown reports (stored in `analysis/reports/rmd/`) will be rendered into HTML and PDF files. If you encounter any problems during the rendering process, [try to restart R](https://github.com/r-lib/callr/issues/102#issuecomment-474453623). Note that the HTML outputs are more convenient to read.
+- [ ] You should now find freshly generated reports in `analysis/reports/html/` and `analysis/reports/pdf/`. In addition, you should find processed data in `data/processed/`.
 
 ## 🧐 What the project is about
 This experiment replicates Gächter et al.'s [(2017, Journal of Public Economics)](https://www.sciencedirect.com/science/article/pii/S0047272717300361)
@@ -30,6 +38,3 @@ A kanban board can be found [here](https://github.com/Howquez/coopUncertainty/pr
 The experiment is built in Python 3 using [oTree](https://www.sciencedirect.com/science/article/pii/S2214635016000101).
 So far, one can consider the game as an MVP -- it therefore only contains constant and homogeneous shocks to the 
 players' endowments. 
-
-## 📖 Read the Docs
-I am creating a wiki over [here](https://github.com/Howquez/coopUncertainty/wiki).
