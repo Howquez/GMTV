@@ -38,7 +38,23 @@ LANGUAGE_CODE = "de"
 REAL_WORLD_CURRENCY_CODE = "EUR"
 USE_POINTS = True
 
-ROOMS = []
+ROOMS = [
+    {
+        'name': '2021_07_01_17_00',
+        'display_name': '2021_07_01_17_00',
+        'participant_label_file': '_rooms/2021_07_01_17_00.txt',
+    },
+    {
+        'name': '2021_07_03_15_00',
+        'display_name': '2021_07_03_15_00',
+        'participant_label_file': '_rooms/2021_07_03_15_00.txt',
+    },
+    {
+        'name': '2021_07_09_15_00',
+        'display_name': '2021_07_09_15_00',
+        'participant_label_file': '_rooms/2021_07_09_15_00.txt',
+    }
+]
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
@@ -46,7 +62,7 @@ ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
 
-SECRET_KEY = ''
+SECRET_KEY = environ.get('OTREE_SECRET_KEY')
 
 # if an app is included in SESSION_CONFIGS, you don't need to list it here
 INSTALLED_APPS = ['otree']

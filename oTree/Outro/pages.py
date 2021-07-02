@@ -32,6 +32,9 @@ class Outro_Final(Page):
         return dict(
             is_residual_player=self.participant.vars["is_residual_player"],
             final_payoff=self.participant.payoff_plus_participation_fee().to_real_world_currency(self.session),
+            payment_data_survey_link='https://www.limesurvey.uni-hamburg.de/index.php/162819?token=' + str(
+                self.participant.label)
+
         )
 
     def js_vars(self):

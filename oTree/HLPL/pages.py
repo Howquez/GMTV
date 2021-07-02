@@ -6,6 +6,10 @@ from .models import Constants
 class HLPL_Decision(Page):
     form_model = "player"
 
+    def is_displayed(self):
+        if not self.participant.vars["is_residual_player"]:
+            return True
+
     def get_form_fields(self):
         # unzip list of form_fields from <mpl_choices> list
         form_fields = [list(t) for t in zip(*self.participant.vars['mpl_choices'])][1]

@@ -23,7 +23,6 @@
 <script src="{% static 'global/js/time_series.js' %}"></script>
 <script src="{% static 'global/js/buttons.js' %}"></script>
 <script src="{% static 'global/js/decision.js' %}"></script>
-<script src="{% static 'global/js/general_information.js' %}"></script>
 <script>
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
@@ -170,7 +169,9 @@
                         Die Studie besteht aus mehreren Teilen. Sie werden
                     </p>
                     <ol>
+                        {% if session.config.belief_elicitation %}
                         <li>mit einer Schätzaufgabe konfrontiert,</li>
+                        {% endif %}
                         <li>Entscheidungen in einer Gruppe treffen,</li>
                         <li>Risikoabwägungen machen und</li>
                         <li>einen kurzen Fragebogen beantworten.</li>
