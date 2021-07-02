@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.2.17)  30 JUN 2021 22:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.2.17)  2 JUL 2021 10:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -474,6 +474,22 @@ Package: geometry 2018/04/16 v5.8 Page Geometry
 \Gm@layouthoffset=\dimen123
 \Gm@layoutvoffset=\dimen124
 \Gm@dimlist=\toks23
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2019/01/15
+Style option: `fancyvrb' v3.2a <2019/01/15> (tvz)
+\FV@CodeLineNo=\count117
+\FV@InFile=\read1
+\FV@TabBox=\box29
+\c@FancyVerbLine=\count118
+\FV@StepNumber=\count119
+\FV@OutFile=\write3
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip48
+\fb@frw=\dimen125
+\fb@frh=\dimen126
+\FrameRule=\dimen127
+\FrameSep=\dimen128
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
@@ -485,23 +501,23 @@ File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 )
-\Gin@req@height=\dimen125
-\Gin@req@width=\dimen126
+\Gin@req@height=\dimen129
+\Gin@req@width=\dimen130
 )
-\cslhangindent=\skip48
-\csllabelwidth=\skip49
+\cslhangindent=\skip49
+\csllabelwidth=\skip50
 (/usr/local/texlive/2019/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count117
-\calc@Bcount=\count118
-\calc@Adimen=\dimen127
-\calc@Bdimen=\dimen128
-\calc@Askip=\skip50
-\calc@Bskip=\skip51
+\calc@Acount=\count120
+\calc@Bcount=\count121
+\calc@Adimen=\dimen131
+\calc@Bdimen=\dimen132
+\calc@Askip=\skip51
+\calc@Bskip=\skip52
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count119
-\calc@Cskip=\skip52
+\calc@Ccount=\count122
+\calc@Cskip=\skip53
 ) (./03_Analyses.aux
 
 LaTeX Warning: Label `' multiply defined.
@@ -533,33 +549,34 @@ LaTeX Warning: Label `' multiply defined.
 )
 \openout1 = `03_Analyses.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 89.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 89.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 129.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 129.
+
 (/usr/local/texlive/2019/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 89.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 129.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \microtypecontext on input line 89.
+LaTeX Info: Redefining \microtypecontext on input line 129.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using protrusion set `basicmath'.
@@ -574,16 +591,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 ) (/usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count120
-\scratchdimen=\dimen129
-\scratchbox=\box29
-\nofMPsegments=\count121
-\nofMParguments=\count122
+\scratchcounter=\count123
+\scratchdimen=\dimen133
+\scratchbox=\box30
+\nofMPsegments=\count124
+\nofMParguments=\count125
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count123
-\MPscratchDim=\dimen130
-\MPnumerator=\count124
-\makeMPintoPDFobject=\count125
+\MPscratchCnt=\count126
+\MPscratchDim=\dimen134
+\MPnumerator=\count127
+\makeMPintoPDFobject=\count128
 \everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -600,18 +617,18 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box30
-Package hyperref Info: Link coloring OFF on input line 89.
+\AtBeginShipoutBox=\box31
+Package hyperref Info: Link coloring OFF on input line 129.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2019/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count126
+\c@section@level=\count129
 )
-LaTeX Info: Redefining \ref on input line 89.
-LaTeX Info: Redefining \pageref on input line 89.
-LaTeX Info: Redefining \nameref on input line 89.
+LaTeX Info: Redefining \ref on input line 129.
+LaTeX Info: Redefining \pageref on input line 129.
+LaTeX Info: Redefining \nameref on input line 129.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -646,45 +663,57 @@ LaTeX Info: Redefining \nameref on input line 89.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 91.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 131.
+
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 91.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 131.
+
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 91.
-
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 131
+.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 91.
-
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 131
+.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 91.
+(Font)              <12> on input line 131.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 91.
+(Font)              <8> on input line 131.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 91.
-LaTeX Font Info:    Try loading font information for U+msa on input line 91.
+(Font)              <6> on input line 131.
+LaTeX Font Info:    Try loading font information for U+msa on input line 131.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 91.
+LaTeX Font Info:    Try loading font information for U+msb on input line 131.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2019/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 133.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+) [1
+
+{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 236.
+[2]
 </Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/03_
-Analyses_files/figure-latex/plotShareOfContributions-1.pdf, id=6, 448.67625pt x
- 295.1025pt>
+Analyses_files/figure-latex/plotShareOfContributions-1.pdf, id=31, 448.67625pt 
+x 295.1025pt>
 File: /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pd
 f/03_Analyses_files/figure-latex/plotShareOfContributions-1.pdf Graphic file (t
 ype pdf)
@@ -692,88 +721,117 @@ ype pdf)
 /03_Analyses_files/figure-latex/plotShareOfContributions-1.pdf>
 Package pdftex.def Info: /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/
 analysis/reports/pdf/03_Analyses_files/figure-latex/plotShareOfContributions-1.
-pdf  used on input line 120.
+pdf  used on input line 282.
 (pdftex.def)             Requested size: 448.68199pt x 295.10626pt.
+[3 </Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/
+03_Analyses_files/figure-latex/plotShareOfContributions-1.pdf>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 128.
+(Font)              <10> on input line 320.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 128.
+(Font)              <7> on input line 320.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 128.
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 143.
+(Font)              <5> on input line 320.
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
+Overfull \vbox (0.7842pt too high) detected at line 381
+ []
+
+[4] [5]
 </Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/03_
-Analyses_files/figure-latex/plotStock-1.pdf, id=7, 445.665pt x 293.095pt>
+Analyses_files/figure-latex/plotStock-1.pdf, id=59, 445.665pt x 292.09125pt>
 File: /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pd
 f/03_Analyses_files/figure-latex/plotStock-1.pdf Graphic file (type pdf)
 <use /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf
 /03_Analyses_files/figure-latex/plotStock-1.pdf>
 Package pdftex.def Info: /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/
 analysis/reports/pdf/03_Analyses_files/figure-latex/plotStock-1.pdf  used on in
-put line 175.
-(pdftex.def)             Requested size: 445.66391pt x 293.09427pt.
+put line 475.
+(pdftex.def)             Requested size: 445.6707pt x 292.09497pt.
+[6]
+Underfull \vbox (badness 10000) detected at line 548
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 548
+ []
+
+[7 </Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/
+03_Analyses_files/figure-latex/plotStock-1.pdf>]
 </Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/03_
-Analyses_files/figure-latex/plotInequality-1.pdf, id=8, 448.67625pt x 295.1025p
-t>
+Analyses_files/figure-latex/plotInequality-1.pdf, id=79, 448.67625pt x 295.1025
+pt>
 File: /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pd
 f/03_Analyses_files/figure-latex/plotInequality-1.pdf Graphic file (type pdf)
 <use /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf
 /03_Analyses_files/figure-latex/plotInequality-1.pdf>
 Package pdftex.def Info: /Users/hauke.roggenkamp/Documents/dev/coopUncertainty/
 analysis/reports/pdf/03_Analyses_files/figure-latex/plotInequality-1.pdf  used 
-on input line 184.
+on input line 552.
 (pdftex.def)             Requested size: 448.68199pt x 295.10626pt.
 
-Overfull \hbox (22.49652pt too wide) in paragraph at lines 303--324
+Overfull \vbox (1.01285pt too high) detected at line 593
+ []
+
+[8 </Users/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/
+03_Analyses_files/figure-latex/plotInequality-1.pdf>] [9] [10]
+Underfull \vbox (badness 10000) detected at line 823
+ []
+
+[11]
+Overfull \hbox (22.49652pt too wide) in paragraph at lines 828--849
  [][] 
  []
 
 
-Overfull \hbox (85.32655pt too wide) in paragraph at lines 329--350
+Underfull \vbox (badness 6725) detected at line 875
+ []
+
+[12]
+Overfull \hbox (85.32655pt too wide) in paragraph at lines 880--901
  [][] 
  []
 
 
-Overfull \hbox (15.10593pt too wide) in paragraph at lines 355--376
+Overfull \hbox (15.10593pt too wide) in paragraph at lines 931--952
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 126.30925pt on input line 451.
+Underfull \vbox (badness 1655) detected at line 1012
+ []
 
-[1
+[13]
+Underfull \vbox (badness 10000) detected at line 1012
+ []
 
-{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 </Us
-ers/hauke.roggenkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/03_Anal
-yses_files/figure-latex/plotShareOfContributions-1.pdf>] [3 </Users/hauke.rogge
-nkamp/Documents/dev/coopUncertainty/analysis/reports/pdf/03_Analyses_files/figu
-re-latex/plotStock-1.pdf> </Users/hauke.roggenkamp/Documents/dev/coopUncertaint
-y/analysis/reports/pdf/03_Analyses_files/figure-latex/plotInequality-1.pdf>] [4
-] [5]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 469.
-[6] [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 469.
+
+Underfull \vbox (badness 10000) detected at line 1012
+ []
+
+[14]
+
+LaTeX Warning: Float too large for page by 90.30925pt on input line 1084.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1102.
+[15] [16]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1102.
 (./03_Analyses.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 469.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 469.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1102.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 1102.
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 13062 strings out of 492616
- 191611 string characters out of 6129481
- 344515 words of memory out of 5000000
- 16722 multiletter control sequences out of 15000+600000
- 52977 words of font info for 72 fonts, out of 8000000 for 9000
+ 13542 strings out of 492616
+ 198770 string characters out of 6129481
+ 327720 words of memory out of 5000000
+ 17181 multiletter control sequences out of 15000+600000
+ 53650 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,10n,38p,885b,373s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/lo
-cal/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texliv
-e/2019/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2019/texmf-d
+ 35i,10n,38p,885b,380s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/lo
+cal/texlive/2019/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/20
+19/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2019/texmf-d
 ist/fonts/enc/dvips/lm/lm-ec.enc}</usr/local/texlive/2019/texmf-dist/fonts/type
 1/public/lm/lmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/l
 m/lmmi10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmr10.pf
@@ -782,12 +840,13 @@ al/texlive/2019/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/
 2019/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2019/texmf-d
 ist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2019/texmf-dist/fonts/
 type1/public/lm/lmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/publ
-ic/lm/lmsy7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmtt1
-0.pfb>
-Output written on 03_Analyses.pdf (7 pages, 203600 bytes).
+ic/lm/lmsy7.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmtk1
+0.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></us
+r/local/texlive/2019/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on 03_Analyses.pdf (16 pages, 271527 bytes).
 PDF statistics:
- 167 PDF objects out of 1000 (max. 8388607)
- 137 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
+ 217 PDF objects out of 1000 (max. 8388607)
+ 176 compressed objects within 2 object streams
+ 45 named destinations out of 1000 (max. 500000)
  12352 words of extra memory for PDF output out of 14400 (max. 10000000)
 

@@ -177,7 +177,9 @@ rs1 <- wilcox.test(replication,
 
 ```
 
-The rank sum test yields a p-Value of `r rs1` for the mean ```stock``` a.k.a _Wealth_ during the last period of the game.
+The table above displays summary statistics for the 10th period's ```stock``` a.k.a _Wealth_. The rank sum test yields a p-Value of `r rs1` for the mean wealth during the last period of the game.
+
+The following table shows a simple regression to illustrate differences in the 10th period's wealth between the replication's data and GMTV's data.
 
 
 ```{r tableStock, results = "asis", warning = FALSE}
@@ -207,6 +209,8 @@ stargazer(lm(formula = stock ~ treatment, data = main_all),
           type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
           )
 ```
+
+These information are also plotted over all periods in the following figure.
 
 ```{r plotStock, fig.cap = "Average wealth over time across treatments."}
 STOCK <- main[,
@@ -271,6 +275,9 @@ rm(list = c("STOCK", "STOCKr", "STOCKp", "p1", "p2", "p3"))
 
 ## Inequality
 
+The following figure plots the Gini-coefficient These over all periods.
+
+
 ```{r plotInequality, fig.cap = "Average Gini coefficient over time across treatments."}
 GINI <- main[,
              lapply(.SD, mean, na.rm = TRUE),
@@ -331,6 +338,7 @@ p3 <- ggplot(data = GINIp,
 rm(list = c("GINI", "GINIp", "GINIr", "p1", "p2", "p3"))
 ```
 
+The following table shows a simple regression to illustrate differences in the 10th period's Gini coefficient between the replication's data and GMTV's data.
 
 ```{r tableGINI, results = "asis", warning = FALSE}
 
@@ -392,6 +400,7 @@ rs2 <- wilcox.test(replication,
 
 ```
 
+The table above displays summary statistics for the 10th period's ```gini``` .
 The rank sum test yields a p-Value of `r rs2` for the mean ```gini``` during the last period of the game.
 
 
@@ -565,7 +574,8 @@ stargazer(olsStock1, olsStock2,
           column.separate = c(2, 2),
           model.numbers = FALSE,
           header=FALSE,
-          covariate.labels = c("female", "age", "risk",
+          covariate.labels = c("female", "age", 
+                               # "risk",
                                "quick thinker",
                                "easily offended",
                                "very satisfied",

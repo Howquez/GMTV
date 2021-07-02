@@ -1530,12 +1530,15 @@ Show code
 <span class="va">DT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">&quot;../..&quot;</span>, <span class="va">recentCSV</span>, sep <span class="op">=</span> <span class="st">&quot;/&quot;</span><span class="op">)</span>, 
                stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html">data.table</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="co"># subset complete cases</span>
+<span class="va">DT</span> <span class="op">&lt;-</span> <span class="va">DT</span><span class="op">[</span><span class="va">participant._index_in_pages</span> <span class="op">==</span> <span class="fl">77</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">dPGG.1.player.contribution</span><span class="op">)</span><span class="op">]</span>
 </code></pre>
 </div>
 </details>
 </div>
 <h2 id="first-round">First round</h2>
-<p>Eventually, we’ll be interested in the participants’ first round’s behavior, as it indicates their willingness to cooperate before they interact with one another. As a consequence, 44 participants yield 44 observations that shall be stored in a data table called <code>replicationFirstRound</code>. This table carries information on a participant’s group members’ contributions <code>othersContribution</code>, the participant’s <code>ownContribution</code> and a trust measure<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> obtained from the personality test at the end of the experiment.</p>
+<p>Eventually, we’ll be interested in the participants’ first round’s behavior, as it indicates their willingness to cooperate before they interact with one another. As a consequence, 28 participants yield 28 observations that shall be stored in a data table called <code>replicationFirstRound</code>. This table carries information on a participant’s group members’ contributions <code>othersContribution</code>, the participant’s <code>ownContribution</code> and a trust measure<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> obtained from the personality test at the end of the experiment.</p>
 <div class="layout-chunk" data-layout="l-body">
 <details>
 <summary>
@@ -1580,7 +1583,7 @@ Show code
 </code></pre>
 </div>
 </details>
-<a href="data:text/csv;base64,cGFydGljaXBhbnQuY29kZTt0cmVhdG1lbnQ7c2Vzc2lvbi5jb2RlO2dyb3VwSUQ7b3RoZXJzQ29udHJpYnV0aW9uO293bkNvbnRyaWJ1dGlvbjt0cnVzdDtjb21wcmVoZW5zaW9uCjdxeGRzb2FtO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MjU7MTE7NDszCjFubHJrb2xxO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzI7MjA7MjA7NDsxCjRxNzk5c281O3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7MzA7MTA7MzsyCmh3YXp0NjBlO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7MjU7NTszOzMKbXdzMWUxZXQ7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfOTtOQTtOQTsyO05BCm5vaDJ0d24wO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzU7Mjg7MjA7NDsyCm80aG5oYTByO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzI7NDA7MDszOzIKbHUzbDh4YWM7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTszODsxMDs1OzIKYW9nZ2oyMTY7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzsyMDsxMDs1OzIKMHRta3l6aG47cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzsxNTsxNTszOzMKNzBsMmk0ajk7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTtOQTtOQTtOQTtOQQo2aWVqOG0zNjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzQwOzg7NTsyCnd4ejVhcGdsO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7MzA7MTA7NTsyCnF5Z3EwZTFvO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MzE7NTs1OzMKNTQydTBsMXU7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsyMDswOzQ7MgptenJocWVxOTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzMwOzEwOzM7MwpzbnA3MDIybDtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzMwOzA7MzsxCm05bWIxanlmO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzM7NDA7NTs0OzMKZXhxdWh6Y3Y7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs0MDs1OzQ7Mgpuc3didWN5YjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xO05BO05BO05BO05BCm1wN3Rod2ZyO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzM7MjU7MjA7NDsyCmg1NmI4cG8xO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7MTg7Mjs0OzMKZm5wNTQyYWg7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjszMTs1OzE7MgpscjE3a3N5eTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzEwOzEwOzQ7Mgpma2ppd2t1YjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzMwOzEwOzQ7Mgp0cTl4cGw2MjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzMwOzEwOzQ7Mgo3djdmZWE3NjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc182OzIxOzE1OzQ7MgpxYzlpNXRjZjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzMwOzE1OzU7MwpnZTR3dTB5cTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzMwOzEwOzY7MgoxMGJkY2hzeTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMDtOQTtOQTs0O05BCmN0OXZkOGw4O3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzExO05BO05BOzI7TkEKOHdqaGJzc247cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTszODsxMDszOzIKbjZhMnQzZTc7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsxMjs4OzE7MQp2MHFxcTV6MztyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xO05BO05BO05BO05BCjFkbWo1aTRmO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7TkE7TkE7TkE7TkEKYmgyaW5jYzk7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTtOQTtOQTtOQTtOQQpidnl0NmZtZDtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xO05BO05BO05BO05BCnU5Z215ZThuO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7TkE7TkE7TkE7TkEKaDRhNzg5aTg7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTtOQTtOQTtOQTtOQQp1dWhmcmFzdjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xO05BO05BO05BO05BCmd6azRkb242O3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7TkE7TkE7TkE7TkEKaTVmMjA1aTU7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTtOQTtOQTtOQTtOQQpydXZ2ZXVuOTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xO05BO05BO05BO05BCnZzOGFobWl6O3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7TkE7TkE7TkE7TkEK" download="2021-07-02_Simulation_firstRound.csv">
+<a href="data:text/csv;base64,cGFydGljaXBhbnQuY29kZTt0cmVhdG1lbnQ7c2Vzc2lvbi5jb2RlO2dyb3VwSUQ7b3RoZXJzQ29udHJpYnV0aW9uO293bkNvbnRyaWJ1dGlvbjt0cnVzdDtjb21wcmVoZW5zaW9uCjdxeGRzb2FtO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MjU7MTE7NDszCjFubHJrb2xxO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzI7MjA7MjA7NDsxCjRxNzk5c281O3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7MzA7MTA7MzsyCmh3YXp0NjBlO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7MjU7NTszOzMKbm9oMnR3bjA7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTsyODsyMDs0OzIKbzRobmhhMHI7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs0MDswOzM7MgpsdTNsOHhhYztyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzM4OzEwOzU7Mgphb2dnajIxNjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzIwOzEwOzU7MgowdG1reXpobjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzE1OzE1OzM7Mwo2aWVqOG0zNjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzQwOzg7NTsyCnd4ejVhcGdsO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7MzA7MTA7NTsyCnF5Z3EwZTFvO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MzE7NTs1OzMKNTQydTBsMXU7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsyMDswOzQ7MgptenJocWVxOTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzMwOzEwOzM7MwpzbnA3MDIybDtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzMwOzA7MzsxCm05bWIxanlmO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzM7NDA7NTs0OzMKZXhxdWh6Y3Y7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs0MDs1OzQ7MgptcDd0aHdmcjtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzI1OzIwOzQ7MgpoNTZiOHBvMTtyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzE4OzI7NDszCmZucDU0MmFoO3JlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MzE7NTsxOzIKbHIxN2tzeXk7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsxMDsxMDs0OzIKZmtqaXdrdWI7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjszMDsxMDs0OzIKdHE5eHBsNjI7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDszMDsxMDs0OzIKN3Y3ZmVhNzY7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjsyMTsxNTs0OzIKcWM5aTV0Y2Y7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzszMDsxNTs1OzMKZ2U0d3UweXE7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDszMDsxMDs2OzIKOHdqaGJzc247cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTszODsxMDszOzIKbjZhMnQzZTc7cmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsxMjs4OzE7MQo=" download="2021-07-02_Simulation_firstRound.csv">
 <button class="btn btn-default"><i class="fa fa-save"></i> Download csv</button>
 </a>
 </div>
@@ -3140,305 +3143,6 @@ replication
 </tr>
 <tr>
 <td style="text-align:left;">
-mws1e1et
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-20
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-jyf8xd0s_9
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:left;">
-replication
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 noh2twn0
 </td>
 <td style="text-align:left;">
@@ -4934,305 +4638,6 @@ replication
 </tr>
 <tr>
 <td style="text-align:left;">
-70l2i4j9
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:right;">
-11
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:left;">
-replication
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 6iej8m36
 </td>
 <td style="text-align:left;">
@@ -5530,6 +4935,604 @@ jyf8xd0s_5
 replication
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+wxz5apgl
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+10.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+12.50
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+18.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+16.75
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+93
+</td>
+<td style="text-align:right;">
+23.25
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+104
+</td>
+<td style="text-align:right;">
+26.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:right;">
+25.50
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:right;">
+28.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+92
+</td>
+<td style="text-align:right;">
+140
+</td>
+<td style="text-align:right;">
+35.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+92
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+94
+</td>
+<td style="text-align:right;">
+126
+</td>
+<td style="text-align:right;">
+31.50
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+jyf8xd0s_4
+</td>
+<td style="text-align:right;">
+0.50
+</td>
+<td style="text-align:right;">
+0.4000000
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+<td style="text-align:right;">
+0.4915254
+</td>
+<td style="text-align:right;">
+0.4927536
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+<td style="text-align:right;">
+0.5063291
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+<td style="text-align:left;">
+replication
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+qygq0e1o
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+8.25
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+6.25
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+8.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+6.75
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+4.75
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+4.25
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+4.5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+4.25
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+jyf8xd0s_6
+</td>
+<td style="text-align:right;">
+0.25
+</td>
+<td style="text-align:right;">
+0.2068966
+</td>
+<td style="text-align:right;">
+0.1111111
+</td>
+<td style="text-align:right;">
+0.1666667
+</td>
+<td style="text-align:right;">
+0.0851064
+</td>
+<td style="text-align:right;">
+0.0925926
+</td>
+<td style="text-align:right;">
+0.0175439
+</td>
+<td style="text-align:right;">
+0.0793651
+</td>
+<td style="text-align:right;">
+0.0153846
+</td>
+<td style="text-align:right;">
+0.1000000
+</td>
+<td style="text-align:left;">
+replication
+</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -5780,444 +5783,34 @@ replication
 jyf8xd0s
 </td>
 <td style="text-align:left;">
-jyf8xd0s_1
+jyf8xd0s_2
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-0
+40
 </td>
 <td style="text-align:right;">
-0
+80
 </td>
 <td style="text-align:right;">
-NaN
+0.5000000
 </td>
 <td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_1
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-replication
-</td>
-<td style="text-align:left;">
-jyf8xd0s
-</td>
-<td style="text-align:left;">
-jyf8xd0s_10
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
+100
 </td>
 <td style="text-align:right;">
 20
 </td>
 <td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
+0.2000000
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
 </td>
 <td style="text-align:right;">
 0
@@ -6231,34 +5824,444 @@ replication
 jyf8xd0s
 </td>
 <td style="text-align:left;">
-jyf8xd0s_10
+jyf8xd0s_2
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-0
+62
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0.6342857
+</td>
+<td style="text-align:right;">
+134
+</td>
+<td style="text-align:right;">
+34
 </td>
 <td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
-NaN
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-NaN
+0.1691542
 </td>
 <td style="text-align:left;">
-FALSE
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+83
+</td>
+<td style="text-align:right;">
+134
+</td>
+<td style="text-align:right;">
+0.6708782
+</td>
+<td style="text-align:right;">
+179
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1731844
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+179
+</td>
+<td style="text-align:right;">
+0.4828338
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2000000
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+0.4540645
+</td>
+<td style="text-align:right;">
+260
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2461538
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+260
+</td>
+<td style="text-align:right;">
+0.3579815
+</td>
+<td style="text-align:right;">
+295
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2451977
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+85
+</td>
+<td style="text-align:right;">
+295
+</td>
+<td style="text-align:right;">
+0.4165221
+</td>
+<td style="text-align:right;">
+338
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2307692
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+94
+</td>
+<td style="text-align:right;">
+338
+</td>
+<td style="text-align:right;">
+0.4023012
+</td>
+<td style="text-align:right;">
+388
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2302405
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+98
+</td>
+<td style="text-align:right;">
+388
+</td>
+<td style="text-align:right;">
+0.3825332
+</td>
+<td style="text-align:right;">
+438
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2420091
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_2
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+98
+</td>
+<td style="text-align:right;">
+438
+</td>
+<td style="text-align:right;">
+0.3625635
+</td>
+<td style="text-align:right;">
+488
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.2418033
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:right;">
+0.5625000
+</td>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1779935
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+replication
+</td>
+<td style="text-align:left;">
+jyf8xd0s
+</td>
+<td style="text-align:left;">
+jyf8xd0s_3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:right;">
+0.2769469
+</td>
+<td style="text-align:right;">
+120
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0.1555556
+</td>
+<td style="text-align:left;">
+TRUE
 </td>
 <td style="text-align:right;">
 0
@@ -6285,7 +6288,7 @@ Show code
 </code></pre>
 </div>
 </details>
-<a href="data:text/csv;base64,dHJlYXRtZW50O3Nlc3Npb24uY29kZTtncm91cElEO3JvdW5kO2NvbnRyaWJ1dGlvbjtlbmRvd21lbnQ7c2hhcmU7c3RvY2s7Z2Fpbjtib3RfYWN0aXZlO2dpbmk7cmljaDtub0NvbXByZWhlbnNpb24KcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTsxOzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7MjswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xOzM7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTs0OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7NTswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xOzY7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTs3OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzE7ODswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xOzk7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTsxMDswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMDsxOzA7MjA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMDsyOzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzEwOzM7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTA7NDswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMDs1OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzEwOzY7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTA7NzswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMDs4OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzEwOzk7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTA7MTA7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTE7MTswOzIwO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTE7MjswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMTszOzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzExOzQ7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTE7NTswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMTs2OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzExOzc7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMTE7ODswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18xMTs5OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzExOzEwOzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzI7MTs0MDs4MDswLDUwMDAwMDAwMDAwMDAwMDAwOzEwMDsyMDswOzAsMTk5OTk5OTk5OTk5OTk5OTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjsyOzYyOzEwMDswLDYzNDI4NTcxNDI4NTcxNDIzOzEzNDszNDswOzAsMTY5MTU0MjI4ODU1NzIxNDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjszOzgzOzEzNDswLDY3MDg3ODE2NjU2NzgyMTczOzE3OTs0NTswOzAsMTczMTg0MzU3NTQxODk5NTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs0Ozc5OzE3OTswLDQ4MjgzMzg0NTkzMzc2NzI3OzIyMDs0MTswOzAsMTk5OTk5OTk5OTk5OTk5OTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs1OzgwOzIyMDswLDQ1NDA2NDQ1NDA2NDQ1NDA2OzI2MDs0MDswOzAsMjQ2MTUzODQ2MTUzODQ2MjtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs2OzY1OzI2MDswLDM1Nzk4MTU0MjM5NzY2MDgzOzI5NTszNTswOzAsMjQ1MTk3NzQwMTEyOTk0NDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs3Ozg1OzI5NTswLDQxNjUyMjA3NDQxNjgxMTI3OzMzODs0MzswOzAsMjMwNzY5MjMwNzY5MjMwODtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs4Ozk0OzMzODswLDQwMjMwMTE5ODI1NzA4MDYxOzM4ODs1MDswOzAsMjMwMjQwNTQ5ODI4MTc4ODtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjs5Ozk4OzM4ODswLDM4MjUzMzE3MTc3ODE2NjIwOzQzODs1MDswOzAsMjQyMDA5MTMyNDIwMDkxMztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjsxMDs5ODs0Mzg7MCwzNjI1NjM1MTIxNDc3Njc2Njs0ODg7NTA7MDswLDI0MTgwMzI3ODY4ODUyNDc7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzM7MTs0NTs4MDswLDU2MjUwMDAwMDAwMDAwMDAwOzEwMzsyMzswOzAsMTc3OTkzNTI3NTA4MDkwNztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzsyOzI3OzEwMzswLDI3Njk0Njg1ODI4ODc3MDAzOzEyMDsxNzswOzAsMTU1NTU1NTU1NTU1NTU1NjtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzszOzM3OzEyMDswLDMyMjgyNDEwNTcxODg0MjU3OzEzOTsxOTswOzAsMTMxODk0NDg0NDEyNDcwMTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs0OzQyOzEzOTswLDMxNzEzNTk4OTAxMDk4ODk5OzE2MTsyMjswOzAsMTI2MjkzOTk1ODU5MjEzMztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs1OzUxOzE2MTswLDMyMTI1MzY1NDk3MDc2MDI1OzE5MDsyOTswOzAsMDkxMjI4MDcwMTc1NDM4NjtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs2OzYyOzE5MDswLDMzODUxOTU3NDg2MjI2OTAyOzIyNDszNDswOzAsMTEzMDk1MjM4MDk1MjM4MTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs3OzczOzIyNDswLDMzNTMwNzE2NTk1MjMyNzI0OzI2MzszOTswOzAsMTE1MzM1ODY4MTg3NTc5MztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs4Ozg1OzI2MzswLDMzNjkzNzY3MjQ2Mzk4ODI2OzMwNjs0MzswOzAsMTI2MzYxNjU1NzczNDIwNjtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzs5Ozk4OzMwNjswLDMzNjU4OTMwMjMwMjU4NjIxOzM1Njs1MDswOzAsMTMyOTU4ODAxNDk4MTI3NTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzsxMDs5NTszNTY7MCwyNzc2OTgxNjIyNzA5MDAyNzs0MDU7NDk7MDswLDEzMjUxMDI4ODA2NTg0Mzc7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7MTs0MDs4MDswLDUwMDAwMDAwMDAwMDAwMDAwOzEwMDsyMDswOzAsMDAwMDAwMDAwMDAwMDAwMDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDsyOzUwOzEwMDswLDUwMDAwMDAwMDAwMDAwMDAwOzEyNjsyNjswOzAsMDUyOTEwMDUyOTEwMDUzMDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDszOzcyOzEyNjswLDU2MTEwNTQ3NjY3MzQyODAzOzE2MjszNjswOzAsMDk4NzY1NDMyMDk4NzY1NjtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDs0OzY3OzE2MjswLDQwOTc4MDg5ODI5OTg2NjU4OzE5OTszNzswOzAsMDYxOTc2NTQ5NDEzNzM1NDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDs1OzkzOzE5OTswLDQ3Njg2OTI3ODEyNjg5NDAwOzI0Njs0NzswOzAsMDg0MDEwODQwMTA4NDAxMTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDs2OzEwNDsyNDY7MCw0MzQ3NjMzMzM2MDM2NTQ3MTsyOTg7NTI7MDswLDA5Mzk1OTczMTU0MzYyNDE7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7NzsxMDI7Mjk4OzAsMzU0OTA0MjY5MzM1MzUxNjk7MzUyOzU0OzA7MCwxMjEyMTIxMjEyMTIxMjExO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180Ozg7MTEyOzM1MjswLDMyOTM1ODY5NDQwMjk0MjE5OzQwODs1NjswOzAsMTI1ODE2OTkzNDY0MDUyNDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDs5OzE0MDs0MDg7MCwzNjM4NzQzNDgxMTM1MDc4Mzs0ODA7NzI7MDswLDE0ODYxMTExMTExMTExMTI7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7MTA7MTI2OzQ4MDswLDI5Mzc5MzIwMjc3ODgyNzc2OzU0Njs2NjswOzAsMjAyNjg2MjAyNjg2MjAyNTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTsxOzQ4OzgwOzAsNTk5OTk5OTk5OTk5OTk5OTg7MTA0OzI0OzA7MCwxMTUzODQ2MTUzODQ2MTUzO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzI7MzY7MTA0OzAsMzYzMDk1MjM4MDk1MjM4MDg7MTI0OzIwOzA7MCwxMzQ0MDg2MDIxNTA1Mzc3O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzM7NTA7MTI0OzAsNDEyNDMzODA3MTM0ODk0MDg7MTUwOzI2OzA7MCwxMDIyMjIyMjIyMjIyMjIyO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzQ7NTQ7MTUwOzAsMzcxNzgyOTIzODg0MDk0Nzg7MTgwOzMwOzA7MCwxMDM3MDM3MDM3MDM3MDM2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzU7NTI7MTgwOzAsMzE0MTE3ODUwODgyNTU2Nzg7MjA4OzI4OzA7MCwxNzYyODIwNTEyODIwNTE0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzY7NzE7MjA4OzAsMzY1Nzk1NzA3OTE1MjczMTE7MjQ1OzM3OzA7MCwxNTY0NjI1ODUwMzQwMTM2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181Ozc7Njc7MjQ1OzAsMzEwOTM3OTUwOTM3OTUwOTY7MjgyOzM3OzA7MCwyMTI3NjU5NTc0NDY4MDg0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181Ozg7NjY7MjgyOzAsMjc5NDIyNjE3ODI0MzE1MTY7MzE2OzM0OzA7MCwyNDQ3MjU3MzgzOTY2MjQ2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181Ozk7ODU7MzE2OzAsMzEzODQ4MDE3NjM0MzI0NTI7MzU5OzQzOzA7MCwyMjc0ODM3NTExNjA2MzE1O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzEwOzg1OzM1OTswLDI5NTM5MDQ5MjUxNTA3NTE1OzQwMjs0MzswOzAsMjU1Mzg5NzE4MDc2Mjg1MztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjsxOzM2OzgwOzAsNDUwMDAwMDAwMDAwMDAwMDE7MTAwOzIwOzA7MCwxMjAwMDAwMDAwMDAwMDAxO05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjsyOzMzOzEwMDswLDM1MDE3MzU5NzQxMTgyMDQxOzExOTsxOTswOzAsMTM3MjU0OTAxOTYwNzg0NDtOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MzsyNTsxMTk7MCwyMDI5NzkzOTA2ODEwMDM1NzsxMzQ7MTU7MDswLDExNDQyNzg2MDY5NjUxNzQ7TkE7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc182OzQ7MzI7MTM0OzAsMjQ3ODk5MTU5NjYzODY1NTM7MTUwOzE2OzA7MCwxMTU1NTU1NTU1NTU1NTU2O05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjs1OzI3OzE1MDswLDE4OTc0NjE0NzAyNjczMjEyOzE2NzsxNzswOzAsMTI1NzQ4NTAyOTk0MDEyMTtOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7NjsxOTsxNjc7MCwxMTU4MDY4NzgzMDY4NzgzMDsxODA7MTM7MDswLDExODUxODUxODUxODUxODQ7TkE7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc182Ozc7MTc7MTgwOzAsMTA4MTg1NTg5MDYwNzQyMDY7MTkxOzExOzA7MCwxNTg4MTMyNjM1MjUzMDUzO05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjs4OzE4OzE5MTswLDEwNjkzMjI1OTUyNTM0NDYzOzIwMTsxMDswOzAsMTcwODEyNjAzNjQ4NDI0NjtOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7OTsxNjsyMDE7MCwwOTcwNTIxNzIzNjQ2NzIzNzsyMDk7ODswOzAsMTkyOTgyNDU2MTQwMzUwNztOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MTA7MTc7MjA5OzAsMDczMDc2OTIzMDc2OTIzMDg7MjIwOzExOzA7MCwxNjY2NjY2NjY2NjY2NjY3O05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzsxOzMwOzgwOzAsMzc1MDAwMDAwMDAwMDAwMDA7OTg7MTg7MDswLDE3MDA2ODAyNzIxMDg4NDU7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7MjsxOTs5ODswLDE5OTU4NDY5NDk4OTEwNjc1OzExMTsxMzswOzAsMTM1MTM1MTM1MTM1MTM1MTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzszOzE4OzExMTswLDE0NzcyNzI3MjcyNzI3MjcxOzEyMTsxMDswOzAsMTEyOTQ3NjU4NDAyMjA0MDtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzs0OzIwOzEyMTswLDE2NDgwMjMwMjMwMjMwMjMxOzEzMzsxMjswOzAsMDkyNzMxODI5NTczOTM0ODtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzs1OzEwOzEzMzswLDA2OTEyODc4Nzg3ODc4Nzg3OzEzOTs2OzA7MCwwNTk5NTIwMzgzNjkzMDQ1O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzY7MTY7MTM5OzAsMTEwODQ0MDE3MDk0MDE3MDk7MTQ3Ozg7MDswLDAyOTQ3ODQ1ODA0OTg4Njc7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7NzszMTsxNDc7MCwyMTMxMDk3ODE2MDgyMzM2MzsxNjQ7MTc7MDswLDA1NjkxMDU2OTEwNTY5MTE7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7ODszODsxNjQ7MCwyMzc4OTY4MjUzOTY4MjU0MTsxODY7MjI7MDswLDEyNTQ0ODAyODY3MzgzNTA7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7OTszMDsxODY7MCwxNjY0Mzc3Mjg5Mzc3Mjg5MzsyMDQ7MTg7MDswLDExMTExMTExMTExMTExMTA7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7MTA7MzU7MjA0OzAsMTU4Nzg3MTczODczMzgwNzY7MjI1OzIxOzA7MCwwOTkyNTkyNTkyNTkyNTk0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzE7MjA7ODA7MCwyNTAwMDAwMDAwMDAwMDAwMDs5MjsxMjswOzAsMTMwNDM0NzgyNjA4Njk1NjtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7MjsxNzs5MjswLDIxMDU3NjkyMzA3NjkyMzA4OzEwMzsxMTswOzAsMTk3NDExMDAzMjM2MjQ2MDtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7MzszOzEwMzswLDAyODI3MzgwOTUyMzgwOTUyOzEwODs1OzA7MCwxODUxODUxODUxODUxODUxO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODs0OzQ7MTA4OzAsMDQ4NDIzNDIzNDIzNDIzNDI7MTEyOzQ7MDswLDE5NjQyODU3MTQyODU3MTU7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzU7NjsxMTI7MCwwNzE4OTU0MjQ4MzY2MDEzMDsxMTg7NjswOzAsMjIwMzM4OTgzMDUwODQ3NTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7NjsxOzExODswLDAwNjA5NzU2MDk3NTYwOTc2OzEyMTszOzA7MCwyMDY2MTE1NzAyNDc5MzM5O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODs3Ozc7MTIxOzAsMDU3NzczMTA5MjQzNjk3NDg7MTI2OzU7MDswLDIwMTA1ODIwMTA1ODIwMDk7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184Ozg7NDsxMjY7MCwwMzM5NjM1ODU0MzQxNzM2NzsxMzA7NDswOzAsMTk0ODcxNzk0ODcxNzk0ODtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7OTszOzEzMDswLDAyODE2MjA1NTMzNTk2ODM4OzEzNTs1OzA7MCwxOTUwNjE3MjgzOTUwNjE4O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsxMDsyOzEzNTswLDAxODUwNjQ5MzUwNjQ5MzUxOzEzNzsyOzA7MCwxOTcwODAyOTE5NzA4MDI4O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfOTsxOzA7MjA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc185OzI7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfOTszOzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzk7NDswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc185OzU7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfOTs2OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzk7NzswOzA7TkE7MDswOzA7TkE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc185Ozg7MDswO05BOzA7MDswO05BO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfOTs5OzA7MDtOQTswOzA7MDtOQTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzk7MTA7MDswO05BOzA7MDswO05BO0ZBTFNFOzAK" download="2021-07-02_Simulation.csv">
+<a href="data:text/csv;base64,dHJlYXRtZW50O3Nlc3Npb24uY29kZTtncm91cElEO3JvdW5kO2NvbnRyaWJ1dGlvbjtlbmRvd21lbnQ7c2hhcmU7c3RvY2s7Z2Fpbjtib3RfYWN0aXZlO2dpbmk7cmljaDtub0NvbXByZWhlbnNpb24KcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMjsxOzQwOzgwOzAsNTAwMDAwMDAwMDAwMDAwMDA7MTAwOzIwOzA7MCwxOTk5OTk5OTk5OTk5OTk5O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzI7NjI7MTAwOzAsNjM0Mjg1NzE0Mjg1NzE0MjM7MTM0OzM0OzA7MCwxNjkxNTQyMjg4NTU3MjE0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzM7ODM7MTM0OzAsNjcwODc4MTY2NTY3ODIxNzM7MTc5OzQ1OzA7MCwxNzMxODQzNTc1NDE4OTk1O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzQ7Nzk7MTc5OzAsNDgyODMzODQ1OTMzNzY3Mjc7MjIwOzQxOzA7MCwxOTk5OTk5OTk5OTk5OTk5O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzU7ODA7MjIwOzAsNDU0MDY0NDU0MDY0NDU0MDY7MjYwOzQwOzA7MCwyNDYxNTM4NDYxNTM4NDYyO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzY7NjU7MjYwOzAsMzU3OTgxNTQyMzk3NjYwODM7Mjk1OzM1OzA7MCwyNDUxOTc3NDAxMTI5OTQ0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzc7ODU7Mjk1OzAsNDE2NTIyMDc0NDE2ODExMjc7MzM4OzQzOzA7MCwyMzA3NjkyMzA3NjkyMzA4O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzg7OTQ7MzM4OzAsNDAyMzAxMTk4MjU3MDgwNjE7Mzg4OzUwOzA7MCwyMzAyNDA1NDk4MjgxNzg4O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzk7OTg7Mzg4OzAsMzgyNTMzMTcxNzc4MTY2MjA7NDM4OzUwOzA7MCwyNDIwMDkxMzI0MjAwOTEzO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18yOzEwOzk4OzQzODswLDM2MjU2MzUxMjE0Nzc2NzY2OzQ4ODs1MDswOzAsMjQxODAzMjc4Njg4NTI0NztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfMzsxOzQ1OzgwOzAsNTYyNTAwMDAwMDAwMDAwMDA7MTAzOzIzOzA7MCwxNzc5OTM1Mjc1MDgwOTA3O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzI7Mjc7MTAzOzAsMjc2OTQ2ODU4Mjg4NzcwMDM7MTIwOzE3OzA7MCwxNTU1NTU1NTU1NTU1NTU2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzM7Mzc7MTIwOzAsMzIyODI0MTA1NzE4ODQyNTc7MTM5OzE5OzA7MCwxMzE4OTQ0ODQ0MTI0NzAxO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzQ7NDI7MTM5OzAsMzE3MTM1OTg5MDEwOTg4OTk7MTYxOzIyOzA7MCwxMjYyOTM5OTU4NTkyMTMzO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzU7NTE7MTYxOzAsMzIxMjUzNjU0OTcwNzYwMjU7MTkwOzI5OzA7MCwwOTEyMjgwNzAxNzU0Mzg2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzY7NjI7MTkwOzAsMzM4NTE5NTc0ODYyMjY5MDI7MjI0OzM0OzA7MCwxMTMwOTUyMzgwOTUyMzgxO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzc7NzM7MjI0OzAsMzM1MzA3MTY1OTUyMzI3MjQ7MjYzOzM5OzA7MCwxMTUzMzU4NjgxODc1NzkzO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzg7ODU7MjYzOzAsMzM2OTM3NjcyNDYzOTg4MjY7MzA2OzQzOzA7MCwxMjYzNjE2NTU3NzM0MjA2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzk7OTg7MzA2OzAsMzM2NTg5MzAyMzAyNTg2MjE7MzU2OzUwOzA7MCwxMzI5NTg4MDE0OTgxMjc1O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc18zOzEwOzk1OzM1NjswLDI3NzY5ODE2MjI3MDkwMDI3OzQwNTs0OTswOzAsMTMyNTEwMjg4MDY1ODQzNztUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDsxOzQwOzgwOzAsNTAwMDAwMDAwMDAwMDAwMDA7MTAwOzIwOzA7MCwwMDAwMDAwMDAwMDAwMDAwO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzI7NTA7MTAwOzAsNTAwMDAwMDAwMDAwMDAwMDA7MTI2OzI2OzA7MCwwNTI5MTAwNTI5MTAwNTMwO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzM7NzI7MTI2OzAsNTYxMTA1NDc2NjczNDI4MDM7MTYyOzM2OzA7MCwwOTg3NjU0MzIwOTg3NjU2O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzQ7Njc7MTYyOzAsNDA5NzgwODk4Mjk5ODY2NTg7MTk5OzM3OzA7MCwwNjE5NzY1NDk0MTM3MzU0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzU7OTM7MTk5OzAsNDc2ODY5Mjc4MTI2ODk0MDA7MjQ2OzQ3OzA7MCwwODQwMTA4NDAxMDg0MDExO1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180OzY7MTA0OzI0NjswLDQzNDc2MzMzMzYwMzY1NDcxOzI5ODs1MjswOzAsMDkzOTU5NzMxNTQzNjI0MTtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDs3OzEwMjsyOTg7MCwzNTQ5MDQyNjkzMzUzNTE2OTszNTI7NTQ7MDswLDEyMTIxMjEyMTIxMjEyMTE7VFJVRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzQ7ODsxMTI7MzUyOzAsMzI5MzU4Njk0NDAyOTQyMTk7NDA4OzU2OzA7MCwxMjU4MTY5OTM0NjQwNTI0O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc180Ozk7MTQwOzQwODswLDM2Mzg3NDM0ODExMzUwNzgzOzQ4MDs3MjswOzAsMTQ4NjExMTExMTExMTExMjtUUlVFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNDsxMDsxMjY7NDgwOzAsMjkzNzkzMjAyNzc4ODI3NzY7NTQ2OzY2OzA7MCwyMDI2ODYyMDI2ODYyMDI1O1RSVUU7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzE7NDg7ODA7MCw1OTk5OTk5OTk5OTk5OTk5ODsxMDQ7MjQ7MDswLDExNTM4NDYxNTM4NDYxNTM7TkE7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzI7MzY7MTA0OzAsMzYzMDk1MjM4MDk1MjM4MDg7MTI0OzIwOzA7MCwxMzQ0MDg2MDIxNTA1Mzc3O05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTszOzUwOzEyNDswLDQxMjQzMzgwNzEzNDg5NDA4OzE1MDsyNjswOzAsMTAyMjIyMjIyMjIyMjIyMjtOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzU7NDs1NDsxNTA7MCwzNzE3ODI5MjM4ODQwOTQ3ODsxODA7MzA7MDswLDEwMzcwMzcwMzcwMzcwMzY7TkE7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181OzU7NTI7MTgwOzAsMzE0MTE3ODUwODgyNTU2Nzg7MjA4OzI4OzA7MCwxNzYyODIwNTEyODIwNTE0O05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTs2OzcxOzIwODswLDM2NTc5NTcwNzkxNTI3MzExOzI0NTszNzswOzAsMTU2NDYyNTg1MDM0MDEzNjtOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzU7Nzs2NzsyNDU7MCwzMTA5Mzc5NTA5Mzc5NTA5NjsyODI7Mzc7MDswLDIxMjc2NTk1NzQ0NjgwODQ7TkE7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc181Ozg7NjY7MjgyOzAsMjc5NDIyNjE3ODI0MzE1MTY7MzE2OzM0OzA7MCwyNDQ3MjU3MzgzOTY2MjQ2O05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNTs5Ozg1OzMxNjswLDMxMzg0ODAxNzYzNDMyNDUyOzM1OTs0MzswOzAsMjI3NDgzNzUxMTYwNjMxNTtOQTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzU7MTA7ODU7MzU5OzAsMjk1MzkwNDkyNTE1MDc1MTU7NDAyOzQzOzA7MCwyNTUzODk3MTgwNzYyODUzO05BOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjsxOzM2OzgwOzAsNDUwMDAwMDAwMDAwMDAwMDE7MTAwOzIwOzA7MCwxMjAwMDAwMDAwMDAwMDAxO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjsyOzMzOzEwMDswLDM1MDE3MzU5NzQxMTgyMDQxOzExOTsxOTswOzAsMTM3MjU0OTAxOTYwNzg0NDtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MzsyNTsxMTk7MCwyMDI5NzkzOTA2ODEwMDM1NzsxMzQ7MTU7MDswLDExNDQyNzg2MDY5NjUxNzQ7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc182OzQ7MzI7MTM0OzAsMjQ3ODk5MTU5NjYzODY1NTM7MTUwOzE2OzA7MCwxMTU1NTU1NTU1NTU1NTU2O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjs1OzI3OzE1MDswLDE4OTc0NjE0NzAyNjczMjEyOzE2NzsxNzswOzAsMTI1NzQ4NTAyOTk0MDEyMTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7NjsxOTsxNjc7MCwxMTU4MDY4NzgzMDY4NzgzMDsxODA7MTM7MDswLDExODUxODUxODUxODUxODQ7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc182Ozc7MTc7MTgwOzAsMTA4MTg1NTg5MDYwNzQyMDY7MTkxOzExOzA7MCwxNTg4MTMyNjM1MjUzMDUzO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNjs4OzE4OzE5MTswLDEwNjkzMjI1OTUyNTM0NDYzOzIwMTsxMDswOzAsMTcwODEyNjAzNjQ4NDI0NjtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7OTsxNjsyMDE7MCwwOTcwNTIxNzIzNjQ2NzIzNzsyMDk7ODswOzAsMTkyOTgyNDU2MTQwMzUwNztGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzY7MTA7MTc7MjA5OzAsMDczMDc2OTIzMDc2OTIzMDg7MjIwOzExOzA7MCwxNjY2NjY2NjY2NjY2NjY3O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzsxOzMwOzgwOzAsMzc1MDAwMDAwMDAwMDAwMDA7OTg7MTg7MDswLDE3MDA2ODAyNzIxMDg4NDU7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzI7MTk7OTg7MCwxOTk1ODQ2OTQ5ODkxMDY3NTsxMTE7MTM7MDswLDEzNTEzNTEzNTEzNTEzNTE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183OzM7MTg7MTExOzAsMTQ3NzI3MjcyNzI3MjcyNzE7MTIxOzEwOzA7MCwxMTI5NDc2NTg0MDIyMDQwO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzs0OzIwOzEyMTswLDE2NDgwMjMwMjMwMjMwMjMxOzEzMzsxMjswOzAsMDkyNzMxODI5NTczOTM0ODtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7NTsxMDsxMzM7MCwwNjkxMjg3ODc4Nzg3ODc4NzsxMzk7NjswOzAsMDU5OTUyMDM4MzY5MzA0NTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7NjsxNjsxMzk7MCwxMTA4NDQwMTcwOTQwMTcwOTsxNDc7ODswOzAsMDI5NDc4NDU4MDQ5ODg2NztGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7NzszMTsxNDc7MCwyMTMxMDk3ODE2MDgyMzM2MzsxNjQ7MTc7MDswLDA1NjkxMDU2OTEwNTY5MTE7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc183Ozg7Mzg7MTY0OzAsMjM3ODk2ODI1Mzk2ODI1NDE7MTg2OzIyOzA7MCwxMjU0NDgwMjg2NzM4MzUwO0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfNzs5OzMwOzE4NjswLDE2NjQzNzcyODkzNzcyODkzOzIwNDsxODswOzAsMTExMTExMTExMTExMTExMDtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzc7MTA7MzU7MjA0OzAsMTU4Nzg3MTczODczMzgwNzY7MjI1OzIxOzA7MCwwOTkyNTkyNTkyNTkyNTk0O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODsxOzIwOzgwOzAsMjUwMDAwMDAwMDAwMDAwMDA7OTI7MTI7MDswLDEzMDQzNDc4MjYwODY5NTY7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzI7MTc7OTI7MCwyMTA1NzY5MjMwNzY5MjMwODsxMDM7MTE7MDswLDE5NzQxMTAwMzIzNjI0NjA7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzM7MzsxMDM7MCwwMjgyNzM4MDk1MjM4MDk1MjsxMDg7NTswOzAsMTg1MTg1MTg1MTg1MTg1MTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7NDs0OzEwODswLDA0ODQyMzQyMzQyMzQyMzQyOzExMjs0OzA7MCwxOTY0Mjg1NzE0Mjg1NzE1O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODs1OzY7MTEyOzAsMDcxODk1NDI0ODM2NjAxMzA7MTE4OzY7MDswLDIyMDMzODk4MzA1MDg0NzU7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184OzY7MTsxMTg7MCwwMDYwOTc1NjA5NzU2MDk3NjsxMjE7MzswOzAsMjA2NjExNTcwMjQ3OTMzOTtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7Nzs3OzEyMTswLDA1Nzc3MzEwOTI0MzY5NzQ4OzEyNjs1OzA7MCwyMDEwNTgyMDEwNTgyMDA5O0ZBTFNFOzAKcmVwbGljYXRpb247anlmOHhkMHM7anlmOHhkMHNfODs4OzQ7MTI2OzAsMDMzOTYzNTg1NDM0MTczNjc7MTMwOzQ7MDswLDE5NDg3MTc5NDg3MTc5NDg7RkFMU0U7MApyZXBsaWNhdGlvbjtqeWY4eGQwcztqeWY4eGQwc184Ozk7MzsxMzA7MCwwMjgxNjIwNTUzMzU5NjgzODsxMzU7NTswOzAsMTk1MDYxNzI4Mzk1MDYxODtGQUxTRTswCnJlcGxpY2F0aW9uO2p5Zjh4ZDBzO2p5Zjh4ZDBzXzg7MTA7MjsxMzU7MCwwMTg1MDY0OTM1MDY0OTM1MTsxMzc7MjswOzAsMTk3MDgwMjkxOTcwODAyODtGQUxTRTswCg==" download="2021-07-02_Simulation.csv">
 <button class="btn btn-default"><i class="fa fa-save"></i> Download csv</button>
 </a>
 </div>

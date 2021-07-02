@@ -42,6 +42,9 @@ In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods 
 DT <- read.csv(paste("../..", recentCSV, sep = "/"), 
                stringsAsFactors = FALSE) %>%
   data.table()
+
+# subset complete cases
+DT <- DT[participant._index_in_pages == 77 & !is.na(dPGG.1.player.contribution)]
 ```
 
 
