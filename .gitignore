@@ -22,3 +22,6 @@ differences.Rmd
 GMTV-questionnaire-data.dta
 GMTV2017_COVS.csv
 GMTV2017_COVS.rda
+
+data/replication/
+data/processed/

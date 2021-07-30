@@ -172,6 +172,12 @@ if(knitr::is_html_output()){
 
 ```
 
+Unfortunately, I made a misstake calculating the ```share```. For this reason, it will be recalculated here:
+
+```{r recalcShare}
+GMTV[, share := contribution/endowment]
+```
+
 ```{r writeData}
 save(GMTV, file = "../../../data/processed/rda/GMTV2017.rda")
 write.csv(GMTV, file ="../../../data/processed/csv/GMTV2017.csv")

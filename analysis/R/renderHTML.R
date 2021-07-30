@@ -1,7 +1,7 @@
 # Render HTML Report -----
-rmarkdown::render(input = "reports/rmd/01_dataGMTV.Rmd",
-                  output_dir = "reports/html/",
-                  output_file = "01_GMTV")
+# rmarkdown::render(input = "reports/rmd/01_dataGMTV.Rmd",
+#                   output_dir = "reports/html/",
+#                   output_file = "01_GMTV")
 
 rmarkdown::render(input = "reports/rmd/02_dataProcessing.Rmd",
                   output_dir = "reports/html/",

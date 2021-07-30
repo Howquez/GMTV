@@ -15,10 +15,11 @@ class PlayerBot(Bot):
                                                                         self.player.endowment)*Constants.num_others_per_group
                                                   )
             yield Submission(pages.dPGG_Decision, # in Gächter et al, subjects first contribute around 60%, then 30%
-                             dict(contribution=int((100 - 6 * self.round_number)/100 * random.randint(int(self.player.endowment/5*2.5), #HI==2.5,LO==2
-                                                                                                       int(self.player.endowment/5*5))  #HI==5,  LO==3.5
-                                                   )
-                                  ),
+                             dict(contribution=int(self.player.endowment/2)),
+                             # dict(contribution=int((100 - 6 * self.round_number)/100 * random.randint(int(self.player.endowment/5*2.5), #HI==2.5,LO==2
+                             #                                                                           int(self.player.endowment/5*5))  #HI==5,  LO==3.5
+                             #                       )
+                             #      ),
                              check_html=False)
             if self.round_number == self.session.config["num_rounds"]:
                 yield pages.dPGG_Results

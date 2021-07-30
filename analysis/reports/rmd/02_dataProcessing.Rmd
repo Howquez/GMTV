@@ -37,7 +37,42 @@ In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods 
 
 # Replication Data
 
-```{r readData}
+
+```{r readAll}
+
+# DT <- read.csv("../../../data/simulation/all_apps_wide.csv",
+#                stringsAsFactors = FALSE) %>% data.table()
+
+files <- list.files(path = "../../../data/replication/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+csvs <- list()
+
+for(i in files){
+  name <- str_extract(string = i,
+                      pattern = "2021.*")
+  
+  temp <- read.csv(i, 
+                   stringsAsFactors = FALSE) %>%
+    data.table()
+  
+  csvs[[name]] <- temp
+}
+
+full <- rbindlist(l = csvs,
+                  use.names = TRUE) %>%
+  data.table()
+
+DT <- full[participant._index_in_pages > 2 & 
+             participant.time_started != "" & 
+             participant.label != "" &
+             !(is.na(dPGG.1.player.contribution))]
+
+rm(list = c("files", "temp", "full"))
+```
+
+
+```{r readData, eval = FALSE}
 # read replication data
 DT <- read.csv(paste("../..", recentCSV, sep = "/"), 
                stringsAsFactors = FALSE) %>%
@@ -268,6 +303,13 @@ replication[groupID %in% noComp,
 replication <- replication[bot_active == 0 & round <= 10]
 ```
 
+Unfortunately, I made a mistake calculating the ```share```. For this reason, it will be recalculated here:
+
+```{r recalcShare}
+replication[, share := contribution/endowment]
+```
+
+
 The result contains ```NROW(DT)/4``` observations in 10 rounds and is saved as a ```csv``` and as a ```rda``` file in ```../../../data/processed/```.
 
 ```{r saveData}
@@ -352,4 +394,13 @@ write.csv(replicationCovariates,
 # Outlook
 
 The next step is to reproduce Gaechter et al.'s figures and tables and to compare our results to their results. This will be done in the third report.
+
+```{r}
+replication[,
+            .(contribution = mean(contribution),
+              endowment = mean(endowment),
+              share = mean(contribution/endowment),
+              share2 = mean(share)),
+            by = c("round")]
+```
 

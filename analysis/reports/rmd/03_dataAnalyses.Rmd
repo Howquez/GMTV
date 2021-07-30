@@ -294,7 +294,7 @@ GINIp <- main[rich == FALSE,
               by = c("round", "treatment"),
               .SDcols = "gini"]
 
-upperLimit <- GINI$gini %>% max() %>% round(digits = 1) + 0.10
+upperLimit <- GINI$gini %>% max() %>% round(digits = 1) + 0.15
 
 p1 <- ggplot(data = GINI, 
        aes(x = round, y = gini, fill = treatment, color = treatment, lty = treatment)) +
@@ -446,7 +446,7 @@ if(knitr::is_html_output()){
 
 stargazer(lm(formula = gender ~ treatment, data = covs),
           lm(formula = age ~ treatment, data = covs),
-          # lm(formula = switching_row ~ treatment, data = covs),
+          lm(formula = switching_row ~ treatment, data = covs),
           lm(formula = donation ~ treatment, data = covs),
 
 
@@ -547,18 +547,18 @@ if(knitr::is_html_output()){
 }
 
 olsStock1 <- lm(formula = stock ~ gender + age + 
-                  # switching_row + 
+                  switching_row + 
                   pq01 + pq02 + pq03 + pq04 + 
                   pq05 + pq06 + pq07 +pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
                 data = covariates[treatment == "replication"])
-olsStock2  <- lm(formula = stock ~ gender + age, # + switching_row,
+olsStock2  <- lm(formula = stock ~ gender + age + switching_row,
                 data = covariates[treatment == "replication"])
 olsGINI1  <- lm(formula = gini ~ gender + age + 
-                  # switching_row + 
+                  switching_row + 
                   pq01 + pq02 + pq03 + pq04 +
                   pq05 + pq06 + pq07 + pq08 + pq09 + pq10 + pq11 + pq12 + pq13 + pq14, 
                 data = covariates[treatment == "replication"])
-olsGINI2  <- lm(formula = gini ~ gender + age, # + switching_row,
+olsGINI2  <- lm(formula = gini ~ gender + age + switching_row,
                 data = covariates[treatment == "replication"])
 
 stargazer(olsStock1, olsStock2,
@@ -575,7 +575,7 @@ stargazer(olsStock1, olsStock2,
           model.numbers = FALSE,
           header=FALSE,
           covariate.labels = c("female", "age", 
-                               # "risk",
+                               "risk",
                                "quick thinker",
                                "easily offended",
                                "very satisfied",

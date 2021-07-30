@@ -45,4 +45,4 @@ cFiles <- file.info(list.files(path = "../data/replication",
                                pattern = "all_apps_wide.csv$"),
                     extra_cols = FALSE)
 recentCSV <- cFiles[cFiles$mtime == max(cFiles$mtime), ] %>% row.names()
-recentCSV <- "../data/replication/all_apps_wide-2021-07-02.csv"
+recentCSV <- "../data/replication/all_apps_wide-2021-07-03.csv"
