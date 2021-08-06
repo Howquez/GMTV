@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(data.table)
 library(magrittr)
+library(lubridate)
 library(stringr)
 library(glue)
 library(DescTools) # gini coefficient
@@ -68,18 +69,50 @@ DT <- full[participant._index_in_pages > 2 &
              participant.label != "" &
              !(is.na(dPGG.1.player.contribution))]
 
-rm(list = c("files", "temp", "full"))
+rm(list = c("files", "temp"))
 ```
 
 
 ```{r readData, eval = FALSE}
 # read replication data
-DT <- read.csv(paste("../..", recentCSV, sep = "/"), 
-               stringsAsFactors = FALSE) %>%
-  data.table()
+# DT <- read.csv(paste("../..", recentCSV, sep = "/"), 
+#                stringsAsFactors = FALSE) %>%
+#   data.table()
 
 # subset complete cases
-DT <- DT[participant._index_in_pages == 77 & !is.na(dPGG.1.player.contribution)]
+# DT <- DT[participant._index_in_pages == 77 & !is.na(dPGG.1.player.contribution)]
+```
+
+## Meta data
+
+```{r meta}
+meta_long <- full[participant.time_started != "" & 
+                    participant.label != "",
+                  .(session.code,
+                    participant.time_started,
+                    dPGG.1.player.contribution)]
+
+meta_long[,
+          `:=`(date = participant.time_started %>% ymd_hms() %>% date(),
+               hour = participant.time_started %>% ymd_hms() %>% hour())]
+
+meta <- meta_long[,
+                  .(date = date %>% unique(),
+                    time = hour %>% unique() %>% paste("00", sep = ":"),
+                    showups = participant.time_started %>% length(),
+                    dropouts = dPGG.1.player.contribution %>% is.na() %>% sum(na.rm = FALSE)),
+                  by = session.code]
+
+meta[,
+     `:=`(participants = showups - dropouts,
+          observations = (showups - dropouts)/4)]
+
+# save data
+fileName <- "replication2021"
+save(meta, file = paste0("../../../data/processed/rda/", fileName, "_meta", ".rda"))
+write.csv(meta, file = paste0("../../../data/processed/csv/", fileName, "_meta", ".csv"))
+
+rm(list = c("full", "meta_long"))
 ```
 
 
@@ -100,7 +133,6 @@ replicationFirstRound <- DT[,
                    comprehension = dPGG.10.player.comprehension)]
 
 # save data
-fileName <- "replication2021"
 save(replicationFirstRound, file = paste0("../../../data/processed/rda/", fileName, "_R1", ".rda"))
 write.csv(replicationFirstRound, file = paste0("../../../data/processed/csv/", fileName, "_R1", ".csv"))
 
@@ -394,13 +426,3 @@ write.csv(replicationCovariates,
 # Outlook
 
 The next step is to reproduce Gaechter et al.'s figures and tables and to compare our results to their results. This will be done in the third report.
-
-```{r}
-replication[,
-            .(contribution = mean(contribution),
-              endowment = mean(endowment),
-              share = mean(contribution/endowment),
-              share2 = mean(share)),
-            by = c("round")]
-```
-
