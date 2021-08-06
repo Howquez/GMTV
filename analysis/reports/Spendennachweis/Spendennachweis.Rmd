@@ -1,0 +1,123 @@
+---
+title: Spendennachweise des Gruppenentscheidungsexperiments an der Uni Hamburg
+author:
+  - name: Hauke Roggenkamp
+    email: roggenkh@hsu-hh.de
+    affiliation: Helmut-Schmidt-Universität
+    footnote: 1
+  - name: Stefan Traub
+    affiliation: Helmut-Schmidt-Universität
+  - name: Michael Berlemann
+    affiliation: Helmut-Schmidt-Universität
+address:
+  - code: Helmut-Schmidt-Universität
+    address: Holstenhofweg 85, 22043 Hamburg
+footnote:
+  - code: 1
+    text: "Corresponding Author"
+journal: " "
+abstract: "Im Juli 2021 wurden insgesamt 4 Sessions desselben Experiments durchgeführt. Bei diesem Experiment konnten TeilnehmerInnen Geld verdienen und, wenn sie wollten, spenden. Dieses Doukment zählt die einzelnen Spendenbeträge zusammen und weißt die Tätigung des Gesamtbetrages nach."
+date: "`r Sys.Date()`"
+bibliography: mybibfile.bib
+#linenumbers: true
+#numbersections: true
+csl: elsevier-harvard.csl
+output: rticles::elsevier_article
+---
+
+# Spendenbetrag
+
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, include = FALSE)
+
+library(knitr)
+library(data.table)
+library(stringr)
+library(magrittr)
+library(kableExtra)
+```
+
+```{r readAll}
+
+files <- list.files(path = "../../../data/replication/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+csvs <- list()
+
+for(i in files){
+  name <- str_extract(string = i,
+                      pattern = "2021.*")
+  
+  temp <- read.csv(i, 
+                   stringsAsFactors = FALSE) %>%
+    data.table()
+  
+  csvs[[name]] <- temp
+}
+
+full <- rbindlist(l = csvs,
+                  use.names = TRUE) %>%
+  data.table()
+
+DT <- full[participant._index_in_pages > 2 & 
+             participant.time_started != "" & 
+             participant.label != ""]
+
+rm(list = c("files", "temp", "full"))
+```
+
+```{r subsetComplete}
+
+complete <- DT[participant._index_in_pages == 77 & 
+                 !(is.na(dPGG.1.player.contribution)),
+               .(`Participant Label` = participant.label,
+                 `Participant Code`  = participant.code, 
+                 `Spende (Punkte)`   = dPGG.10.player.donation,
+                 `Spende (Euro)`     = dPGG.10.player.donation / 20)
+               ]
+```
+
+```{r subsetIncomplete}
+incomplete <- DT[participant._index_in_pages > 2 & 
+                 is.na(dPGG.1.player.contribution),
+               .(`Participant Label` = participant.label,
+                 `Participant Code`  = participant.code, 
+                 `Spende (Punkte)`   = NA,
+                 `Spende (Euro)`     = NA)
+               ]
+```
+
+```{r rbind}
+Donations <- rbind(complete, incomplete)
+```
+
+Insgesamt haben `r Donations %>% NROW()` TeilnehmerInnen eine der Sessions beendet. `r incomplete %>% NROW()` davon sind frühzeitig aus dem Experiment ausgeschieden, weil sich nicht in jedem Fall 4 TeilnehmerInnen zu einer Gruppe zusammengefunden haben.
+
+```{r manualAdjustments}
+# two participants notified us that they want to donate all their earnings, i.e. their showup fee as well. As this option was not provided by design, we'll hard-code it:
+
+Donations[`Participant Label` == "sj3u1U3YRr",
+          `:=`(`Spende (Punkte)` = 6*20,
+               `Spende (Euro)`   = 6)]
+
+Donations[`Participant Label` == "NZTEc5upQR",
+          `:=`(`Spende (Punkte)` = `Spende (Punkte)` + 5*20,
+               `Spende (Euro)`   = `Spende (Euro)` + 5)]
+
+total <- Donations[,`Spende (Euro)` %>% sum(na.rm = TRUE)]
+```
+
+In der folgenden Tabelle werden alle TeilnehmerInnen aufgelistet, die einen Betrag gespendet haben. Insgesamt kam ein Betrag von _`r total`_ Euro zusammen.
+
+```{r print, include = TRUE}
+kable(Donations[`Spende (Punkte)` > 0], # order(participant.label,  decreasing = FALSE)], 
+      longtable = T, booktabs = T) %>%
+  kable_styling(latex_options = c("repeat_header"), font_size = 7) %>%
+  footnote(general = paste("Insgesamt wurden dementsprechend", total, "Euro gespendet."),
+           general_title = "Summe: "
+           )
+```
+
+# Spendennachweis
+
+Der Gesamtbetrag von _`r total`_ Euro wurde am `r Sys.Date()` unter der Buchungsreferenz `Gruppenentscheidungsexperiment Juli 2021` an [compensators.org](compensators.org) gespendet. Ein entsprechender Nachweis kann online unter [https://www.compensators.org/compensatelist/?searchterm=GmbH](https://www.compensators.org/compensatelist/?searchterm=GmbH) eingesehen werden.
