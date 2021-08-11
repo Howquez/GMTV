@@ -73,24 +73,17 @@ rm(list = c("files", "temp"))
 ```
 
 
-```{r readData, eval = FALSE}
-# read replication data
-# DT <- read.csv(paste("../..", recentCSV, sep = "/"), 
-#                stringsAsFactors = FALSE) %>%
-#   data.table()
-
-# subset complete cases
-# DT <- DT[participant._index_in_pages == 77 & !is.na(dPGG.1.player.contribution)]
-```
-
 ## Meta data
+
 
 ```{r meta}
 meta_long <- full[participant.time_started != "" & 
                     participant.label != "",
                   .(session.code,
+                    participant.label,
                     participant.time_started,
                     dPGG.1.player.contribution)]
+
 
 meta_long[,
           `:=`(date = participant.time_started %>% ymd_hms() %>% date(),
@@ -115,6 +108,19 @@ write.csv(meta, file = paste0("../../../data/processed/csv/", fileName, "_meta",
 rm(list = c("full", "meta_long"))
 ```
 
+```{r students}
+sample_info <- read.table(file = "../../../data/sample/invited_students.txt",
+                          col.names = c("participant.label")) %>%
+  data.table()
+```
+
+We conducted a series a `r meta %>% NROW()` sessions in between `r meta[, date %>% min() %>% format("%A, %B %d")]` to `r meta[, date %>% max() %>% format("%A, %B %d")]` and collected `r meta[, observations %>% sum()]` observations (from `r meta[, participants %>% sum()]` participants) in total. This replication is registered in the AEA RCT Registry and the unique identifying number is: [AEARCTR-0007902](https://doi.org/10.1257/rct.7902-2.0) [@preregistration].
+
+```{r printMeta}
+meta %>% kable()
+```
+
+Unfortunately, w needed to recruit students for the last session as the sample of non-students was exhausted. As a consequence, we `r (sample_info$participant.label %in% DT$participant.label) %>% sum()` students participated in the last session.
 
 ## First round
 
@@ -421,6 +427,64 @@ write.csv(replicationCovariates,
           file = paste0("../../../data/processed/csv/", fileName, "_COVS", ".csv"))
 
 # no display or download button as these data may qualify as PII
+```
+
+
+# Page Times
+
+```{r readTime}
+
+files <- list.files(path = "../../../data/pageTimes/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+csvs <- list()
+
+for(i in files){
+  name <- str_extract(string = i,
+                      pattern = "2021.*")
+  
+  temp <- read.csv(i, 
+                   stringsAsFactors = FALSE) %>%
+    data.table()
+  
+  csvs[[name]] <- temp
+}
+
+timeSpent <- rbindlist(l = csvs,
+                       use.names = TRUE) %>%
+  data.table()
+
+setorder(timeSpent, session_code, participant_code, epoch_time)
+```
+
+
+```{r calcDuration}
+timeSpent[,
+          lag := shift(epoch_time, fill = NA, type = "lag"),
+          by = c("session_code", "participant_code")]
+
+timeSpent[,
+          duration := epoch_time - lag,
+          by = c("session_code", "participant_code")]
+
+timeSpent[,
+          completion := epoch_time %>% max() - epoch_time %>% min(),
+          by = c("session_code", "participant_code")]
+
+duration <- timeSpent[participant_code %in% DT$participant.code,
+                      .(
+                        session_code,
+                        participant_code,
+                        app_name,
+                        page_name,
+                        page_index,
+                        page_submission = epoch_time,
+                        time_spent = duration,
+                        completion_time = completion
+                      )]
+
+save(duration, file = paste0("../../../data/processed/rda/", fileName, "_timeSpent", ".rda"))
+write.csv(duration, file = paste0("../../../data/processed/csv/", fileName, "_timeSpent", ".csv"))
 ```
 
 # Outlook

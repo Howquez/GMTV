@@ -1,5 +1,5 @@
 ---
-title: Spendennachweise des Gruppenentscheidungsexperiments an der Uni Hamburg
+title: Spendennachweise des Gruppenentscheidungsexperiments an der Universität Hamburg
 author:
   - name: Hauke Roggenkamp
     email: roggenkh@hsu-hh.de
@@ -11,12 +11,12 @@ author:
     affiliation: Helmut-Schmidt-Universität
 address:
   - code: Helmut-Schmidt-Universität
-    address: Holstenhofweg 85, 22043 Hamburg
+    address: Helmut-Schmidt-Universität, Holstenhofweg 85, 22043 Hamburg
 footnote:
   - code: 1
     text: "Corresponding Author"
 journal: " "
-abstract: "Im Juli 2021 wurden insgesamt 4 Sessions desselben Experiments durchgeführt. Bei diesem Experiment konnten TeilnehmerInnen Geld verdienen und, wenn sie wollten, spenden. Dieses Doukment zählt die einzelnen Spendenbeträge zusammen und weißt die Tätigung des Gesamtbetrages nach."
+abstract: "Im Juli 2021 wurden insgesamt 4 Sessions desselben Experiments durchgeführt. Bei diesem Experiment konnten TeilnehmerInnen Geld verdienen und, wenn sie wollten, spenden. Dieses Doukment zählt die einzelnen Spendenbeträge zusammen und weißt die Überweisung des Gesamtbetrages (119.05 Euro) nach. Aus der Summe der Spendenbeträge konnten 1,82 Tonnen CO2 stillgelegt werden."
 date: "`r Sys.Date()`"
 bibliography: mybibfile.bib
 #linenumbers: true
@@ -107,10 +107,11 @@ Donations[`Participant Label` == "NZTEc5upQR",
 total <- Donations[,`Spende (Euro)` %>% sum(na.rm = TRUE)]
 ```
 
-In der folgenden Tabelle werden alle TeilnehmerInnen aufgelistet, die einen Betrag gespendet haben. Insgesamt kam ein Betrag von _`r total`_ Euro zusammen.
+In der folgenden Tabelle werden alle TeilnehmerInnen aufgelistet, die einen Betrag gespendet haben. Insgesamt kam ein Betrag von _`r total`_ Euro zusammen. Dies entspricht der Stillegung von 1,82 Tonnen CO2^[Stand: 06.08.2021, 16:54 Uhr.]
 
 ```{r print, include = TRUE}
-kable(Donations[`Spende (Punkte)` > 0], # order(participant.label,  decreasing = FALSE)], 
+donations <- Donations[`Spende (Punkte)` > 0]
+kable(donations[order(`Participant Label`,  decreasing = FALSE)], 
       longtable = T, booktabs = T) %>%
   kable_styling(latex_options = c("repeat_header"), font_size = 7) %>%
   footnote(general = paste("Insgesamt wurden dementsprechend", total, "Euro gespendet."),
@@ -120,4 +121,4 @@ kable(Donations[`Spende (Punkte)` > 0], # order(participant.label,  decreasing =
 
 # Spendennachweis
 
-Der Gesamtbetrag von _`r total`_ Euro wurde am `r Sys.Date()` unter der Buchungsreferenz `Gruppenentscheidungsexperiment Juli 2021` an [compensators.org](compensators.org) gespendet. Ein entsprechender Nachweis kann online unter [https://www.compensators.org/compensatelist/?searchterm=GmbH](https://www.compensators.org/compensatelist/?searchterm=GmbH) eingesehen werden.
+Der Gesamtbetrag von _`r total`_ Euro wurde am 6. August 2021 unter der Buchungsreferenz `Gruppenentscheidungsexperiment Juli 2021` an [compensators.org](compensators.org) gespendet, damit 1,82 Tonnen CO2 stillgelegt werden. Ein entsprechender Nachweis kann online unter [https://www.compensators.org/compensatelist/?searchterm=stefan+traub](https://www.compensators.org/compensatelist/?searchterm=stefan+traub) eingesehen werden.

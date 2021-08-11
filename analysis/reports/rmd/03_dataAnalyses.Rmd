@@ -14,12 +14,20 @@ output:
     toc: true
     toc_depth: 2
     toc_float: false
-    code_folding: true
 ---
 
-```{r setup, include=TRUE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, results = "hide", echo = FALSE}
+if(knitr::is_html_output()){
+  knitr::opts_chunk$set(echo = FALSE)
+}else{
+  knitr::opts_chunk$set(echo = TRUE)
+}
 
+Sys.setlocale(category = "LC_ALL",
+              locale = "en_US.UTF-8")
+```
+
+```{r packages}
 library(data.table)
 library(magrittr)
 library(kableExtra)
@@ -28,39 +36,6 @@ library(ggplot2)
 library(patchwork)
 library(stargazer)
 ```
-
-
-# Background 
-
-In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
-
-[This report](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/03_dataAnalyses.Rmd) is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them.
-
-```{r readData}
-base::load(file="../../../data/processed/rda/GMTV2017.rda")              # read GMTV
-base::load(file="../../../data/processed/rda/GMTV2017_R1.rda")           # read GMTVFirstRound
-base::load(file="../../../data/processed/rda/GMTV2017_COVS.rda")         # read GMTVCovariates
-base::load(file="../../../data/processed/rda/replication2021.rda")       # read replication
-base::load(file="../../../data/processed/rda/replication2021_R1.rda")    # read replicationFirstRound
-base::load(file="../../../data/processed/rda/replication2021_COVS.rda")  # read replicationCovariates
-```
-
-```{r cbind}
-main <- rbindlist(list(replication, GMTV), 
-                  use.names = TRUE)
-
-R1   <- rbindlist(list(replicationFirstRound, GMTVFirstRound), 
-                  use.names = TRUE)
-
-covs <- rbindlist(list(replicationCovariates, GMTVCovariates), 
-                  use.names = TRUE,
-                  fill = TRUE)
-
-rm(list = c("replication", "GMTV", "replicationFirstRound", "GMTVFirstRound", "GMTVCovariates", "replicationCovariates"))
-```
-
-
-# Results
 
 ```{r layout}
 layout <- theme(panel.background = element_rect(fill = "white"),
@@ -73,12 +48,120 @@ layout <- theme(panel.background = element_rect(fill = "white"),
                 plot.margin = unit(c(0.25,0.25,0.25,0.25), "cm"),
                 legend.title = element_blank()
                 )
-
 colors <- c("#F3B05C", "#1E4A75", "#65B5C0", "#AD5E21")
 ```
 
 
+
+```{r readData}
+base::load(file="../../../data/processed/rda/GMTV2017.rda")                   # read GMTV
+base::load(file="../../../data/processed/rda/GMTV2017_R1.rda")                # read GMTVFirstRound
+base::load(file="../../../data/processed/rda/GMTV2017_COVS.rda")              # read GMTVCovariates
+base::load(file="../../../data/processed/rda/replication2021.rda")            # read replication
+base::load(file="../../../data/processed/rda/replication2021_R1.rda")         # read replicationFirstRound
+base::load(file="../../../data/processed/rda/replication2021_COVS.rda")       # read replicationCovariates
+base::load(file="../../../data/processed/rda/replication2021_meta.rda")       # read meta data
+base::load(file="../../../data/processed/rda/replication2021_timeSpent.rda")  # read time spent
+```
+
+```{r cbind}
+main <- rbindlist(list(replication, GMTV), 
+                  use.names = TRUE)
+
+R1   <- rbindlist(list(replicationFirstRound, GMTVFirstRound), 
+                  use.names = TRUE)
+
+covs <- rbindlist(list(replicationCovariates, GMTVCovariates), 
+                  use.names = TRUE,
+                  fill = TRUE)
+```
+
+# Key Takeaways
+
+- We replicate a public goods experiment with dynamic interdependency and find similar results as @GACHTER2017.
+- Absolute contributions increase over time.
+- Just as in _static_ public goods experiments, the share of endowments contributed decreases over time.
+- The richest groups earn fifteen times more than the poorest groups.
+- While there clearly is growth, groups do not realize the maximal potential efficiency and earn just over `r main[treatment == "replication" & round == 10, mean(stock)/(80*1.5^10)*100] %>% round(digits=1)`% of what is possible.
+- Even though we conducted the experiment online and remotely, dropouts (or "attrition") are no concern.
+- Relying on an inexperienced non-convenience sample, `r trunc((R1[comprehension > 1] %>% NROW() / R1[!(is.na(comprehension))] %>% NROW())*100)`% of all participants stated that they understood the game.
+- Participants make relatively fast decisions which makes longer games feasible in the future.^[Taken together with inefficient growth and the lack of dropouts, additional rounds are fairly cheap.]
+
+
+# Background 
+
+In an attempt to incorporate uncertainty to @GACHTER2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. This experiment  replicated Gächter et al.'s NOPUNISH 10-round treatment arm as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
+
+[This report](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/03_dataAnalyses.Rmd) is the third in a series of reports covering this project. It reads the data prepared in the previous reports and analyzes them. The whole replication project is registered in the AEA RCT Registry and the unique identifying number is: [AEARCTR-0007902](https://doi.org/10.1257/rct.7902-2.0) [@preregistration].
+
+
+# Data
+
+I'll refer to the data @GACHTER2017 provided as _GMTV_ or _noPunish10_ in what follows. GMTV conducted most of their sessions in late 2012. All of these sessions ran in Nottingham using a student sample. collected They `r GMTV[, groupID %>% unique() %>% length()]` observations in their NOPUNISH 10 treatment arm. Our data, refered to as _replication_ is more recent, gathered remotely in Hamburg using a different tech stack as well as a different sample.
+
+We conducted a series a `r meta %>% NROW()` sessions in between `r meta[, date %>% min() %>% format("%A, %B %d")]` to `r meta[, date %>% max() %>% format("%A, %B %d %Y")]` and collected `r meta[, observations %>% sum()]` observations (from `r meta[, participants %>% sum()]` participants) in total. `r meta[, dropouts %>% sum()]` additional participants could not be matched with other group members or failed to answer the comprehension questions. These participants are labeled as dropouts. None of them dropped out during the session such that attrition is no problem here.
+
+```{r meta}
+meta %>% kable()
+```
+
+Two of these sessions were special: The first (`r meta[1, session.code]`) as well as the last one (`r meta[, session.code %>% tail(n=1)]`). The first session suffered technical problems such that the risk elicitation task was omitted. The last session (almost exclusively) relied on a student sample as our non-student sample was exhausted after the first three sessions. As a consequence, the last session was conducted with 59 students while all others were conducted without any students. I'll therefore create a boolean `student` variable.
+
+```{r studentSample}
+main[, student := FALSE]
+main[session.code == "d6jrsxnr" | treatment == "noPunish10",
+     student := TRUE]
+
+R1[, student := FALSE]
+R1[session.code == "d6jrsxnr" | treatment == "noPunish10",
+   student := TRUE]
+```
+
+
+All participants were recruited in by the University of Hamburg's  WISO Research Lab using HROOT [@hroot].
+
+```{r cleanUp1}
+rm(list = c("replication", "GMTV", "replicationFirstRound", "GMTVFirstRound", "GMTVCovariates", "replicationCovariates"))
+```
+
+
+# Results
+
 ## First Round
+
+We start by discussing initial contributions which assume the full range between 0 and 20 as Table 1 illustrates. Both the median as well as the mean are about 10 tokens, that is, 50% of the initial endowment in both data sources. This is comparable to initial contributions in the standard game with partner matching.^[See Figure 3B in @fehrgaechter2000, for instance.]
+
+```{r summary0, results = "asis", warning = FALSE, fig.cap = "test"}
+
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+replication <- R1[treatment == "replication", ownContribution]
+GMTV    <- R1[treatment == "noPunish10", ownContribution]
+
+
+rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
+temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
+                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
+
+stargazer(temp,
+          summary.stat = c("mean", "median","sd", "max", "min", "n"),
+          type = type, 
+          flip = TRUE, 
+          header=FALSE)
+
+rs1 <- wilcox.test(replication, 
+                   GMTV,
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
+```
+
+The two-sided rank sum test (comparing differences between data sources) yields a p-Value of `r rs1` for the mean contribution in first round of the game.
 
 ```{r firstRound, eval = FALSE}
 ggplot(R1, aes(y=ownContribution, x=othersContribution/3)) +
@@ -90,7 +173,9 @@ ggplot(R1, aes(y=ownContribution, x=othersContribution/3)) +
   
 ```
 
-## Provision of the public good and wealth creation
+## Provision of the public good
+
+We proceed by further discussing contributions. The left panel in Figure 1 shows the average amount of tokens participants contributed over time. Contributions are clearly non-zero and are increasing over time in the replication treatment.^[Participants contribute about 10 tokens in the first round] While contributions flatten in the replication, the GMTV data exhibit a drop in the last round. Note that increasing contributions over time imply that participants have increasing endowments over time. Hence, increasing contributions do not necessarily imply that participants contribute increasing shares of their endowments. The right panel in Figure 1 shows the share of overall endowments contributed over time. In the original data, participants contribute around 53% of their endowment in round 1. This amount steadily decreases. The replication exhibits a similar pattern with an initial average contributions of 50%. Both treatments resemble the results from the standard game: Just as in @fehrgaechter2000 contributions start at a level of around 50-60% of endowments and decrease to around 10% of endowments in round 10.
 
 ```{r plotContributions}
 
@@ -127,6 +212,10 @@ SHARE <- main[,
             by = c("round", "treatment"),
             .SDcols = "share"]
 
+# SHARE <- main[,
+#             .(share = sum(contribution)/sum(endowment)),
+#             by = c("round", "treatment")]
+
 upperLimit <- 1
 
 p2 <- ggplot(data = SHARE, 
@@ -145,72 +234,51 @@ p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 rm(list = c("SHARE", "p1", "p2"))
 ```
 
+### Hm..?
 
-```{r summary1, results = "asis", warning = FALSE, fig.cap = "test"}
+The plot above puzzles me a little as the right panel visualizes the mean `share==contribution/endowment` by treatment and round. This yields a different result than the mean of the sum of contributions divided by the sum of endowments per treatment and round as the following table illustrates.
 
-if(knitr::is_html_output()){
-  type <- "html"
-} else {
-  type = "latex"
-}
-
-replication <- main[treatment == "replication" & round == 10, stock]
-GMTV    <- main[treatment == "noPunish10" & round == 10, stock]
-
-
-rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
-temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
-                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
-
-stargazer(temp,
-          summary.stat = c("mean", "median","sd", "max", "min", "n"),
-          type = type, 
-          flip = TRUE, 
-          header=FALSE)
-
-rs1 <- wilcox.test(replication, 
-                   GMTV,
-                   exact = FALSE)$p.value %>% 
-  round(digits = 4) %>% 
-  formatC(format = "f", 
-          digits = 4)
-
+```{r}
+main[round == 10, 
+     .(contribution = mean(contribution), 
+       endowment = mean(endowment), 
+       # share = mean(share), # same thing as the following line
+       share = mean(contribution/endowment),
+       sumContBySumEndo = mean(sum(contribution)/sum(endowment))), 
+     by = c("treatment", "round")] %>% 
+  kable()
 ```
 
-The table above displays summary statistics for the 10th period's ```stock``` a.k.a _Wealth_. The rank sum test yields a p-Value of `r rs1` for the mean wealth during the last period of the game.
 
-The following table shows a simple regression to illustrate differences in the 10th period's wealth between the replication's data and GMTV's data.
+```{r plotContributionsStudents, eval = FALSE}
+SUM <- main[treatment == "replication",
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "student"),
+            .SDcols = "contribution"]
 
+SUM[,
+    sum := round(contribution/4)]
 
-```{r tableStock, results = "asis", warning = FALSE}
+upperLimit <- SUM$contribution %>% max() %>% round() + 10
 
-# create subsets
-main_all  <- main[round == 10]
-main_poor <- main[round == 10 & rich == FALSE]
-main_rich <- main[round == 10 & rich == TRUE]
+p1 <- ggplot(data = SUM, 
+             aes(x = round, y = contribution, fill = student, color = student, lty = student)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Average Amount of Tokens contributed") +
+  scale_color_manual(values = colors) + 
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
 
-# create table
-if(knitr::is_html_output()){
-  type <- "html"
-} else {
-  type = "latex"
-}
-
-stargazer(lm(formula = stock ~ treatment, data = main_all),
-          lm(formula = stock ~ treatment, data = main_poor),
-          lm(formula = stock ~ treatment, data = main_rich),
-
-          column.labels = c("All", "Below median", "Above median"),
-          model.numbers = FALSE,
-          dep.var.labels = "Wealth",
-          header=FALSE,
-          covariate.labels = c("Replication"),
-
-          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
-          )
+rm(list = c("SUM"))
 ```
 
-These information are also plotted over all periods in the following figure.
+## Wealth Creation
+
+Possibly of more interest are the implications contributions have for wealth generation and growth. To measure growth, we define a variable _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed). @GACHTER2017 refer to that variable as "wealth" so we will do the same in what follows. Before the start of round 1, wealth will be 80 in all groups by construction. The maximal wealth that can be reached in round 10 (if everyone contributes their entire endowment in each round) is approximately `r (80*1.5^10) %>% trunc()` tokens or `r (80*1.5^10 /20) %>% trunc()` Euro per group. Table 3 shows some summary statistics regarding wealth. Groups do achieve growth on average. While there is clearly growth, groups do not realize the maximal potential efficiency as the replication groups reach on average a level of `r main[treatment == "replication" & round == 10, mean(stock)] %>% trunc()` tokens out of `r (80*1.5^10) %>% trunc()` maximally possible or `r main[treatment == "replication" & round == 10, mean(stock)/(80*1.5^10)*100] %>% round(digits=1)`%. As in the original data, there is large heterogeneity with the richest group reaching `r main[treatment == "replication" & round == 10, max(stock)]` tokens whereas the poorest group ends up with `r main[treatment == "replication" & round == 10, min(stock)]` tokens.
 
 ```{r plotStock, fig.cap = "Average wealth over time across treatments."}
 STOCK <- main[,
@@ -272,11 +340,117 @@ p3 <- ggplot(data = STOCKp,
 rm(list = c("STOCK", "STOCKr", "STOCKp", "p1", "p2", "p3"))
 ```
 
+Figure 2 shows the dynamics of wealth over time. The left panel focuses on all groups, the upper right panel  on those with above median wealth after round 10 (“successful” groups) and the lower left panel on those with below median wealth after round 10 (“unsuccessful” groups). The average wealth is increasing across rounds and is substantially above 80 once round 10 was played as Table 2 illustrates.
+
+```{r summary1, results = "asis", warning = FALSE, fig.cap = "test"}
+
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+replication <- main[treatment == "replication" & round == 10, stock]
+GMTV    <- main[treatment == "noPunish10" & round == 10, stock]
+
+
+rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
+temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
+                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
+
+stargazer(temp,
+          summary.stat = c("mean", "median","sd", "max", "min", "n"),
+          type = type, 
+          flip = TRUE, 
+          header=FALSE)
+
+rs1 <- wilcox.test(replication, 
+                   GMTV,
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
+
+```
+
+The two-sided rank sum test (comparing differences between data sources) yields a p-Value of `r rs1` for the mean wealth after the last round of the game.
+
+
+### Wealth Differences between Data Sources
+
+We next consider whether we were able to replicate GMTV's results with our data. Absolute contributions tended to be higher in @GACHTER2017 but end up at around the same level as in the replication due to a stark decline in contributions on the last round. In terms of shares contributed both data sources exhibit a similar pattern: they decline and do not stabilize. Even though the share of current endowments contributed in the last round is quite similar, the share declined a little faster in our data.
+
+Our groups also tend to be poorer. Median wealth is higher in GMTV. This difference in mean ranks is not significant according to a two-sided ranksum test, however. To assess the statistical significance of differences in means, we run OLS regressions where we regress wealth on a treatment dummy for _Replication_ (Table 3). These regressions show that differences in means are only significant for below median groups.
+
+```{r tableStock, results = "asis", warning = FALSE}
+
+# create subsets
+main_all  <- main[round == 10]
+main_poor <- main[round == 10 & rich == FALSE]
+main_rich <- main[round == 10 & rich == TRUE]
+
+# create table
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+stargazer(lm(formula = stock ~ treatment, data = main_all),
+          lm(formula = stock ~ treatment, data = main_poor),
+          lm(formula = stock ~ treatment, data = main_rich),
+
+          column.labels = c("All", "Below median", "Above median"),
+          model.numbers = FALSE,
+          dep.var.labels = "Wealth",
+          header=FALSE,
+          covariate.labels = c("Replication"),
+
+          type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
 
 ## Inequality
 
-The following figure plots the Gini-coefficient These over all periods.
+In this subsection, we focus on the amount of inequality created endogenously in our setting. The smallest possible value the Gini coefficient takes is zero (if all four group members own one fourth of the wealth) and the largest possible value it takes is one (if one group member holds the entire wealth). Table 4 shows some summary statistics regarding the Gini coefficient.
 
+The round 10 Gini coefficient ranges between `r main[treatment == "replication" & round == 10, gini %>% min()] %>% round(digits = 3)` and `r main[treatment == "replication" & round == 10, gini %>% max()] %>% round(digits = 3)` in our data with a median of `r main[treatment == "replication" & round == 10, gini %>% median()] %>% round(digits = 3)`.
+
+```{r summary2, results = "asis", warning = FALSE}
+
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+replication <- main[treatment == "replication" & round == 10, gini]
+GMTV    <- main[treatment == "noPunish10" & round == 10, gini]
+
+
+rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
+temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
+                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
+
+stargazer(temp,
+          summary.stat = c("mean", "median","sd", "max", "min", "n"),
+          type = type, 
+          flip = TRUE, 
+          header=FALSE)
+
+rs2 <- wilcox.test(replication, 
+                   GMTV,
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
+
+```
+
+The two-sided rank sum test yields a p-Value of `r rs2` for the mean ```gini``` during the last round of the game.
+
+Figure 3 illustrates the dynamics of the Gini coefficient (at the end of each round) over time and shows that inequality increases slightly.
 
 ```{r plotInequality, fig.cap = "Average Gini coefficient over time across treatments."}
 GINI <- main[,
@@ -338,7 +512,11 @@ p3 <- ggplot(data = GINIp,
 rm(list = c("GINI", "GINIp", "GINIr", "p1", "p2", "p3"))
 ```
 
-The following table shows a simple regression to illustrate differences in the 10th period's Gini coefficient between the replication's data and GMTV's data.
+### Inequality Differences between Data Sources
+
+Once more, we consider whether we were able to replicate GMTV's results with our data.
+
+The following table shows a simple OLS regression to illustrate differences in the 10th round's Gini coefficient between the replication's data and GMTV's data. Mean Gini coefficients are similar across data sources and there are no statistically significant differences in mean Gini coefficients.
 
 ```{r tableGINI, results = "asis", warning = FALSE}
 
@@ -369,42 +547,46 @@ stargazer(lm(formula = gini ~ treatment, data = main_all),
 ```
 
 
-```{r summary2, results = "asis", warning = FALSE}
+# Time Spent
 
-if(knitr::is_html_output()){
-  type <- "html"
-} else {
-  type = "latex"
-}
+Participants spent approximately `r duration[, completion_time %>% unique() %>% mean()] %/% 60 + 1` minutes completing the experiment. Reading the instructions and answering the comprehension questions took the most time, that is, `r duration[page_name == "Intro_Instructions", time_spent %>% unique() %>% mean()] %/% 60 + 1` minutes. The public goods game required `r duration[app_name == "dPGG", time_spent %>% sum(), by = c("session_code", "participant_code")][,V1] %>% mean(na.rm = TRUE) %/% 60` minutes of the participants' time.
 
-replication <- main[treatment == "replication" & round == 10, gini]
-GMTV    <- main[treatment == "noPunish10" & round == 10, gini]
+```{r plotTime, fig.cap = "Average Time Spent for each Contribution per Round."}
+N <- duration[, participant_code %>% unique() %>% length()]
+plotDT <- duration[app_name == "dPGG" & page_name == "dPGG_Decision",
+                   .(time_spent = time_spent %>% sum()),
+                   by = c("session_code", "participant_code", "page_index", "page_name")]
+
+plotDT[, round := seq(from = 1, to = 10), by = c("participant_code")]
+
+upperLimit <- plotDT[, time_spent %>% mean(), by = c("round")] %>% max()
 
 
-rows <- sapply(X = list(replication, GMTV), FUN = NROW) %>% max()
-temp <- data.frame(replication = c(replication, rep(NA, rows - NROW(replication))),
-                   GMTV = c(GMTV, rep(NA, rows - NROW(GMTV))))
 
-stargazer(temp,
-          summary.stat = c("mean", "median","sd", "max", "min", "n"),
-          type = type, 
-          flip = TRUE, 
-          header=FALSE)
-
-rs2 <- wilcox.test(replication, 
-                   GMTV,
-                   exact = FALSE)$p.value %>% 
-  round(digits = 4) %>% 
-  formatC(format = "f", 
-          digits = 4)
-
+ggplot(data = summarySE(data = plotDT,
+                        measurevar = "time_spent",
+                        groupvars=c("round"),
+                        na.rm = FALSE,
+                        conf.interval = 0.95,
+                        .drop = TRUE),
+       mapping = aes(x = round, y = time_spent)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE, color = colors[2], lty=2) +
+  geom_errorbar(aes(ymin=time_spent-ci, ymax=time_spent+ci), width=.25, alpha = 0.5, color = colors[2]) +
+  geom_point(color = colors[2]) +
+  scale_x_continuous(name="",  breaks = 1:10) +
+  scale_y_continuous(limits = c(0, upperLimit + 10), expand = c(0, 0)) +
+  labs(y = "Time Passed in Seconds", caption = "Bars indicate 95% confidence intervals.") +
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
 ```
 
-The table above displays summary statistics for the 10th period's ```gini``` .
-The rank sum test yields a p-Value of `r rs2` for the mean ```gini``` during the last period of the game.
+Figure 4 illustrates the time participants needed to make each of their contributions during the replication. One can see that the initial as well as most of the other contributions take about 20 seconds of time. Interestingly, the second contribution takes (on average) about 50% more time than the first one - presumably because this is the first time participants' learn their respective group members' actions. The third contribution is a little faster and all subsequent contributions stabilize at `r plotDT[round > 3, time_spent %>% mean()] %>% ceiling()` seconds.
+
+Given that no participant dropped out after answering the comprehension questions correctly and given that participants need less than 20 seconds to make their contributions, more than 10 rounds are feasible.
 
 
-## Sample Properties
+# Sample Properties
 
 ```{r matchOutcomes}
 covariates <- data.table::merge.data.table(x  = covs,
@@ -417,7 +599,6 @@ covariates[,
 
 ```
 
-In addition to the summary statistics a regression table for each covariate as a dependent variable is needed. The independent variable will then be the data source (i.e. GMTV vs replication).
 
 ```{r summary3, results = "asis"}
 
@@ -594,4 +775,127 @@ stargazer(olsStock1, olsStock2,
 
           type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
           )
+```
+
+
+# Hamburg: How do Students compare to non-Students?
+
+This section considers the replication data only. Doing so, we'll exploit the circumstance that we recruited from both the convenience or "student" sample as well as the non-convenience sample _(Hamburg Panel)_ and analyze the differences between the two.
+
+```{r sample0, results = "asis", warning = FALSE, fig.cap = "test"}
+
+if(knitr::is_html_output()){
+  type <- "html"
+} else {
+  type = "latex"
+}
+
+students <- R1[treatment == "replication" & student == TRUE, ownContribution]
+HHpanel  <- R1[treatment == "replication" & student == FALSE, ownContribution]
+
+
+rows <- sapply(X = list(students, HHpanel), FUN = NROW) %>% max()
+temp <- data.frame(Students = c(students, rep(NA, rows - NROW(students))),
+                   `HH-panel` = c(HHpanel, rep(NA, rows - NROW(HHpanel))))
+
+stargazer(temp,
+          summary.stat = c("mean", "median","sd", "max", "min", "n"),
+          type = type, 
+          flip = TRUE, 
+          header=FALSE)
+
+rs1 <- wilcox.test(students, 
+                   HHpanel,
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
+```
+
+We start by looking at the initial contributions. As Table 5 illustrates, there is no difference in averages, standard deviation or the range. The two-sided rank sum test (comparing differences between data sources) yields a p-Value of `r rs1` for the mean contribution in first round of the game.
+
+While the initial contributions are on average quite similar between the two sample, the subsequent contributions differ. In both absolute and relative terms, the Hamburg-Panel tends to contribute more than the student sample as the following Figure shows.
+
+```{r sampleContributions}
+
+SUM <- main[treatment == "replication",
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "student"),
+            .SDcols = "contribution"]
+
+SUM[,
+    sum := round(contribution/4)]
+
+upperLimit <- SUM$contribution %>% max() %>% round() + 10
+
+p1 <- ggplot(data = SUM, 
+             aes(x = round, y = contribution, fill = student, color = student, lty = student)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Average Amount of Tokens contributed") +
+  scale_color_manual(values = colors, labels = c("Hamburg-Panel", "Students")) + 
+  guides(lty = FALSE, fill = FALSE) +
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+
+
+SHARE <- main[treatment == "replication",
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "student"),
+            .SDcols = "share"]
+
+upperLimit <- 1
+
+p2 <- ggplot(data = SHARE, 
+             aes(x = round, y = share, fill = student, color = student, lty = student)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Share of Current Endowment contributed") +
+  guides(lty = FALSE, fill = FALSE) +
+  scale_color_manual(values = colors, labels = c("Hamburg-Panel", "Students"))
+
+p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+
+rm(list = c("SUM", "SHARE", "p1", "p2"))
+```
+
+Differences in contributions lead to differences in wealth. The Hamburg-Panel therefore earned more during the public goods game than the student sample. This can be seen in the following figure as well as in the subsequent table:
+
+
+```{r sampleStock, fig.cap = "Average wealth over time across samples."}
+STOCK <- main[treatment == "replication",
+              lapply(.SD, mean, na.rm = TRUE),
+              by = c("round", "student"),
+              .SDcols = "stock"]
+
+upperLimit <- STOCK$stock %>% max() %>% round() + 20
+
+ggplot(data = STOCK, 
+       aes(x = round, y = stock, fill = student, color = student, lty = student)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:10) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Wealth") +
+  guides(lty = FALSE, fill = FALSE) +
+  scale_color_manual(values = colors, labels = c("Hamburg-Panel", "Students"))
+
+rm(list = c("STOCK"))
+```
+
+```{r}
+main[treatment == "replication" & round == 10, 
+     lapply(.SD, mean, na.rm = TRUE), 
+     by = c("round", "student"), 
+     .SDcols = c("contribution", "share", "stock")] %>%
+  kable()
 ```
