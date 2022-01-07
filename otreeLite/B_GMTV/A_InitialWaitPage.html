@@ -1,0 +1,22 @@
+{{ extends "otree/WaitPage.html" }}
+
+{{ block content }}
+    <p>
+        Alle Fragen richtig beantwortet.
+    </p>
+    <p class="lead">
+        Sie werden nun mit weiteren Teilnehmern verbunden, um eine Gruppe zu bilden.
+    </p>
+    <p>
+        <small>
+            {{ if player.wait_time_left > 1 %}
+            Sollten sich in den nächsten {{ player.wait_time_left }} Minuten
+            {{ else }}
+            Sollten sich in den nächsten Minute
+            {{ endif }}
+            keine weiteren Teilnehmer finden, so werden Sie
+            direkt ans Ende der Studie geleitet. Für Ihre Geduld werden wir Ihnen dann einen Bonus in Höhe von
+            {{ C.PATIENCE_BONUS }} Punkten auszahlen.
+        </small>
+    </p>
+{{ endblock }}

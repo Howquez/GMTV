@@ -1,0 +1,94 @@
+{{ block scripts }}
+<script src="{% static 'global/js/basics.js' %}"></script>
+<script src="{% static 'global/js/decision.js' %}"></script>
+{{ endblock }}
+
+{% block global_styles  %}
+<style>
+    .otree-title {
+        display: none;
+        }
+</style>
+{% endblock %}
+
+{{ block content }}
+<body class="bg-light.bg-gradient">
+<img src="https://github.githubassets.com/images/modules/site/actions/hero-bg.jpg" id="bg" alt="" style="z-index: -1; position: fixed; left: 30; opacity: 0.90;">
+
+    <!-- Header -->
+    <nav class="navbar sticky-top mb-4 justify-content-between bg-white shadow-sm" style="z-index:9999">
+        <h5>
+            <span class="badge rounded-pill mt-4 ms-3 bg-dark shadow" data-toggle="tooltip" data-placement="bottom" title="Runde {{ player.round_number }}">
+                Runde {{ player.round_number }}
+            </span>
+        </h5>
+        <div class="me-3" style="cursor: pointer;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="dark" class="bi bi-info-circle-fill" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInstructions" aria-controls="offcanvasInstructions" id="instructions_icon">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="dark" class="bi bi-x-circle ms-2" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasQuit" aria-controls="offcanvasQuit" id="quitButton">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+        </div>
+    </nav>
+
+    <!-- Card -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-md-10 col-lg-8">
+
+                <div class="card border-start-success mt-5 shadow-lg">
+                    <div class="card-body">
+                        <h5 class="card-title display-3 mb-1 mt-3" data-toggle="tooltip" data-placement="top" title="Ihr aktueller Kontostand">
+                            33
+                            <small class="text-muted">
+                                Punkte
+                            </small>
+                        </h5>
+                        <h6 class="card-subtitle mb-3">
+                            <span class="badge bg-success" data-bs-toggle="tooltip" data-bs-placement="right" title="Punkte, die sie in der letzten Runde dazuverdient haben">
+                                +13 Punkte
+                            </span>
+                        </h6>
+
+                        <hr class="my-4">
+
+                        <p class="card-text lead mb-1">
+                            Von diesen 33 Punkten können Sie einen beliebigen Betrag zum Gruppenprojekt
+                            beitragen.
+                        </p>
+
+                        <p class="mb-4">
+                            <small>
+                                Zurückgelegte, also nicht zum Gruppenprojekt beigetragene, (Rest-) Beträge stehen Ihnen in
+                                der nächsten Runde unverändert zur Verfügung.
+                            </small>
+                        </p>
+                        <div class="container mb-4">
+                            <div class="row justify-content-center">
+                                <div class="col">
+                                    <input type="number" class="form-control" placeholder="Beitrag" id="id_contribution" name="contribution" min="0" required
+                                           data-container="body" data-toggle="popover" data-placement="bottom" data-content="Sie können in dieser Runde maximal 33 Punkte beitragen.">
+                                </div>
+                                <div class="col-7">
+                                    <button type="submit" id="submit_button" class="btn-outline-primary btn" onclick="submitForm();" style="border-radius: 40px;">
+                                        Alles behalten
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        I'm baby poke brooklyn street art mlkshk cronut. PBR&B next level kinfolk taxidermy, fashion axe selvage art party gentrify affogato asymmetrical la croix. Tofu venmo franzen palo santo, tbh artisan gentrify bicycle rights meh salvia echo park try-hard viral art party. Selvage mixtape shoreditch keytar cornhole flexitarian.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{{ endblock }}
+
+

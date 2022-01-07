@@ -24,8 +24,8 @@ document.getElementById("id_contribution").addEventListener('input', () => {
     if (input > 0){
         document.getElementById("submit_button").innerHTML = "Beitragen";
     } else {
-        document.getElementById("submit_button").innerHTML = "Alles zurücklegen";
-        document.getElementById("id_contribution").value = null;
+        document.getElementById("submit_button").innerHTML = "Alles Behalten";
+        // document.getElementById("id_contribution").value = null;
     }
 });
 

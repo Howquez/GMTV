@@ -7,13 +7,15 @@ let current_round  = js_vars.current_round || 0;
 let timeout  = js_vars.timeout || 999999999999;
 
 // tooltip
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
 // popover
-$(function () {
-  $('[data-toggle="popover"]').popover()
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl)
 })
 
 // reverse the table's order
@@ -27,11 +29,6 @@ if (template == "results"){ //
 }
 });
 
-/*// submit in case you don't use buttons
-function submitPage() {
-    document.forms[0].submit()
-}*/
-
 // timer & alert
 setTimeout(
     function () {
@@ -41,12 +38,3 @@ setTimeout(
     },
     (timeout - 0.5) * 60 * 1000
 );
-
-// open modal onload
-if (template == "risk"){
-    var riskInstructions = document.getElementById("instructionsModal")
-
-    $(document).ready(function(){
-        $(riskInstructions).modal("show")
-    });
-}
