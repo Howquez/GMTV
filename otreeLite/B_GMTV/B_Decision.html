@@ -11,6 +11,7 @@
 </style>
 {% endblock %}
 
+
 {{ block content }}
 <body class="bg-light.bg-gradient">
 <img src="https://github.githubassets.com/images/modules/site/actions/hero-bg.jpg" id="bg" alt="" style="z-index: -1; position: fixed; left: 30; opacity: 0.90;">
@@ -36,53 +37,87 @@
     <!-- Card -->
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-sm-12 col-md-10 col-lg-8">
+            <div class="col-sm-8 col-md-8 col-lg-6">
 
-                <div class="card border-start-success mt-5 shadow-lg">
+                <div class="card mt-3 shadow-lg">
                     <div class="card-body">
-                        <h5 class="card-title display-3 mb-1 mt-3" data-toggle="tooltip" data-placement="top" title="Ihr aktueller Kontostand">
+                        <p class="h3">
+                            Ihr Kontostand
+                        </p>
+                        <h5 class="card-title display-3 mb-1" data-toggle="tooltip" data-placement="top" title="Ihr aktueller Kontostand">
                             33
                             <small class="text-muted">
                                 Punkte
                             </small>
                         </h5>
-                        <h6 class="card-subtitle mb-3">
+                        <h6 class="card-subtitle">
                             <span class="badge bg-success" data-bs-toggle="tooltip" data-bs-placement="right" title="Punkte, die sie in der letzten Runde dazuverdient haben">
                                 +13 Punkte
                             </span>
                         </h6>
+                    </div>
+                </div>
 
-                        <hr class="my-4">
+                <div class="card mt-3 shadow-lg">
+                    <div class="card-body">
 
-                        <p class="card-text lead mb-1">
-                            Von diesen 33 Punkten können Sie einen beliebigen Betrag zum Gruppenprojekt
-                            beitragen.
+                        <p class="h3">
+                            Ihre Entscheidung
                         </p>
 
-                        <p class="mb-4">
+                        <p class="card-text mb-1 text-secondary">
+                            Von diesen 33 Punkten können Sie einen beliebigen Betrag zum Gruppenprojekt
+                            beitragen oder alles behalten.
+                        </p>
+
+                        <p class="mb-4 text-secondary">
                             <small>
                                 Zurückgelegte, also nicht zum Gruppenprojekt beigetragene, (Rest-) Beträge stehen Ihnen in
                                 der nächsten Runde unverändert zur Verfügung.
                             </small>
                         </p>
-                        <div class="container mb-4">
-                            <div class="row justify-content-center">
-                                <div class="col">
-                                    <input type="number" class="form-control" placeholder="Beitrag" id="id_contribution" name="contribution" min="0" required
+                        <div class="container-fluid p-0 m-0">
+                            <div class="row align-items-center">
+                                <div class="col m-0">
+                                    <input type="number" class="form-control m-0 border-primary" placeholder="Beitrag" id="id_contribution" name="contribution" min="0" required
                                            data-container="body" data-toggle="popover" data-placement="bottom" data-content="Sie können in dieser Runde maximal 33 Punkte beitragen.">
                                 </div>
-                                <div class="col-7">
-                                    <button type="submit" id="submit_button" class="btn-outline-primary btn" onclick="submitForm();" style="border-radius: 40px;">
+                                <div class="col m-0">
+                                    <button type="submit" id="submit_button" class="btn-outline-primary btn m-0 w-100" onclick="submitForm();">
                                         Alles behalten
                                     </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                    <div class="card-footer">
-                        I'm baby poke brooklyn street art mlkshk cronut. PBR&B next level kinfolk taxidermy, fashion axe selvage art party gentrify affogato asymmetrical la croix. Tofu venmo franzen palo santo, tbh artisan gentrify bicycle rights meh salvia echo park try-hard viral art party. Selvage mixtape shoreditch keytar cornhole flexitarian.
+                </div>
+
+
+                {{ if player.round_number > 1 }}
+                <div class="card mt-3 shadow-lg">
+                    <div class="card-body">
+                        <p class="h3">
+                            Ergebnis der Vorrunde
+                        </p>
+                        <p class="text-secondary">
+                            I'm baby poke brooklyn street art mlkshk cronut. PBR&B next level kinfolk taxidermy, fashion axe selvage art party gentrify affogato asymmetrical la croix. Tofu venmo franzen palo santo, tbh artisan gentrify bicycle rights meh salvia echo park try-hard viral art party. Selvage mixtape shoreditch keytar cornhole flexitarian.
+                        </p>
                     </div>
                 </div>
+
+                <div class="card mt-3 shadow-lg">
+                    <div class="card-body">
+                        <p class="h3">
+                            Ihr Spielverlauf
+                        </p>
+                        <p class="text-secondary">
+                            I'm baby poke brooklyn street art mlkshk cronut. PBR&B next level kinfolk taxidermy, fashion axe selvage art party gentrify affogato asymmetrical la croix. Tofu venmo franzen palo santo, tbh artisan gentrify bicycle rights meh salvia echo park try-hard viral art party. Selvage mixtape shoreditch keytar cornhole flexitarian.
+                        </p>
+                    </div>
+                </div>
+                {{ endif }}
+
             </div>
         </div>
     </div>

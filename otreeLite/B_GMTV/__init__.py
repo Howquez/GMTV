@@ -125,7 +125,10 @@ class C_ResultsWaitPage(WaitPage):
 
 
 class D_Results(Page):
-    pass
+    @staticmethod
+    def is_displayed(player):
+        if player.round_number == C.NUM_ROUNDS:
+            return True
 
 
 page_sequence = [A_InitialWaitPage,

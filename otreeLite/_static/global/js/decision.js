@@ -11,16 +11,16 @@ if (template == "instructions"){
 document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || 0;
     if (input > current_endowment){
-        document.getElementById("id_contribution").className = "form-control border border-danger float-right";
+        document.getElementById("id_contribution").className = "form-control border-danger m-0";
     } else {
-        document.getElementById("id_contribution").className = "form-control float-right"; // border border-success
+        document.getElementById("id_contribution").className = "form-control border-primary m-0"; // border border-success
     }
 });
 
 // change button on input
 document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || null;
-    document.getElementById("submit_button").className = "btn-primary btn float-left"
+    document.getElementById("submit_button").className = "btn-primary btn w-100"
     if (input > 0){
         document.getElementById("submit_button").innerHTML = "Beitragen";
     } else {
