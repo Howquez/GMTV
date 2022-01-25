@@ -17,6 +17,7 @@ class C(BaseConstants):
     PATIENCE_BONUS = 20
     INITIAL_ENDOWMENT = 20
     EFFICIENCY_FACTOR = 1.5
+    TIMEOUT = 4
 
 
 class Subsession(BaseSubsession):
@@ -75,22 +76,24 @@ def set_group_variables(group: Group):
                 group.total_contribution * C.EFFICIENCY_FACTOR / C.PLAYERS_PER_GROUP
             )
         )
-        # define wealth as the last round's stock
-        group.wealth = sum([p.stock for p in group.in_round(group.round_number - 1).get_players()])
 
 def set_payoffs(group: Group):
     set_group_variables(group)
     for p in group.get_players(): # calculate player-level-variables
+
         if p.round_number == 1:
             p.endowment = C.INITIAL_ENDOWMENT
+            p.stock = p.endowment + group.individual_share - p.contribution
+            p.gain = (p.stock - p.endowment)
+            p.participant.stock = [20]
         else:
             p.endowment = int(math.ceil(p.in_round(p.round_number - 1).stock))
+
         p.stock = p.endowment + group.individual_share - p.contribution
-        p.gain = (
-                p.stock - p.endowment
-        )
-        p.participant.vars["stock"].append(p.stock) # vars for visualization?
-        p.participant.vars["euros"].append(cu(p.stock).to_real_world_currency(group.session))
+        p.gain = (p.stock - p.endowment)
+        p.participant.stock.append(p.stock)
+        # p.participant.vars["stock"].append(p.stock) # vars for visualization?
+        # p.participant.vars["euros"].append(cu(p.stock).to_real_world_currency(group.session))
         if p.round_number == 1:
             p.payoff = cu(p.stock)
         else:
@@ -117,11 +120,44 @@ class A_InitialWaitPage(WaitPage):
 
 
 class B_Decision(Page):
-    pass
+    form_model = "player"
+    form_fields = ["contribution"]
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        endowment = C.INITIAL_ENDOWMENT
+        diff = 0
+        bot_active = False
+        if player.round_number > 1:
+            endowment = int(math.ceil(player.in_round(player.round_number - 1).stock))
+            diff = player.in_round(player.round_number - 1).gain
+        return dict(
+            redirect="",
+            endowment=endowment,
+            diff=diff,
+            bot_active=bot_active,
+            previous_round=player.round_number - 1,
+        )
+
+    @staticmethod
+    def js_vars(player: Player):
+        timeout = C.TIMEOUT
+        if player.round_number == 1:
+            timeout = 2.5 * C.TIMEOUT
+            stock = C.INITIAL_ENDOWMENT
+        else:
+            stock = player.participant.stock
+        return dict(
+            timeout=timeout,
+            template="decision",
+            current_round=player.round_number,
+            stock=stock,
+            num_rounds=C.NUM_ROUNDS,
+        )
 
 
 class C_ResultsWaitPage(WaitPage):
-    pass
+    after_all_players_arrive = "set_payoffs"
 
 
 class D_Results(Page):

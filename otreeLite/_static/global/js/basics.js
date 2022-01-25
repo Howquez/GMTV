@@ -28,13 +28,3 @@ if (template == "results"){ //
     });
 }
 });
-
-// timer & alert
-setTimeout(
-    function () {
-        if (template == "decision"){
-            document.getElementById("timeoutModal").classList.add("show")
-        }
-    },
-    (timeout - 0.5) * 60 * 1000
-);

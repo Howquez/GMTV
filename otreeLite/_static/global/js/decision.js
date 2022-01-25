@@ -22,9 +22,9 @@ document.getElementById("id_contribution").addEventListener('input', () => {
     input = parseInt(document.getElementById("id_contribution").value) || null;
     document.getElementById("submit_button").className = "btn-primary btn w-100"
     if (input > 0){
-        document.getElementById("submit_button").innerHTML = "Beitragen";
+        document.getElementById("submit_button").innerHTML = "Contribute";
     } else {
-        document.getElementById("submit_button").innerHTML = "Alles Behalten";
+        document.getElementById("submit_button").innerHTML = "Keep everything";
         // document.getElementById("id_contribution").value = null;
     }
 });
