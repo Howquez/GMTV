@@ -81,7 +81,7 @@ var chart = Highcharts.chart('container', {
         labels: {
 		   enabled: true,
 		   formatter: function () {
-                return "Ende"
+                return "End"
             }
 		},
 		tickPositions: [max],
@@ -134,7 +134,7 @@ var chart = Highcharts.chart('container', {
         },
     },
     series: [{
-        name: "Endowment",
+        name: "Earnings",
         data: series,
         showInLegend: false //show_in_legend
     },{

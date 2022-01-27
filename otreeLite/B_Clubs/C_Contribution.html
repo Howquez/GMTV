@@ -2,9 +2,10 @@
 <script src="{{ static 'global/js/basics.js' }}"></script>
 <script src="{{ static 'global/js/toasts.js' }}"></script>
 <script src="{{ static 'global/js/decision.js' }}"></script>
+<script src="{{ static 'global/js/join.js' }}"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 {{ if player.round_number > 1 }}
-<script src="{% static 'global/js/time_series.js' %}"></script>
+<script src="{% static 'global/js/miniature_time_series.js' %}"></script>
 {{ endif }}
 {{ endblock }}
 
@@ -45,24 +46,72 @@
             <div class="col-sm-8 col-md-8 col-lg-6">
 
                 <!-- Info Cards -->
-                <div class="card mt-3 shadow-lg">
-                    <div class="card-body">
-                        <p class="h3">
-                            Your Endowment
-                        </p>
-                        <h5 class="card-title display-3 mb-1" data-toggle="tooltip" data-placement="top" title="Your current endowment">
-                            {{ endowment }}
-                            <small class="text-muted">
-                                Points
-                            </small>
-                        </h5>
-                        <h6 class="card-subtitle">
-                            {{ if player.round_number > 1 }}
-                            <span class="badge {{ if diff > 0 }} bg-success {{ else }} bg-danger {{ endif }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Points you earned in the previous period">
-                                {{ if diff > 0 }} + {{ endif }} {{ diff }} Points
-                            </span>
-                            {{ endif }}
-                        </h6>
+                <div class="container p-0 mt-3">
+                    <div class="row">
+                        <div class="col col-6">
+                            <div class="card shadow-lg h-100 bg-light">
+                            <div class="card-body">
+                                <p class="h3">
+                                    <small class="text-muted">Balance:</small> {{ earnings }}
+                                </p>
+                                {{ if player.round_number > 1 }}
+                                <h6 class="card-subtitle">
+                                    <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Points you earned in the previous period">
+                                        + {{ diff }}
+                                    </span>
+                                </h6>
+
+                                <figure class="highcharts-figure mb-0">
+                                    <div id="container"></div>
+                                </figure>
+                                {{ endif }}
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col col-6">
+                            <div class="card shadow-lg h-100 bg-light">
+                                <div class="card-body">
+                                    <p class="h3">
+                                        Outsider
+                                    </p>
+                                    <p class="card-text mb-1 text-secondary">
+                                        Some info about outsiders' performance.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col col-6">
+                            <div class="card shadow-lg h-100 bg-light">
+                                <div class="card-body">
+                                    <p class="h3">
+                                        Insider
+                                    </p>
+                                    <p class="card-text mb-1 text-secondary">
+                                        Some info about insiders' performance.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-6">
+                            <div class="card shadow-lg h-100">
+                                <div class="card-body">
+                                    <p class="h3">
+                                        Member
+                                    </p>
+                                    {{ if is_member == False }}
+                                    <p class="text-secondary" id="join_id2">Click to join the club.</p>
+                                    <input type="checkbox" class="btn-check" id="join" autocomplete="off" value="Join" name="join">
+                                    <label class="btn btn-outline-success w-100" for="join" id="join_id" onclick="changeJoinButtonText()">Join</label>
+                                    {{ else }}
+                                    <p class="text-secondary" id="leave_id2">Click to leave the club.</p>
+                                    <input type="checkbox" class="btn-check" id="leave" autocomplete="off" value="Leave" name="join">
+                                    <label class="btn btn-outline-danger w-100" for="leave" id="leave_id" onclick="changeLeaveButtonText()">Leave</label>
+                                    {{ endif }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -74,25 +123,23 @@
                             Your Decision
                         </p>
 
-                        {{ if endowment > 0 }}
                         <p class="card-text mb-1 text-secondary">
-                            From these {{ endowment }} points you can contribute any amount you want or keep everything.
+                            You can contribute any amount you want from your {{ C.ENDOWMENT }} points or keep everything.
                         </p>
 
                         <p class="mb-4 text-secondary">
                             <small>
-                                The points you keep, that is, the points you do not contribute, will remain unchanged and
-                                are available to you in the next period.
+                                All contributions will be multiplied by {{ C.EFFICIENCY_FACTOR }}
+                                before being distributed evenly.
+                                The points you do not contribute will be transferred to your earnings directly.
                             </small>
                         </p>
-                        {{ else }}
 
-                        {{ endif }}
                         <div class="container-fluid p-0 m-0">
                             <div class="row align-items-center">
                                 <div class="col m-0">
-                                    <input type="number" class="form-control m-0 border-primary" placeholder="Contribution" id="id_contribution" name="contribution" min="0" required
-                                           data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can contribute up to {{ endowment }} points in this period.">
+                                    <input type="number" class="form-control m-0 border-primary" placeholder="Contribution" id="id_contribution" name="contribution" min="0" max="C.ENDOWMENT" required
+                                           data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can contribute up to {{ C.ENDOWMENT }} points in this period.">
                                 </div>
                                 <div class="col m-0">
                                     <button type="submit" id="submit_button" class="btn-primary btn m-0 w-100" onclick="submitForm();">
@@ -116,43 +163,42 @@
 
                 {{ if player.round_number > 1 }}
                 <!-- Other's Earnings Card -->
-                <div class="card mt-3 shadow-lg">
+                <div class="card mt-3 shadow-lg  bg-light">
                     <div class="card-body">
                         <p class="h3">
                             Last period's contributions
                         </p>
                         <p class="mb-3 text-secondary">
                             <small>
-                                The table displays the endowments of you and your group members at the beginning of the
-                                previous period (left) as well as the endowments at the beginning of the current period
-                                (right).
+                                The table displays the endowments of you and your group members (left), each
+                                contribution, the common return as well as the corresponding payoffs (right).
                             </small>
                         </p>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
                                 <td class="text-secondary"> </td>
-                                <td class="text-secondary">Previous endowment</td>
+                                <td class="text-secondary">Endowment</td>
                                 <td class="text-secondary">Contribution</td>
                                 <td class="text-secondary">Return</td>
-                                <td class="text-secondary">Current endowment</td>
+                                <td class="text-secondary">Payoff</td>
                                 </thead>
                                 {{ for t in player.in_all_rounds }}
                                 {{ if t.round_number == previous_round }}
                                 <tr>
                                     <td><small> <span class="badge bg-secondary">You</span> </small></td>
-                                    <td class="text-center text-secondary"><small> {{ t.endowment }} </small></td>
+                                    <td class="text-center text-secondary"><small> {{ C.ENDOWMENT }} </small></td>
                                     <td class="text-center text-secondary"><small> {{ t.contribution }} </small></td>
                                     <td class="text-center text-secondary"><small> {{ t.group.individual_share }} </small></td>
-                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ t.endowment }}-{{ t.contribution }}+{{ t.group.individual_share }}"><small> {{ t.stock }} </small></td>
+                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ C.ENDOWMENT }}-{{ t.contribution }}+{{ t.group.individual_share }}"><small> {{ t.payoff_int }} </small></td>
                                 </tr>
                                 {{ for p in t.get_others_in_group }}
                                 <tr>
                                     <td><small> <span class="badge bg-light text-dark"> #{{ p.id_in_group }}</span> </small></td>
-                                    <td class="text-center text-secondary"><small> {{ p.endowment }} </small></td>
+                                    <td class="text-center text-secondary"><small> {{ C.ENDOWMENT }} </small></td>
                                     <td class="text-center text-secondary"><small> {{ p.contribution }} </small></td>
                                     <td class="text-center text-secondary"><small> {{ p.group.individual_share }} </small></td>
-                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ p.endowment }}-{{ p.contribution }}+{{ p.group.individual_share }}"><small> {{ p.stock }} </small></td>
+                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ C.ENDOWMENT }}-{{ p.contribution }}+{{ p.group.individual_share }}"><small> {{ p.payoff_int }} </small></td>
                                 </tr>
                                 {{ endfor }}
                                 {{ endif }}
@@ -161,34 +207,14 @@
                         </div>
                         <p class="mt-3 text-secondary">
                             <small>
-                                Your current endowment is the result of the following calculation:
+                                Your payoff is the result of the following calculation:
                             </small>
                         </p>
                         <p class="text-secondary">
                             <small>
-                                Previous endowment - Contribution + Return <br> = Current endowment
+                                Payoff = Endowment - Contribution + Return
                             </small>
                         </p>
-                    </div>
-                </div>
-
-                <!-- Time Series Card -->
-                <div class="card mt-3 shadow-lg">
-                    <div class="card-body">
-
-                        <p class="h3">
-                            Your earnings over time
-                        </p>
-
-                        <p class="mb-1 text-secondary"><small>
-                            The following graph visualizes your earnings as the game
-                            progresses.
-                        </small></p>
-
-                        <figure class="highcharts-figure mb-1">
-                            <div id="container"></div>
-                        </figure>
-
                     </div>
                 </div>
                 {{ endif }}
