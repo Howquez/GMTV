@@ -25,6 +25,7 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     residual = models.BooleanField(initial=False, doc="if true, group is incomplete")
     club_size = models.IntegerField(doc="number of club members")
+    threshold_contribution = models.IntegerField(doc="minimum contribution required to stay in the club", initial = 10)
     total_contribution = models.IntegerField(doc="sum of contributions in this round")
     average_contribution = models.FloatField(doc="average contribution in this round")
     individual_share = models.IntegerField(doc="individual share each player receives from this round's contributions")
@@ -71,17 +72,21 @@ def set_group_variables(group: Group):
         )
 
 def set_payoffs(group: Group):
-    set_group_variables(group)
+    # membership status by choice
     for p in group.get_players(): # calculate player-level-variables
-
+        if p.round_number > 1:
+            p.member = p.in_round(p.round_number - 1).member
         if p.join == "Join":
             p.member = True
         elif p.join == "Leave":
             p.member = False
-        else:
-            if p.round_number > 1:
-                p.member = p.in_round(p.round_number - 1).member
+        # BEFORE payoffs are calculated check whether subject is allowed to stay in the club
+        if p.contribution < group.threshold_contribution:
+            p.member = False
 
+    # calc payoffs
+    set_group_variables(group)
+    for p in group.get_players():
         p.payoff = int(math.ceil(C.ENDOWMENT + group.individual_share - p.contribution))
         p.payoff_int = int(p.payoff)
         if p.round_number == 1:
@@ -91,6 +96,9 @@ def set_payoffs(group: Group):
             p.stock = int(p.in_round(p.round_number - 1).stock + p.payoff)
 
         p.participant.stock.append(p.stock)
+
+        if p.contribution < group.threshold_contribution:
+            p.member = False
 
 
 
