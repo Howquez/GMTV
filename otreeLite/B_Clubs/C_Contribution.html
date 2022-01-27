@@ -58,7 +58,7 @@
                                 {{ if player.round_number > 1 }}
                                 <h6 class="card-subtitle">
                                     <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Points you earned in the previous period">
-                                        + {{ diff }}
+                                        {{ if diff > 0 }}+{{endif}}{{ diff }}
                                     </span>
                                 </h6>
 
@@ -87,10 +87,10 @@
                             <div class="card shadow-lg h-100 bg-light">
                                 <div class="card-body">
                                     <p class="h3">
-                                        Insider
+                                        Member
                                     </p>
                                     <p class="card-text mb-1 text-secondary">
-                                        Some info about insiders' performance.
+                                        Some info about members' performance.
                                     </p>
                                 </div>
                             </div>
@@ -98,10 +98,13 @@
                         <div class="col col-6">
                             <div class="card shadow-lg h-100">
                                 <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <p class="h3 mx-auto w-100">Club</p>
-                                        <i class="bi bi-question-circle-fill text-primary ml-auto" data-bs-toggle="offcanvas" data-bs-target="#offcanvasClub" aria-controls="offcanvasClub" id="clubInfo" style="cursor: pointer;"></i>
-                                    </div>
+                                    <p class="h3">
+                                        Club
+                                        <small class="h6">
+                                            <i class="bi bi-question-circle-fill text-primary align-top" data-bs-toggle="offcanvas" data-bs-target="#offcanvasClub" aria-controls="offcanvasClub" id="clubInfo" style="cursor: pointer;"></i>
+                                        </small>
+                                    </p>
+
 
                                     {{ if is_member == False }}
                                     <p class="text-secondary" id="join_id2">Click to join the club.</p>
@@ -126,27 +129,55 @@
                             Your Decision
                         </p>
 
-                        <p class="card-text mb-1 text-secondary">
-                            You can contribute any amount you want from your {{ C.ENDOWMENT }} points or keep everything.
+                        <p class="card-text mb-2 text-secondary">
+                            In every period you can invest up to {{ C.ENDOWMENT }} points or keep everything.
                         </p>
-
-                        <p class="mb-4 text-secondary">
-                            <small>
-                                All contributions will be multiplied by {{ C.EFFICIENCY_FACTOR }}
-                                before being distributed evenly.
-                                The points you do not contribute will be transferred to your earnings directly.
-                            </small>
-                        </p>
+                        {{ if player.round_number == 1 }}
+                            <p class="mb-2 text-secondary">
+                                <small>
+                                    Each point you invest is transferred to your balance. However, every point you invest
+                                    reduces the other group members' earnings by 0.75 points and vice versa: every point
+                                    they invest reduces your earnings by 0.75 points. Investments therefore affect the
+                                    balance of others negatively.
+                                </small>
+                            </p>
+                            <p class="mb-4 text-secondary">
+                                <small>
+                                    Each point you keep, that is, each point you do not invest will lose half of its worth
+                                    before it is transferred to your balance.
+                                </small>
+                            </p>
+                        {{ else }}
+                            <a class="mb-4" data-bs-toggle="collapse" href="#collapseRules" role="button" aria-expanded="false" aria-controls="collapseRules">
+                                Click to review rules <br><br>
+                            </a>
+                            <div class="collapse" id="collapseRules">
+                                <p class="mb-2 text-secondary">
+                                    <small>
+                                        Each point you invest is transferred to your balance. However, every point you invest
+                                        reduces the other group members' earnings by 0.75 points and vice versa: every point
+                                        they invest reduces your earnings by 0.75 points. Investments therefore affect the
+                                        balance of others negatively.
+                                    </small>
+                                </p>
+                                <p class="mb-4 text-secondary">
+                                    <small>
+                                        Each point you keep, that is, each point you do not invest will lose half of its worth
+                                        before it is transferred to your balance.
+                                    </small>
+                                </p>
+                            </div>
+                        {{ endif }}
 
                         <div class="container-fluid p-0 m-0">
                             <div class="row align-items-center">
                                 <div class="col m-0">
-                                    <input type="number" class="form-control m-0 border-primary" placeholder="Contribution" id="id_contribution" name="contribution" min="0" max="C.ENDOWMENT" required
-                                           data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can contribute up to {{ C.ENDOWMENT }} points in this period.">
+                                    <input type="number" class="form-control m-0 border-primary" placeholder="Investment" id="id_investment" name="investment" min="0" max="C.ENDOWMENT" required
+                                           data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can invest up to {{ C.ENDOWMENT }} points in this period.">
                                 </div>
                                 <div class="col m-0">
                                     <button type="submit" id="submit_button" class="btn-primary btn m-0 w-100" onclick="submitForm();">
-                                        Contribute
+                                        Invest
                                     </button>
                                 </div>
                             </div>
@@ -169,12 +200,12 @@
                 <div class="card mt-3 shadow-lg  bg-light">
                     <div class="card-body">
                         <p class="h3">
-                            Last period's contributions
+                            Last period's investments
                         </p>
                         <p class="mb-3 text-secondary">
                             <small>
                                 The table displays the endowments of you and your group members (left), each
-                                contribution, the common return as well as the corresponding payoffs (right).
+                                investment as well as the corresponding payoffs (right).
                             </small>
                         </p>
                         <div class="table-responsive">
@@ -182,8 +213,10 @@
                                 <thead>
                                 <td class="text-secondary"> </td>
                                 <td class="text-secondary">Endowment</td>
-                                <td class="text-secondary">Contribution</td>
+                                <td class="text-secondary">Investment</td>
+<!--
                                 <td class="text-secondary">Return</td>
+-->
                                 <td class="text-secondary">Payoff</td>
                                 </thead>
                                 {{ for t in player.in_all_rounds }}
@@ -191,17 +224,21 @@
                                 <tr>
                                     <td><small> <span class="badge bg-secondary">You</span> </small></td>
                                     <td class="text-center text-secondary"><small> {{ C.ENDOWMENT }} </small></td>
-                                    <td class="text-center text-secondary"><small> {{ t.contribution }} </small></td>
-                                    <td class="text-center text-secondary"><small> {{ t.group.individual_share }} </small></td>
-                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ C.ENDOWMENT }}-{{ t.contribution }}+{{ t.group.individual_share }}"><small> {{ t.payoff_int }} </small></td>
+                                    <td class="text-center text-secondary"><small> {{ t.investment }} </small></td>
+<!--
+                                    <td class="text-center text-secondary"><small> {{ t.others_externalities }} </small></td>
+-->
+                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ C.ENDOWMENT }}-{{ t.investment }}+{{ t.others_externalities }}"><small> {{ t.payoff_int }} </small></td>
                                 </tr>
                                 {{ for p in t.get_others_in_group }}
                                 <tr>
                                     <td><small> <span class="badge bg-light text-dark"> #{{ p.id_in_group }}</span> </small></td>
                                     <td class="text-center text-secondary"><small> {{ C.ENDOWMENT }} </small></td>
-                                    <td class="text-center text-secondary"><small> {{ p.contribution }} </small></td>
-                                    <td class="text-center text-secondary"><small> {{ p.group.individual_share }} </small></td>
-                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ C.ENDOWMENT }}-{{ p.contribution }}+{{ p.group.individual_share }}"><small> {{ p.payoff_int }} </small></td>
+                                    <td class="text-center text-secondary"><small> {{ p.investment }} </small></td>
+<!--
+                                    <td class="text-center text-secondary"><small> {{ p.others_externalities }} </small></td>
+-->
+                                    <td class="text-center text-secondary" data-toggle="tooltip" data-placement="top" title="={{ C.ENDOWMENT }}-{{ p.investment }}+{{ p.others_externalities }}"><small> {{ p.payoff_int }} </small></td>
                                 </tr>
                                 {{ endfor }}
                                 {{ endif }}
@@ -215,7 +252,10 @@
                         </p>
                         <p class="text-secondary">
                             <small>
-                                Payoff = Endowment - Contribution + Return
+                                Payoff =
+<!--
+                                Endowment - Investment + Return
+-->
                             </small>
                         </p>
                     </div>
@@ -266,7 +306,7 @@
     <div class="offcanvas-body">
         <p>
             Being a club member has certain benefits. It also requires you to contribute at least
-            {{ group.threshold_contribution }} points. If you don't do so, you will lose your
+            {{ group.threshold_investment }} points. If you don't do so, you will lose your
             membership immediately.
         </p>
     </div>

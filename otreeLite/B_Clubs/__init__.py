@@ -13,8 +13,8 @@ class C(BaseConstants):
     NUM_ROUNDS = 10
     PATIENCE = 1
     PATIENCE_BONUS = 20
-    ENDOWMENT = 20
-    EFFICIENCY_FACTOR = 0.75
+    ENDOWMENT = 60
+    EFFICIENCY_FACTOR = 1
     TIMEOUT = 4
 
 
@@ -25,10 +25,9 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     residual = models.BooleanField(initial=False, doc="if true, group is incomplete")
     club_size = models.IntegerField(doc="number of club members")
-    threshold_contribution = models.IntegerField(doc="minimum contribution required to stay in the club", initial = 10)
-    total_contribution = models.IntegerField(doc="sum of contributions in this round")
-    average_contribution = models.FloatField(doc="average contribution in this round")
-    individual_share = models.IntegerField(doc="individual share each player receives from this round's contributions")
+    threshold_investment = models.IntegerField(doc="maximum investment allowed to stay in the club", initial = 10)
+    total_investment = models.IntegerField(doc="sum of investments in this round")
+    average_investment = models.FloatField(doc="average investment in this round")
     wealth = models.IntegerField(doc="sum of endowments at the beginning of a round")
 
 
@@ -38,7 +37,8 @@ class Player(BasePlayer):
     wait_time_left = models.IntegerField(doc="denotes the time a player has to wait for others to arrive on WaitPage")
     join = models.StringField(doc="whether the player wants to join the club", initial = "", blank = True)
     member = models.BooleanField(doc="whether the player is a member the club", initial = False, blank = True)
-    contribution = models.IntegerField(min=0, max=C.ENDOWMENT, doc="the player's contribution in this round")
+    investment = models.IntegerField(min=0, max=C.ENDOWMENT, doc="the player's investment in this round")
+    others_externalities = models.IntegerField(doc="amount a player is deducted due to the group members' investments")
     stock = models.IntegerField(doc="accumulated earnings of played rounds")
 
 
@@ -61,14 +61,9 @@ def group_by_arrival_time_method(subsession, waiting_players):
 
 def set_group_variables(group: Group):
     if len(group.get_players()) == C.PLAYERS_PER_GROUP:
-        group.total_contribution = sum([p.contribution for p in group.get_players()])
-        group.average_contribution = round(
-            group.total_contribution / C.PLAYERS_PER_GROUP, 2
-        )
-        group.individual_share = int(
-            math.ceil(
-                group.total_contribution * C.EFFICIENCY_FACTOR / C.PLAYERS_PER_GROUP
-            )
+        group.total_investment = sum([p.investment for p in group.get_players()])
+        group.average_investment = round(
+            group.total_investment / C.PLAYERS_PER_GROUP, 2
         )
 
 def set_payoffs(group: Group):
@@ -81,13 +76,14 @@ def set_payoffs(group: Group):
         elif p.join == "Leave":
             p.member = False
         # BEFORE payoffs are calculated check whether subject is allowed to stay in the club
-        if p.contribution < group.threshold_contribution:
+        if p.investment > group.threshold_investment:
             p.member = False
 
     # calc payoffs
     set_group_variables(group)
     for p in group.get_players():
-        p.payoff = int(math.ceil(C.ENDOWMENT + group.individual_share - p.contribution))
+        p.others_externalities = int(math.floor((group.total_investment - p.investment) * 0.75))
+        p.payoff = int(math.ceil(p.investment - p.others_externalities + (C.ENDOWMENT - p.investment) * 0.5))
         p.payoff_int = int(p.payoff)
         if p.round_number == 1:
             p.stock = p.payoff_int
@@ -97,7 +93,7 @@ def set_payoffs(group: Group):
 
         p.participant.stock.append(p.stock)
 
-        if p.contribution < group.threshold_contribution:
+        if p.investment < group.threshold_investment:
             p.member = False
 
 
@@ -137,7 +133,7 @@ class B_Join(Page):
 
 class C_Contribution(Page):
     form_model = "player"
-    form_fields = ["join", "contribution"]
+    form_fields = ["join", "investment"]
 
     @staticmethod
     def vars_for_template(player: Player):

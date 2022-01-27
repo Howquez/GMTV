@@ -15,13 +15,26 @@
 		category[i]="Period #"+category[i];
 	}
 
+// tick positions
+    var max = Math.max.apply(null, stock)
+    var min = Math.min.apply(null, stock)
+    if (min >  0) {
+        min = 0
+    }
+
+// line col
+    var line_col = "#198754";//"#0d6efd";
+    if (series[current_round-1] < 0) {
+        line_col = "#dc3545"
+    }
 
 var chart = Highcharts.chart('container', {
     chart: {
-        type: "areaspline",
         backgroundColor: "transparent",
         height: (6 / 16 * 100) + '%', // 16:9 ratio
-        margin: [0, 0, 0, 0]
+        marginBottom: 5,
+        marginLeft: 0,
+        marginTop: 5
     },
     title: {
         text: ""
@@ -32,16 +45,32 @@ var chart = Highcharts.chart('container', {
     
     xAxis: {
         categories: category,
+        lineWidth: 0,
+        tickWidth: 0,
         labels: {
 		   enabled: false
 		}
     },
     yAxis: {
     	gridLineWidth: 0,
-    	labels: {
-        		   enabled: false
-        		},
         minorGridLineWidth: 0,
+        opposite: true,
+        labels: {
+            enabled: true,
+            formatter: function() {
+                        	if (this.value == 0 || this.isLast) {
+                          	return this.value
+                          }
+                        }
+        },
+        tickPositions: [min, 0, max],
+        plotLines: [{
+                value: 0,
+                width: 0.5,
+                color: '#aaa',
+                dashStyle: 'shortdash',
+                zIndex: 0
+              }],
         title: {
             text: ""
         }
@@ -54,22 +83,11 @@ var chart = Highcharts.chart('container', {
     },
     plotOptions: {
     	series: {
-    	    fillColor: {
-                linearGradient: [0, 0, 0, series[series.length - 1]*1.5],
-                stops: [
-                    [0, "rgba(13,110,253,0.5)"],
-                    [1, "rgba(13,110,253,0.1)"]
-                ]
-            },
-    		color: "#0d6efd",
+    		color: line_col,
     		marker: {
                 enabled: false
             }
     	},
-        areaspline: {
-        	stacking: "normal",
-        	fillOpacity: 0.33
-        },
     },
     series: [{
         name: "Earnings",
