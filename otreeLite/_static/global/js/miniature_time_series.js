@@ -23,18 +23,20 @@
     }
 
 // line col
-    var line_col = "#198754";//"#0d6efd";
+    var line_col = "#0d6efd"; //"#198754";
     if (series[current_round-1] < 0) {
         line_col = "#dc3545"
     }
 
+// manipulate series
+series[0] = 0;
+
 var chart = Highcharts.chart('container', {
     chart: {
         backgroundColor: "transparent",
-        height: (6 / 16 * 100) + '%', // 16:9 ratio
+        height: (9 / 16 * 100) + '%', // 16:9 ratio
         marginBottom: 5,
         marginLeft: 0,
-        marginTop: 5
     },
     title: {
         text: ""

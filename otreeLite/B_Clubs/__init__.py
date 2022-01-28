@@ -16,6 +16,9 @@ class C(BaseConstants):
     ENDOWMENT = 60
     EFFICIENCY_FACTOR = 1
     TIMEOUT = 4
+    MEMBER_ROLE = "Member"
+    OUTSIDER_ROLE = "Outsider"
+
 
 
 class Subsession(BaseSubsession):
@@ -24,11 +27,22 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     residual = models.BooleanField(initial=False, doc="if true, group is incomplete")
-    club_size = models.IntegerField(doc="number of club members")
     threshold_investment = models.IntegerField(doc="maximum investment allowed to stay in the club", initial = 10)
-    total_investment = models.IntegerField(doc="sum of investments in this round")
+    total_investment = models.IntegerField(doc="sum of all investments in this period")
     average_investment = models.FloatField(doc="average investment in this round")
-    wealth = models.IntegerField(doc="sum of endowments at the beginning of a round")
+
+    club_size = models.IntegerField(doc="number of club members", initial = 0)
+    club_investment = models.IntegerField(doc="sum of club members' investments in this period", initial = 0)
+    average_club_investment = models.IntegerField(doc="average of club members' investments in this period", initial = 0)
+    average_club_payoff = models.IntegerField(doc="average of club members' payoff in this period", initial = 0)
+
+    outsiders_size = models.IntegerField(doc="number of outsiders", initial = 0)
+    outsiders_investment = models.IntegerField(doc="sum of outsiders' investments in this period", initial = 0)
+    average_outsider_investment = models.IntegerField(doc="average of outsiders' investments in this period", initial = 0)
+    average_outsider_payoff = models.IntegerField(doc="average of outsiders' payoff in this period", initial = 0)
+
+
+wealth = models.IntegerField(doc="sum of endowments at the beginning of a round")
 
 
 
@@ -66,6 +80,25 @@ def set_group_variables(group: Group):
             group.total_investment / C.PLAYERS_PER_GROUP, 2
         )
 
+def set_club_variables(group: Group):
+    if len(group.get_players()) == C.PLAYERS_PER_GROUP:
+        club_payoffs = 0
+        outsider_payoffs = 0
+        for p in group.get_players():
+            if p.member:
+                group.club_size += 1
+                group.club_investment += p.investment
+                club_payoffs += p.payoff
+            else:
+                group.outsiders_size += 1
+                group.outsiders_investment += p.investment
+                outsider_payoffs += p.payoff
+
+        group.average_club_investment = int(math.floor(group.club_investment / group.club_size)) if group.club_size > 0 else 0
+        group.average_club_payoff = int(math.floor(club_payoffs / group.club_size)) if group.club_size > 0 else 0
+        group.average_outsider_investment = int(math.floor(group.outsiders_investment / group.outsiders_size)) if group.outsiders_size > 0 else 0
+        group.average_outsider_payoff = int(math.floor(outsider_payoffs / group.outsiders_size)) if group.outsiders_size > 0 else 0
+
 def set_payoffs(group: Group):
     # membership status by choice
     for p in group.get_players(): # calculate player-level-variables
@@ -76,7 +109,7 @@ def set_payoffs(group: Group):
         elif p.join == "Leave":
             p.member = False
         # BEFORE payoffs are calculated check whether subject is allowed to stay in the club
-        if p.investment > group.threshold_investment:
+        if p.investment >= group.threshold_investment:
             p.member = False
 
     # calc payoffs
@@ -92,9 +125,7 @@ def set_payoffs(group: Group):
             p.stock = int(p.in_round(p.round_number - 1).stock + p.payoff)
 
         p.participant.stock.append(p.stock)
-
-        if p.investment < group.threshold_investment:
-            p.member = False
+    set_club_variables(group)
 
 
 
@@ -137,15 +168,34 @@ class C_Contribution(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+
         is_member = False
         earnings = 0
         diff = 0
         bot_active = False
+
+        club_size = 0
+        club_investment = 0
+        club_payoff = 0
+
+        outsiders_size = 0
+        outsiders_investment = 0
+        outsiders_payoff = 0
+
         if player.round_number > 1:
             earnings = player.in_round(player.round_number - 1).stock
             diff = player.in_round(player.round_number - 1).payoff
             if player.in_round(player.round_number - 1).member:
                 is_member = True
+
+            club_size = player.group.in_round(player.round_number - 1).club_size
+            club_investment = player.group.in_round(player.round_number - 1).average_club_investment
+            club_payoff = player.group.in_round(player.round_number - 1).average_club_payoff
+
+            outsiders_size = player.group.in_round(player.round_number - 1).outsiders_size
+            outsiders_investment = player.group.in_round(player.round_number - 1).average_outsider_investment
+            outsiders_payoff = player.group.in_round(player.round_number - 1).average_outsider_payoff
+
         return dict(
             redirect="",
             is_member=is_member,
@@ -153,6 +203,12 @@ class C_Contribution(Page):
             diff=diff,
             bot_active=bot_active,
             previous_round=player.round_number - 1,
+            club_size=club_size,
+            club_investment=club_investment,
+            club_payoff=club_payoff,
+            outsiders_size=outsiders_size,
+            outsiders_investment=outsiders_investment,
+            outsiders_payoff=outsiders_payoff
         )
 
     @staticmethod

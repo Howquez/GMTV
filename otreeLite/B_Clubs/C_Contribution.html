@@ -1,7 +1,8 @@
 {{ block scripts }}
 <script src="{{ static 'global/js/basics.js' }}"></script>
+<!--
 <script src="{{ static 'global/js/toasts.js' }}"></script>
-<script src="{{ static 'global/js/decision.js' }}"></script>
+-->
 <script src="{{ static 'global/js/join.js' }}"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 {{ if player.round_number > 1 }}
@@ -49,10 +50,11 @@
                 <!-- Info Cards -->
                 <div class="container p-0 mt-3">
                     <div class="row">
+                        <!-- Personal Info -->
                         <div class="col col-6">
                             <div class="card shadow-lg h-100 bg-light">
                             <div class="card-body">
-                                <p class="h3">
+                                <p class="h5">
                                     <small class="text-muted">Balance:</small> {{ earnings }}
                                 </p>
                                 {{ if player.round_number > 1 }}
@@ -61,7 +63,8 @@
                                         {{ if diff > 0 }}+{{endif}}{{ diff }}
                                     </span>
                                 </h6>
-
+                                {{ endif }}
+                                {{ if player.round_number > 1 }}
                                 <figure class="highcharts-figure mb-0">
                                     <div id="container"></div>
                                 </figure>
@@ -69,36 +72,11 @@
                             </div>
                         </div>
                         </div>
-                        <div class="col col-6">
-                            <div class="card shadow-lg h-100 bg-light">
-                                <div class="card-body">
-                                    <p class="h3">
-                                        Outsider
-                                    </p>
-                                    <p class="card-text mb-1 text-secondary">
-                                        Some info about outsiders' performance.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col col-6">
-                            <div class="card shadow-lg h-100 bg-light">
-                                <div class="card-body">
-                                    <p class="h3">
-                                        Member
-                                    </p>
-                                    <p class="card-text mb-1 text-secondary">
-                                        Some info about members' performance.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Join Club Decision -->
                         <div class="col col-6">
                             <div class="card shadow-lg h-100">
                                 <div class="card-body">
-                                    <p class="h3">
+                                    <p class="h5">
                                         Club
                                         <small class="h6">
                                             <i class="bi bi-question-circle-fill text-primary align-top" data-bs-toggle="offcanvas" data-bs-target="#offcanvasClub" aria-controls="offcanvasClub" id="clubInfo" style="cursor: pointer;"></i>
@@ -109,11 +87,83 @@
                                     {{ if is_member == False }}
                                     <p class="text-secondary" id="join_id2">Click to join the club.</p>
                                     <input type="checkbox" class="btn-check" id="join" autocomplete="off" value="Join" name="join">
-                                    <label class="btn btn-outline-success w-100" for="join" id="join_id" onclick="changeJoinButtonText()">Join</label>
+                                    <label class="btn btn-outline-success w-100" for="join" id="join_id" onclick="changeJoinButtonText()">Join club</label>
                                     {{ else }}
                                     <p class="text-secondary" id="leave_id2">Click to leave the club.</p>
                                     <input type="checkbox" class="btn-check" id="leave" autocomplete="off" value="Leave" name="join">
-                                    <label class="btn btn-outline-danger w-100" for="leave" id="leave_id" onclick="changeLeaveButtonText()">Leave</label>
+                                    <label class="btn btn-outline-danger w-100" for="leave" id="leave_id" onclick="changeLeaveButtonText()">Leave club</label>
+                                    {{ endif }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <!-- Club Member's Info -->
+                        <div class="col col-6">
+                            <div class="card shadow-lg h-100 bg-light">
+                                <div class="card-body">
+                                    <p class="h5">
+                                        Club Stats
+                                    </p>
+                                    {{ if club_size == 0 }}
+                                    <p class="text-muted">
+                                        There were no club members at the end of the last perieod.
+                                    </p>
+                                    {{ else }}
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm text-secondary small mb-0">
+                                            <caption><small><sup>1</sup> Per person.</small></caption>
+                                            <tbody>
+                                            <tr>
+                                                <td>Members</td>
+                                                <td>{{ club_size }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Investment<sup><small>1</small></sup></td>
+                                                <td>{{ club_investment }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payoff<sup><small>1</small></sup></td>
+                                                <td>{{ club_payoff }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {{ endif }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Outsider's Info -->
+                        <div class="col col-6">
+                            <div class="card shadow-lg h-100 bg-light">
+                                <div class="card-body">
+                                    <p class="h5">
+                                        Others' Stats
+                                    </p>
+                                    {{ if outsiders_size == 0 }}
+                                    <p class="text-muted">
+                                        There were no outsiders at the end of the last perieod.
+                                    </p>
+                                    {{ else }}
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-sm text-secondary small mb-0">
+                                            <caption><small><sup>1</sup> Per person.</small></caption>
+                                            <tbody>
+                                            <tr>
+                                                <td>Members</td>
+                                                <td>{{ outsiders_size }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Investment<sup><small>1</small></sup></td>
+                                                <td>{{ outsiders_investment }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Payoff<sup><small>1</small></sup></td>
+                                                <td>{{ outsiders_payoff }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     {{ endif }}
                                 </div>
                             </div>
@@ -125,12 +175,16 @@
                 <div class="card mt-3 shadow-lg">
                     <div class="card-body">
 
-                        <p class="h3">
+                        <p class="h5">
                             Your Decision
                         </p>
 
                         <p class="card-text mb-2 text-secondary">
                             In every period you can invest up to {{ C.ENDOWMENT }} points or keep everything.
+                        </p>
+                        <p class="card-text mb-2 text-secondary">
+                            Club members who invest more than {{ group.threshold_investment }} points will be expelled
+                            immediately.
                         </p>
                         {{ if player.round_number == 1 }}
                             <p class="mb-2 text-secondary">
@@ -172,12 +226,12 @@
                         <div class="container-fluid p-0 m-0">
                             <div class="row align-items-center">
                                 <div class="col m-0">
-                                    <input type="number" class="form-control m-0 border-primary" placeholder="Investment" id="id_investment" name="investment" min="0" max="C.ENDOWMENT" required
+                                    <input type="number" class="form-control m-0 border-primary" placeholder="Investment" id="id_investment" name="investment" min="0" max="{{C.ENDOWMENT}}" required
                                            data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can invest up to {{ C.ENDOWMENT }} points in this period.">
                                 </div>
                                 <div class="col m-0">
-                                    <button type="submit" id="submit_button" class="btn-primary btn m-0 w-100" onclick="submitForm();">
-                                        Invest
+                                    <button type="submit" id="submit_button" class="btn-primary btn m-0 w-100">
+                                        Proceed
                                     </button>
                                 </div>
                             </div>
@@ -199,14 +253,12 @@
                 <!-- Other's Earnings Card -->
                 <div class="card mt-3 shadow-lg  bg-light">
                     <div class="card-body">
-                        <p class="h3">
+                        <p class="h5">
                             Last period's investments
                         </p>
-                        <p class="mb-3 text-secondary">
-                            <small>
+                        <p class="mb-3 text-secondary small">
                                 The table displays the endowments of you and your group members (left), each
                                 investment as well as the corresponding payoffs (right).
-                            </small>
                         </p>
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -297,20 +349,20 @@
         </div>
     </div>
 
-<!-- Club Offcanvas -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasClub" aria-labelledby="offcanvasClubLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasClubLabel">Club Membership</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <!-- Club Offcanvas -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasClub" aria-labelledby="offcanvasClubLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasClubLabel">Club Membership</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p>
+                Being a club member has certain benefits. It also requires you to contribute at least
+                {{ group.threshold_investment }} points. If you don't do so, you will lose your
+                membership immediately.
+            </p>
+        </div>
     </div>
-    <div class="offcanvas-body">
-        <p>
-            Being a club member has certain benefits. It also requires you to contribute at least
-            {{ group.threshold_investment }} points. If you don't do so, you will lose your
-            membership immediately.
-        </p>
-    </div>
-</div>
 
 </body>
 
