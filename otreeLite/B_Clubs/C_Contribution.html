@@ -52,7 +52,7 @@
                     <div class="row">
                         <!-- Personal Info -->
                         <div class="col col-6">
-                            <div class="card shadow-lg h-100 bg-light">
+                            <div class="card shadow-sm h-100 bg-light rounded-0">
                             <div class="card-body">
                                 <p class="h5">
                                     <small class="text-muted">Balance:</small> {{ earnings }}
@@ -74,7 +74,7 @@
                         </div>
                         <!-- Join Club Decision -->
                         <div class="col col-6">
-                            <div class="card shadow-lg h-100">
+                            <div class="card shadow-sm h-100 rounded-0">
                                 <div class="card-body">
                                     <p class="h5">
                                         Club
@@ -100,14 +100,14 @@
                     <div class="row mt-3">
                         <!-- Club Member's Info -->
                         <div class="col col-6">
-                            <div class="card shadow-lg h-100 bg-light">
+                            <div class="card shadow-sm h-100 bg-light rounded-0">
                                 <div class="card-body">
                                     <p class="h5">
                                         Club Stats
                                     </p>
                                     {{ if club_size == 0 }}
                                     <p class="text-muted">
-                                        There were no club members at the end of the last perieod.
+                                        There were no club members at the end of the last period.
                                     </p>
                                     {{ else }}
                                     <div class="table-responsive">
@@ -135,14 +135,14 @@
                         </div>
                         <!-- Outsider's Info -->
                         <div class="col col-6">
-                            <div class="card shadow-lg h-100 bg-light">
+                            <div class="card shadow-sm h-100 bg-light rounded-0">
                                 <div class="card-body">
                                     <p class="h5">
                                         Others' Stats
                                     </p>
                                     {{ if outsiders_size == 0 }}
                                     <p class="text-muted">
-                                        There were no outsiders at the end of the last perieod.
+                                        There were no outsiders at the end of the last period.
                                     </p>
                                     {{ else }}
                                     <div class="table-responsive">
@@ -172,7 +172,7 @@
                 </div>
 
                 <!-- Decision Card -->
-                <div class="card mt-3 shadow-lg">
+                <div class="card mt-3 shadow-sm rounded-0">
                     <div class="card-body">
 
                         <p class="h5">
@@ -241,7 +241,7 @@
                 </div>
 
                 <!-- Toast -->
-                <div class="toast text-dark bg-warning border-0 mt-3 w-100" role="alert" id="timeoutToast" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" style="display:none">
+                <div class="toast text-dark bg-warning border-0 mt-3 w-100 rounded-0" role="alert" id="timeoutToast" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" style="display:none">
                     <div class="toast-body">
                         <p>
                             You only have 30 seconds left to make your decision.
@@ -251,7 +251,7 @@
 
                 {{ if player.round_number > 1 }}
                 <!-- Other's Earnings Card -->
-                <div class="card mt-3 shadow-lg  bg-light">
+                <div class="card mt-3 shadow-sm  bg-light rounded-0">
                     <div class="card-body">
                         <p class="h5">
                             Last period's investments
