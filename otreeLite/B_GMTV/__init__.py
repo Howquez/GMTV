@@ -145,14 +145,19 @@ class B_Decision(Page):
         if player.round_number == 1:
             timeout = 2.5 * C.TIMEOUT
             stock = C.INITIAL_ENDOWMENT
+            endowment = C.INITIAL_ENDOWMENT
         else:
             stock = player.participant.stock
+            endowment = int(math.ceil(player.in_round(player.round_number - 1).stock))
         return dict(
             timeout=timeout,
             template="decision",
             current_round=player.round_number,
             stock=stock,
+            endowment=endowment,
             num_rounds=C.NUM_ROUNDS,
+            num_players=C.PLAYERS_PER_GROUP,
+            factor=C.EFFICIENCY_FACTOR / C.PLAYERS_PER_GROUP,
         )
 
 

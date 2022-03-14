@@ -53,24 +53,24 @@
                         <!-- Personal Info -->
                         <div class="col col-6">
                             <div class="card shadow-sm h-100 bg-light rounded-0">
-                            <div class="card-body">
-                                <p class="h5">
-                                    <small class="text-muted">Balance:</small> {{ earnings }}
-                                </p>
-                                {{ if player.round_number > 1 }}
-                                <h6 class="card-subtitle">
-                                    <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Points you earned in the previous period">
-                                        {{ if diff > 0 }}+{{endif}}{{ diff }}
-                                    </span>
-                                </h6>
-                                {{ endif }}
-                                {{ if player.round_number > 1 }}
-                                <figure class="highcharts-figure mb-0">
-                                    <div id="container"></div>
-                                </figure>
-                                {{ endif }}
+                                <div class="card-body">
+                                    <p class="h5">
+                                        <small class="text-muted">Balance:</small> {{ earnings }}
+                                    </p>
+                                    {{ if player.round_number > 1 }}
+                                    <h6 class="card-subtitle">
+                                        <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="right" title="Points you earned in the previous period">
+                                            {{ if diff > 0 }}+{{endif}}{{ diff }}
+                                        </span>
+                                    </h6>
+                                    {{ endif }}
+                                    {{ if player.round_number > 1 }}
+                                    <figure class="highcharts-figure mb-0">
+                                        <div id="container"></div>
+                                    </figure>
+                                    {{ endif }}
+                                </div>
                             </div>
-                        </div>
                         </div>
                         <!-- Join Club Decision -->
                         <div class="col col-6">
@@ -304,7 +304,7 @@
                         </p>
                         <p class="text-secondary">
                             <small>
-                                Payoff =
+                                Payoff = TBD
 <!--
                                 Endowment - Investment + Return
 -->

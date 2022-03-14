@@ -8,7 +8,6 @@
 	let flat_fee = js_vars.flat_fee || 0;
 	let exchange_rate = js_vars.exchange_rate;
 	let num_rounds  = js_vars.num_rounds;
-	let stock = js_vars.stock || 0;
 	let euros = js_vars.euros || 0;
 
 	var plot_height = 4;
@@ -38,7 +37,7 @@
 
 	if (template == "decision"){
 	    series = stock;
-	    plot_height = 9;
+	    plot_height = 5;
 	}
 
 	if (template == "results"){
