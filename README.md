@@ -3,6 +3,19 @@ Made with [oTree](https://www.sciencedirect.com/science/article/pii/S22146350160
 
 # 🤷‍ Cooperation in uncertain times
 
+This repository contains a dynamic public goods game as well as a public bads game designed to investigate growth under 
+uncertainty as well as so called climate clubs respectively.
+
+Even though both experiments are quite different, they share many features and thus, the same architecture. 
+More precisely, both experiments are built using [oTree Lite](https://otree.readthedocs.io/en/latest/misc/otreelite.html)
+and [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) together with some simple JavaScript
+functions as well as [Highcharts](https://www.highcharts.com/) visualizations.
+
+👉 [Click here](otreeLite/B_GMTV/README.md) if you want to learn more about the dynamic public goods game.
+
+👉 [Click here](otreeLite/B_Clubs/README.md) if you want to learn more about the public bads game with climate clubs.
+
+<!--
 ## ▶️ How to 
 To replicate the analysis (once you have the necessary data), you have to follow these steps:
 
@@ -38,3 +51,5 @@ A kanban board can be found [here](https://github.com/Howquez/coopUncertainty/pr
 The experiment is built in Python 3 using [oTree](https://www.sciencedirect.com/science/article/pii/S2214635016000101).
 So far, one can consider the game as an MVP -- it therefore only contains constant and homogeneous shocks to the 
 players' endowments. 
+
+-->
