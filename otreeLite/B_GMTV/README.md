@@ -12,7 +12,7 @@ as inequality arise endogenously.
 
 Parts of the original experiment have been replicated [online and remote](https://doi.org/10.1007/s10683-017-9527-2).
 The corresponding code is based on a previous otree version and thus stored in another project. To access the code as
-well as the **corresponding data**, click [here](oTree/README.md).
+well as the **corresponding data**, click [here](Howquez/coopUncertainty/blob/main/oTree/README.md).
 
 ## 🔜 Next up
 We want to incorporate an exogenous risk of extreme weather events that cause an endogenous damage. The rationale behind that is quite
