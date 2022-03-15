@@ -11,9 +11,15 @@ More precisely, both experiments are built using [oTree Lite](https://otree.read
 and [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) together with some simple JavaScript
 functions as well as [Highcharts](https://www.highcharts.com/) visualizations.
 
-👉 [Click here](otreeLite/B_GMTV/README.md) if you want to learn more about the dynamic public goods game.
+👉 [Click here](DPGG.md) if you want to learn more about the **dynamic public goods game**.
 
-👉 [Click here](otreeLite/B_Clubs/README.md) if you want to learn more about the public bads game with climate clubs.
+👉 [Click here](Clubs.md) if you want to learn more about the **public bads game with climate clubs**.
+
+## 🚏 How you can access a demo
+You can find the experiment's demo [here](https://labexp.herokuapp.com/demo/). A click on _GMTV_ or _Clubs_
+will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._
+[![](screenshots/DPGG.png)](https://labexp.herokuapp.com/demo/)
+
 
 <!--
 ## ▶️ How to 
