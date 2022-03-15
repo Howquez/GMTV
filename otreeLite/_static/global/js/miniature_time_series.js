@@ -6,7 +6,6 @@
 
 // initiate vars from python
 	let num_rounds  = js_vars.num_rounds;
-	let stock = js_vars.stock || 0;
 	series = stock;
 
 // get categories, i.e. the rounds
