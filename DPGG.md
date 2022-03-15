@@ -12,7 +12,7 @@ as inequality arise endogenously.
 
 Parts of the original experiment have been replicated [online and remote](https://doi.org/10.1007/s10683-017-9527-2).
 The corresponding code is based on a previous otree version and thus stored in another project. To access the code as
-well as the **corresponding data**, click [here](Howquez/coopUncertainty/blob/main/oTree/README.md).
+well as the **corresponding data**, click [here](GMTV.md).
 
 ## 🔜 Next up
 We want to incorporate an exogenous risk of extreme weather events that cause an endogenous damage. The rationale behind that is quite
@@ -22,5 +22,5 @@ a society contributes to a public good the lower the damage if an extreme weathe
 ## 🚏 How you can access a demo
 You can find the experiment's demo [here](https://labexp.herokuapp.com/demo/). A click on _GMTV_
 will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._
-[![](figures/Decision_Screen.png)](https://cliccs.herokuapp.com/demo/)
+[![](screenshots/DPGG.png)](https://labexp.herokuapp.com/demo/)
 

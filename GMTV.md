@@ -18,9 +18,9 @@ intuitive: extreme weather events cannot be prevented in the short run but their
 a society contributes to a public good the lower the damage if an extreme weather event occurs.
 
 Because of a new oTree version, the corresponding code will be stored in another directory. 
-Click [here](Howquez/coopUncertainty/blob/main/otreeLite/B_Clubs/README.md) to open it.
+Click [here](https://github.com/Howquez/coopUncertainty/tree/main/oTree) to open it.
 
 ## 🚏 How you can access a demo
 You can find the experiment's demo [here](https://cliccs.herokuapp.com/demo/). A click on _Dynamic Public Goods Game_
 will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._
-[![](figures/Decision_Screen.png)](https://cliccs.herokuapp.com/demo/)
+[![](screenshots/GMTV.png)](https://cliccs.herokuapp.com/demo/)
