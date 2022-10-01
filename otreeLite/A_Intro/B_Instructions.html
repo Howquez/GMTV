@@ -1,8 +1,11 @@
 {{ block scripts }}
 <script src="{% static 'global/js/buttons.js' %}"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {{ endblock }}
 
 {{ block styles }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
 {{ endblock }}
 
 {{ block content }}
@@ -26,10 +29,10 @@
                             <a class="nav-link back-and-forth active" id="part1-tab" data-bs-toggle="list" href="#part1" role="tab" aria-controls="part1"> General Information </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link back-and-forth" id="part2-tab" data-bs-toggle="list" href="#part2" role="tab" aria-controls="part2"> Earnings </a>
+                            <a class="nav-link back-and-forth" id="part2-tab" data-bs-toggle="list" href="#part2" role="tab" aria-controls="part2"> Instructions </a>
                         </li>
                         <li class="dropdown-item">
-                            <a class="nav-link back-and-forth" id="part3-tab" data-bs-toggle="list" href="#part3" role="tab" aria-controls="part3"> Another Tab </a>
+                            <a class="nav-link back-and-forth" id="part3-tab" data-bs-toggle="list" href="#part3" role="tab" aria-controls="part3"> Shocks </a>
                         </li>
                         <li class="dropdown-item">
                             <a class="nav-link back-and-forth" id="part4-tab" data-bs-toggle="list" href="#part4" role="tab" aria-controls="part4"> Demo </a>
@@ -41,10 +44,14 @@
                 </li>
             </ul>
             <div class="me-2 text-secondary" style="cursor: pointer;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16" id="instructions_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCalculator" aria-controls="offcanvasCalculator" id="calculator_icon">
+                    <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                    <path d="M4 2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-2zm0 4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-4z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-info-circle-fill ms-2" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasInstructions" aria-controls="offcanvasInstructions" id="instructions_icon">
                     <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                 </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle ms-2" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasQuit" aria-controls="offcanvasQuit" id="quitButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="dark" class="bi bi-x-circle ms-2" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasQuit" aria-controls="offcanvasQuit" id="quitButton">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg>
@@ -63,29 +70,33 @@
                     </div>
                     <div class="card-body">
 
-                        <p class="card-text mb-0 lead">
-                            General Information
-                        </p>
                         <p>
-                            Before period 1,
-                            each participant is given 20 tokens as initial endowment. In each
-                            period participants can divide their tokens into two accounts: a pri-
-                            vate account and a group account. The private account, which has
-                            a return of 1, is for their personal use only and other participants
-                            cannot influence or benefit from the tokens in the private account.
-                            The group account is different: all 4 participants in the group can
-                            place their tokens into the group account. The group account has a
-                            return of 1.5 and after the return is calculated, the tokens put into the
-                            group account are equally divided among all 4 participants.
+
+                            You are about to participate in a decision making experiment. If you follow the instructions
+                            carefully, you can earn a considerable amount of money depending on your decisions and the
+                            decisions of the other participants. Your earnings will be transferred at the end of the
+                            experiment.
                         </p>
 
                         <p>
-                            Therefore, in period t + 1, the number of tokens that each participant can invest depends
-                            on the choices of all group members in previous periods (endogenous endowments). This is
-                            what makes our set-up different from the standard setting where the amount of tokens before
-                            each period is fixed and the earnings from pre- vious periods cannot be used for investment
-                            into the public good (exogenous stationary endowments). At the end of each period
-                            participants observe information about endowments and contributions of all group members.
+                            Throughout the experiment you will make decisions about amounts of tokens. At the end of the
+                            experiment all tokens you have will be converted into Euros at the exchange rate
+                            €{{ session.config.real_world_currency_per_point }} for 1 point in addition to a
+                            show-up fee of {{ session.config.participation_fee }}.
+                        </p>
+
+                        <p>
+                            During the experiment all your decisions will be treated confidentially. This means that
+                            none of the other participants will know which decisions you made.
+                        </p>
+
+                        <p>
+                            You find some icons on the top right of your screen.<br>
+                            <i class="bi bi-calculator"></i> helps you to consider different cases and to calculate
+                            the outcomes of different scenarios during the decision stage. <br>
+                            <i class="bi bi-info-circle-fill"></i> opens the same set of instructions we show you on
+                            these pages to the left of your screen.<br>
+                            <i class="bi bi-x-circle"></i> helps you to leave the experiment.
                         </p>
 
                     </div>
@@ -112,15 +123,12 @@
                 <!-- Part 2: Verdienst  -->
                 <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
                     <div class="card-header bg-white shadow-sm mt-3 sticky-top">
-                        <p class="h4 text-center">Earnings</p>
+                        <p class="h4 text-center">Instructions</p>
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0 lead">
-                            Earnings
-                        </p>
-                        <p>
-                            Lorem ipsum
-                        </p>
+
+                        {{ include C.EARNINGS_TEMPLATE }}
+
                     </div>
                     <div class="card-footer bg-white">
                         <!-- on Card Navigation  Arrows -->
@@ -143,18 +151,15 @@
                 </div>
 
 
-                <!-- Part 3: Wetter  -->
+                <!-- Part 3: Shocks  -->
                 <div class="tab-pane" id="part3" role="tabpanel" aria-labelledby="part3-tab">
                     <div class="card-header bg-white border-bottom-0 shadow-sm mt-3 sticky-top">
-                        <p class="h4 text-center">Another Tab</p>
+                        <p class="h4 text-center">Shocks</p>
                     </div>
                     <div class="card-body">
-                        <p class="card-text mb-0 lead">
-                            Lorem ipsum
-                        </p>
-                        <p>
-                            Lorem ipsum
-                        </p>
+
+                        {{ include C.SHOCKS_TEMPLATE }}
+
                     </div>
                     <div class="card-footer bg-white">
                         <!-- on Card Navigation  Arrows -->
@@ -236,6 +241,94 @@
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator Offcanvas -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasCalculator" aria-labelledby="offcanvasCalculatorLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasCalculatorLabel">Calculator</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div>
+                    This calculator is designed to guide your decision. Given a quota of {{ min_mpcr }}% as well as
+                    your intended contribution, you can make an assumption about the other players' average contribution and
+                    whether a shock will occur to calculate your return.
+                </div>
+
+
+                <div class="form-check form-switch mt-4">
+                    <input class="form-check-input" type="checkbox" role="switch" id="eweFlexSwitch">
+                    <label class="form-check-label" for="eweFlexSwitch">Assume a shock occurs?</label>
+                </div>
+                <div class="form-floating mt-2">
+                    <input type="number" class="form-control" id="othersContributions" placeholder="0" value="0" min="0">
+                    <label for="othersContributions">Other players' average contribution</label>
+                </div>
+                <div class="form-floating mt-2">
+                    <input type="number" class="form-control" id="yourContribution" placeholder="0" value="0" min="0">
+                    <label for="yourContribution">Your intended contribution</label>
+                </div>
+                <div class="form-floating mt-2">
+                    <input type="number" class="form-control" id="yourReturn" placeholder="0" value="0" min="0" disabled>
+                    <label for="yourContribution">Your expected return</label>
+                </div>
+                <button type="button" id="calculator_button" class="btn-primary btn mt-2 w-100" disabled>
+                    Calculate
+                </button>
+                <small class="text-danger">
+                    The calculator is disbaled in this instructions-stage. It will be enabled on the decision screen.
+                </small>
+
+                <p class="h6 mt-5"> Further Details <small>given the quota of {{min_mpcr}}%</small></p>
+                <div class="table-responsive mt-2">
+                    <table class="table table-hover">
+                        <thead>
+                        </thead>
+                        <tr>
+                            <td> Your current endowment </td>
+                            <td> {{ session.config.initial_endowment }} </td>
+                        </tr>
+                        <tr>
+                            <td> Others' average contribution</td>
+                            <td id="othersContributionsTable"> 0 </td>
+                        </tr>
+                        <tr>
+                            <td> Your intended contribution</td>
+                            <td id="yourContributionTable"> 0 </td>
+                        </tr>
+                        <tr>
+                            <td> Your expected return</td>
+                            <td id="yourReturnTable"> 0 </td>
+                        </tr>
+                        <thead>
+                        <td> Your expected endowment </td>
+                        <td id="yourEndowmentTable">{{ session.config.initial_endowment }}</td>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions Offcanvas -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasInstructions" aria-labelledby="offcanvasInstructionsLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasInstructionsLabel">Instructions</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div>
+                    {{ include C.EARNINGS_TEMPLATE }}
+                </div>
+
+                <h5 class="mt-5">
+                    Shocks
+                </h5>
+                <hr class="mt-0">
+                <div>
+                    {{ include C.SHOCKS_TEMPLATE }}
                 </div>
             </div>
         </div>

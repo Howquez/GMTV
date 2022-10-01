@@ -28,7 +28,7 @@
     }
 
 // manipulate series
-series[0] = 0;
+series[0] = 20;
 
 var chart = Highcharts.chart('container', {
     chart: {

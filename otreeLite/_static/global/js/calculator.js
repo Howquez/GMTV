@@ -3,7 +3,11 @@ console.log("calculator ready!")
 function calculate() {
     yourContribution = parseInt(document.getElementById("yourContribution").value)
     othersContributions = parseInt(document.getElementById("othersContributions").value)
-    var yourReturn = Math.ceil((othersContributions * (num_players - 1) + yourContribution) * factor) - yourContribution
+    var ewe = document.getElementById("eweFlexSwitch").checked
+    var yourReturn = Math.ceil((othersContributions * (num_players - 1) + yourContribution) * factor) - yourContribution;
+    if (ewe) {
+    yourReturn = yourReturn - Math.floor((1 - (othersContributions * (num_players - 1) + yourContribution) / wealth) * damage * endowment);
+    }
     var futureEndowment = endowment + yourReturn
 
     document.getElementById("yourContributionTable").innerHTML = yourContribution;
