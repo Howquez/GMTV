@@ -19,7 +19,7 @@ function calculate() {
     document.getElementById("calculator_button").innerHTML = "Re-calculate";
 }
 
-
+// Measure the time the calculator was opened
 var startTime;
 var endTime;
 var increment = 0;
@@ -36,8 +36,6 @@ function () {
     endTime = Date.now();
     increment = endTime - startTime;
     sum += increment
-    console.log(sum)
-
 
     document.getElementById("calculator_time").value = sum/1000;
 })
