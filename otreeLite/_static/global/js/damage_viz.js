@@ -1,17 +1,40 @@
-Highcharts.chart('container', {
+Highcharts.chart('damage_viz', {
     chart: {
-        type: 'area'
+        type: 'area',
+        backgroundColor: "transparent"
     },
+
+    title: {
+        text: ""
+    },
+
+    exporting: {
+				enabled: false
+    },
+
+    tooltip: {
+        formatter: function () {
+            return 'If your group contributes <b>' + this.x +
+                '%</b> a damage would cause a loss of <b>' + this.y + '%</b> of your stock.';
+        }
+    },
+
     xAxis: {
         categories: [0,10,20,30,40,50,60,70,80,90,100],
         title: {
         		text : "Share of Total Endowments Contributed"
         },
+        labels: {
+            format: '{value}%'
+        },
     },
 
     yAxis: {
         title: {
-        		text : "Possible Damage"
+        		text : "Possible Damage in Percent of Stock"
+        },
+        labels: {
+            format: '{value}%'
         },
     },
 
