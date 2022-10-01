@@ -221,6 +221,17 @@ class D_Results(Page):
         if player.round_number == C.NUM_ROUNDS:
             return True
 
+    @staticmethod
+    def js_vars(player: Player):
+        stock = player.participant.stock
+        return dict(
+            template="results",
+            current_round=player.round_number,
+            stock=stock,
+            num_rounds=C.NUM_ROUNDS,
+
+        )
+
 
 page_sequence = [A_InitialWaitPage,
                  B_Decision,

@@ -42,6 +42,7 @@
 
 	if (template == "results"){
 	    series = stock;
+	    series.shift();
 		plot_line_width = 1;
 		plot_height = 4;
 		max = num_rounds - 1;
@@ -100,7 +101,7 @@ var chart = Highcharts.chart('container', {
         },
         plotLines: [{
         	zIndex: 5,
-                value: series[0],
+                value: 20,
                 color: 'grey',
                 dashStyle: 'shortdash',
                 width: plot_line_width,
