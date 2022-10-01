@@ -38,6 +38,13 @@
                 {{ if player.round_number == C.NUM_ROUNDS}} Last period {{ else }} Period {{ player.round_number }} {{ endif }}
             </span>
         </h5>
+
+        <h5>
+            <span class="badge rounded-pill mt-4 ms-3 bg-danger shadow" data-toggle="tooltip" data-placement="bottom" title="Risk of damage is {{ risk }}%">
+                Risk: {{ risk }}%
+            </span>
+        </h5>
+
         <div class="me-3" style="cursor: pointer;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-calculator" viewBox="0 0 16 16" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCalculator" aria-controls="offcanvasCalculator" id="calculator_icon">
                 <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
