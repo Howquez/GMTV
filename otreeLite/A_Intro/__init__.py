@@ -24,7 +24,8 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    pass
+    formula_shown = models.BooleanField(doc="True if participant wanted to see the formula that explains earnings.",
+                                        initial=False)
 
 
 # PAGES
@@ -33,6 +34,8 @@ class A_Welcome(Page):
 
 
 class B_Instructions(Page):
+    form_model = "player"
+    form_fields = ["formula_shown"]
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.participant.waited_too_long = False

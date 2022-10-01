@@ -51,6 +51,9 @@ class Player(BasePlayer):
     total_damage = models.IntegerField(initial=0, doc="damage caused by the ewe")
     MPCR = models.FloatField(doc="marginal per capita return")
 
+    formula_shown = models.BooleanField(doc="True if participant wanted to see the formula that explains earnings.",
+                                        initial=False)
+
 
 
 # FUNCTIONS
@@ -150,7 +153,7 @@ class A_InitialWaitPage(WaitPage):
 
 class B_Decision(Page):
     form_model = "player"
-    form_fields = ["contribution"]
+    form_fields = ["contribution", "formula_shown"]
 
     @staticmethod
     def vars_for_template(player: Player):
