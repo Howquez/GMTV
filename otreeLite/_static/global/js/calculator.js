@@ -19,3 +19,25 @@ function calculate() {
     document.getElementById("calculator_button").innerHTML = "Re-calculate";
 }
 
+
+var startTime;
+var endTime;
+var increment = 0;
+var sum = 0;
+
+var myOffcanvas = document.getElementById('offcanvasCalculator')
+myOffcanvas.addEventListener('show.bs.offcanvas',
+function () {
+    startTime = Date.now()
+})
+
+myOffcanvas.addEventListener('hidden.bs.offcanvas',
+function () {
+    endTime = Date.now();
+    increment = endTime - startTime;
+    sum += increment
+    console.log(sum)
+
+
+    document.getElementById("calculator_time").value = sum/1000;
+})

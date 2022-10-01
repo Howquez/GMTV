@@ -53,6 +53,9 @@ class Player(BasePlayer):
 
     formula_shown = models.BooleanField(doc="True if participant wanted to see the formula that explains earnings.",
                                         initial=False)
+    calculator_time=models.FloatField(doc="Counts the cumulative number of seconds the calculator was opened.",
+                                      initial=0)
+
 
 
 
@@ -153,7 +156,7 @@ class A_InitialWaitPage(WaitPage):
 
 class B_Decision(Page):
     form_model = "player"
-    form_fields = ["contribution", "formula_shown"]
+    form_fields = ["contribution", "formula_shown", "calculator_time"]
 
     @staticmethod
     def vars_for_template(player: Player):
