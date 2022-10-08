@@ -1,0 +1,215 @@
+---
+title: "GMTV Data Preparation"
+author:
+  - name: Hauke Roggenkamp 
+    url: https://github.com/Howquez
+    affiliation: CLICCS
+    affiliation_url: https://www.cliccs.uni-hamburg.de/
+date: "`r Sys.Date()`"
+bibliography: ../biblio.bib
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+    code_folding: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE)
+```
+
+# Objective
+
+This document (re-)calculates some of the variables provided in @GMTV2017's online Appendix, namely:
+
+- `WEALTH`, the variable used to measure growth,
+- `MEAN`, the share of current endowments contributed and
+- `GINI`, the group-level gini coefficient.
+
+It also documents some examples to explain, why a (re-)calculation is needed.
+
+# Setup
+
+To do so, the following packages have to be installed and loaded. If the packages are not yet installed, you can do so using the command `install.packages("package_name")` for the respective packages before loading them in the following chunk.
+
+```{r packages}
+library(knitr)       # dynamic report generation (and tables via kable())
+library(haven)       # read_dta
+library(magrittr)    # pipe operator
+library(data.table)  # fast and memory efficient data frames
+library(DescTools)   # gini coefficient
+```
+
+Afterwards, the data needs to be loaded. This requires you to adjust the path to your personal directory.
+
+```{r readData}
+path <- "../../../data/gaechteretal/GMTV-data.dta" # adjust this
+
+DT <- read_dta(path) %>% data.table()
+```
+
+Having loaded the data, you should have a data.table called `DT` with `r DT[, .N]` rows and `r DT %>% names() %>% length()` variables in your global environment. Because this document focuses on the first ten experiments, a new data.table called `GMTV` is defined as a subset of `DT`:
+
+```{r subsetData}
+GMTV <- DT[exp_num <= 10]
+```
+
+`GMTV` consists of `r GMTV[, .N]` rows and `r GMTV %>% names() %>% length()` columns.
+
+# Wealth
+
+The most important variable is used to measure growth shall be called `WEALTH`. This variable sums the endowments of all participants in a given group at the beginning of the following period. The data provided in the article's online appendix does not provide that variable.
+
+This variable cannot be defined as the lag of endowments (`gpd`), because this would return a `NA` for the last period. For this reason, one needs to define the subjects' earnings within a period. These will be called `stock[0-3]` where `stock0` refers to a subject's own earnings and `stock[1-3]` reports the group members' earnings. These variables have to be calculated differently for punishment and no-punishment treatments.
+
+```{r wealth1}
+GMTV[punish == FALSE, stock0 := (tokens - putin + 1.5*sum/4) %>% ceiling()]
+GMTV[punish == FALSE, stock1 := (other1 - pu1 + 1.5*sum/4) %>% ceiling()]
+GMTV[punish == FALSE, stock2 := (other2 - pu2 + 1.5*sum/4) %>% ceiling()]
+GMTV[punish == FALSE, stock3 := (other3 - pu3 + 1.5*sum/4) %>% ceiling()]
+```
+
+```{r wealth2}
+GMTV[punish == TRUE, stock0 := (tokens - putin + 1.5*sum/4 - totallost) %>% ceiling()]
+GMTV[punish == TRUE, stock1 := (other1 - pu1 + 1.5*sum/4 - totallost) %>% ceiling()]
+GMTV[punish == TRUE, stock2 := (other2 - pu2 + 1.5*sum/4 - totallost) %>% ceiling()]
+GMTV[punish == TRUE, stock3 := (other3 - pu3 + 1.5*sum/4 - totallost) %>% ceiling()]
+```
+
+
+Because subjects cannot run into debt, earnings < 0 need to be adjusted accordingly.
+
+```{r wealth3}
+GMTV[stock0 < 0, stock0 := 0]
+GMTV[stock1 < 0, stock1 := 0]
+GMTV[stock2 < 0, stock2 := 0]
+GMTV[stock3 < 0, stock3 := 0]
+```
+
+
+With all group members' earnings, one can now calculate the group's `WEALTH` as follows:
+
+```{r wealth4}
+GMTV[, WEALTH := stock0 + stock1 + stock2 + stock3]
+```
+
+
+# Share of Current Endowment Contributed
+
+The data provided in the article's online appendix provides a wrong measure of a subject's share of current endowment contributed called `mean` as it relies on a lagged endowment. To calculate the mean, the following STAT code was applied:
+
+```
+*tsset subj_id per
+*gen mean=sum/l.gdp
+```
+
+The following table reports subject 111 in group 101 in ex experiment 1 over three periods. Both the `gdp` (that is, the sum of the group's endowments at the beginning of the period) as well as the sum (that is, the sum of the group's contributions) are group-level variables. Calculating the share `mean=sum/gdp` should yield $18/126=0.143$ in period 5 instead of $0.155$.
+
+To get a subject's share of _current_ endowment contributed (that is, `MEAN`), one just has to calculate the corresponding fraction as follows:
+
+```{r shareOfEndowmentsContributed}
+GMTV[, MEAN := sum/gdp]
+```
+
+```{r tableMean, echo = FALSE}
+GMTV[exp_num == 1 & gr_id == 101 & (per == 4 | per == 5 | per == 6) & subj_id == 111,
+     .(exp_num,
+       gr_id,
+       per,
+       subj_id,
+       gdp,
+       sum,
+       mean = round(mean, digits = 3),
+       MEAN = round(MEAN, digits = 3))] %>% 
+  knitr::kable()
+```
+
+# Gini Coefficient
+
+The gini coefficient provided in the original data relies on the subjects' endowments while it should rely on their earnings as the following table illustrates. It shows subject 111 once again over the course of the first three periods.
+
+```{r tableGini1, echo = FALSE}
+
+GMTV[exp_num == 1 & gr_id == 101 & per <=3 & subj_id == 111, # (per == 5 | per == 6 | per == 7)
+     .(exp_num, 
+       gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini, digits = 3))] %>% 
+  knitr::kable()
+```
+
+The Gini coefficient reported in the first row equals $0$ even though it should equal $0.168$. The second period's Gini coefficient should equal $0.146$ but is $0.168$ and so on.
+
+Moreover, the Gini coefficient is a group-level variable and should be the same for all group members in a given period. The next table shows group 101 in period 5 and documents that the Gini coefficient differs among group members.
+
+```{r tableGini2, echo = FALSE}
+GMTV[exp_num == 1 & gr_id == 101 & per == 5,
+     .(exp_num,
+       gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini, digits = 3))] %>% 
+  knitr::kable()
+```
+
+For these reasons, the Gini coefficient needs to be re-calculated using  the `stock` variables calculated above (that is, each group member's earnings at the end of a period).
+
+```{r gini}
+GMTV[, 
+     GINI := Gini(c(stock0, stock1, stock2, stock3)),
+     by = .(exp_num, gr_id, subj_id, per)]
+```
+
+
+# Save Data
+
+The updated `GMTV` now consists of `r GMTV[, .N]` rows and `r GMTV %>% names() %>% length()` columns. Some of them are displayed in the following table. The capitalized variables are the ones that were (re-)calculated in this document. 
+
+```{r showData, echo = FALSE}
+GMTV[,
+     .(WEALTH,
+       gini = round(gini, digits = 3),
+       GINI = round(GINI, digits = 3),
+       gdp,
+       sum,
+       mean = round(mean, digits = 3),
+       MEAN = round(MEAN, digits = 3)),
+     keyby = c("exp_num",
+               "gr_id",
+               "per",
+               "subj_id")] %>% 
+  head(10) %>%
+  knitr::kable()
+```
+
+You can store the data in your directory using the following code chunk:
+
+```{r saveData}
+# you may want to adjust the path to your directory
+
+write.csv(GMTV,
+          file = "../../../data/processed/GMTV-update.csv",
+          fileEncoding = "UTF-8")
+
+save(GMTV, 
+     file = "../../../data/processed/GMTV-update.rda")
+```
+
+
+
+
+# References
+
+
+ 

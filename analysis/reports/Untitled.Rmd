@@ -1,0 +1,693 @@
+---
+title: "Growth and inequality in public good provision"
+author: "Hauke Roggenkamp"
+date: "`r Sys.Date()`"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(plm)         # robust standard errors
+library(lmtest)      # robust standard errors
+library(haven)       # read_dta
+library(here)        # file paths
+library(magrittr)    # pipe operator
+library(data.table)  # great data objects
+library(knitr)       # print tables
+library(stargazer)   # regression Tables
+library(DescTools)   # gini coefficient
+library(ggplot2)     # viz
+library(wesanderson) # color palette
+library(patchwork)   # plot arrangements
+
+layout <- theme(panel.background = element_rect(fill = "white"),
+                panel.grid = element_blank(),
+                panel.grid.major.y = element_line(colour="gray", size=0.25),
+                legend.key = element_rect(fill = "white"),
+                axis.line.x.bottom = element_line(size = 0.25),
+                axis.line.y.left = element_line(size = 0.25),
+                # plot.margin = unit(c(1,1,1,1), "cm"),
+                legend.title = element_blank()
+                )
+
+```
+
+```{r preperation}
+
+# regressions 
+gdp_ols <- function(DT, var = "gdp", output = "plm"){
+  p.df <- DT %>% pdata.frame(index = c("gr_id"))
+  plm <- plm(get(var) ~ punish, data = p.df, model = "pooling")
+  # plm
+  G <- length(unique(p.df$gr_id))
+  N <- length(p.df$gr_id)
+  dfa <- (G/(G - 1)) * (N - 1) / plm$df.residual
+  group_c_vcov <- dfa * vcovHC(plm, type = "HC0", cluster = "group", adjust = T)
+  # coeftest(plm, vcov = group_c_vcov)
+  se <- sqrt(diag(group_c_vcov))
+  # se
+  
+  if (output == "plm") {
+    plm
+  } else {
+    se
+  }
+  
+}
+
+layout <- theme(panel.background = element_rect(fill = "white"),
+                panel.grid = element_blank(),
+                panel.grid.major.y = element_line(colour="gray", size=0.25),
+                legend.key = element_rect(fill = "white"),
+                axis.line.x.bottom = element_line(size = 0.25),
+                axis.line.y.left = element_line(size = 0.25),
+                # plot.margin = unit(c(1,1,1,1), "cm"),
+                legend.title = element_blank()
+                )
+
+```
+
+
+
+## Original Data
+
+The following five slides report a subset of the original data. More specifically, I focus on experiment 1, group 101 and subjects 111, 112, 113 and 114 in periods 1 to 7. These subjects played the long game without punishment.
+
+There is no specific reason I focus on this particular group.
+
+With this example at hand, I will show that the definition of Wealth, the Share of Endowment Contributed as well as the Gini Coefficient is processed erroneously.
+
+## Original Data: Variables
+
+Among several identifiers and treatment variables, the data (as downloaded from the online appendix) contains the following information:
+
+-   `exp_num` is a session identifier
+-   `per` denotes the period
+-   `gr_id` is a group identifier (carrying treatment information)
+-   `subj_id` is a subject identifier
+-   `tokens` reports a subject's endowment.
+-   `other[1-3]` report the other group members' endowments.
+-   `gdp` equals the sum of endowments of a group.
+-   `putin` reports a subject's contribution.
+-   `pu[1-3]` report the other group members' contributions
+-   `sum` equals the sum of contributions of a group.
+-   `gini` shall report a group's Gini coefficient.
+-   `mean` shall report the sum of endowments contributed of a group.
+
+```{r readData}
+DT <- read_dta(here("..", "data", "gaechteretal", "GMTV-data.dta")) %>% data.table() 
+
+GMTV <- DT[order(exp_num, treat, gr_id, per),
+           .(treat, punish = as.logical(punish), longgame = as.logical(longgame),        # treatment vars
+             exp_num, gr_id, per, subj_id,              # IDs
+             tokens, other1, other2, other3, gdp,       # endowments
+             putin, pu1, pu2, pu3, sum, mean,           # contributions
+             gini,                                      # ginis
+             totallost,                                 # punishment var
+             highgdp
+             )]
+
+```
+
+
+## Original Data: Wealth
+
+One of the main variables of the paper is called _Wealth_ . This variable is said to _sum the endowments of all participants in a given group at the beginning of the following period_. 
+
+As the reproduction of Table 2 will show, however, _Wealth_ is defined as `gdp`. The following Table shows that the _gdp_ is defined as the sum of endowments of the current period as $42+27+27+30=126$ & $45+29+29+33=136$.
+
+```{r}
+GMTV[exp_num == 1 & gr_id == 101 & (per == 5 | per == 6) & subj_id == 111,
+     .(gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gdp)] %>% 
+  knitr::kable()
+```
+
+
+
+
+## Original Data: Share of Income Contributed
+
+The `mean` is intended report the share of a group's income that is contributed to the public good. According to the following STATA code snipet that Friederike provided, it calculates she share of the group's previous income that is contributed in this period.
+
+```
+*tsset subj_id per
+*gen mean=sum/l.gdp
+```
+
+This is also in line with subject 111's `mean` in the table below as it should equal $18/126=0.143$ in period 5 but is $0.155=18/116$.
+
+```{r}
+GMTV[exp_num == 1 & gr_id == 101 & (per == 4 | per == 5 | per == 6) & subj_id == 111,
+     .(gr_id,
+       per,
+       subj_id,
+       gdp,
+       sum,
+       mean = round(mean, digits = 3))] %>% 
+  knitr::kable()
+```
+
+## Original Data: Gini
+
+The following table displays the whole group 101 of experiment 1 in period 5. 
+
+```{r}
+GMTV[exp_num == 1 & gr_id == 101 & per == 5,
+     .(gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini, digits = 3))] %>% 
+  knitr::kable()
+```
+
+Because the Gini coefficient expresses the inequality within a group, it _should_ be the same for all group members. The table above illustrates an example where this is not the case.
+
+
+## Original Data: Gini
+
+In addition, the `gini` definition has another (probably a related) flaw that is similar to the definition of Wealth: It reports the inequality of endowments instead of earnings -- at least sometimes.
+
+The following Table shows subject 111's data once again. The Gini coefficient reported in period 1 should equal $0.168$ but equals $0$. The second period's Gini coefficient should equal $0.146$ but is $0.168$ and so on. 
+
+```{r Gini2}
+
+GMTV[exp_num == 1 & gr_id == 101 & per <=3 & subj_id == 111, # (per == 5 | per == 6 | per == 7)
+     .(gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini, digits = 3))] %>% 
+  knitr::kable()
+```
+
+
+
+
+## Original Data: Reproduction of Tables
+
+To demonstrate that these data were used to create the Figures and Tables that were published, I reproduce Table 2 (using `gdp` as a measure for _Wealth_) and 4.
+
+Please excuse the tables' format and their misleading captions.
+
+
+## Original Data: Reproduction of Table 2
+
+
+```{r regressionSubsets}
+# subsets for regression tables
+GMTV_short_all  <- GMTV[longgame == 0 & treat < 3 & per == 10]
+GMTV_short_poor <- GMTV[longgame == 0 & treat < 3 & per == 10 & highgdp == 0]
+GMTV_short_rich <- GMTV[longgame == 0 & treat < 3 & per == 10 & highgdp == 1]
+GMTV_long_all   <- GMTV[longgame == 1 & treat > 100 & per == 15]
+GMTV_long_poor  <- GMTV[longgame == 1 & treat > 100 & per == 15 & highgdp == 0]
+GMTV_long_rich  <- GMTV[longgame == 1 & treat > 100 & per == 15 & highgdp == 1]
+```
+
+```{r reproductionTable2.1, results = "asis"}
+stargazer(gdp_ols(GMTV_short_all),
+          gdp_ols(GMTV_short_poor),
+          gdp_ols(GMTV_short_rich),
+          
+          se = list(gdp_ols(GMTV_short_all,  output = "se"),
+                    gdp_ols(GMTV_short_poor, output = "se"),
+                    gdp_ols(GMTV_short_rich, output = "se")),
+          
+          add.lines = list(c("Long Game?", "No", "No", "No")),
+          
+          column.labels = rep(c("All", "Below median", "Above median"), 2),
+          model.numbers = FALSE,
+          dep.var.labels = "Wealth (Table 2)",
+          notes = "Robust standard errors in parentheses",
+          
+          header=FALSE,
+          no.space = TRUE,
+          columns.sep.width = "3pt",
+          font.size = "small",
+
+          type = "latex", digits = 2, omit.stat = c("adj.rsq", "f")
+          )
+```
+
+## Original Data: Reproduction of Table 4
+
+```{r reproductionTable4.1, results = "asis"}
+stargazer(gdp_ols(GMTV_short_all, var = "gini"),
+          gdp_ols(GMTV_short_poor, var = "gini"),
+          gdp_ols(GMTV_short_rich, var = "gini"),
+          
+          se = list(gdp_ols(GMTV_short_all,  output = "se", var = "gini"),
+                    gdp_ols(GMTV_short_poor, output = "se", var = "gini"),
+                    gdp_ols(GMTV_short_rich, output = "se", var = "gini")),
+          
+          add.lines = list(c("Long Game?", "No", "No", "No")),
+          
+          column.labels = rep(c("All", "Below median", "Above median"), 2),
+          model.numbers = FALSE,
+          dep.var.labels = "Gini (Table 4)",
+          notes = "Robust standard errors in parentheses",
+          
+          header=FALSE,
+          no.space = TRUE,
+          columns.sep.width = "3pt",
+          font.size = "small",
+
+          type = "latex", digits = 3, omit.stat = c("adj.rsq", "f")
+          )
+```
+
+## Original Data: Reproduction of Table 4
+
+```{r reproductionTable4.2, results = "asis"}
+stargazer(gdp_ols(GMTV_long_all, var = "gini"),
+          gdp_ols(GMTV_long_poor, var = "gini"),
+          gdp_ols(GMTV_long_rich, var = "gini"),
+          
+          se = list(gdp_ols(GMTV_long_all,  output = "se", var = "gini"),
+                    gdp_ols(GMTV_long_poor, output = "se", var = "gini"),
+                    gdp_ols(GMTV_long_rich, output = "se", var = "gini")),
+          
+          add.lines = list(c("Long Game?", "Yes", "Yes", "Yes")),
+          
+          column.labels = rep(c("All", "Below median", "Above median"), 2),
+          model.numbers = FALSE,
+          dep.var.labels = "Gini (Table 4)",
+          notes = "Robust standard errors in parentheses",
+          
+          header=FALSE,
+          no.space = TRUE,
+          columns.sep.width = "3pt",
+          font.size = "small",
+
+          type = "latex", digits = 3, omit.stat = c("adj.rsq", "f")
+          )
+```
+
+
+## Re-processed Data
+
+```{r reProcessData}
+# Wealth
+GMTV[, stock0 := (tokens - putin + 1.5*sum/4) %>% ceiling()]
+GMTV[, stock1 := (other1 - pu1 + 1.5*sum/4) %>% ceiling()]
+GMTV[, stock2 := (other2 - pu2 + 1.5*sum/4) %>% ceiling()]
+GMTV[, stock3 := (other3 - pu3 + 1.5*sum/4) %>% ceiling()]
+
+
+GMTV[!is.na(totallost), stock0 := (tokens - putin + 1.5*sum/4 - totallost) %>% ceiling()]
+GMTV[!is.na(totallost), stock1 := (other1 - pu1 + 1.5*sum/4 - totallost) %>% ceiling()]
+GMTV[!is.na(totallost), stock2 := (other2 - pu2 + 1.5*sum/4 - totallost) %>% ceiling()]
+GMTV[!is.na(totallost), stock3 := (other3 - pu3 + 1.5*sum/4 - totallost) %>% ceiling()]
+
+GMTV[stock0 < 0, stock0 := 0]
+GMTV[stock1 < 0, stock1 := 0]
+GMTV[stock2 < 0, stock2 := 0]
+GMTV[stock3 < 0, stock3 := 0]
+
+GMTV[, gdp2 := stock0 + stock1 + stock2 + stock3]
+
+
+# Mean
+GMTV[,
+     mean2 := sum/gdp,
+     by = .(exp_num, subj_id, per)]
+
+# Gini 
+GMTV[,
+     gini2 := Gini(c(stock0, stock1, stock2, stock3)),
+     by = .(exp_num, subj_id, per)]
+```
+
+```{r eval = FALSE}
+x <- GMTV[exp_num <= 10,
+     .(treat,
+       exp_num,
+       punish,
+       longgame,
+       gr_id,
+       per,
+       subj_id,
+       tokens,
+       putin,
+       sum,
+       multi = ceiling(sum * 1.5),
+       totallost,
+       calculated = stock0,
+       reported = shift(tokens, n = 1, fill = NA, type = "lead"),
+       diff = shift(tokens, n = 1, fill = NA, type = "lead") - stock0),
+     by = subj_id]
+
+x[punish == TRUE] %>% View()
+
+x[punish == TRUE & diff < 0, .N]
+
+```
+
+The following Table shows the same experiment, group and round as displayed above. The only difference is, that the the Wealth meassure, the Share of Endowments Contributed and the Gini coefficient are re-processed.
+
+
+## Re-processed Data: Wealth
+
+Re-processing _Wealth_ is problematic for the punish-treatments as the original data does report how much a subject punishes her group members. It provides the variable `totallost` which reports the punishment received by others, apperently. The following code therefore exceeds each subject's individual _Wealth_ as the following table illustrates.
+
+```
+wealth <- ceiling(tokens-putin+1.5*sum/4-totallost)
+```
+
+```{r}
+GMTV[subj_id == 441,
+     .(# exp_num,
+       per,
+       subj_id,
+       tokens,
+       putin,
+       sum,
+       totallost,
+       wealth = shift(tokens, n = 1, fill = NA, type = "lead"),
+       wealth2 = (tokens - putin + 1.5 * sum / 4 - totallost) %>% ceiling())] %>% 
+  head(2) %>%
+  knitr::kable()
+```
+
+`wealth` is a lagged variable reporting the next period's endowments (`tokens`) and `wealth2` is the recalculated variable (using the code displayed above). The first period's difference between the two variables cannot be explained with the available data.
+
+## Re-processed Data: Wealth
+
+Remember: The `gdp` reported in the data describes the group's _Wealth_ at the beginning of a period and I want to calculate the _Wealth_ at the end of a period. This is quite easy for the no-punish-treatments (because the data provides all the information I need) as well as for all but the last period of the punish-treatments (because I can rely on the next-period's `tokens` or `gdp`).
+
+To reproduce the tables, however, I need the final period's outcome in the punish-treatments.
+
+Looking at the zTree code it appears as if I need the variables called `pun1`, `pun2`, `pun3` to do so.
+
+## Re-processed Data Share of Income Contributed
+
+Subject 111's `mean` in the table below now equals $18/126=$ `r round(18/126, digits = 3)` in period 5 and $18/116=$ `r round(18/116, digits = 3)` in period 4.
+
+```{r}
+GMTV[exp_num == 1 & gr_id == 101 & (per == 4 | per == 5 | per == 6) & subj_id == 111,
+     .(gr_id,
+       per,
+       subj_id,
+       gdp,
+       sum,
+       mean = round(mean2, digits = 3))] %>% 
+  knitr::kable()
+```
+
+## Re-processed Data: Gini
+
+These two tables illustrate the example from above. One can see that the Gini coefficient is constant within the group and that it relies on a period's outcomes instead of the endowments.
+
+```{r}
+GMTV[exp_num == 1 & gr_id == 101 & per == 5,
+     .(gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini2, digits = 3))] %>% 
+  knitr::kable()
+```
+
+```{r}
+
+GMTV[exp_num == 1 & gr_id == 101 & per <=3 & subj_id == 111, # (per == 5 | per == 6 | per == 7)
+     .(gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini2, digits = 3))] %>% 
+  knitr::kable()
+```
+
+## Re-processed Data: Gini
+
+Note: Because I cannot calculate the individuals' wealth in the last punishment periods, I also cannot calculate the corresponding Gini coefficient.
+
+## Re-processed Data:Reproduction of Table 2
+
+Not possible.
+
+## Re-processed Data:Reproduction of Table 4
+
+Not possible.
+
+## Re-processed Data: Figure 1 a
+
+```{r}
+
+GMTV[punish == 0 & longgame == 0, # exp_num == 5 | exp_num == 8 | exp_num == 9,
+     treatment := "noPunish10"]
+
+GMTV[punish == 0 & longgame == 1, # exp_num == 1 | exp_num == 3,
+     treatment := "noPunish15"]
+
+GMTV[punish == 1 & longgame == 0, # exp_num == 4 | exp_num == 6 | exp_num == 10,
+     treatment := "Punish10"]
+
+GMTV[punish == 1 & longgame == 1, # exp_num == 2 | exp_num == 7,
+     treatment := "Punish15"]
+
+
+# remove duplicate rows while subsetting only group level variables
+GMTVgroups <- GMTV[exp_num <= 10,
+                   .(treatment,
+                     treat,
+                     punish = as.logical(punish),
+                     longgame = as.logical(longgame),
+                     exp_num,
+                     gr_id,
+                     per,
+                     sum,
+                     gdp,
+                     gdp2,
+                     mean,
+                     mean2,
+                     gini,
+                     gini2,
+                     highgdp = as.logical(highgdp))] %>% unique()
+```
+
+Even though I have not manipulated the `sum`, that is, a group's contributions, my reproduction of Figure 1a looks a little different -- although qualitatively similar.
+
+```{r plotContributionsA}
+
+SUM <- GMTVgroups[, 
+                    lapply(.SD, mean, na.rm = TRUE),
+                    by = c("per", "treatment", "punish", "longgame"),
+                    .SDcols = "sum"]
+
+SUM[,
+    sum := round(sum/4)]
+
+ggplot(data = SUM, aes(x = per, y = sum, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="bottom") +
+          geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 150, by = 50), limits = c(0, 170), expand = c(0, 0)) +
+          labs(y = "Average Amount of Tokens contributed") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+```
+
+## Re-processed Data: Figure 1 b
+
+The left panel shows my reproduction of Figure 1 b using the original data, which does not look like the original. The right panel shows my take on Figure 1 b using the re-processed `mean`. That one does not look like the original either.
+
+```{r plotContributionsB1}
+
+MEANS <- GMTVgroups[,
+                    lapply(.SD, mean, na.rm = TRUE),
+                    by = c("per", "treatment", "punish", "longgame"),
+                    .SDcols = c("mean", "mean2")]
+
+MEANS2 <- GMTV[exp_num <= 10,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("per", "treatment", "punish", "longgame"),
+               .SDcols = c("mean", "mean2")]
+
+mean <- ggplot(data = MEANS, aes(x = per, y = mean, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="none") +
+          geom_vline(xintercept = 10, alpha = 0.66, size = 0.25) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1.2, by = 0.2), limits = c(0, 1.25), expand = c(0, 0)) +
+          labs(y = "Share of past Endowment contributed") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+mean2 <- ggplot(data = MEANS, aes(x = per, y = mean2, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="none") +
+          geom_vline(xintercept = 10, alpha = 0.66, size = 0.25) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="", breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1.2, by = 0.2), limits = c(0, 1.25), expand = c(0, 0)) +
+          labs(y = "Share of current Endowment contributed") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+patchwork <- mean + mean2 & theme(legend.position = "bottom")
+patchwork <- patchwork + plot_layout(guides = "collect")
+patchwork
+
+```
+
+
+## Re-processed Data: Figure 1 b
+
+These two figures are essentially the same as above but are calculating by averageing over individuals instead of groups.
+
+```{r plotContributionsB2}
+
+MEANS2 <- GMTV[exp_num <= 10,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("per", "treatment", "punish", "longgame"),
+               .SDcols = c("mean", "mean2")]
+
+mean <- ggplot(data = MEANS2, aes(x = per, y = mean, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="none") +
+          geom_vline(xintercept = 10, alpha = 0.66, size = 0.25) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1.2, by = 0.2), limits = c(0, 1.25), expand = c(0, 0)) +
+          labs(y = "Share of past Endowment contributed") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+mean2 <- ggplot(data = MEANS2, aes(x = per, y = mean2, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="none") +
+          geom_vline(xintercept = 10, alpha = 0.66, size = 0.25) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="", breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1.2, by = 0.2), limits = c(0, 1.25), expand = c(0, 0)) +
+          labs(y = "Share of current Endowment contributed") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+patchwork <- mean + mean2 & theme(legend.position = "bottom")
+patchwork <- patchwork + plot_layout(guides = "collect")
+patchwork
+
+```
+
+
+## Re-processed Data: Figure 1
+
+I cannot reproduce Figure 1. Neither using the original data, nor my re-processed data.
+
+This implies either that 
+
+- I made a mistake in creating the Figure (using a subset of the data where `exp_num <= 10`)
+- the Figures have been created with data that was not provided in the online appendix (which would be weird as the tables have been created with that data)
+
+## Re-processed Data: Figure 2 a
+
+The following figures show my take on Figure 2 a. The left panel calculated group averages of wealth while the right panel calculated individual average. Both are using the original data
+
+```{r plotWealthA}
+
+STOCK <- GMTVgroups[, 
+                    lapply(.SD, mean, na.rm = TRUE),
+                    by = c("per", "treatment", "punish", "longgame"),
+                    .SDcols = "gdp"]
+
+STOCK2 <- GMTV[exp_num <= 10,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("per", "treatment", "punish", "longgame"),
+               .SDcols = "gdp"]
+
+
+
+p1 <- ggplot(data = STOCK, aes(x = per, y = gdp, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="bottom") +
+          geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1500, by = 500), limits = c(0, 1700), expand = c(0, 0)) +
+          labs(y = "Wealth (group average)") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+p2 <- ggplot(data = STOCK2, aes(x = per, y = gdp, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="bottom") +
+          geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1500, by = 500), limits = c(0, 1700), expand = c(0, 0)) +
+          labs(y = "Wealth (individual average)") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+patchwork <- p1 + p2 & theme(legend.position = "bottom")
+patchwork <- patchwork + plot_layout(guides = "collect")
+patchwork
+
+```
+
+## Re-processed Data: Figure 2 a
+
+The following figures show my take on Figure 2 a. The left panel calculated group averages of wealth while the right panel calculated individual average. Both are using the original data
+
+```{r plotWealthB}
+
+STOCK  <- GMTV[exp_num <= 10,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("per", "treatment", "punish", "longgame"),
+               .SDcols = c("gdp", "gdp2")]
+
+
+p1 <- ggplot(data = STOCK, aes(x = per, y = gdp, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="bottom") +
+          geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1500, by = 500), limits = c(0, 1700), expand = c(0, 0)) +
+          labs(y = "Wealth (original data)") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+p2 <- ggplot(data = STOCK, aes(x = per, y = gdp2, fill = treatment, color = treatment, lty = punish)) +
+          layout +
+          theme(legend.position="bottom") +
+          geom_vline(xintercept = 10, alpha = 0.66) +
+          geom_line(show.legend=FALSE) +
+          geom_point() +
+          scale_x_continuous(name="",  breaks = 1:15) +
+          scale_y_continuous(breaks = seq(0, 1500, by = 500), limits = c(0, 1700), expand = c(0, 0)) +
+          labs(y = "Wealth (reprocessed data)") +
+          scale_color_manual(values = wes_palette("Zissou1"))
+
+patchwork <- p1 + p2 & theme(legend.position = "bottom")
+patchwork <- patchwork + plot_layout(guides = "collect")
+patchwork
+
+```

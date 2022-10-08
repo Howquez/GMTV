@@ -1,26 +1,52 @@
 ---
-title: "3. Analysis Plan"
-description: |
-  Analyze and compare data
-author:
-  - name: Hauke Roggenkamp 
-    url: https://github.com/Howquez
-    affiliation: CLICCS
-    affiliation_url: https://www.cliccs.uni-hamburg.de/
-date: "`r Sys.Date()`"
+output: 
+  pdf_document:
+    citation_package: natbib
+    keep_tex: true
+    fig_caption: true
+    latex_engine: pdflatex
+    template: ../prettyReports/svm.tex
 bibliography: ../biblio.bib
-output:
-  distill::distill_article:
-    toc: true
-    toc_depth: 2
-    toc_float: false
+header-includes:
+  -  \usepackage{hyperref}
+  - \usepackage{array}   
+  - \usepackage{caption}
+  - \usepackage{graphicx}
+  - \usepackage{siunitx}
+  - \usepackage[table]{xcolor}
+  - \usepackage{multirow}
+  - \usepackage{hhline}
+  - \usepackage{calc}
+  - \usepackage{tabularx}
+  - \usepackage{fontawesome}
+  - \usepackage[para,online,flushleft]{threeparttable}
+biblio-style: apsr
+title: "Analysis Plan: Replicating Growth and Inequality in Public Good Provision"
+thanks: "Further replication files are available on the author's Github account (http://github.com/howquez). **Current version**: `r format(Sys.time(), '%B %d, %Y')`; **Corresponding author**: roggenkh@hsu-hh.de."
+author:
+- name: Hauke Roggenkamp
+  affiliation: Helmut-Schmidt-University
+- name: Stefan Traub
+  affiliation: Helmut-Schmidt-University
+- name: Michael Berlemann
+  affiliation: Helmut-Schmidt-University
+abstract: "We replicate a public goods experiment with dynamic interdependency and find similar results as GMTV. Absolute contributions increase over time. Just as in static public goods experiments, the share of endowments contributed decreases over time. The richest groups earn fifteen times more than the poorest groups. While there clearly is growth, groups do not realize the maximal potential efficiency and earn just a fraction of what is possible. Even though we conducted the experiment online and remotely, dropouts are no concern. Participants make relatively fast decisions which makes longer games feasible in the future. Taken together with inefficient growth and the lack of dropouts, additional rounds are fairly cheap."
+keywords: "dynamic public goods game, inequality, cooperation, growth"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+geometry: margin=1in
+fontfamily: libertine
+fontsize: 11pt
+# spacing: double
+endnote: no
 ---
 
 ```{r setup, results = "hide", echo = FALSE}
 if(knitr::is_html_output()){
   knitr::opts_chunk$set(echo = FALSE)
+  evalKable <- TRUE
 }else{
-  knitr::opts_chunk$set(echo = TRUE)
+  knitr::opts_chunk$set(echo = FALSE)
+  evalKable <- FALSE
 }
 
 Sys.setlocale(category = "LC_ALL",
@@ -77,17 +103,6 @@ covs <- rbindlist(list(replicationCovariates, GMTVCovariates),
                   fill = TRUE)
 ```
 
-# Key Takeaways
-
-- We replicate a public goods experiment with dynamic interdependency and find similar results as @GMTV2017.
-- Absolute contributions increase over time.
-- Just as in _static_ public goods experiments, the share of endowments contributed decreases over time.
-- The richest groups earn fifteen times more than the poorest groups.
-- While there clearly is growth, groups do not realize the maximal potential efficiency and earn just over `r main[treatment == "replication" & round == 10, mean(stock)/(80*1.5^10)*100] %>% round(digits=1)`% of what is possible.
-- Even though we conducted the experiment online and remotely, dropouts (or "attrition") are no concern.
-- Relying on an inexperienced non-convenience sample, `r trunc((R1[comprehension > 1] %>% NROW() / R1[!(is.na(comprehension))] %>% NROW())*100)`% of all participants stated that they understood the game.
-- Participants make relatively fast decisions which makes longer games feasible in the future.^[Taken together with inefficient growth and the lack of dropouts, additional rounds are fairly cheap.]
-
 
 # Background 
 
@@ -102,7 +117,7 @@ I'll refer to the data @GMTV2017 provided as _GMTV_ or _noPunish10_ in what foll
 
 We conducted a series a `r meta %>% NROW()` sessions in between `r meta[, date %>% min() %>% format("%A, %B %d")]` to `r meta[, date %>% max() %>% format("%A, %B %d %Y")]` and collected `r meta[, observations %>% sum()]` observations (from `r meta[, participants %>% sum()]` participants) in total. `r meta[, dropouts %>% sum()]` additional participants could not be matched with other group members or failed to answer the comprehension questions. These participants are labeled as dropouts. None of them dropped out during the session such that attrition is no problem here.
 
-```{r meta}
+```{r meta, eval = evalKable}
 meta %>% kable()
 ```
 
@@ -235,47 +250,7 @@ p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 rm(list = c("SHARE", "p1", "p2"))
 ```
 
-### Hm..?
 
-The plot above puzzles me a little as the right panel visualizes the mean `share==contribution/endowment` by treatment and round. This yields a different result than the mean of the sum of contributions divided by the sum of endowments per treatment and round as the following table illustrates.
-
-```{r}
-main[round == 10, 
-     .(contribution = mean(contribution), 
-       endowment = mean(endowment), 
-       # share = mean(share), # same thing as the following line
-       share = mean(contribution/endowment),
-       sumContBySumEndo = mean(sum(contribution)/sum(endowment))), 
-     by = c("treatment", "round")] %>% 
-  kable()
-```
-
-
-```{r plotContributionsStudents, eval = FALSE}
-SUM <- main[treatment == "replication",
-            lapply(.SD, mean, na.rm = TRUE),
-            by = c("round", "student"),
-            .SDcols = "contribution"]
-
-SUM[,
-    sum := round(contribution/4)]
-
-upperLimit <- SUM$contribution %>% max() %>% round() + 10
-
-p1 <- ggplot(data = SUM, 
-             aes(x = round, y = contribution, fill = student, color = student, lty = student)) +
-  layout +
-  theme(legend.position="bottom") +
-  geom_line(show.legend=FALSE) +
-  geom_point() +
-  scale_x_continuous(name="",  breaks = 1:15) +
-  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
-  labs(y = "Average Amount of Tokens contributed") +
-  scale_color_manual(values = colors) + 
-  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
-
-rm(list = c("SUM"))
-```
 
 ## Wealth Creation
 
@@ -601,7 +576,7 @@ covariates[,
 ```
 
 
-```{r summary3, results = "asis"}
+```{r summary3, results = "asis", warning = FALSE}
 
 # create table
 if(knitr::is_html_output()){
@@ -893,7 +868,7 @@ ggplot(data = STOCK,
 rm(list = c("STOCK"))
 ```
 
-```{r}
+```{r eval = evalKable}
 main[treatment == "replication" & round == 10, 
      lapply(.SD, mean, na.rm = TRUE), 
      by = c("round", "student"), 

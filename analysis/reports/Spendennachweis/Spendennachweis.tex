@@ -1,15 +1,12 @@
 \documentclass[]{elsarticle} %review=doublespace preprint=single 5p=2 column
 %%% Begin My package additions %%%%%%%%%%%%%%%%%%%
+
 \usepackage[hyphens]{url}
 
 
-
 \usepackage{lineno} % add
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \usepackage{graphicx}
-\usepackage{booktabs} % book-quality tables
 %%%%%%%%%%%%%%%% end my additions to header
 
 \usepackage[T1]{fontenc}
@@ -31,7 +28,9 @@
 \fi
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
-\bibliographystyle{elsarticle-harv}
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -47,15 +46,18 @@
             urlcolor=blue,
             linkcolor=magenta,
             pdfborder={0 0 0}}
-\urlstyle{same}  % don't use monospace font for urls
 
 \setcounter{secnumdepth}{0}
 % Pandoc toggle for numbering sections (defaults to be off)
 \setcounter{secnumdepth}{0}
 
-% Pandoc citation processing
 
-% Pandoc header
+% tightlist command for lists without linebreak
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -74,19 +76,24 @@
 
 
 \begin{document}
+
+
 \begin{frontmatter}
 
   \title{Spendennachweise des Gruppenentscheidungsexperiments an der
 Universität Hamburg}
-    \author[Helmut-Schmidt-Universität]{Hauke Roggenkamp\corref{1}}
+    \author[Helmut-Schmidt-Universität]{Hauke Roggenkamp%
+  %
+  \fnref{1}}
    \ead{roggenkh@hsu-hh.de} 
     \author[Helmut-Schmidt-Universität]{Stefan Traub}
   
     \author[Helmut-Schmidt-Universität]{Michael Berlemann}
   
-      \address[Helmut-Schmidt-Universität]{Helmut-Schmidt-Universität,
+      \affiliation[Helmut-Schmidt-Universität]{Helmut-Schmidt-Universität,
 Holstenhofweg 85, 22043 Hamburg}
-      \cortext[1]{Corresponding Author}
+    \cortext[cor1]{Corresponding author}
+    \fntext[1]{Corresponding Author}
   
   \begin{abstract}
   Im Juli 2021 wurden insgesamt 4 Sessions desselben Experiments
@@ -224,6 +231,8 @@ an \url{compensators.org} gespendet, damit 1,82 Tonnen CO2 stillgelegt
 werden. Ein entsprechender Nachweis kann online unter
 \url{https://www.compensators.org/compensatelist/?searchterm=stefan+traub}
 eingesehen werden.
+
+\bibliography{mybibfile.bib}
 
 
 \end{document}
