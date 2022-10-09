@@ -189,18 +189,10 @@ tempus elit.
 science \sep Dynamic public good game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, frame hidden, interior hidden, sharp corners, enhanced]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, frame hidden, breakable, sharp corners, enhanced, interior hidden]}{\end{tcolorbox}}\fi
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\textbf{Hintergrund:} Ich habe diesen
-\href{https://groups.google.com/g/esa-announce/c/-_2OmbkdxEk}{post}
-gesehen und überlege meine Replikation entsprechend
-\href{https://www.sciencedirect.com/journal/journal-of-behavioral-and-experimental-economics/about/call-for-papers\#transparency-reproducibility-and-generalizability-of-behavioral-economics-experiments}{hier}
-einzureichen. Ist das realistisch? Wenn ja, wie soll man die Story
-aufziehen? Soll man denen mal schreiben und fragen, ob noch Platz ist?
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
 
 \begin{quote}
 ``There are two possible articles you can write: (a) the article you
@@ -209,17 +201,110 @@ makes the most sense now that you have seen the results. They are rarely
 the same, and the correct answer is (b).'' \citep[p.~171]{bemwriting}
 \end{quote}
 
+\hypertarget{methodology}{%
+\section{Methodology}\label{methodology}}
+
+In the terminology of \citet{Hamermesh2007}, I ran both a \emph{pure} as
+well as a \emph{scientific replication} of one treatment arm of
+\citet{GMTV2017}'s dynamic public good game. The pure replication
+re-analyzes the original data.
+\protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
+\href{}{errors I identified} in the original paper. The scientific
+replication, where I utilize a different sample drawn from a different
+population in a different situation, is described in this section.
+
+\hypertarget{procedure}{%
+\subsection{Procedure}\label{procedure}}
+
+Participants entered the experiment at appointed times remotely from
+home. They first saw a welcome screen. After agreeing to the privacy
+policy, they could proceed to the instructions individually. Having read
+these instructions, each participant has also seen a demo-screen
+explaining the user interface. Before proceeding, they had to answer six
+comprehension questions correctly. Subsequently, they saw a waiting
+screen until they could be matched with three other participants, who
+have answered the comprehension questions correctly. Once matched, they
+were exposed to the decision screen over ten periods. At the end of the
+last period, participants saw results of all periods. Subsequently, they
+were exposed to a voluntary climate action, where they could donate
+(some of) their earnings to offset carbon dioxide. Subsequently, I
+elicited risk preferences \citep{HoltLaury2002} and finished with
+\citet{GMTV2017}'s questionnaire.
+
+\hypertarget{experimental-design}{%
+\subsection{Experimental Design}\label{experimental-design}}
+
+As in the NOPUNISH 10 Period treatment arm of \citet{GMTV2017}, I ran
+sessions with groups of four (\(i \in I=\{1,2,3,4\}\)), an initial
+endowment of \(N_i^1 = 20\) tokens, \(T=10\) rounds, a private account
+with a return of \(1\) and a group account with a return of \(1.5\)
+(\(\Rightarrow\) MPCR\(\equiv \frac{1.5}{4}\)), such that:
+
+\[
+N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
+\] Instead of receiving fresh endowments every period, participants
+receive one initial endowment only at the beginning of the first period.
+A participant's subsequent endowment equals her profit from the current
+period such that a decision in one period has consequences on her future
+endowments. For this reason, the game is described as a \emph{dynamic}
+public good game
+
+\hypertarget{sample}{%
+\subsection{Sample}\label{sample}}
+
+I recruited the participants from the so called
+\emph{\href{https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html}{HamburgPanel}}
+using HROOT \citep{hroot}. The panel is provided by the University of
+Hamburg's Research Laboratory, which used a randomized last digits
+approach to build the panel while drawing from the population of
+citizens from Hamburg, Germany.
+
+Describe sample properties here.
+
+\hypertarget{software}{%
+\subsection{Software}\label{software}}
+
+The experiment was created using oTree \citep{oTree} and can be found on
+\href{https://github.com/Howquez/coopUncertainty}{GitHub}.
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+\hypertarget{online-feasibility}{%
+\subsection{Online Feasibility}\label{online-feasibility}}
+
+How did the participants, who have never participated in a online group
+experiment before, cope with the situation?
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/plotTime-1.pdf}
+
+}
+
+\caption{Average Time Spent for each Contribution per Period}
+
+\end{figure}
+
 \hypertarget{pre-registered-gmtv-replication}{%
-\section{Pre-registered GMTV
+\subsection{Pre-registered GMTV
 Replication}\label{pre-registered-gmtv-replication}}
 
-\hypertarget{provision-of-the-public-good}{%
-\subsection{Provision of the public
-good}\label{provision-of-the-public-good}}
+\textbf{Result 1.} \emph{The \texttt{NOPUNISH\ 10} treatment of
+\citet{GMTV2017} can be replicated because the replication data resemble
+the original data with respect to initial and final contributions,
+wealth and growth as well as inequality between and within groups.}
 
-First, we ask whether the samples differ with respect to their initial
+This is remarkable given the different sample and language, the
+different software and user interface as well as the online setting
+during the COVID19 pandemic.
+
+\hypertarget{contributions}{%
+\subsubsection{Contributions}\label{contributions}}
+
+First, I ask whether the samples differ with respect to their initial
 contributions to the public good. Is our replication sample more
-pro-social than the original sample? Figure 1 reveals, that it is not.
+pro-social than the original sample? Figure 1 reveals that it is not.
 The distributions of both samples look fairly similar. Both samples
 contributed 10 tokens, that is, 50\% of their endowments on average
 (median and mean).\footnote{The two-sided rank sum test (comparing
@@ -227,31 +312,41 @@ contributed 10 tokens, that is, 50\% of their endowments on average
   contribution in first round of the game.} Moreover, both samples'
 initial contributions resemble initial contributions participants
 usually make in the standard game with partner matching.\footnote{See
-  Figure 3B in \citet{fehrgaechter2000} (p.989), for instance.} In the
-dynamic game presented here, we are particularly interested in the
-subsequent periods because differences add up exponentially. Do the two
-groups remain similar?
+  Figure 3B in \citet{fehrgaechter2000} (p.989), for instance.} However,
+in the dynamic game presented here, we are particularly interested in
+the subsequent periods because differences add up exponentially. Do the
+two groups remain similar over the course of time?
 
-\includegraphics{paper_files/figure-pdf/firstRoundViz-1.pdf}
+\begin{figure}
 
-In particular, do the two samples' contributions follow the same pattern
-over time? The answer is \emph{no}. Figure 2 illustrates that the
-samples make similar contributions at the beginning and the end of the
-game but behave differently in between. More precisely, the left
-panel--depicting the average contributions in absolute terms--shows that
-the original sample contributed substantially more than the replication
-sample \emph{in all but the first and last rounds}. For this reason, the
-original sample's behavior differs from the replication sample's
-behavior in two aspects: it contributes more and exhibits a considerable
-drop in the last period (whereas the replication sample's contributions
-flatten). Note that increasing contributions over time imply increasing
-endowments over time. Hence, increasing absolute contributions do not
-necessarily imply that participants contribute increasing shares of
-their endowments. The right panel in Figure 1 shows the share of overall
-endowments contributed over time where both samples exhibit a similar
-pattern: they decline and do not stabilize. The original sample's
-behavior differs from the replication sample's behavior in one aspect:
-it declined slower (to the same level in the last period).
+{\centering \includegraphics{paper_files/figure-pdf/firstRoundViz-1.pdf}
+
+}
+
+\caption{Individual contributions to the dynamic public good in the
+first period}
+
+\end{figure}
+
+In particular, do the two samples' contributions follow the same path
+over the 10 periods they played? The answer is \emph{no}. Figure 2
+illustrates that the samples make similar contributions at the beginning
+and the end of the game but behave differently in between. More
+precisely, the left panel--depicting the average contributions in
+absolute terms--shows that the original sample contributed substantially
+more than the replication sample \emph{in all but the first and last
+periods}. For this reason, the original sample's behavior differs from
+the replication sample's behavior in two aspects: it contributes more
+and exhibits a considerable drop in the last period (whereas the
+replication sample's contributions flatten).
+
+Note that increasing contributions over time imply increasing endowments
+over time. Hence, absolute contributions do not us much about the
+willingness to cooperate. For this reason, the right panel in Figure 2
+shows the average \emph{share of endowments contributed} over time. Both
+samples exhibit a similar pattern: they decline and do not stabilize.
+However, both samples also differ with respect to one aspect: the
+replication sample's share of contributions declines faster.
 
 \begin{figure}
 
@@ -264,112 +359,151 @@ treatments.}
 
 \end{figure}
 
-Moreover, both samples' contributions resemble contributions
-participants usually make in the standard game with partner
-matching.\footnote{The right panel is thus, comparable to the
-  visualizations \emph{and results} in the standard game. See, for
-  instance, Figure 1B in \citet{fehrgaechter2000} (p.986).} In the
-dynamic game presented here, different paths lead to different levels of
-wealth -- even if they share the same start- and end-points. We are
-thus, more interested in the implications contributions have for wealth
-generation and growth. So, how do the samples compare with respect to
-wealth/income/endowments/stock?
+Again, both samples' behavior resembles the contributions participants
+usually make in the standard game with partner matching: contributions
+equal approximately half of endowments in the very first period and
+decrease to around 10\% of endowments by the last period.\footnote{The
+  right panel is thus, comparable to the visualizations \emph{and
+  results} in the standard game. See, for instance, Figure 1B in
+  \citet{fehrgaechter2000} (p.986).} In the dynamic game presented here,
+however, different paths lead to different levels of wealth -- even if
+they share the same start- and end-points. I am thus, more interested in
+the contributions' implications for wealth generation and growth.
 
 \hypertarget{wealth-creation}{%
-\subsection{Wealth Creation}\label{wealth-creation}}
+\subsubsection{Wealth Creation}\label{wealth-creation}}
 
-How do the different contribution-paths translate to wealth?\footnote{To
-  measure growth, we define a variable called \emph{stock} which sums
-  the endowments of all participants in a given group at the end of the
-  round (that is, after the contributions have been made, multiplied and
-  redistributed).} Given that the original sample contributed more in
-most of the periods, one would expect the respective groups to be
-considerably more wealthy. Figure 3 indicates that they tend to be
-insignificantly\footnote{The two-sided rank sum test (comparing
-  differences between samples) yields a p-Value of 0.1356 for the mean
-  stock in last round of the game.} richer.
-
-\includegraphics{paper_files/figure-pdf/stockDistributionViz-1.pdf}
-
-As the grey lines indicate, an average group in the original sample
-accumulated about 478 tokens. In contrast, an average group in the
-replication sample accumulated about 380 tokens. However, none of the
-groups were efficient: the maximal wealth that can be reached in round
-10 under full cooperation is approximately 4613 tokens or 230 Euro per
-group.
-
-\includegraphics{paper_files/figure-pdf/growthHeterogeneityViz-1.pdf}
-
-While there is clearly growth, groups do not realize the potential
-efficiency as the replication groups reach on average a level of 379
-tokens out of 4613 maximally possible or 8.2\%. As in the original data,
-there is large heterogeneity with the richest group reaching 1425 tokens
-whereas the poorest group ends up with 92 tokens.
-
-We thus, observe growth even for the poorest group and spot
-heterogeneity even within data sources.
-
-Figure 2 shows the dynamics of wealth over time.\footnote{Unlike GMTV I
-  present no median split but only the main results.}
+How do the different contribution-paths translate into
+wealth?\footnote{To measure wealth and growth, I define a variable
+  called \emph{stock} which sums the endowments of all participants in a
+  given group at the end of the round (that is, after the contributions
+  have been made, multiplied and redistributed).} Given that the
+original sample contributed more in most of the periods, one would
+expect the respective groups to be considerably more wealthy. Figure 3
+indicates just that. The grey lines show that an average group in the
+original sample accumulated about 478 tokens. In contrast, an average
+group in the replication sample accumulated about 380 tokens. This
+difference is insignificant at conventional levels\footnote{The
+  two-sided rank sum test (comparing differences between samples) yields
+  a p-Value of 0.1356 for the mean stock in last round of the game.}
+though.
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/plotStock-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/stockDistributionViz-1.pdf}
+
+}
+
+\caption{Groups' income at the end of the game}
+
+\end{figure}
+
+Although there clearly is growth, groups do not realize the maximal
+potential efficiency: under full cooperation, a group can accumulate at
+least 4613 tokens or EUR 230. This is depicted in the left panel of
+Figure 4, where one can see the average wealth over time by sample. The
+panel illustrates for both samples that growth was continuous and
+surprisingly linear, given the exponential character of the game's
+design. To sum up, the contribution behavior differed between samples.
+In contrast, neither the eventual wealth nor the corresponding growth
+paths differed. Differences in contribution behavior did, thus, not
+translate in significantly different wealth outcomes.
+
+Why? Perhaps because the heterogeneity within samples and across groups
+has been too large to \emph{detect} a significant difference. The right
+panel of Figure 4 depicts heterogeneity: In the replication sample, the
+richest group earned 1425 tokens (which is about 1781\% of the initial
+endowment) whereas the poorest group ends up with 92 tokens (115\%).
+More broadly, the replication sample is characterized by inequality
+between groups (\(SD_{Replication} =\) 336.06). The same holds true for
+the original sample (\(SD_{Original} =\) 393.58). Hence, the
+heterogeneity across groups does not differ between samples, which is
+remarkable because the replication sample was drawn from a more
+heterogeneous (non-convenience sample). Does it differ within groups?
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/growthHeterogeneityViz-1.pdf}
+
+}
+
+\caption{Average wealth over time across samples.}
+
+\end{figure}
+
+\hypertarget{inequality}{%
+\subsubsection{Inequality}\label{inequality}}
+
+Given the different samples and the possibility of endogenous
+growth--which essentially is the main feature of the game--I ask whether
+and how the inequality grows \emph{within} groups. Figure 5 illustrates
+that inequality did grow: at the end of the game, the original and the
+replication groups exhibit an average Gini coefficient of 0.23 and 0.22,
+respectively.\footnote{The two-sided rank sum test (comparing
+  differences between samples) yields a p-Value of 0.6059 for the mean
+  Gini coefficient in last round of the game.} Because every participant
+started with the same initial endowment (in \emph{Period 0}, so to
+speak), every group started equally--with a Gini coefficient equaling
+zero.
+
+Figure 6 shows that this initial state of equality ended with the first
+period already: both samples exhibit a stark incline in inequality
+before the second period started. From then on, the respective Gini
+coefficients grew slowly but continuously -- for both samples.
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/giniDistributionViz-1.pdf}
+
+}
+
+\caption{Groups' Gini coefficients (within groups) at the end of the
+game}
+
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/unnamed-chunk-1-1.pdf}
+
+}
+
+\caption{Average Gini coefficient (within groups) over time across
+samples}
+
+\end{figure}
+
+\hypertarget{generalizability}{%
+\subsection{Generalizability}\label{generalizability}}
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\hypertarget{a-pure-replication}{%
+\subsection{A: Pure Replication}\label{a-pure-replication}}
+
+\hypertarget{b-growth-and-inequality-exploratory}{%
+\subsection{\texorpdfstring{B: Growth \emph{and} Inequality
+(exploratory)}{B: Growth and Inequality (exploratory)}}\label{b-growth-and-inequality-exploratory}}
+
+In contrast to \citet{GMTV2017}, I did not ask how rich and poor groups
+differ. Instead, I was wondering, whether equal groups are wealthier.
+More precisely, does the Gini coefficient correlate with growth and
+wealth creation? To answer that question, Figure 7 applies a median
+split showing equal and unequal groups' wealth over time.
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/plotStockByGini-1.pdf}
 
 }
 
 \caption{Average wealth over time across treatments.}
 
 \end{figure}
-
-The Figure illustrates that (in both data sources) growth was continuous
-and surprisingly linear, given the exponential character of the game's
-design.
-
-To sum up, our groups also tend to be poorer, and median wealth is
-higher in GMTV. The difference in mean ranks is not significant
-according to a two-sided ranksum test\footnote{The two-sided rank sum
-  test (comparing differences between data sources) yields a p-Value of
-  0.1356 for the mean wealth after the last round of the game.},
-however.
-
-To further assess the statistical significance of differences in means,
-we run OLS regressions where we regress wealth on a treatment dummy for
-\emph{Replication} (Table 3). These regressions show that differences in
-means are only significant for below median groups. This implies that
-the poor groups in our data are even less wealthy than GMTV's poor
-groups.
-
-\begin{table}[!htbp] \centering 
-  \caption{} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}}lccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-4} 
-\\[-1.8ex] & \multicolumn{3}{c}{Wealth} \\ 
- & All & Below median & Above median \\ 
-\hline \\[-1.8ex] 
- Replication & $-$98.26 & $-$59.41$^{***}$ & $-$138.21 \\ 
-  & (101.21) & (18.32) & (166.67) \\ 
-  & & & \\ 
- Constant & 478.09$^{***}$ & 234.70$^{***}$ & 731.00$^{***}$ \\ 
-  & (75.58) & (13.99) & (124.73) \\ 
-  & & & \\ 
-\hline \\[-1.8ex] 
-Observations & 52 & 24 & 25 \\ 
-R$^{2}$ & 0.02 & 0.32 & 0.03 \\ 
-Residual Std. Error & 362.49 & 44.24 & 413.67 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table}
-
-As such, our results look familiar to GMTV's findings, where poor groups
-grew ever so slightly, while only rich groups experienced growth (that
-became exponential only after the 10th round).
 
 
   \bibliography{../biblio.bib}
