@@ -1,0 +1,82 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block scripts %}
+
+{% endblock %}
+
+
+{% block content %}
+<body onload="">
+<img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
+
+<!-- Header -->
+<nav class="navbar sticky-top bg-header border-bottom mb-4 justify-content-center">
+    <span class="badge badge-secondary">
+        Selbsteinschätzung
+    </span>
+</nav>
+
+<!-- Questions Card -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-8">
+
+            <div class="card mt-5">
+                <div class="card-body">
+                    <p>
+                        Unten finden Sie eine Reihe von Aussagen. Bitte geben Sie für jede Aussage an, wie sehr die Aussage auf
+                        Sie zutrifft bzw. nicht zutrifft.
+                    </p>
+                    <table class="table">
+                        <colgroup>
+                           <col span="1" style="width: 46%;">
+                           <col span="1" style="width: 8%;">
+                           <col span="1" style="width: 8%;">
+                           <col span="1" style="width: 8%;">
+                           <col span="1" style="width: 8%;">
+                           <col span="1" style="width: 8%;">
+                           <col span="1" style="width: 8%;">
+                           <col span="1" style="width: 8%;">
+                        </colgroup>
+                        <tr>
+                            <td></td>
+                            <td colspan="3"><small>trifft überhaupt nicht zu<br>|</small></td>
+                            <td></td>
+                            <td colspan="3" class="text-right"><small>trifft voll und ganz zu<br>|</small></td>
+                        </tr>
+                        {% for field in form %}
+                            <tr>
+                                <th>{{ field.label }}</th>
+                                {% for choice in choices %}
+                                    <td>
+                                        <input type="radio" name="{{field.name}}" value="{{choice}}" id="id_{{field.name}}_{{choice}}" required="" class="form-check-input" style="margin: 0; display: block; text-align: center;">
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td colspan="3"><small>|<br>trifft überhaupt nicht zu</small></td>
+                            <td></td>
+                            <td colspan="3" class="text-right"><small>|<br>trifft voll und ganz zu</small></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center my-4">
+                    {% next_button %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock %}
+
+

@@ -2,13 +2,13 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name="GMTV",
-        display_name="GMTV Replication",
+        name="B_GMTV",
+        display_name="B_GMTV Replication",
         num_rounds=10,
         num_demo_participants=4,
         risk=0.0,
         belief_elicitation=False,
-        app_sequence=["Intro", "dPGG", "HLPL", "Outro"]
+        app_sequence=["A_Intro", "dPGG", "HLPL", "Outro"]
     ),
     #     dict(
     #     name="HLPL",
@@ -62,8 +62,8 @@ ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """ """
 
-SECRET_KEY = environ.get('OTREE_SECRET_KEY')
-# SECRET_KEY = ""
+# SECRET_KEY = environ.get('OTREE_SECRET_KEY')
+SECRET_KEY = ""
 
 # if an app is included in SESSION_CONFIGS, you don't need to list it here
 INSTALLED_APPS = ['otree']

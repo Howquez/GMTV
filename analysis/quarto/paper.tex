@@ -136,7 +136,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Growth and inequality in public good provision \textbar{} an extended replication},
+  pdftitle={Growth and inequality in public good provision --- an extended replication},
   pdfauthor={Hauke Roggenkamp},
   pdfkeywords={Replication study, Non-convenience sample, Open
 science, Dynamic public good game, Online experiment, Generalizability},
@@ -151,8 +151,8 @@ science, Dynamic public good game, Online experiment, Generalizability},
 \begin{document}
 
 \begin{frontmatter}
-\title{Growth and inequality in public good provision \textbar{} an
-extended replication}
+\title{Growth and inequality in public good provision --- an extended
+replication}
 \author[1,2]{Hauke Roggenkamp%
 %
 }
@@ -169,15 +169,9 @@ St.~Gallen},addressline={Torstrasse
 
         
 \begin{abstract}
-This is the abstract. Lorem ipsum dolor sit amet, consectetur adipiscing
-elit. Vestibulum augue turpis, dictum non malesuada a, volutpat eget
-velit. Nam placerat turpis purus, eu tristique ex tincidunt et. Mauris
-sed augue eget turpis ultrices tincidunt. Sed et mi in leo porta
-egestas. Aliquam non laoreet velit. Nunc quis ex vitae eros aliquet
-auctor nec ac libero. Duis laoreet sapien eu mi luctus, in bibendum leo
-molestie. Sed hendrerit diam diam, ac dapibus nisl volutpat vitae.
-Aliquam bibendum varius libero, eu efficitur justo rutrum at. Sed at
-tempus elit.
+You can find the most recent version of this paper
+\href{https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.pdf}{here}.
+The abstract follows at later point.
 \end{abstract}
 
 
@@ -189,32 +183,170 @@ tempus elit.
 science \sep Dynamic public good game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, frame hidden, breakable, sharp corners, enhanced, interior hidden]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, sharp corners, frame hidden, boxrule=0pt, breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\hypertarget{sec-intro}{%
+\section{Introduction}\label{sec-intro}}
 
-\begin{quote}
-``There are two possible articles you can write: (a) the article you
-planned to write when you designed your study or (b) the article that
-makes the most sense now that you have seen the results. They are rarely
-the same, and the correct answer is (b).'' \citep[p.~171]{bemwriting}
-\end{quote}
+Today's actions are tomorrow's result. There are many settings in which
+current decisions affect future outcomes and with it, future decision
+spaces. Opting for environmental friendly policies today not only
+reduces carbon dioxide omissions but also helps us to reach the Paris
+climate targets tomorrow. Deferring these policies, the targets can be
+reached as well---but with less flexibility. Hence, today's actions (or
+the omission thereof) not only affect intermediate results but also the
+number of paths one can choose to reach certain goals.
 
-\hypertarget{methodology}{%
-\section{Methodology}\label{methodology}}
+Standard public good games---although often intended to inform climate
+policies\footnote{See \citet[p.~1]{GKLS2020} for numerous references.}---miss
+these temporal interdependencies because participants have the same set
+of actions in each period. A game implemented by Gächter, Mengel, Tsakas
+\& Vostroknutov \citeyearpar{GMTV2017} (hereafter, GMTV) as well as
+Stefan Große (2011, unpublished) incorporated interdependencies into a
+\emph{dynamic} public good game with students in Nottingham, England and
+Erfurt, Germany.
+
+Because their setting is more realistic, one wonders whether it is
+better suited to inform public policy. To answer this question, I
+replicated parts of GMTV's experiment with different samples. In
+addition, I observed the participant's behavior in voluntary climate
+actions (VCA). This yielded a setting similar to \citet{GKLS2020}'s
+which allows me to analyze how behavior in the abstract game translates
+into real-world action across samples.
+
+I utilized an inexperienced sample that has not been exposed to
+interactive experiments before. Furthermore, I conducted the experiment
+online. This required me to make the experiment's software robust to
+minimize attrition. Because I observed metrics to assess the fluency and
+feasibility of online experiments, this study also serves as a case
+study like the one of \citet{AGM2018}.
+
+Taken together, this study makes three contributions. First, it
+replicates parts of GMTV's original experiment and highlights the
+importance of pure replications. Second, it shows that logistically
+complex online experiments are feasible for samples other than students
+or clickworkers. Third, it shows that findings from abstract games do
+not generalize well and even worse with the representative sample. After
+reporting the methods, this paper is organized along these findings.
+
+\hypertarget{sec-methods}{%
+\section{Methodology}\label{sec-methods}}
 
 In the terminology of \citet{Hamermesh2007}, I ran both a \emph{pure} as
-well as a \emph{scientific replication} of one treatment arm of
-\citet{GMTV2017}'s dynamic public good game. The pure replication
-re-analyzes the original data.
-\protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
+well as a \emph{scientific replication} of one treatment of GMTV's
+dynamic public good game. The pure replication re-analyzes the original
+data. \protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
 \href{}{errors I identified} in the original paper. The scientific
 replication, where I utilize a different sample drawn from a different
-population in a different situation, is described in this section.
+population in a different situation, is described in the following
+sections.
 
-\hypertarget{procedure}{%
-\subsection{Procedure}\label{procedure}}
+\hypertarget{sec-design}{%
+\subsection{Experimental Design}\label{sec-design}}
+
+As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with
+groups of four (\(i \in I=\{1,2,3,4\}\)), an initial endowment of
+\(N_i^1 = 20\) tokens, \(T=10\) periods, a private account with a return
+of \(1\) and a group account with a return of \(1.5\) (\(\Rightarrow\)
+MPCR\(\equiv \frac{1.5}{4}\)), such that:
+
+\[
+N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
+\] What makes the game \emph{dynamic}? Instead of receiving fresh
+endowments every period, participants received one endowment only at the
+beginning of the first period. A participant's endowment in the second
+period is the wealth he or she accumulated in the first period. A
+participant's endowment in the third period is the wealth he or she
+accumulated in the first two periods. And so on. Hence, a decision in
+one period has consequences on future endowments and, ultimately, growth
+paths. For this reason, the game is described as a \emph{dynamic} public
+good game
+
+\hypertarget{sec-sample}{%
+\subsection{Sample}\label{sec-sample}}
+
+I recruited the participants from the so called
+\emph{\href{https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html}{HamburgPanel}}
+using HROOT \citep{hroot}. The panel is provided by the University of
+Hamburg's Research Laboratory, which used a randomized last digits
+approach to build the panel while drawing from the population of
+citizens from Hamburg, Germany. Because the sample was exhausted at one
+point, I also recruited students from the University of Hamburg.
+
+At the time I conducted the experiment, the representative sample was
+not familiar with interactive experiments. In fact, I ran the first
+interactive group experiment with this sample. The students, in
+contrast, are used to this kind of experiments. Recruiting them, I
+excluded those who have participated in a public goods game before. As a
+consequence, nonnaiveté is unlikely to affect the validity of my
+experiment \citep[ p.~204]{GoodmanPaolacci2017}.
+
+Throughout this paper, I will compare results of my experiment with the
+results of GMTV's NOPUNISH 10 Period treatments. I am thus, referring to
+three different samples utilized at two points in time: the University
+of Nottingham's students (in late 2012), Hamburg's citizens and the
+University Hamburg's students (both in July 2021).
+Table~\ref{tbl-sample-properties} shows how they compare with respect to
+a few properties.
+
+\hypertarget{tbl-sample-properties}{}
+\begin{table}[!htbp] \centering 
+  \caption{\label{tbl-sample-properties}Sample Properties } 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lcccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{6}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-7} 
+ & Female & Age & Trust & Meritocracy & Government & Equality \\ 
+\hline \\[-1.8ex] 
+ Hamburg Citizens & 0.48$^{***}$ & 47.58$^{***}$ & 3.90$^{***}$ & 3.79$^{***}$ & 3.44$^{***}$ & 4.17$^{***}$ \\ 
+  & (0.07) & (1.21) & (0.19) & (0.21) & (0.19) & (0.23) \\ 
+  & & & & & & \\ 
+ Hamburg Students & 0.08 & $-$21.41$^{***}$ & $-$0.58$^{**}$ & 0.23 & 0.71$^{***}$ & 0.12 \\ 
+  & (0.09) & (1.63) & (0.25) & (0.28) & (0.26) & (0.30) \\ 
+  & & & & & & \\ 
+ Nottingham Students & $-$0.10 & $-$15.85$^{***}$ & $-$0.03 & 1.65$^{***}$ & 0.87$^{***}$ & $-$0.35 \\ 
+  & (0.09) & (1.52) & (0.23) & (0.26) & (0.24) & (0.28) \\ 
+  & & & & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 208 & 208 & 208 & 208 & 208 & 208 \\ 
+R$^{2}$ & 0.02 & 0.47 & 0.04 & 0.20 & 0.06 & 0.02 \\ 
+Residual Std. Error & 0.50 & 8.75 & 1.35 & 1.52 & 1.40 & 1.63 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{6}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table}
+
+Describe sample properties here.
+
+\hypertarget{sec-software}{%
+\subsection{Software}\label{sec-software}}
+
+The experiment was logistically complex for several reasons. First, the
+sample was inexperienced. Second, the experiment was interactive and
+synchronous. Third, the underlying game was dynamic and interdependent.
+This makes dropouts not only more likely, but also more expensive which
+is why dropouts were a major concern implementing the experiment.
+
+I chose oTree \citep{oTree} to implement the experiment because it is
+open-source, well documented and very flexible. Its
+\href{https://getbootstrap.com/}{Bootstrap} (a powerful frontend
+toolkit) integration allowed me to make the graphical user interface
+interactive, appealing and easy to navigate. The
+\href{https://www.highcharts.com/}{Highcharts library} made it easy to
+visualize results and to communicate dynamics. The oTree code snippets
+made it possible to handle dropouts, for instance, by replacing them
+with artificial bots (and informing the rest of the group thereof).
+Insofar, oTree served a good tool to consider the participants' user
+experience and thus, to make dropouts less likely.
+
+The experiment's source code be found on
+\href{https://github.com/Howquez/coopUncertainty}{GitHub}.\footnote{https://github.com/Howquez/coopUncertainty}
+
+\hypertarget{sec-procedure}{%
+\subsection{Procedure}\label{sec-procedure}}
 
 Participants entered the experiment at appointed times remotely from
 home. They first saw a welcome screen. After agreeing to the privacy
@@ -228,134 +360,92 @@ were exposed to the decision screen over ten periods. At the end of the
 last period, participants saw results of all periods. Subsequently, they
 were exposed to a voluntary climate action, where they could donate
 (some of) their earnings to offset carbon dioxide. Subsequently, I
-elicited risk preferences \citep{HoltLaury2002} and finished with
-\citet{GMTV2017}'s questionnaire.
+elicited risk preferences \citep{HoltLaury2002} and finished with GMTV's
+questionnaire.
 
-\hypertarget{experimental-design}{%
-\subsection{Experimental Design}\label{experimental-design}}
+While I tried to stick to GMTV's protocol as close as possible, I
+deviated in a few aspects. First, the instructions were German and also
+covered topics inherent to the online setting (dropouts and bots, for
+instance). Second, I used another software (oTree instead of zTree).
+Third, GMTV gave participants the opportunity to donate to \emph{Doctors
+without Borders} whereas we offered carbon dioxide offsets. Fourth, the
+graphical user interface looked different.
 
-As in the NOPUNISH 10 Period treatment arm of \citet{GMTV2017}, I ran
-sessions with groups of four (\(i \in I=\{1,2,3,4\}\)), an initial
-endowment of \(N_i^1 = 20\) tokens, \(T=10\) rounds, a private account
-with a return of \(1\) and a group account with a return of \(1.5\)
-(\(\Rightarrow\) MPCR\(\equiv \frac{1.5}{4}\)), such that:
+\hypertarget{sec-results}{%
+\section{Results}\label{sec-results}}
 
-\[
-N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
-\] Instead of receiving fresh endowments every period, participants
-receive one initial endowment only at the beginning of the first period.
-A participant's subsequent endowment equals her profit from the current
-period such that a decision in one period has consequences on her future
-endowments. For this reason, the game is described as a \emph{dynamic}
-public good game
+\hypertarget{sec-replication}{%
+\subsection{Pre-registered GMTV Replication}\label{sec-replication}}
 
-\hypertarget{sample}{%
-\subsection{Sample}\label{sample}}
+The analyses in this section were pre-registered
+\citep{preregistration}. I also pre-registered a RMarkdown file with the
+exact code I intended to use
+\href{https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd}{here}.\footnote{https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd
+  to run the code, you need to executed the .Rmd files in this
+  repository in the order that is indicated by its file names.} Even
+though I had to adjust a few lines of code, the main findings in the
+following section can also be replicated using the pre-registered code.
 
-I recruited the participants from the so called
-\emph{\href{https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html}{HamburgPanel}}
-using HROOT \citep{hroot}. The panel is provided by the University of
-Hamburg's Research Laboratory, which used a randomized last digits
-approach to build the panel while drawing from the population of
-citizens from Hamburg, Germany.
-
-Describe sample properties here.
-
-\hypertarget{software}{%
-\subsection{Software}\label{software}}
-
-The experiment was created using oTree \citep{oTree} and can be found on
-\href{https://github.com/Howquez/coopUncertainty}{GitHub}.
-
-\hypertarget{results}{%
-\section{Results}\label{results}}
-
-\hypertarget{online-feasibility}{%
-\subsection{Online Feasibility}\label{online-feasibility}}
-
-How did the participants, who have never participated in a online group
-experiment before, cope with the situation?
-
-\begin{figure}
-
-{\centering \includegraphics{paper_files/figure-pdf/plotTime-1.pdf}
-
-}
-
-\caption{Average Time Spent for each Contribution per Period}
-
-\end{figure}
-
-\hypertarget{pre-registered-gmtv-replication}{%
-\subsection{Pre-registered GMTV
-Replication}\label{pre-registered-gmtv-replication}}
-
-\textbf{Result 1.} \emph{The \texttt{NOPUNISH\ 10} treatment of
-\citet{GMTV2017} can be replicated because the replication data resemble
-the original data with respect to initial and final contributions,
-wealth and growth as well as inequality between and within groups.}
-
-This is remarkable given the different sample and language, the
-different software and user interface as well as the online setting
-during the COVID19 pandemic.
-
-\hypertarget{contributions}{%
-\subsubsection{Contributions}\label{contributions}}
+\hypertarget{sec-contributions}{%
+\subsubsection{Contribution Behavior}\label{sec-contributions}}
 
 First, I ask whether the samples differ with respect to their initial
 contributions to the public good. Is our replication sample more
-pro-social than the original sample? Figure 1 reveals that it is not.
-The distributions of both samples look fairly similar. Both samples
-contributed 10 tokens, that is, 50\% of their endowments on average
-(median and mean).\footnote{The two-sided rank sum test (comparing
-  differences between samples) yields a p-Value of 0.3926 for the mean
-  contribution in first round of the game.} Moreover, both samples'
-initial contributions resemble initial contributions participants
-usually make in the standard game with partner matching.\footnote{See
-  Figure 3B in \citet{fehrgaechter2000} (p.989), for instance.} However,
-in the dynamic game presented here, we are particularly interested in
-the subsequent periods because differences add up exponentially. Do the
-two groups remain similar over the course of time?
+pro-social than the original sample? Figure~\ref{fig-first-round}
+reveals that it is not. The distributions of both samples look fairly
+similar. Both samples contributed 10 tokens, that is, 50\% of their
+endowments on average (median and mean).\footnote{The two-sided rank sum
+  test (comparing differences between samples) yields a p-Value of
+  0.3926 for the mean contribution in first round of the game.}
+Moreover, both samples' initial contributions resemble initial
+contributions participants usually make in the standard game with
+partner matching.\footnote{See Figure 3B in \citet{fehrgaechter2000}
+  (p.989), for instance.} However, in the dynamic game presented here,
+we are particularly interested in the subsequent periods because
+differences add up exponentially. Do the two groups remain similar over
+the course of time?
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/firstRoundViz-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/fig-first-round-1.pdf}
 
 }
 
-\caption{Individual contributions to the dynamic public good in the
-first period}
+\caption{\label{fig-first-round}Individual contributions to the dynamic
+public good in the first period}
 
 \end{figure}
 
 In particular, do the two samples' contributions follow the same path
-over the 10 periods they played? The answer is \emph{no}. Figure 2
-illustrates that the samples make similar contributions at the beginning
-and the end of the game but behave differently in between. More
-precisely, the left panel--depicting the average contributions in
-absolute terms--shows that the original sample contributed substantially
-more than the replication sample \emph{in all but the first and last
-periods}. For this reason, the original sample's behavior differs from
-the replication sample's behavior in two aspects: it contributes more
-and exhibits a considerable drop in the last period (whereas the
-replication sample's contributions flatten).
+over the 10 periods they played? The answer is \emph{no}.
+Figure~\ref{fig-share-of-contributions} illustrates that the samples
+make similar contributions at the beginning and the end of the game but
+behave differently in between. More precisely, the left panel--depicting
+the average contributions in absolute terms--shows that the original
+sample contributed substantially more than the replication sample
+\emph{in all but the first and last period}. For this reason, the
+original sample's behavior differs from the replication sample's
+behavior in two aspects: it contributes more and exhibits a considerable
+drop in the last period (whereas the replication sample's contributions
+flatten).
 
 Note that increasing contributions over time imply increasing endowments
 over time. Hence, absolute contributions do not us much about the
-willingness to cooperate. For this reason, the right panel in Figure 2
-shows the average \emph{share of endowments contributed} over time. Both
-samples exhibit a similar pattern: they decline and do not stabilize.
-However, both samples also differ with respect to one aspect: the
-replication sample's share of contributions declines faster.
+willingness to cooperate. For this reason, the right panel in
+Figure~\ref{fig-share-of-contributions} shows the average \emph{share of
+endowments contributed} over time. Both samples exhibit a similar
+pattern: their share of endowments contributed declined and did not
+stabilize. However, both samples also differ with respect to one aspect:
+the replication sample's share of contributions declines faster.
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/plotShareOfContributions-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/fig-share-of-contributions-1.pdf}
 
 }
 
-\caption{The average amount of tokens contributed over time in
-treatments.}
+\caption{\label{fig-share-of-contributions}The average amount of tokens
+contributed over time in treatments.}
 
 \end{figure}
 
@@ -370,8 +460,8 @@ however, different paths lead to different levels of wealth -- even if
 they share the same start- and end-points. I am thus, more interested in
 the contributions' implications for wealth generation and growth.
 
-\hypertarget{wealth-creation}{%
-\subsubsection{Wealth Creation}\label{wealth-creation}}
+\hypertarget{sec-wealth}{%
+\subsubsection{Wealth Creation}\label{sec-wealth}}
 
 How do the different contribution-paths translate into
 wealth?\footnote{To measure wealth and growth, I define a variable
@@ -379,131 +469,523 @@ wealth?\footnote{To measure wealth and growth, I define a variable
   given group at the end of the round (that is, after the contributions
   have been made, multiplied and redistributed).} Given that the
 original sample contributed more in most of the periods, one would
-expect the respective groups to be considerably more wealthy. Figure 3
-indicates just that. The grey lines show that an average group in the
-original sample accumulated about 478 tokens. In contrast, an average
-group in the replication sample accumulated about 380 tokens. This
-difference is insignificant at conventional levels\footnote{The
-  two-sided rank sum test (comparing differences between samples) yields
-  a p-Value of 0.1356 for the mean stock in last round of the game.}
-though.
+expect the respective groups to be considerably more wealthy.
+Figure~\ref{fig-stock-distribution} indicates just that. The grey lines
+show that an average group in the original sample accumulated about 478
+tokens. In contrast, an average group in the replication sample
+accumulated about 380 tokens. This difference is insignificant at
+conventional levels\footnote{The two-sided rank sum test (comparing
+  differences between samples) yields a p-Value of 0.1356 for the mean
+  stock in last round of the game.} though.
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/stockDistributionViz-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/fig-stock-distribution-1.pdf}
 
 }
 
-\caption{Groups' income at the end of the game}
+\caption{\label{fig-stock-distribution}Groups' income at the end of the
+game}
 
 \end{figure}
 
 Although there clearly is growth, groups do not realize the maximal
 potential efficiency: under full cooperation, a group can accumulate at
 least 4613 tokens or EUR 230. This is depicted in the left panel of
-Figure 4, where one can see the average wealth over time by sample. The
-panel illustrates for both samples that growth was continuous and
-surprisingly linear, given the exponential character of the game's
-design. To sum up, the contribution behavior differed between samples.
-In contrast, neither the eventual wealth nor the corresponding growth
-paths differed. Differences in contribution behavior did, thus, not
-translate in significantly different wealth outcomes.
+Figure~\ref{fig-growth-heterogeneity}, where one can see the average
+wealth over time by sample. The panel illustrates for both samples that
+growth was continuous and surprisingly linear, given the exponential
+character of the game's design. To sum up, the contribution behavior
+differed between samples. In contrast, neither the eventual wealth nor
+the corresponding growth paths differed. Differences in contribution
+behavior did, thus, not translate to significantly different wealth
+outcomes.
 
 Why? Perhaps because the heterogeneity within samples and across groups
 has been too large to \emph{detect} a significant difference. The right
-panel of Figure 4 depicts heterogeneity: In the replication sample, the
-richest group earned 1425 tokens (which is about 1781\% of the initial
-endowment) whereas the poorest group ends up with 92 tokens (115\%).
-More broadly, the replication sample is characterized by inequality
-between groups (\(SD_{Replication} =\) 336.06). The same holds true for
-the original sample (\(SD_{Original} =\) 393.58). Hence, the
-heterogeneity across groups does not differ between samples, which is
-remarkable because the replication sample was drawn from a more
-heterogeneous (non-convenience sample). Does it differ within groups?
+panel of Figure~\ref{fig-growth-heterogeneity} depicts heterogeneity: In
+the replication sample, the richest group earned 1425 tokens (which is
+about 1781\% of the initial endowment) whereas the poorest group ends up
+with 92 tokens (115\%). More broadly, the replication sample is
+characterized by inequality between groups (\(SD_{Replication} =\)
+336.06). The same holds true for the original sample
+(\(SD_{Original} =\) 393.58). Hence, the heterogeneity across groups
+does not differ between samples, which is remarkable because the
+replication sample was drawn from a more heterogeneous (non-convenience
+sample). Does it differ within groups?
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/growthHeterogeneityViz-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/fig-growth-heterogeneity-1.pdf}
 
 }
 
-\caption{Average wealth over time across samples.}
+\caption{\label{fig-growth-heterogeneity}Average wealth over time across
+samples.}
 
 \end{figure}
 
-\hypertarget{inequality}{%
-\subsubsection{Inequality}\label{inequality}}
+\hypertarget{sec-inequality}{%
+\subsubsection{Inequality}\label{sec-inequality}}
 
 Given the different samples and the possibility of endogenous
 growth--which essentially is the main feature of the game--I ask whether
-and how the inequality grows \emph{within} groups. Figure 5 illustrates
-that inequality did grow: at the end of the game, the original and the
-replication groups exhibit an average Gini coefficient of 0.23 and 0.22,
-respectively.\footnote{The two-sided rank sum test (comparing
-  differences between samples) yields a p-Value of 0.6059 for the mean
-  Gini coefficient in last round of the game.} Because every participant
-started with the same initial endowment (in \emph{Period 0}, so to
-speak), every group started equally--with a Gini coefficient equaling
-zero.
+and how the inequality grows \emph{within} groups.
+Figure~\ref{fig-gini-distribution} illustrates that inequality did grow:
+at the end of the game, the original and the replication groups exhibit
+an average Gini coefficient of 0.23 and 0.22, respectively.\footnote{The
+  two-sided rank sum test (comparing differences between samples) yields
+  a p-Value of 0.6059 for the mean Gini coefficient in last round of the
+  game.} Because every participant started with the same initial
+endowment (in \emph{Period 0}, so to speak), every group started
+equally--with a Gini coefficient equaling zero.
 
-Figure 6 shows that this initial state of equality ended with the first
-period already: both samples exhibit a stark incline in inequality
-before the second period started. From then on, the respective Gini
-coefficients grew slowly but continuously -- for both samples.
+Figure~\ref{fig-ginit-time-series} shows that this initial state of
+equality ended with the first period already: both samples exhibit a
+stark incline in inequality before the second period started. From then
+on, the respective Gini coefficients grew slowly but continuously -- for
+both samples.
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/giniDistributionViz-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/fig-gini-distribution-1.pdf}
 
 }
 
-\caption{Groups' Gini coefficients (within groups) at the end of the
-game}
+\caption{\label{fig-gini-distribution}Groups' Gini coefficients (within
+groups) at the end of the game}
 
 \end{figure}
 
 \begin{figure}
 
-{\centering \includegraphics{paper_files/figure-pdf/unnamed-chunk-1-1.pdf}
+{\centering \includegraphics{paper_files/figure-pdf/fig-ginit-time-series-1.pdf}
 
 }
 
-\caption{Average Gini coefficient (within groups) over time across
-samples}
+\caption{\label{fig-ginit-time-series}Average Gini coefficient (within
+groups) over time across samples}
 
 \end{figure}
 
-\hypertarget{generalizability}{%
-\subsection{Generalizability}\label{generalizability}}
+\textbf{Result 1.} \emph{The \texttt{NOPUNISH\ 10} treatment of GMTV can
+be replicated because the replication data resemble the original data
+with respect to initial and final contributions, wealth and growth as
+well as inequality.}
 
-\hypertarget{conclusion}{%
-\section{Conclusion}\label{conclusion}}
+This is remarkable given the different sample and language, the
+different software and user interface as well as the online setting
+during the COVID19 pandemic. The result suggests that, by and large, the
+sum of these factors did not affect people's preferences towards
+cooperation.
 
-\hypertarget{appendix}{%
-\section{Appendix}\label{appendix}}
+\hypertarget{sec-feasibility}{%
+\subsection{Online Feasibility}\label{sec-feasibility}}
+
+How did the participants, who have never participated in an online group
+experiment before, cope with the situation? Moreover, did participants
+understand the unfamiliar setting they found themselves in? While the
+answer to the former question requires more thought, the answer to the
+latter simply is \emph{yes}: 67 out of 116 answered with \emph{``yes''}
+when I asked them. Another 44 answered with \emph{``rather yes''} while
+nobody indicated that he or she did not understand the situation at all.
+To analyze how participants coped with the situation, I consider three
+additional metrics: selection into the experiment, attrition as well as
+the time spent on each page.
+
+I first comment on the selection into the experiment: It was difficult
+to recruit the sample. The panel counted 1.209 non-students of which we
+were able to recruit 130 participants who finished the experiment---even
+though we varied the weekdays and timing of the sessions (which were
+conducted during a nation-wide lockdown with home office regime). For
+this reason, we also recruited students in the last session which
+explains the relatively large number of showups in Table~\ref{tbl-meta}.
+Although I intended to refrain from the recruitment of students
+initially, this particular sub sample enabled me to investigate the
+generalizability of my results as I will discuss in
+Section~\ref{sec-generalizability}. Alternatively, I also could have
+contacted a market research institute to recruit additional participants
+within a week. I refrained from doing so to contrast students and the
+general population sample, however.
+
+\hypertarget{tbl-meta}{}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1566}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1325}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0723}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0964}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1084}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1205}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1566}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1566}}@{}}
+\caption{\label{tbl-meta}The Experimental Sessions' Meta
+Data}\tabularnewline
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Session Code
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Date
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Showups
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Dropouts
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Residuals
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Participants
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Observations
+\end{minipage} \\
+\midrule()
+\endfirsthead
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedright
+Session Code
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Date
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Showups
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Dropouts
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Residuals
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Participants
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Observations
+\end{minipage} \\
+\midrule()
+\endhead
+jyf8xd0s & 2021-07-01 & 15:00 & 35 & 4 & 3 & 28 & 7 \\
+vggk2gh1 & 2021-07-03 & 13:00 & 20 & 8 & 0 & 12 & 3 \\
+8gi7c8xg & 2021-07-09 & 13:00 & 21 & 5 & 4 & 12 & 3 \\
+d6jrsxnr & 2021-07-23 & 14:00 & 75 & 8 & 3 & 64 & 16 \\
+\bottomrule()
+\end{longtable}
+
+Turning to the time spent on each page, I focus on the decision times in
+the dynamic public goods game as \citet{Anderhub2001} did. How many
+seconds did the participants need to make a decision in each period of
+the game? Not too many. Figure~\ref{fig-time-spent} illustrates an
+intuitive pattern: The first decision took about 22 seconds. The second
+decision--where participants first learned about the other group
+members' previous decisions--took longer (about 33 seconds).
+Subsequently, decision times first declined and stabilized at 19
+seconds. Importantly, decision times were so short that crosstalk, that
+is, communication through private channels--a common concern\footnote{See,
+  for instance, the discussion section in \citet[p.~119]{AGM2018}.} in
+online experiments--was unlikely, especially because it would require
+the identification of other group members.\footnote{There were only 9
+  participants (from all four sessions) who needed more than 60 seconds
+  to make the second decision.}
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/fig-time-spent-1.pdf}
+
+}
+
+\caption{\label{fig-time-spent}Average Time Spent for each Contribution
+per Period}
+
+\end{figure}
+
+Considering attrition, I find that it did not affect the interactive
+experiment at all. To elaborate, I differentiate between dropouts and
+residuals: Participants who could not be matched to other group members
+are called residuals. Participants who intentionally left the experiment
+are called dropouts. Residuals did not participate in the experiment
+\emph{by design}. Dropouts did not participate in the experiment
+\emph{by choice}. Out of 151 people who showed up, I count 10 residuals
+and 25 dropouts. All of the residuals waited to be matched to a group
+unsuccessfully before they got paid one Euro for their patience. In
+contrast, all of the dropouts left while reading the instructions and
+before being matched to other group members. Moreover, they got no
+payment at all. Hence, attrition was no concern considering the dynamic
+public goods game or the expenses.
+
+\textbf{Result 2.} \emph{Given the decision times and the fluent
+procedure, attrition was as negligible as it is in physical
+laboratories---where (a) not every invited person shows up and (b) a
+number of participants divisible by the group size is required as well.}
+
+\hypertarget{sec-generalizability}{%
+\subsection{Generalizability}\label{sec-generalizability}}
+
+\citet{GKLS2020} asked how much can we learn about voluntary climate
+action from the behavior in public goods games. Using a similar
+strategy, I answer the question for \emph{dynamic} public goods games:
+\emph{Not much}. Overall, there seems to be no association between
+choices in the voluntary climate action and the first period in the
+dynamic public goods game. Figure~\ref{fig-scatter-generalizability}
+shows a scatter plot of realized choices, with the percentage of
+endowment spent by each participant in the first period of the game on
+the x-axis and that spent in the VCA on the y-axis. In addition, the
+figure contains a fitted line of a linear model whose slope is
+indistinguishable from zero. No matter how much the participants
+contributed in the first round, they spent, on average, about 21\% of
+their income on the VCA.
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/fig-scatter-generalizability-1.pdf}
+
+}
+
+\caption{\label{fig-scatter-generalizability}Scatter plot of average
+contributions in the dPGG and real giving task.}
+
+\end{figure}
+
+Does this result hold true if one zooms in and inspects the two samples
+separately? Yes. Even though the general population sample is a little
+more consistent than the student sample, both are contributing more in
+the abstract game than in the VCA.
+Figure~\ref{fig-kernel-generalizability} shows distributions of
+contributions across both choices for both samples. The left panels
+illustrate the behavior of the general population sample. The right
+panels illustrate the behavior of the general population sample. The top
+panels show the behavior in the VCA. The bottom panels show the behavior
+in first period of the game. A visual inspection shows that (a) both
+samples behaved similarly in the first period of the game but (b)
+different (p = 0.03) in the VCA. Furthermore, (c) the behavior in the
+first period of the experiment predicts the general population sample's
+behavior in the VCA worse than student sample's behavior (p = 0.07).
+Finally, (4) contributions in the abstract public good game are higher
+than contributions to the real public good of climate change mitigation.
+
+\begin{figure}
+
+{\centering \includegraphics{paper_files/figure-pdf/fig-kernel-generalizability-1.pdf}
+
+}
+
+\caption{\label{fig-kernel-generalizability}Kernel distributions of
+contributions across tasks and subject pools.}
+
+\end{figure}
+
+\textbf{Result 3.} \emph{Existing evidence overestimates the willingness
+to contribute to real public goods. This holds true for more
+representative samples and---to a lower degree---for student samples.}
+
+\hypertarget{sec-conclusion}{%
+\section{Conclusion}\label{sec-conclusion}}
+
+The goal of the experiment was to replicate specific experiments of GMTV
+in an online setting using a general population sample. The results
+suggest that it is important to replicate experiments---both purely and
+scientifically \citep[ p.~716]{Hamermesh2007}---before drawing
+conclusions about generalizability.
+
+The three most important findings are as follows: First, the
+contribution behavior in my experiment is statistically similar to the
+behavior reported in the original study. Consequently, the outcomes
+growth and inequality are similar as well. Second, the online experiment
+proceeded fluently such that dropouts were no concern. Third,
+contribution behavior in my abstract setting is, if anything, only
+weakly linked to behavior in the real world. This lack of
+generalizability can be counteracted, but not be solved, by the use of
+more representative samples.
+
+The significance of the first result is that similar procedures led to
+replicable findings under different circumstances across two different
+samples. The second result is of methodological importance: It
+highlights that even logistically complex experiments can be conducted
+online with---not only with clickworkers but also with a true general
+population sample. The third result questions whether recruiting from
+more representative samples is worth the efforts because it decreases
+transferability of results to the real world---at least, a little.
+
+\newpage{}
 
 \hypertarget{a-pure-replication}{%
-\subsection{A: Pure Replication}\label{a-pure-replication}}
+\section{A: Pure Replication}\label{a-pure-replication}}
 
-\hypertarget{b-growth-and-inequality-exploratory}{%
-\subsection{\texorpdfstring{B: Growth \emph{and} Inequality
-(exploratory)}{B: Growth and Inequality (exploratory)}}\label{b-growth-and-inequality-exploratory}}
+This section comments on two errors as well as a misconception I found
+in the original data.\footnote{The data can be found in the
+  supplementary materials they provide in their
+  \href{https://www.sciencedirect.com/science/article/pii/S0047272717300361\#s0115}{online
+  appendix}.} Before I proceed to explain this in more detail I would
+like to say that the results of the original paper still hold after the
+error is fixed and that the authors responded kindly and quickly,
+showing an interest in solving the issue. In fact, some explanations in
+this section stem from input provided by the authors.
 
-In contrast to \citet{GMTV2017}, I did not ask how rich and poor groups
-differ. Instead, I was wondering, whether equal groups are wealthier.
-More precisely, does the Gini coefficient correlate with growth and
-wealth creation? To answer that question, Figure 7 applies a median
-split showing equal and unequal groups' wealth over time.
+\hypertarget{error-1-the-gini-coefficient}{%
+\subsubsection{Error 1: The Gini
+coefficient}\label{error-1-the-gini-coefficient}}
 
-\begin{figure}
+The Gini coefficient is wrongly computed in some periods for some group
+members. The authors found that this happened whenever two group members
+had exactly the same endowment because the program failed to rank these
+group members for further calculations.
 
-{\centering \includegraphics{paper_files/figure-pdf/plotStockByGini-1.pdf}
+Table~\ref{tbl-gini-error} illustrates this problem. It shows group 101
+in period 5 and documents that the Gini coefficient differs among group
+members. According to the authors, the Gini coefficient should equal
+\texttt{GINI=}0.127 for all subjects in the group. Instead, participant
+\texttt{112} and \texttt{113} who have an equal endowment deviate from
+that value. Importantly, the \texttt{DescTools::Gini()} function in the
+statistical software \texttt{R} does not yield this error, which is why
+I use that function for my calculations using both my as well as the
+original data.
 
-}
+\hypertarget{tbl-gini-error}{}
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1212}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0909}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0606}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1212}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1061}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1061}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1061}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1061}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0909}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0909}}@{}}
+\caption{\label{tbl-gini-error}Subset of Data illustrating the Gini
+Coefficient's Error}\tabularnewline
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedleft
+exp\_num
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+gr\_id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+per
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+subj\_id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+tokens
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+other1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+other2
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+other3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+gini
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+GINI
+\end{minipage} \\
+\midrule()
+\endfirsthead
+\toprule()
+\begin{minipage}[b]{\linewidth}\raggedleft
+exp\_num
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+gr\_id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+per
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+subj\_id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+tokens
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+other1
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+other2
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+other3
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+gini
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+GINI
+\end{minipage} \\
+\midrule()
+\endhead
+1 & 101 & 5 & 111 & 42 & 27 & 27 & 30 & 0.127 & 0.127 \\
+1 & 101 & 5 & 112 & 27 & 42 & 27 & 30 & 0.111 & 0.127 \\
+1 & 101 & 5 & 113 & 27 & 42 & 27 & 30 & 0.111 & 0.127 \\
+1 & 101 & 5 & 114 & 30 & 42 & 27 & 27 & 0.127 & 0.127 \\
+\bottomrule()
+\end{longtable}
 
-\caption{Average wealth over time across treatments.}
+\hypertarget{error-2-the-share-of-endowments-contributed}{%
+\subsubsection{Error 2: The share of endowments
+contributed}\label{error-2-the-share-of-endowments-contributed}}
 
-\end{figure}
+The original data provides a wrong measure of the share of endowments
+contributed (\texttt{mean}) because it relies on a lagged endowment
+(\texttt{gdp}). More precisely, the authors used the following STATA
+code for their calculations:
+
+\begin{verbatim}
+*tsset subj_id per
+*gen mean=sum/l.gdp
+\end{verbatim}
+
+Table~\ref{tbl-mean-error} reports participant 111 in group 101 in
+experiment 1 over three periods. Both the \texttt{gdp} (that is, the sum
+of the group's endowments at the beginning of the period) as well as the
+\texttt{sum} (that is, the sum of the group's contributions) are
+group-level variables.
+
+\hypertarget{tbl-mean-error}{}
+\begin{longtable}[]{@{}rrrrrrrr@{}}
+\caption{\label{tbl-mean-error}Subset of Data illustrating the Means's
+Error}\tabularnewline
+\toprule()
+exp\_num & gr\_id & per & subj\_id & gdp & sum & mean & MEAN \\
+\midrule()
+\endfirsthead
+\toprule()
+exp\_num & gr\_id & per & subj\_id & gdp & sum & mean & MEAN \\
+\midrule()
+\endhead
+1 & 101 & 4 & 111 & 116 & 18 & 0.168 & 0.155 \\
+1 & 101 & 5 & 111 & 126 & 18 & 0.155 & 0.143 \\
+1 & 101 & 6 & 111 & 136 & 17 & 0.135 & 0.125 \\
+\bottomrule()
+\end{longtable}
+
+Calculating the share as \texttt{MEAN=sum/gdp} solves the problem and
+yields \(\frac{18}{126}=0.143\) in period 5. I thus, used this proposed
+definition for all my calculations using both my as well as the original
+data.
+
+\hypertarget{the-misconception-timing}{%
+\subsubsection{The misconception:
+Timing}\label{the-misconception-timing}}
+
+The authors wrote a note stating that the Gini coefficient as well as
+the wealth in the paper always refer to the situation at the start of a
+period and that they clarify this because the paper (last paragraph at
+the bottom of page 5), says that wealth is defined as the endowment at
+the beginning of the following period. Furthermore, they write that this
+error came about as they switched between these two definitions during
+the course of revising the paper.
+
+I argue that it makes more sense to calculate the variables as they
+state in the paper. More precisely, I think that the wealth at the
+\emph{beginning} of a period is less interesting than the wealth at the
+\emph{end} of a period for two reasons: First, there is no need for such
+a variable because it already exists (the endowment). Second, this
+definition yields a value that is determined by the design of the game
+but misses an important outcome at the end of the game. To illustrate
+this, note that the wealth would be defined as four times the initial
+endowment in period 1. Also note that the very last value would equal
+the wealth at the beginning of the last period and says nothing about
+the outcome of that period. Because the contributions often drop in the
+last period, this outcome is of particular interest (yet, not
+represented in the data). Moreover, this definition of wealth yields
+more informative values to calculate the Gini coefficient for the same
+reasons: We know that the Gini coefficient is zero \emph{before} the
+participants made any decision by design. We do no know the inequality
+at the very end of the game---and the current definition does not tell
+us.
+
+For these reasons, I define wealth and inequality measures as the
+outcomes of a period for all of my calculations using both my as well as
+the original data.\footnote{Accordingly, the definition of \texttt{GINI}
+  I provide in Table~\ref{tbl-gini-error} is not the definition I used
+  to calculate the current period's Gini coefficient but the previous
+  period's Gini coefficient.}
+
+\newpage{}
 
 
   \bibliography{../biblio.bib}

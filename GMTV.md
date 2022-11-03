@@ -11,12 +11,6 @@ gains or losses from previous periods. Hence, period endowments are incomes of p
 as inequality arise endogenously.
 
 
-
-## 🔜 Next up
-We want to incorporate an exogenous risk of extreme weather events that cause an endogenous damage. The rationale behind that is quite
-intuitive: extreme weather events cannot be prevented in the short run but their damage can be controlled -- the more
-a society contributes to a public good the lower the damage if an extreme weather event occurs.
-
 Because of a new oTree version, the corresponding code will be stored in another directory. 
 Click [here](https://github.com/Howquez/coopUncertainty/tree/main/oTree) to open it.
 

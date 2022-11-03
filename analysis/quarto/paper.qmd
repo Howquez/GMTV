@@ -1,5 +1,5 @@
 ---
-title: Growth and inequality in public good provision | an extended replication
+title: Growth and inequality in public good provision --- an extended replication
 author:
   - name: Hauke Roggenkamp
     email: hauke.roggenkamp@unisg.ch
@@ -22,7 +22,7 @@ author:
     #     corresponding: true
     # note: This is the first author footnote.
 abstract: |
-  This is the abstract. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum augue turpis, dictum non malesuada a, volutpat eget velit. Nam placerat turpis purus, eu tristique ex tincidunt et. Mauris sed augue eget turpis ultrices tincidunt. Sed et mi in leo porta egestas. Aliquam non laoreet velit. Nunc quis ex vitae eros aliquet auctor nec ac libero. Duis laoreet sapien eu mi luctus, in bibendum leo molestie. Sed hendrerit diam diam, ac dapibus nisl volutpat vitae. Aliquam bibendum varius libero, eu efficitur justo rutrum at. Sed at tempus elit.
+  You can find the most recent version of this paper [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.pdf). The abstract follows at later point.
 keywords: 
   - Replication study
   - Non-convenience sample
@@ -44,7 +44,15 @@ format:
 
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 4)
+```
+
+```{r locale}
+#| include: false
+#| warning: false
+#| eval: false
+
+Sys.setlocale("LC_TIME","English United States")
 ```
 
 ```{r packages}
@@ -52,7 +60,7 @@ knitr::opts_chunk$set(echo = FALSE)
 # install.packages("pacman")
 
 pacman::p_load(magrittr, data.table, stringr, lubridate, glue, DescTools, haven,
-               stargazer, ggplot2, patchwork, MetBrewer, Rmisc)
+               stargazer, ggplot2, patchwork, MetBrewer, Rmisc, knitr)
 ```
 
 ```{r design}
@@ -73,9 +81,13 @@ layout <- theme(panel.background = element_rect(fill = "transparent", color = NA
 
 # color
 colors <- met.brewer(name="Tam",n=7,type="discrete")
-cPrimary = "#ffd353"
-cSecondary = "#9f2d55"
-cInfo = "#34168"
+colors <- c("#F3B05C", "#1E4A75", "#65B5C0", "#AD5E21")
+# cPrimary = "#ffd353"
+# cSecondary = "#9f2d55"
+# cInfo = "#34168"
+cPrimary = "#F3B05C"
+cSecondary = "#1E4A75"
+cInfo = "#36BFA2"
 ```
 
 <!-- OUR DATA -->
@@ -115,6 +127,7 @@ meta_long <- full[participant.time_started != "" &
                   .(session.code,
                     participant.label,
                     participant.time_started,
+                    participant._index_in_pages,
                     dPGG.1.player.contribution)]
 
 # reformat time stamp in new variables
@@ -124,22 +137,24 @@ meta_long[, `:=`(date = participant.time_started %>% ymd_hms() %>% date(),
 # aggregate and count 
 meta <- meta_long[,
                   .(date = date %>% unique(),
+                    # weekday = date %>% unique() %>% lubridate::wday(label = TRUE),
                     time = hour %>% unique() %>% paste("00", sep = ":"),
                     showups = participant.time_started %>% length(),
-                    dropouts = dPGG.1.player.contribution %>% is.na() %>% sum(na.rm = FALSE)),
+                    dropouts = sum(participant._index_in_pages == 2),
+                    residuals = sum(is.na(dPGG.1.player.contribution) & participant._index_in_pages == 77)),
                   by = session.code]
 
 # get number of participants and observations (groups of 4)
 meta[,
-     `:=`(participants = showups - dropouts,
-          observations = (showups - dropouts)/4)]
+     `:=`(participants = showups - dropouts - residuals,
+          observations = (showups - dropouts - residuals)/4)]
 
 # save data
 fileName <- "replication2021"
 save(meta, file = paste0("../../data/processed/rda/", fileName, "_meta", ".rda"))
 write.csv(meta, file = paste0("../../data/processed/csv/", fileName, "_meta", ".csv"))
 
-rm(list = c("full", "meta_long"))
+rm(list = c("meta_long"))
 ```
 
 ```{r identifyStudents}
@@ -435,7 +450,7 @@ timeSpent[,
           by = c("session_code", "participant_code")]
 
 # create new data table with selected columns
-duration <- timeSpent[participant_code %in% DT$participant.code,
+duration <- timeSpent[session_code %in% meta$session.code, # participant_code %in% DT$participant.code,
                       .(
                         session_code,
                         participant_code,
@@ -653,7 +668,7 @@ covs <- rbindlist(list(replicationCovariates, GMTVCovariates),
                   fill = TRUE)
 
 rm(list = c("CT", "DT", "GMTV", "GMTVCovariates", "GMTVFirstRound", 
-            "invitedStudents", "noPunish", "replication", "replicationCovariates",
+            "noPunish", "replication", "replicationCovariates",
             "replicationFirstRound", "subset"))
 ```
 
@@ -669,6 +684,10 @@ covs[, treatment := as.factor(treatment)]
 
 main[, student := FALSE]
 main[session.code == "d6jrsxnr" | treatment == "noPunish10",
+     student := TRUE]
+
+covs[, student := FALSE]
+covs[session.code == "d6jrsxnr" | treatment == "noPunish10",
      student := TRUE]
 
 R1[, student := FALSE]
@@ -696,84 +715,106 @@ R1[session.code == "d6jrsxnr" | treatment == "noPunish10",
 
 -->
 
-# Introduction
-> "There are two possible articles you can write: (a) the article you planned to write when you designed your study or (b) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (b)." [@bemwriting, p. 171]
+# Introduction {#sec-intro}
 
 
-# Methodology
+Today's actions are tomorrow's result. There are many settings in which current decisions affect future outcomes and with it, future decision spaces. Opting for environmental friendly policies today not only reduces carbon dioxide omissions but also helps us to reach the Paris climate targets tomorrow. Deferring these policies, the targets can be reached as well---but with less flexibility. Hence, today's actions (or the omission thereof) not only affect intermediate results but also the number of paths one can choose to reach certain goals.
 
-In the terminology of @Hamermesh2007, I ran both a _pure_ as well as a _scientific replication_ of one treatment arm of @GMTV2017's dynamic public good game. The pure replication re-analyzes the original data. [Appendix A](#A:-Pure-Replication) documents [errors I identified]() in the original paper. The scientific replication, where I utilize a different sample drawn from a different population in a different situation, is described in this section.
+Standard public good games---although often intended to inform climate policies^[See @GKLS2020 [p. 1] for numerous references.]---miss these temporal interdependencies because participants have the same set of actions in each period. A game implemented by Gächter, Mengel, Tsakas & Vostroknutov [-@GMTV2017] (hereafter, GMTV) as well as Stefan Große (2011, unpublished) incorporated interdependencies into a _dynamic_ public good game with students in Nottingham, England and Erfurt, Germany.
 
-## Procedure
+Because their setting is more realistic, one wonders whether it is better suited to inform public policy. To answer this question, I replicated parts of GMTV's experiment with different samples. In addition, I observed the participant's behavior in voluntary climate actions (VCA). This yielded a setting similar to @GKLS2020's which allows me to analyze how behavior in the abstract game translates into real-world action across samples.
 
-Participants entered the experiment at appointed times remotely from home. They first saw a welcome screen. After agreeing to the privacy policy, they could proceed to the instructions individually. Having read these instructions, each participant has also seen a demo-screen explaining the user interface. Before proceeding, they had to answer six comprehension questions correctly. Subsequently, they saw a waiting screen until they could be matched with three other participants, who have answered the comprehension questions correctly. Once matched, they were exposed to the decision screen over ten periods. At the end of the last period, participants saw results of all periods. Subsequently, they were exposed to a voluntary climate action, where they could donate (some of) their earnings to offset carbon dioxide. Subsequently, I elicited risk preferences [@HoltLaury2002] and finished with @GMTV2017's questionnaire.
+I utilized an inexperienced sample that has not been exposed to interactive experiments before. Furthermore, I conducted the experiment online. This required me to make the experiment's software robust to minimize attrition. Because I observed metrics to assess the fluency and feasibility of online experiments, this study also serves as a case study like the one of @AGM2018.
 
-## Experimental Design
+Taken together, this study makes three contributions. First, it replicates parts of GMTV's original experiment and highlights the importance of pure replications. Second, it shows that logistically complex online experiments are feasible for samples other than students or clickworkers. Third, it shows that findings from abstract games do not generalize well and even worse with the representative sample. After reporting the methods, this paper is organized along these findings.
 
-As in the NOPUNISH 10 Period treatment arm of @GMTV2017, I ran sessions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of $N_i^1 = 20$ tokens, $T=10$ rounds, a private account with a return of $1$ and a group account with a return of $1.5$ ($\Rightarrow$ MPCR$\equiv \frac{1.5}{4}$), such that:
+
+# Methodology {#sec-methods}
+
+In the terminology of @Hamermesh2007, I ran both a _pure_ as well as a _scientific replication_ of one treatment of GMTV's dynamic public good game. The pure replication re-analyzes the original data. [Appendix A](#A:-Pure-Replication) documents [errors I identified]() in the original paper. The scientific replication, where I utilize a different sample drawn from a different population in a different situation, is described in the following sections.
+
+## Experimental Design {#sec-design}
+
+As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of $N_i^1 = 20$ tokens, $T=10$ periods, a private account with a return of $1$ and a group account with a return of $1.5$ ($\Rightarrow$ MPCR$\equiv \frac{1.5}{4}$), such that:
 
 $$
 N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
 $$
-Instead of receiving fresh endowments every period, participants receive one initial endowment only at the beginning of the first period. A participant's subsequent endowment equals her profit from the current period such that a decision in one period has consequences on her future endowments. For this reason, the game is described as a _dynamic_ public good game
+What makes the game _dynamic_? Instead of receiving fresh endowments every period, participants received one endowment only at the beginning of the first period. A participant's endowment in the second period is the wealth he or she accumulated in the first period. A participant's endowment in the third period is the wealth he or she accumulated in the first two periods. And so on. Hence, a decision in one period has consequences on future endowments and, ultimately, growth paths. For this reason, the game is described as a _dynamic_ public good game
 
-## Sample
+## Sample {#sec-sample}
 
-I recruited the participants from the so called _[HamburgPanel](https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html)_ using HROOT [@hroot]. The panel is provided by the University of Hamburg's Research Laboratory, which used a randomized last digits approach to build the panel while drawing from the population of citizens from Hamburg, Germany.
+I recruited the participants from the so called _[HamburgPanel](https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html)_ using HROOT [@hroot]. The panel is provided by the University of Hamburg's Research Laboratory, which used a randomized last digits approach to build the panel while drawing from the population of citizens from Hamburg, Germany. Because the sample was exhausted at one point, I also recruited students from the University of Hamburg.
+
+At the time I conducted the experiment, the representative sample was not familiar with interactive experiments. In fact, I ran the first interactive group experiment with this sample. The students, in contrast, are used to this kind of experiments. Recruiting them, I excluded those who have participated in a public goods game before. As a consequence, nonnaiveté is unlikely to affect the validity of my experiment [@GoodmanPaolacci2017 p. 204].
+
+Throughout this paper, I will compare results of my experiment with the results of GMTV's NOPUNISH 10 Period treatments. I am thus, referring to three different samples utilized at two points in time: the University of Nottingham's students (in late 2012), Hamburg's citizens and the University Hamburg's students (both in July 2021). @tbl-sample-properties shows how they compare with respect to a few properties.
+
+```{r sampleDifferences1, results = "asis", warning = FALSE}
+#| label: tbl-sample-properties
+#| tbl-cap: Sample Properties
+
+covs[, sample := "Nottingham Students"]
+covs[treatment == "replication" & student == TRUE, sample := "Hamburg Students"]
+covs[treatment == "replication" & student == FALSE, sample := "Hamburg Citizens"]
+covs[, sample := as.factor(sample)]
+# covs[, sample := ordered(sample, levels = c("Nottingham Students", "Hamburg Students", "Hamburg Citizens"))]
+
+
+m1 <- lm(formula = gender ~ sample, data = covs)
+m2 <- lm(formula = age ~ sample, data = covs)
+m3 <- lm(formula = switching_row ~ sample, data = covs)
+m4 <- lm(formula = donation ~ sample, data = covs)
+m5 <- lm(formula = pq11 ~ sample, data = covs)
+m6 <- lm(formula = pq12 ~ sample, data = covs)
+m7 <- lm(formula = pq13 ~ sample, data = covs)
+m8 <- lm(formula = pq14 ~ sample, data = covs)
+
+stargazer(m1, m2, m5, m6, m7, m8,
+
+
+          column.labels = c("female", "age",
+                            "trust", "meritocracy", "government", "equality") %>% str_to_title(),
+          model.numbers = FALSE,
+          dep.var.labels.include = FALSE,
+          header=FALSE,
+          intercept.bottom = FALSE,
+          covariate.labels = c("Hamburg Citizens", "Hamburg Students", "Nottingham Students"),
+
+          type = "latex", digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+```{r}
+# covs[, sample := ordered(sample, levels = c("Nottingham Students", "Hamburg Students", "Hamburg Citizens"))]
+```
 
 Describe sample properties here.
 
 
 
-## Software
+## Software {#sec-software}
 
-The experiment was created using oTree [@oTree] and can be found on [GitHub](https://github.com/Howquez/coopUncertainty).
+The experiment was logistically complex for several reasons. First, the sample was inexperienced. Second, the experiment was interactive and synchronous. Third, the underlying game was dynamic and interdependent. This makes dropouts not only more likely, but also more expensive which is why dropouts were a major concern implementing the experiment.
 
-# Results
+I chose oTree [@oTree] to implement the experiment because it is open-source, well documented and very flexible. Its [Bootstrap](https://getbootstrap.com/) (a powerful frontend toolkit) integration allowed me to make the graphical user interface interactive, appealing and easy to navigate. The [Highcharts library](https://www.highcharts.com/) made it easy to visualize results and to communicate dynamics. The oTree code snippets made it possible to handle dropouts, for instance, by replacing them with artificial bots (and informing the rest of the group thereof). Insofar, oTree served a good tool to consider the participants' user experience and thus, to make dropouts less likely.
 
-## Online Feasibility
+The experiment's source code be found on [GitHub](https://github.com/Howquez/coopUncertainty).^[https://github.com/Howquez/coopUncertainty]
 
-How did the participants, who have never participated in a online group experiment before, cope with the situation? 
+## Procedure {#sec-procedure}
 
-```{r plotTime}
-#| fig.cap: Average Time Spent for each Contribution per Period
+Participants entered the experiment at appointed times remotely from home. They first saw a welcome screen. After agreeing to the privacy policy, they could proceed to the instructions individually. Having read these instructions, each participant has also seen a demo-screen explaining the user interface. Before proceeding, they had to answer six comprehension questions correctly. Subsequently, they saw a waiting screen until they could be matched with three other participants, who have answered the comprehension questions correctly. Once matched, they were exposed to the decision screen over ten periods. At the end of the last period, participants saw results of all periods. Subsequently, they were exposed to a voluntary climate action, where they could donate (some of) their earnings to offset carbon dioxide. Subsequently, I elicited risk preferences [@HoltLaury2002] and finished with GMTV's questionnaire.
 
-N <- duration[, participant_code %>% unique() %>% length()]
-plotDT <- duration[app_name == "dPGG" & page_name == "dPGG_Decision",
-                   .(time_spent = time_spent %>% sum()),
-                   by = c("session_code", "participant_code", "page_index", "page_name")]
+While I tried to stick to GMTV's protocol as close as possible, I deviated in a few aspects. First, the instructions were German and also covered topics inherent to the online setting (dropouts and bots, for instance). Second, I used another software (oTree instead of zTree). Third, GMTV gave participants the opportunity to donate to _Doctors without Borders_ whereas we offered carbon dioxide offsets. Fourth, the graphical user interface looked different.
 
-plotDT[, round := seq(from = 1, to = 10), by = c("participant_code")]
+# Results {#sec-results}
 
-upperLimit <- plotDT[, time_spent %>% mean(), by = c("round")] %>% max()
+## Pre-registered GMTV Replication {#sec-replication}
+
+The analyses in this section were pre-registered [@preregistration]. I also pre-registered a RMarkdown file with the exact code I intended to use [here](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd).^[https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd to run the code, you need to executed the .Rmd files in this repository in the order that is indicated by its file names.] Even though I had to adjust a few lines of code, the main findings in the following section can also be replicated using the pre-registered code.
 
 
-
-ggplot(data = summarySE(data = plotDT,
-                        measurevar = "time_spent",
-                        groupvars=c("round"),
-                        na.rm = FALSE,
-                        conf.interval = 0.95,
-                        .drop = TRUE),
-       mapping = aes(x = round, y = time_spent)) +
-  layout +
-  theme(legend.position="bottom") +
-  geom_line(show.legend=FALSE, color = cSecondary, lty=2) +
-  geom_errorbar(aes(ymin=time_spent-ci, ymax=time_spent+ci), width=.25, alpha = 0.5, color = cSecondary) +
-  geom_point(color = cSecondary) +
-  scale_x_continuous(name="",  breaks = 1:10) +
-  scale_y_continuous(limits = c(0, upperLimit + 10), expand = c(0, 0)) +
-  labs(y = "Time Passed in Seconds", caption = "Bars indicate 95% confidence intervals.") +
-  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
-```
-
-## Pre-registered GMTV Replication
-
-**Result 1.** _The `NOPUNISH 10` treatment of @GMTV2017 can be replicated because the replication data resemble the original data with respect to initial and final contributions, wealth and growth as well as inequality between and within groups._
-
-This is remarkable given the different sample and language, the different software and user interface  as well as the online setting during the COVID19 pandemic.
-
-### Contributions
+### Contribution Behavior {#sec-contributions}
 
 ```{r prepFirstSummary}
 replication <- R1[treatment == "replication", ownContribution]
@@ -792,11 +833,12 @@ rs1 <- wilcox.test(replication,
           digits = 4)
 ```
 
-First, I ask whether the samples differ with respect to their initial contributions to the public good. Is our replication sample more pro-social than the original sample? Figure 1 reveals that it is not. The distributions of both samples look fairly similar. Both samples contributed 10 tokens, that is, 50% of their endowments on average (median and mean).^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean contribution in first round of the game.] Moreover, both samples' initial contributions resemble initial contributions participants usually make in the standard game with partner matching.^[See Figure 3B in @fehrgaechter2000 (p.989), for instance.] However, in the dynamic game presented here, we are particularly interested in the subsequent periods because differences add up exponentially. Do the two groups remain similar over the course of time?
+First, I ask whether the samples differ with respect to their initial contributions to the public good. Is our replication sample more pro-social than the original sample? @fig-first-round reveals that it is not. The distributions of both samples look fairly similar. Both samples contributed 10 tokens, that is, 50% of their endowments on average (median and mean).^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean contribution in first round of the game.] Moreover, both samples' initial contributions resemble initial contributions participants usually make in the standard game with partner matching.^[See Figure 3B in @fehrgaechter2000 (p.989), for instance.] However, in the dynamic game presented here, we are particularly interested in the subsequent periods because differences add up exponentially. Do the two groups remain similar over the course of time?
 
 
 ```{r firstRoundViz}
-#| fig.cap: Individual contributions to the dynamic public good in the first period
+#| fig-cap: Individual contributions to the dynamic public good in the first period
+#| label: fig-first-round
 
 ggplot(data = R1[treatment != "noPunish15"],
        mapping = aes(x = ownContribution, fill = treatment, lty = treatment)) +
@@ -844,9 +886,9 @@ stargazer(temp,
 ```
 
 
-In particular, do the two samples' contributions follow the same path over the 10 periods they played? The answer is _no_. Figure 2 illustrates that the samples make similar contributions at the beginning and the end of the game but behave differently in between. More precisely, the left panel--depicting the average contributions in absolute terms--shows that the original sample contributed substantially more than the replication sample _in all but the first and last periods_. For this reason, the original sample's behavior differs from the replication sample's behavior in two aspects: it contributes more and exhibits a considerable drop in the last period (whereas the replication sample's contributions flatten). 
+In particular, do the two samples' contributions follow the same path over the 10 periods they played? The answer is _no_. @fig-share-of-contributions illustrates that the samples make similar contributions at the beginning and the end of the game but behave differently in between. More precisely, the left panel--depicting the average contributions in absolute terms--shows that the original sample contributed substantially more than the replication sample _in all but the first and last period_. For this reason, the original sample's behavior differs from the replication sample's behavior in two aspects: it contributes more and exhibits a considerable drop in the last period (whereas the replication sample's contributions flatten). 
 
-Note that increasing contributions over time imply increasing endowments over time. Hence, absolute contributions do not us much about the willingness to cooperate. For this reason, the right panel in Figure 2 shows the average _share of endowments contributed_ over time. Both samples exhibit a similar pattern: they decline and do not stabilize. However, both samples also differ with respect to one aspect: the replication sample's share of contributions declines faster.
+Note that increasing contributions over time imply increasing endowments over time. Hence, absolute contributions do not us much about the willingness to cooperate. For this reason, the right panel in @fig-share-of-contributions shows the average _share of endowments contributed_ over time. Both samples exhibit a similar pattern: their share of endowments contributed declined and did not stabilize. However, both samples also differ with respect to one aspect: the replication sample's share of contributions declines faster.
 
 
 ```{r plotContributions}
@@ -883,7 +925,8 @@ rm(list = c("SUM"))
 
 
 ```{r plotShareOfContributions}
-#| fig.cap: "The average amount of tokens contributed over time in treatments."
+#| fig-cap: "The average amount of tokens contributed over time in treatments."
+#| label: fig-share-of-contributions
 
 SHARE <- main[,
             lapply(.SD, mean, na.rm = TRUE),
@@ -918,7 +961,7 @@ p1 + p2 + plot_layout(guides = "collect") &
 
 Again, both samples' behavior resembles the contributions participants usually make in the standard game with partner matching: contributions equal approximately half of endowments in the very first period and decrease to around 10% of endowments by the last period.^[The right panel is thus, comparable to the visualizations _and results_ in the standard game. See, for instance, Figure 1B in @fehrgaechter2000 (p.986).] In the dynamic game presented here, however, different paths lead to different levels of wealth -- even if they share the same start- and end-points. I am thus, more interested in the contributions' implications for wealth generation and growth. 
 
-### Wealth Creation
+### Wealth Creation {#sec-wealth}
 
 ```{r summaryWealth}
 #| results: asis
@@ -948,10 +991,11 @@ originalWealth    <- main[treatment == "noPunish10" & round == 10, mean(stock)]
 replicationWealth <- main[treatment == "replication" & round == 10, mean(stock)]
 ```
 
-How do the different contribution-paths translate into wealth?^[To measure wealth and growth, I define a variable called _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed).] Given that the original sample contributed more in most of the periods, one would expect the respective groups to be considerably more wealthy. Figure 3 indicates just that. The grey lines show that an average group in the original sample accumulated about `r round(originalWealth)` tokens. In contrast, an average group in the replication sample accumulated about `r round(replicationWealth)` tokens. This difference is insignificant at conventional levels^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean stock in last round of the game.] though.
+How do the different contribution-paths translate into wealth?^[To measure wealth and growth, I define a variable called _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed).] Given that the original sample contributed more in most of the periods, one would expect the respective groups to be considerably more wealthy. @fig-stock-distribution indicates just that. The grey lines show that an average group in the original sample accumulated about `r round(originalWealth)` tokens. In contrast, an average group in the replication sample accumulated about `r round(replicationWealth)` tokens. This difference is insignificant at conventional levels^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean stock in last round of the game.] though.
 
 ```{r stockDistributionViz}
-#| fig.cap: Groups' income at the end of the game
+#| fig-cap: Groups' income at the end of the game
+#| label: fig-stock-distribution
 
 ggplot(data = main,
        mapping = aes(x = stock, fill = treatment, lty = treatment)) +
@@ -994,9 +1038,9 @@ oSD <- main[round == 10 & treatment == "noPunish10",
             by = groupID][, sd(stock)] %>% round(digits = 2)
 ```
 
-Although there clearly is growth, groups do not realize the maximal potential efficiency: under full cooperation, a group can accumulate at least `r (80*1.5^10) %>% trunc()` tokens or EUR `r (80*1.5^10 /20) %>% trunc()`. This is depicted in the left panel of Figure 4, where one can see the average wealth over time by sample. The panel illustrates for both samples that growth was continuous and surprisingly linear, given the exponential character of the game's design. To sum up, the contribution behavior differed between samples. In contrast, neither the eventual wealth nor the corresponding growth paths differed. Differences in contribution behavior did, thus, not translate in significantly different wealth outcomes.
+Although there clearly is growth, groups do not realize the maximal potential efficiency: under full cooperation, a group can accumulate at least `r (80*1.5^10) %>% trunc()` tokens or EUR `r (80*1.5^10 /20) %>% trunc()`. This is depicted in the left panel of @fig-growth-heterogeneity, where one can see the average wealth over time by sample. The panel illustrates for both samples that growth was continuous and surprisingly linear, given the exponential character of the game's design. To sum up, the contribution behavior differed between samples. In contrast, neither the eventual wealth nor the corresponding growth paths differed. Differences in contribution behavior did, thus, not translate to significantly different wealth outcomes.
 
-Why? Perhaps because the heterogeneity within samples and across groups has been too large to _detect_ a significant difference. The right panel of Figure 4 depicts heterogeneity: In the replication sample, the richest group earned `r a <- main[treatment == "replication" & round == 10, max(stock)]; a` tokens (which is about `r round(a/80, digits = 2)*100`% of the initial endowment) whereas the poorest group ends up with `r b <- main[treatment == "replication" & round == 10, min(stock)]; b` tokens (`r round(b/80, digits = 2)*100`%). More broadly, the replication sample is characterized by inequality between groups ($SD_{Replication} =$ `r rSD`). The same holds true for the original sample ($SD_{Original} =$ `r oSD`). Hence, the heterogeneity across groups does not differ between samples, which is remarkable because the replication sample was drawn from a more heterogeneous (non-convenience sample). Does it differ within groups?
+Why? Perhaps because the heterogeneity within samples and across groups has been too large to _detect_ a significant difference. The right panel of @fig-growth-heterogeneity depicts heterogeneity: In the replication sample, the richest group earned `r a <- main[treatment == "replication" & round == 10, max(stock)]; a` tokens (which is about `r round(a/80, digits = 2)*100`% of the initial endowment) whereas the poorest group ends up with `r b <- main[treatment == "replication" & round == 10, min(stock)]; b` tokens (`r round(b/80, digits = 2)*100`%). More broadly, the replication sample is characterized by inequality between groups ($SD_{Replication} =$ `r rSD`). The same holds true for the original sample ($SD_{Original} =$ `r oSD`). Hence, the heterogeneity across groups does not differ between samples, which is remarkable because the replication sample was drawn from a more heterogeneous (non-convenience sample). Does it differ within groups?
 
 <!-- doch lieber Gini? statt SD reporten? -->
 
@@ -1046,7 +1090,8 @@ p1 <- ggplot(data = STOCK,
 ```
 
 ```{r growthHeterogeneityViz}
-#| fig.cap: Average wealth over time across samples.
+#| fig-cap: Average wealth over time across samples.
+#| label: fig-growth-heterogeneity
 
 # plot
 p2 <- ggplot(data = main,
@@ -1066,7 +1111,7 @@ p2 <- ggplot(data = main,
 p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "top")
 ```
 
-### Inequality
+### Inequality {#sec-inequality}
 
 ```{r summaryGini}
 #| results: asis
@@ -1096,12 +1141,13 @@ originalGini    <- main[treatment == "noPunish10" & round == 10, mean(gini)] %>%
 replicationGini <- main[treatment == "replication" & round == 10, mean(gini)] %>% round(digits = 2)
 ```
 
-Given the different samples and the possibility of endogenous growth--which essentially is the main feature of the game--I ask whether and how the inequality grows _within_ groups. Figure 5 illustrates that inequality did grow: at the end of the game, the original and the replication groups exhibit an average Gini coefficient of `r originalGini` and `r replicationGini`, respectively.^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean Gini coefficient in last round of the game.] Because every participant started with the same initial endowment (in _Period 0_, so to speak), every group started equally--with a Gini coefficient equaling zero.
+Given the different samples and the possibility of endogenous growth--which essentially is the main feature of the game--I ask whether and how the inequality grows _within_ groups. @fig-gini-distribution illustrates that inequality did grow: at the end of the game, the original and the replication groups exhibit an average Gini coefficient of `r originalGini` and `r replicationGini`, respectively.^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean Gini coefficient in last round of the game.] Because every participant started with the same initial endowment (in _Period 0_, so to speak), every group started equally--with a Gini coefficient equaling zero.
 
-Figure 6 shows that this initial state of equality ended with the first period already: both samples exhibit a stark incline in inequality before the second period started. From then on, the respective Gini coefficients grew slowly but continuously -- for both samples.
+@fig-ginit-time-series shows that this initial state of equality ended with the first period already: both samples exhibit a stark incline in inequality before the second period started. From then on, the respective Gini coefficients grew slowly but continuously -- for both samples.
 
 ```{r giniDistributionViz}
-#| fig.cap: Groups' Gini coefficients (within groups) at the end of the game
+#| fig-cap: Groups' Gini coefficients (within groups) at the end of the game
+#| label: fig-gini-distribution
 
 ggplot(data = main,
        mapping = aes(x = gini, fill = treatment, lty = treatment)) +
@@ -1120,15 +1166,16 @@ ggplot(data = main,
              col = "#000000", alpha = 0.5,
              lty = 1) +
     labs(title = "", 
-       y = "", x = "Stock",
+       y = "", x = "Gini Coefficient",
        caption = "Grey lines indicate means (dashed line = replication sample).") +
   layout +
   theme(legend.position = "top")
 ```
 
-```{r}
-#| fig.cap: Average Gini coefficient (within groups) over time across samples
-#| 
+```{r giniOverTime}
+#| fig-cap: Average Gini coefficient (within groups) over time across samples
+#| label: fig-ginit-time-series
+
 tmp <- main[,
             lapply(.SD, mean, na.rm = TRUE),
             by = c("round", "treatment"),
@@ -1151,21 +1198,571 @@ ggplot(data = GINI,
   guides(lty = "none")
 ```
 
-## Generalizability
+**Result 1.** _The `NOPUNISH 10` treatment of GMTV can be replicated because the replication data resemble the original data with respect to initial and final contributions, wealth and growth as well as inequality._
 
-# Conclusion
+This is remarkable given the different sample and language, the different software and user interface as well as the online setting during the COVID19 pandemic. The result suggests that, by and large, the sum of these factors did not affect people’s preferences towards cooperation.
 
-# Appendix
+## Online Feasibility {#sec-feasibility}
 
-## A: Pure Replication
+How did the participants, who have never participated in an online group experiment before, cope with the situation? Moreover, did participants understand the unfamiliar setting they found themselves in? While the answer to the former question requires more thought, the answer to the latter simply is _yes_: `r 67` out of `r 44 + 67 + 5` answered with _"yes"_ when I asked them. Another `r 44` answered with _"rather yes"_ while nobody indicated that he or she did not understand the situation at all. To analyze how participants coped with the situation, I consider three additional metrics: selection into the experiment,  attrition as well as the time spent on each page.
+
+I first comment on the selection into the experiment: It was difficult to recruit the sample. The panel counted 1.209 non-students of which we were able to recruit `r main[student == FALSE, .N]` participants who finished the experiment---even though we varied the weekdays and timing of the sessions (which were conducted during a nation-wide lockdown with home office regime). For this reason, we also recruited students in the last session which explains the relatively large number of showups in @tbl-meta. Although I intended to refrain from the recruitment of students initially, this particular sub sample enabled me to investigate the generalizability of my results as I will discuss in  @sec-generalizability. Alternatively, I also could have contacted a market research institute to recruit additional participants within a week. I refrained from doing so to contrast students and the general population sample, however.
+
+```{r showMeta}
+#| label: tbl-meta
+#| tbl-cap: The Experimental Sessions' Meta Data
+
+meta %>% kable(col.names = names(meta) %>% 
+                 str_replace_all(pattern = "\\.",
+                                 replacement = " ") %>% 
+                 str_to_title()) #, caption = 'A table of the first 10 rows of the mtcars data.')
+```
 
 
-## B: Growth _and_ Inequality (exploratory)
+```{r plotTimeData}
+N <- duration[, participant_code %>% unique() %>% length()]
+plotDT <- duration[app_name == "dPGG" & page_name == "dPGG_Decision",
+                   .(time_spent = time_spent %>% sum()),
+                   by = c("session_code", "participant_code", "page_index", "page_name")]
 
-In contrast to @GMTV2017, I did not ask how rich and poor groups differ. Instead, I was wondering, whether equal groups are wealthier. More precisely, does the Gini coefficient correlate with growth and wealth creation? To answer that question, Figure 7 applies a median split showing equal and unequal groups' wealth over time.
+plotDT[, round := seq(from = 1, to = 10), by = c("participant_code")]
+
+upperLimit <- plotDT[, time_spent %>% mean(), by = c("round")] %>% max()
+
+tmp <- summarySE(data = plotDT,
+                 measurevar = "time_spent",
+                 groupvars=c("round"),
+                 na.rm = FALSE,
+                 conf.interval = 0.95,
+                 .drop = TRUE) %>% 
+  data.table()
+
+```
+
+Turning to the time spent on each page, I focus on the decision times in the dynamic public goods game as @Anderhub2001 did. How many seconds did the participants need to make a decision in each period of the game? Not too many. @fig-time-spent illustrates an intuitive pattern: The first decision took about `r tmp[round == 1, round(time_spent)]` seconds. The second decision--where participants first learned about the other group members' previous decisions--took longer (about `r tmp[round == 2, round(time_spent)]` seconds). Subsequently, decision times first declined and stabilized at `r tmp[round > 3, round(mean(time_spent))]` seconds. Importantly, decision times were so short that crosstalk, that is, communication through private channels--a common concern^[See, for instance, the discussion section in @AGM2018 [p. 119].] in online experiments--was unlikely, especially because it would require the identification of other group members.^[There were only `r plotDT[page_index == 12 & time_spent > 60, .N]` participants (from all four sessions) who needed more than 60 seconds to make the second decision.]
+
+```{r plotTime}
+#| fig-cap: Average Time Spent for each Contribution per Period
+#| label: fig-time-spent
+
+ggplot(data = tmp,
+       mapping = aes(x = round, y = time_spent)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE, color = cInfo, lty=2) +
+  geom_errorbar(aes(ymin=time_spent-ci, ymax=time_spent+ci), width=.25, alpha = 0.5, color = cInfo) +
+  geom_point(color = cInfo) +
+  scale_x_continuous(name="",  breaks = 1:10) +
+  scale_y_continuous(limits = c(0, upperLimit + 10), expand = c(0, 0)) +
+  labs(y = "Time Passed in Seconds", caption = "Bars indicate 95% confidence intervals.") +
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+```
+
+Considering attrition, I find that it did not affect the interactive experiment at all. To elaborate, I differentiate between dropouts and residuals:  Participants who could not be matched to other group members are called residuals. Participants who intentionally left the experiment are called dropouts. Residuals did not participate in the experiment _by design_. Dropouts did not participate in the experiment _by choice_. Out of `r meta[, sum(showups)]` people who showed up, I count `r meta[, sum(residuals)]` residuals and `r meta[, sum(dropouts)]` dropouts. All of the residuals waited to be matched to a group unsuccessfully before they got paid one Euro for their patience. In contrast, all of the dropouts left while reading the instructions and before being matched to other group members. Moreover, they got no payment at all. Hence, attrition was no concern considering the dynamic public goods game or the expenses.
+
+**Result 2.** _Given the decision times and the fluent procedure, attrition was as negligible as it is in physical laboratories---where (a) not every invited person shows up and (b) a number of participants divisible by the group size is required as well._
+
+
+## Generalizability {#sec-generalizability}
+
+<!--
+> "There are two possible articles you can write: (a) the article you planned to write when you designed your study or (b) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (b)." [@bemwriting, p. 171]
+-->
+
+```{r}
+R1covs <- covs[, .(participant.code,
+                   donation = donation * 20 ,
+                   donationShare = (donation * 20) / payoff * 100,
+                   payoff)]
+temp <- R1[R1covs, on = .(participant.code = participant.code)][treatment == "replication"]
+temp[, contributionShare := ownContribution/20 * 100]
+```
+
+@GKLS2020 asked how much can we learn about voluntary climate action from the behavior in public goods games. Using a similar strategy, I answer the question for _dynamic_ public goods games: _Not much_. Overall, there seems to be no association between choices in the voluntary climate action and the first period in the dynamic public goods game. @fig-scatter-generalizability shows a scatter plot of realized choices, with the percentage of endowment spent by each participant in the first period of the game on the x-axis and that spent in the VCA on the y-axis. In addition, the figure contains a fitted line of a linear model whose slope is indistinguishable from zero. No matter how much the participants contributed in the first round, they spent, on average, about `r temp[, round(mean(donationShare))]`% of their income on the VCA.
+
+
+```{r}
+#| fig-cap: Scatter plot of average contributions in the dPGG and real giving task.
+#| label: fig-scatter-generalizability
+#| fig.height: 6
+
+p1 <- ggplot(data = temp[, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cInfo, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cInfo) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "Percentage of endowment contributed in period 1") +
+  layout
+
+p2 <- ggplot(data = temp[student == FALSE, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cInfo, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cInfo) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "General pop.: Percentage of endowment contributed in period 1") +
+  layout
+
+p3 <- ggplot(data = temp[student == TRUE, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cInfo, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cInfo) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "Students: Percentage of endowment contributed in period 1") +
+  layout
+
+p1 / (p2 + p3)
+```
+
+Does this result hold true if one zooms in and inspects the two samples separately? Yes. Even though the general population sample is a little more consistent than the student sample, both are contributing more in the abstract game than in the VCA. @fig-kernel-generalizability shows distributions of contributions across both choices for both samples. The left panels illustrate the behavior of the general population sample. The right panels illustrate the behavior of the general population sample. The top panels show the behavior in the VCA. The bottom panels show the behavior in first period of the game. A visual inspection shows that (a) both samples behaved similarly in the first period of the game but (b) different (p =
+`r summary(lm(formula = donationShare ~ student, data = temp))$coefficients[2,4] %>% round(digits = 2)`) in the VCA. Furthermore, (c) the behavior in the first period of the experiment predicts the general population sample's behavior in the VCA worse than student sample's behavior (p =
+`r summary(lm(formula = contributionShare ~ donationShare + student + donationShare*student, data = temp))$coefficients[4,4] %>% round(digits = 2)`). Finally, (4) contributions in the abstract public good game are higher than contributions to the real public good of climate change mitigation.
+
+
+
+```{r vizGeneralizability}
+#| fig-cap: Kernel distributions of contributions across tasks and subject pools.
+#| label: fig-kernel-generalizability
+#| fig.height: 6
+
+# viz wrapper
+plotShares <- function(stud = FALSE,
+                       var  = "donationShare",
+                       col  = cPrimary,
+                       xlab = "",
+                       ylab = ""){
+  
+  dt <- temp[student == stud, .(x = get(var))]
+  
+  model <- lm(x ~ 1, dt)
+  ci1 <- confint(model, level=0.95)[1]
+  ci2 <- confint(model, level=0.95)[2]
+  
+  ggplot(data = dt,
+         mapping = aes(x = x)) +
+    annotate("rect", 
+             xmin = ci1, xmax = ci2, 
+             ymin  =0, ymax = Inf, 
+             alpha = 0.33) +
+    geom_density(alpha = 0.75,
+                 fill = col) +
+    scale_x_continuous(limits = c(0, 100),
+                       expand = c(0, NA)) +
+    scale_y_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+    geom_vline(xintercept = dt[,mean(x, na.rm = TRUE)],
+               lty = 2) +
+    labs(x = xlab,
+         y = ylab) +
+  layout
+}
+
+p1 <- plotShares(stud = FALSE, col = cPrimary,   var = "donationShare", ylab = "Density in VCA")
+p2 <- plotShares(stud = FALSE, col = cPrimary,   var = "contributionShare", 
+                 xlab = "Share of general pop. contributions", ylab = "Density in Experiment (round 1)")
+p3 <- plotShares(stud = TRUE,  col = cSecondary, var = "donationShare")
+p4 <- plotShares(stud = TRUE,  col = cSecondary, var = "contributionShare", xlab = "Share of students' contributions")
+
+patchwork <- (p1 / p2) | (p3 / p4)
+patchwork + plot_annotation(caption = "Dashed vertical lines indicate the respective means.\nShaded areas indicate 95% confidence intervals.")
+
+
+
+rm(list = c("R1covs", "p1", "p2", "p3", "p4", "patchwork"))
+```
+
+**Result 3.** _Existing evidence overestimates the willingness to contribute to real public goods. This holds true for more representative samples and---to a lower degree---for student samples._
+
+
+
+# Conclusion {#sec-conclusion}
+
+The goal of the experiment was to replicate specific experiments of GMTV in an online setting using a general population sample. The results suggest that it is important to replicate experiments---both purely and scientifically [@Hamermesh2007 p. 716]---before drawing conclusions about generalizability.
+
+The three most important findings are as follows: First, the contribution behavior in my experiment is statistically similar to the behavior reported in the original study. Consequently, the outcomes growth and inequality are similar as well. Second, the online experiment proceeded fluently such that dropouts were no concern. Third, contribution behavior in my abstract setting is, if anything, only weakly linked to behavior in the real world. This lack of generalizability can be counteracted, but not be solved, by the use of more representative samples.
+
+The significance of the first result is that similar procedures led to replicable findings under different circumstances across two different samples. The second result is of methodological importance: It highlights that even logistically complex experiments can be conducted online with---not only with clickworkers but also with a true general population sample. The third result questions whether recruiting from more representative samples is worth the efforts because it decreases transferability of results to the real world---at least, a little.
+
+{{< pagebreak >}}
+
+
+# A: Pure Replication {.appendix}
+
+This section comments on two errors as well as a misconception I found in the original data.^[The data can be found in the supplementary materials they provide in their [online appendix](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115).] Before I proceed to explain this in more detail I would like to say that the results of the original paper still hold after the error is fixed and that the authors responded kindly and quickly, showing an interest in solving the issue. In fact, some explanations in this section stem from input provided by the authors.
+
+### Error 1: The Gini coefficient 
+
+The Gini coefficient is wrongly computed in some periods for some group members. The authors found that this happened whenever two group members had exactly the same endowment because the program failed to rank these group members for further calculations.
+
+```{r readGMTVagain}
+GMTV <- read_dta(file="../../data/gaechteretal/GMTV-data.dta") %>% data.table()
+noPunish10 <- GMTV[exp_num == 5 | exp_num == 8 | exp_num == 9]
+# noPunish10 <- GMTV[longgame == 0 & punish == 0 & exp_num <= 10]
+```
+
+@tbl-gini-error illustrates this problem. It shows group 101 in period 5 and documents that the Gini coefficient differs among group members. According to the authors, the Gini coefficient should equal `GINI=``r GINI <- GMTV[exp_num == 1 & gr_id == 101 & per == 5, tokens %>% Gini() %>% round(digits = 3)]; GINI` for all subjects in the group. Instead, participant `112` and `113` who have an equal endowment deviate from that value. Importantly, the `DescTools::Gini()` function in the statistical software `R` does not yield this error, which is why I use that function for my calculations using both my as well as the original data.
+
+```{r}
+#| label: tbl-gini-error
+#| tbl-cap: Subset of Data illustrating the Gini Coefficient's Error
+
+GMTV[exp_num == 1 & gr_id == 101 & per == 5,
+     .(exp_num,
+       gr_id,
+       per,
+       subj_id,
+       tokens,
+       other1,
+       other2,
+       other3,
+       gini = round(gini, digits = 3),
+       GINI = GINI
+       )] %>% 
+  knitr::kable()
+```
+
+### Error 2: The share of endowments contributed
+
+The original data provides a wrong measure of the share of endowments contributed (`mean`) because it relies on a lagged endowment (`gdp`). More precisely, the authors used the following STATA code for their calculations:
+
+```
+*tsset subj_id per
+*gen mean=sum/l.gdp
+```
+
+@tbl-mean-error reports participant 111 in group 101 in experiment 1 over three periods. Both the `gdp` (that is, the sum of the group’s endowments at the beginning of the period) as well as the `sum` (that is, the sum of the group’s contributions) are group-level variables. 
+
+```{r}
+#| label: tbl-mean-error
+#| tbl-cap: Subset of Data illustrating the Means's Error
+
+GMTV[, MEAN := sum/gdp]
+
+GMTV[exp_num == 1 & gr_id == 101 & (per == 4 | per == 5 | per == 6) & subj_id == 111,
+     .(exp_num,
+       gr_id,
+       per,
+       subj_id,
+       gdp,
+       sum,
+       mean = round(mean, digits = 3),
+       MEAN = round(MEAN, digits = 3)
+       )] %>% 
+  knitr::kable()
+```
+
+Calculating the share as `MEAN=sum/gdp` solves the problem and yields $\frac{18}{126}=0.143$ in period 5. I thus, used this proposed definition for all my calculations using both my as well as the original data.
+
+### The misconception: Timing
+
+The authors wrote a note stating that the Gini coefficient as well as the wealth in the paper always refer to the situation at the start of a period and that they clarify this because the paper (last paragraph at the bottom of page 5), says that wealth is defined as the endowment at the beginning of the following period. Furthermore, they write that this error came about as they switched between these two definitions during the course of revising the paper.
+
+I argue that it makes more sense to calculate the variables as they state in the paper. More precisely, I think that the wealth at the _beginning_ of a period is less interesting than the wealth at the _end_ of a period for two reasons: First, there is no need for such a variable because it already exists (the endowment). Second, this definition yields a value that is determined by the design of the game but misses an important outcome at the end of the game. To illustrate this, note that the wealth would be defined as four times the initial endowment in period 1. Also note that the very last value would equal the wealth at the beginning of the last period and says nothing about the outcome of that period. Because the contributions often drop in the last period, this outcome is of particular interest (yet, not represented in the data).
+Moreover, this definition of wealth yields more informative values to calculate the Gini coefficient for the same reasons: We know that the Gini coefficient is zero _before_ the participants made any decision by design. We do no know the inequality at the very end of the game---and the current definition does not tell us.
+
+For these reasons, I define wealth and inequality measures as the outcomes of a period for all of my calculations using both my as well as the original data.^[Accordingly, the definition of `GINI` I provide in @tbl-gini-error is not the definition I used to calculate the current period's Gini coefficient but the previous period's Gini coefficient.]
+
+{{< pagebreak >}}
+
+<!--
+# B: TITLE (exploratory) {.appendix}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit eleifend felis et faucibus. Curabitur nisl risus, tincidunt ut hendrerit sed, sollicitudin eget tortor. Curabitur tortor elit, finibus a commodo eget, auctor vel dui. Ut convallis, felis in commodo bibendum, ligula neque hendrerit eros, eu eleifend libero ligula pretium dui. Nullam blandit a tellus vitae suscipit. Donec ac justo vehicula elit tincidunt mollis nec ac lectus. Nunc dignissim sem eu felis consequat, id euismod ante imperdiet. Mauris quis ex ante.
+
+Nulla elementum laoreet libero nec consequat. Donec blandit, tellus id feugiat viverra, lectus tellus sollicitudin ipsum, ut venenatis nunc mauris ut arcu. Donec mi eros, ullamcorper aliquet varius non, cursus vel lorem. Integer feugiat dui sapien, ac porta lacus porta sit amet. Aliquam interdum dictum tempor. Quisque bibendum feugiat scelerisque. Sed eu purus eu est ullamcorper bibendum.
+
+Donec efficitur magna malesuada tortor feugiat tristique. Sed porttitor, quam at vulputate placerat, elit magna posuere est, a eleifend lacus magna ac nunc. Quisque sit amet arcu mattis, malesuada mauris et, aliquam libero. Fusce viverra sed dolor a ullamcorper. Aliquam in ligula neque. In maximus nisl id ante vehicula, et euismod ante feugiat. Suspendisse et dui lectus. Ut euismod ultrices mi eu lacinia.
+
+```{r firstRoundVizAppendix}
+
+d1 <- ggplot(data = R1[treatment == "replication"],
+       mapping = aes(x = ownContribution, fill = student, lty = student)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(limits = c(0, 20),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 0.1),
+                       expand = c(0, NA)) +
+  scale_fill_manual(values = c(cPrimary, cSecondary),
+                    labels = c("General Population Sample", "Student Sample")) +
+  guides(lty = "none") +
+  geom_vline(xintercept = R1[treatment == "replication", 
+                             mean(ownContribution)],
+             col = "#FFFFFF",
+             lty = 2) +
+  geom_vline(xintercept = R1[treatment == "noPunish10", 
+                             mean(ownContribution)],
+             col = "#FFFFFF",
+             lty = 1) +
+    labs(title = "", 
+       y = "", x = "Initially Contributed Tokens") +
+  layout +
+  theme(legend.position = "top")
+```
+
+
+```{r stockDistributionVizAppendix}
+
+populationWealth <- main[treatment == "replication" & student == FALSE & round == 10,
+                         mean(stock)]
+studentWealth    <- main[treatment == "replication" & student == TRUE & round == 10,
+                         mean(stock)]
+
+d2 <- ggplot(data = main[treatment == "replication"],
+       mapping = aes(x = stock, fill = student, lty = student)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_fill_manual(values = c(cPrimary, cSecondary),
+                    labels = c("General Population Sample", "Student Sample")) +
+  guides(lty = "none") +
+  geom_vline(xintercept = studentWealth,
+             col = "#000000", alpha = 0.5,
+             lty = 2) +
+  geom_vline(xintercept = populationWealth,
+             col = "#000000", alpha = 0.5,
+             lty = 1) +
+    labs(title = "", 
+       y = "", x = "Stock") +
+  layout +
+  theme(legend.position = "top")
+```
+
+
+```{r giniDistributionVizAppendix}
+
+populationGini    <- main[treatment == "replication" & student == FALSE & round == 10,
+                        mean(gini)] %>% round(digits = 2)
+studentGini <- main[treatment == "replication" & student == TRUE & round == 10,
+                        mean(gini)] %>% round(digits = 2)
+
+d3 <- ggplot(data = main[treatment == "replication"],
+       mapping = aes(x = gini, fill = student, lty = student)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(limits = c(0, 1),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_fill_manual(values = c(cPrimary, cSecondary),
+                    labels = c("General Population Sample", "Student Sample")) +
+  guides(lty = "none") +
+  geom_vline(xintercept = studentGini,
+             col = "#000000", alpha = 0.5,
+             lty = 2) +
+  geom_vline(xintercept = populationGini,
+             col = "#000000", alpha = 0.5,
+             lty = 1) +
+    labs(title = "", 
+       y = "", x = "Gini Coefficient") +
+  layout +
+  theme(legend.position = "top")
+```
+
+```{r assembleAppendixPlots}
+#| fig-cap: Kernel Density Plots
+#| label: fig-multiple-distributions
+
+patchwork <- d1 + d2 + d3 + plot_layout(guides = "collect") &  theme(legend.position = "top") 
+patchwork + plot_annotation(caption = "Vertical lines indicate means (dashed line = student sample).")
+```
+
+```{r plotContributionsAppendix}
+#| include: false
+
+SUM <- main[treatment == "replication",
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "student"),
+            .SDcols = "contribution"]
+
+SUM[,
+    sum := round(contribution)]
+
+SUM[,
+    contribution := contribution/4]
+
+upperLimit <- SUM$contribution %>% max() %>% round() + 5
+
+p1 <- ggplot(data = SUM, 
+             aes(x = round, y = contribution, fill = student, color = student, lty = student)) +
+  layout +
+  theme(legend.position="top") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Average Amount of Tokens contributed") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("General Population Sample", "Student Sample")) + 
+  guides(fill = "none") +
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+
+rm(list = c("SUM"))
+```
+
+
+```{r plotShareOfContributionsAppendix}
+#| fig.cap: "The average amount of tokens contributed over time in treatments."
+#| include: false
+
+SHARE <- main[treatment == "replication",
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "student"),
+            .SDcols = "share"]
+
+# SHARE <- main[,
+#             .(share = sum(contribution)/sum(endowment)),
+#             by = c("round", "treatment")]
+
+upperLimit <- 0.75
+
+p2 <- ggplot(data = SHARE, 
+             aes(x = round, y = share, fill = student, color = student, lty = student)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Share of Current Endowment contributed") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("General Population Sample", "Student Sample")) +
+  guides(fill = "none")
+
+p1 + p2 + plot_layout(guides = "collect") & 
+  theme(legend.position = "top")
+
+# rm(list = c("p1", "p2"))
+```
+
+
+```{r plotStockAppendix}
+#| include: false
+
+# data
+STOCK <- main[treatment == "replication",
+              lapply(.SD, mean, na.rm = TRUE),
+              by = c("round", "student"),
+              .SDcols = "stock"]
+
+
+# annotation
+maxPath <- data.table(x = 1:10)
+maxPath[, y := 80*1.5^x]
+maxPath[, student := "replication"]
+maxPath[, groupID := 42]
+
+# plot
+p1 <- ggplot(data = STOCK, 
+             aes(x = round, y = stock, fill = student, color = student, lty = student)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(limits = c(0, 4700), expand = c(0, 0)) +
+  labs(y = "Wealth", x = "Period") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("General Population Sample", "Student Sample")) +
+  geom_point(mapping = aes(x = 10, y = 4613), col = "#b5b5b5") +
+  annotate("text", x = 9, y = 4630, size = 3,
+           label = "max", col = "#b5b5b5") +
+  geom_line(data = maxPath, mapping = aes(x = x, y = y), col = "#b5b5b5", lty = 2) +
+  guides(fill = "none") +
+  layout +
+  theme(legend.position = "top") +
+  guides(lty = "none")
+```
+
+```{r growthHeterogeneityVizAppendix}
+#| fig.cap: Average wealth over time across samples.
+#| include: false
+
+# plot
+p2 <- ggplot(data = main[treatment == "replication"],
+       mapping = aes(x = round, y = stock, color = student, by = groupID)) +
+  geom_line(alpha = 0.5) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(limits = c(0, 2000),
+                       expand = c(0, NA)) +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("General Population Sample", "Student Sample")) +
+  labs(y = "", x = "Period") +
+  layout +
+  guides(col = "none")
+
+
+# assembling
+p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "top")
+```
+
+
+
+```{r}
+#| fig.cap: Average Gini coefficient (within groups) over time across samples
+#| include: false
+ 
+tmp <- main[treatment == "replication",
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "student"),
+            .SDcols = "gini"]
+
+GINI <- rbind(tmp, list(0, TRUE, 0), list(0, FALSE, 0))
+
+ggplot(data = GINI, 
+             aes(x = round, y = gini, fill = student, color = student, lty = student)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 0:10) +
+  scale_y_continuous(limits = c(0, 0.25), expand = c(0, 0)) +
+  labs(y = "Wealth", x = "Period") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("General Population Sample", "Student Sample")) +
+  guides(fill = "none") +
+  layout +
+  theme(legend.position = "top") +
+  guides(lty = "none")
+```
+
+
+
+# C: Growth _and_ Inequality (exploratory) {.appendix}
+
+In contrast to GMTV, I did not ask how rich and poor groups differ. Instead, I was wondering, whether equal groups are wealthier. More precisely, does the Gini coefficient correlate with growth and wealth creation? To answer that question, @fig-stock-by-gini applies a median split showing equal and unequal groups' wealth over time.
 
 ```{r plotStockByGini}
-#| fig.cap: Average wealth over time across treatments.
+#| fig-cap: Average wealth over time across treatments.
+#| label: fig-stock-by-gini
 
 # create equality indicator (just as highgdp in original data)
 median <- main[round == 10,
@@ -1228,5 +1825,4 @@ p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 
 rm(list = c("STOCKe", "STOCKu", "p1", "p2"))
 ```
-
-
+-->

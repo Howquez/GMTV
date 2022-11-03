@@ -1,0 +1,195 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'global/js/general_information.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<body onload="">
+<img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
+
+
+<!-- Hidden Tracking Fields -->
+    <input type="hidden" name="window_width" id="id_window_width" value="0"/>
+    <input type="hidden" name="window_height" id="id_window_height" value="0"/>
+    <input type="hidden" name="browser" id="id_browser" value="0"/>
+
+
+<!-- Content -->
+    <div class="card mt-5">
+        <div class="card-body">
+            <h1 class="display-4">Willkommen!</h1>
+            <p class="lead">Vielen Dank für Ihre Bereitschaft, an der Studie teilzunehmen.</p>
+
+            <table class="table mt-5 mb-5 table-responsive">
+                <tbody>
+                    <tr>
+                        <th scope="row">Name der Studie</th>
+                        <td>Gruppenentscheidungen</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Dauer der Studie</th>
+                        <td>ungefähr 30 Minuten</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Bezahlung</th>
+                        <td>
+                            {{ session.config.participation_fee }} sowie einen Verdienst, dessen Betrag sowohl von Ihren
+                            Entscheidungen, als auch von den Entscheidungen anderer Teilnehmer_innen abhängt.
+                        </td>
+                    </tr>
+                    <tr>
+                        <tr>
+                        <th scope="row">Technische Vorraussetzungen</th>
+                        <td>
+                            Die Studie funktioniert sowohl auf Smartphones und Tablets als auch auf Laptops und PCs
+                            sowie in allen modernen Browsern. Für einen möglichst reibungslosen Ablauf raten wir
+                            dazu, einen Laptop oder PC mit stabiler Internetverbindung zu benutzen.
+                        </td>
+                    </tr>
+                    <!--
+                    <tr>
+                        <th scope="row">Einwilligung</th>
+                        <td>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                                <label class="form-check-label" for="exampleCheck1">
+                                    Ich stimme der anonymisierten Analyse meiner Antworten zum Zwecke der
+                                    wissenschaftlichen Auswertung gemäß der
+                                    <a class="text-primary" data-toggle="modal" data-target="#gdprModal" id="gdpr_text" style="cursor: pointer;">
+                                        <u>Datenschutzerklärung</u>
+                                    </a> zu.
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    -->
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center mb-5">
+                <button class="btn btn-primary" type="submit" id="submitButton" style="border-radius: 40px;">
+                    Studie beginnen
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<!-- GDPR -->
+<div class="modal fade bd-modal-lg" id="gdprModal" tabindex="-1" role="dialog" aria-labelledby="gdprModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4 class="display-4">
+                    Datenschutzerklärung
+                </h4>
+
+                <small>
+                    Im Rahmen der Studie wird größter Wert auf die Einhaltung von datenschutzrechtlichen Bestimmungen,
+                    die Wahrung der Privatsphäre sowie die Vertraulichkeit der Daten gelegt. Wir halten uns streng an
+                    alle geltenden Gesetze und Vorschriften zum Datenschutz Mit diesen Hinweisen informieren wir Sie
+                    über die Verarbeitung Ihrer personenbezogenen Daten und die ihnen zustehenden Rechte.
+                    <br><br>
+                </small>
+
+                <h5>1. Verantwortlicher</h5>
+                <address>
+                    Hauke Roggenkamp <br><br>
+                    Helmut Schmidt Universität <br>
+                    Holstenhofweg 85<br>
+                    22043 Hamburg<br><br>
+                    <a href="mailto:roggenkh@hsu-hh.de?subject=CLICCS B5 Umfrage">aljoscha.minnich@uni-hamburg.de</a><br>
+                </address>
+                <small>
+                    Die Experimentdaten werden auf einem Experimentalserver der Universität Hamburg erhoben, der in
+                    den Geltungsbereich der DSGVO fällt.
+                </small>
+                <br><br>
+
+
+                <h5>2. Zweck und Rechtsgrundlage der Datenverarbeitung</h5>
+                <small>
+                    Wir erheben und verarbeiten Ihre personenbezogenen Daten ausschließlich für den Zweck der
+                    wissenschaftlichen Forschung. Rechtsgrundlage für die Datenverarbeitung ist nach Art. 6 Abs. 1 lit.
+                    a) DSGVO Ihre Zustimmung.
+                    <br><br>
+                </small>
+
+                <h5>3. Weitergabe an Dritte</h5>
+                <small>
+                    Ihre personenbezogenen Daten werden nicht an Dritte weitergegeben. Im Rahmen des Forschungsprojekts
+                    kann eine dauerhafte, frei zugängliche Veröffentlichung der Experimentaldaten im Internet erfolgen.
+                    Indem Ihre Angaben zu personenbezogenen Daten mit den Angaben anderer Befragter zusammengefasst
+                    („kategorisiert“) werden, ist eine Identifikation einzelner Personen nicht oder nur mit
+                    unverhältnismäßig Aufwand möglich.
+                    <br><br>
+                </small>
+
+                <h5>4. Datenkategorien</h5>
+                <small>
+                    Das Hauptaugenmerk der Studie liegt darin, Ihre Entscheidungen im Rahmen des Experiments zu
+                    untersuchen. Diese Daten werden mit Dritten geteilt und dauerhaft gespeichert.
+                    Darüber hinaus erheben wir verschiedene Kategorien personenbezogener Daten, die wir unterschiedlich
+                    behandeln. <br>
+                    a. Kommunikations- und Finanzdaten werden für die Abwicklung der Studie sowie für Ihre
+                    Entlohnung verwendet und getrennt von allen anderen Daten gespeichert und verwaltet. Diese Daten
+                    werden unter keinen Umständen mit Dritten geteilt und nach Abwicklung der Zahlung gelöscht.<br>
+                    b. Soziodemografische Identifikations- und Personaldaten werden erhoben und im Rahmen des
+                    Forschungsprojekts analysiert aber nur kategorisiert geteilt.<br>
+                    c. Technische Daten - also die von Ihnen verwendete Browserversion und Bildschirmauflösung - können
+                    verwendet werden, um mögliche technische Probleme zu analysieren und werden gegebenenfalls
+                    kategorisiert mit Dritten geteilt. <br>
+                    Durch die separate Behandlung von Kommunikations- und Finanzdaten sowie der Kategorisierung
+                    weiterer Daten, versuchen wir, die Identifikation einzelner Personen auszuschließen. Achten Sie bei
+                    der Beantwortung von offenen Fragen darauf, keine persönlichen Details von sich preiszugeben, um
+                    Rückschlüsse auf Ihre Person zu verhindern. <br>
+                    Weitere Informationen zu unseren Datenkategorien finden
+                    Sie <a href="https://www.isdsm.uni-hamburg.de/dokumente/datenkatalog10.pdf">hier.</a>
+                    <br><br>
+                </small>
+
+                <h5>5. Dauer der Speicherung</h5>
+                <small>
+                    Die im Rahmen der Studie erhobenen Daten werden in anonymisierter Form dauerhaft
+                    gespeichert und in Forschungsdatenrepositorien frei zugänglich sein.
+                    <br><br>
+                </small>
+
+                <h5>6. Ihre Rechte</h5>
+                <small>
+                    Sie haben das Recht, von den Verantwortlichen Auskunft über die von ihnen gespeicherten Daten zu
+                    verlangen. Ebenfalls können Sie die Berichtigung unzutreffender Daten sowie die Löschung der Daten
+                    oder Einschränkung von deren Verarbeitung verlangen.<br><br>
+
+                    Sie haben außerdem das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit
+                    gegen die Verarbeitung Sie betreffender personenbezogener Daten, die aufgrund von Artikel 6 1 lit. e
+                    oder f erfolgt, Widerspruch einzulegen.<br><br>
+
+                    Darüber hinaus haben Sie das Recht, sich bei dem zuständigen Landesdatenschutzbeauftragten zu
+                    beschweren. Ihr_e zuständige_r Landesdatenschutzbeauftragte_r richtet sich nach dem Bundesland Ihres
+                    Wohnsitzes, Ihrer Arbeit oder der mutmaßlichen Verletzung. Eine Liste der
+                    Landesdatenschutzbeauftragten mit Anschrift finden Sie
+                    <a href="https://www.bfdi.bund.de/DE/Infothek/Anschriften_Links/anschriften_links-node.html">hier.</a><br>
+                </small>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

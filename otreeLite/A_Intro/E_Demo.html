@@ -1,57 +1,101 @@
-<input type="hidden" name="formula_shown" id="formula_shown" value="false"/>
-
 <p>
-    There is a chance of {{ risk }}% that an event occurs. Such an event reduces your
-    endowment to up to {{ damage }}%. While you do not have any influence on the
-    occurence of an event, you can affect the damage it evokes:
+    Your decision screen will look as follows: You will see your endwoment in the top left pane;
+    your quota is displayed in the top right pane; your actual decision is made in the central pane, where you have an
+    input field on the left as well as a button (that submits your decision) on the right.
 </p>
 
 <p>
-    The more you and the rest of your group contribute to the group account, the smaller the
-    damage if an event occurs. Conversely, the lower the contributions, the higher the damage if
-    an event occurs.
-</p>
-
-<p>
-    More precisely, there won't be any damage if everybody in the group contributes his or her
-    whole endowment to the group account &#8211 even if there was an event. If none of you
-    contributes anything to the group account, an event will cause a damage of {{ damage }}% of
-    the endowments of each and every one of you.
-</p>
-
-<p>
-    The following figure visualizes this relationship.
-</p>
-
-<div id="damage_viz"></div>
-
-<p>
-    Note that we provide a calculator behind the <i class="bi bi-calculator"></i>-symbol. It
-    takes the abovementioned formula und helps you to consider different cases. As such, it is
-    most important that you understand that higher contributions lead to lower damage and
-    vice versa.
-</p>
-
-<p>
-    This can also be explained by a formula.
-    <u class="text-primary" id="collapseButton" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFormula" aria-expanded="false" aria-controls="collapseFormula">
-        Click here
-    </u>
-    to learn more.
+    In addition, there may be a red pane that shows up if an event occured. Finally, you will also see a pane informing you
+    about the other group members' decision (from round 2 on).
 </p>
 
 
-<div style="min-height: 120px;">
-    <p class="collapse" id="collapseFormula">
-        $${{damage}}\% \times \bigg(1-\frac{\text{Sum of contributions} }{ \text{Sum of endowments} } \bigg)$$
-    </p>
+<div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-8 col-md-8 col-lg-6">
+
+                <!-- Info Cards -->
+                <div class="container p-0 mt-3">
+                    <div class="row">
+                        <!-- Personal Info -->
+                        <div class="col col-6">
+                            <div class="card shadow-sm h-100 bg-light rounded-0">
+                                <div class="card-body">
+                                    <p class="h5">
+                                        <small class="text-muted">Your current endowment:</small> 20
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MPCR -->
+                        <div class="col col-6">
+                            <div class="card shadow-sm h-100 rounded-0">
+                                <div class="card-body">
+                                    <small class="text-secondary">
+                                        You will receive
+                                    </small>
+                                    <p class="h5 m-2">
+                                        46.67%
+                                    </p>
+                                    <small class="text-secondary">
+                                        of the total contributions you and the others make in this period.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning -->
+                <div class="alert alert-danger mt-3 rounded-0 shadow-sm" role="alert">
+                    <small>
+                        An event occured.
+                        This caused a damage and diminished your endowment.
+                    </small>
+                </div>
+
+                <!-- Decision Card -->
+                <div class="card rounded mt-3 shadow-lg">
+                    <div class="card-body">
+
+                        <p class="h3">
+                            Your Decision
+                        </p>
+
+                        <p class="card-text mb-1 text-secondary">
+                            From these 20 tokens you can contribute any amount you want or keep everything.
+                        </p>
+
+                        <p class="mb-4 text-secondary">
+                            <small>
+                                The tokens you keep, that is, the tokens you do not contribute, will remain unchanged and
+                                are available to you in the next period.
+                            </small>
+                        </p>
+
+                        <div class="container-fluid p-0 m-0">
+                            <div class="row align-items-center">
+                                <div class="col m-0">
+                                    <input type="number" class="form-control m-0 border-primary" placeholder="Contribution" id="id_contribution" name="contribution" min="0"
+                                           data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can contribute up to 20 tokens in this period.">
+                                </div>
+                                <div class="col m-0">
+                                    <button type="button" id="submit_button" class="btn-primary btn m-0 w-100" disabled>
+                                        Contribute
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 
-<script>
-    document.getElementById("collapseButton").addEventListener("click",
-        function() {
-            console.log("hi")
-            document.getElementById("formula_shown").value = true;
-        },
-    false);
-</script>
+<p class="mt-5">
+    On top of that, you will see a header similar to the one you see right now. It will also show these icons
+    (<i class="bi bi-calculator"></i> <i class="bi bi-info-circle-fill"></i> <i class="bi bi-x-circle"></i>).
+    In addition, the header will tell you the period as well as the fixed probability of events.
+</p>

@@ -1,0 +1,46 @@
+{% extends 'otree/WaitPage.html' %}
+{% load otree %}
+
+{% block styles %}
+<link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+function myFunction() {
+  //setInterval(function(){ document.forms[0].submit(); }, 3000);
+}
+</script>
+{% endblock %}
+
+
+{% block content %}
+<body onload="myFunction()">
+<img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
+
+
+<h1 class="display-4 lead mb-4">
+    Alle Fragen richtig beantwortet.
+</h1>
+<p class="lead">
+    Sie werden nun mit {{ Constants.num_others_per_group }} weiteren Teilnehmern verbunden, um eine Gruppe zu bilden.
+</p>
+<p>
+    <small>
+        {% if player.wait_time_left > 1 %}
+        Sollten sich in den nächsten {{ player.wait_time_left }} Minuten
+        {% else %}
+        Sollten sich in den nächsten Minute
+        {% endif %}
+        keine weiteren Teilnehmer finden, so werden Sie
+        direkt ans Ende der Studie geleitet. Für Ihre Geduld werden wir Ihnen dann einen Bonus in Höhe von
+        {{ Constants.patience_bonus }} Punkten auszahlen.
+    </small>
+</p>
+
+</body>
+
+{% endblock %}
+
+

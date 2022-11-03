@@ -1,0 +1,328 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block styles %}
+    <link href="{% static 'global/css/global.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block scripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<script src="{% static 'global/js/basics.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<body onload="">
+<img src="{% static 'global/images/cool-background.svg' %}" id="bg" alt=""/>
+
+
+<!-- Header -->
+<nav class="navbar sticky-top bg-header border-bottom mb-4 justify-content-between">
+    <span class="badge badge-secondary">
+        Schätzaufgabe
+    </span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#666666" class="bi bi-headset" viewBox="0 0 16 16" data-toggle="modal" data-target="#contactModal" id="contact_icon">
+        <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z"/>
+    </svg>
+
+</nav>
+
+
+<!-- timeout Alert -->
+<div class="alert alert-danger alert-dismissible fade" id="timeoutModal" role="alert">
+    <strong>Bitte fällen Sie eine Entscheidung.</strong> Für Ihre Eingabe in dieser Runde verbleiben Ihnen nur noch
+    30 Sekunden.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+<!-- Decision Card -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-8">
+
+            <div class="card mt-5">
+                <div class="card-body">
+
+                    <p class="mb-1">
+                        <small>
+                            Bevor Sie mit der ersten Runde beginnen, haben wir noch eine Frage an Sie. Bei der
+                            Beantwortung der Frage können Sie Punkte verdienen, die Sie am Ende der Studie
+                            gutgeschrieben bekommen.
+                        </small>
+                    </p>
+
+                    <hr class="mb-4">
+
+                    <p class="card-text lead mb-1">
+                        Was glauben Sie, wie viele Punkte die anderen Gruppenmitglieder insgesamt beitragen werden?
+                    </p>
+
+                    <hr class="mt-4">
+
+
+                    <p class="mt-1">
+                        <small>
+                            Je besser Sie schätzen, desto mehr Punkte können Sie verdienen: Wenn Sie genau richtig
+                            liegen, bekommen Sie {{ Constants.elicitation_bonus }} Punkte gutgeschrieben. Wenn Sie die
+                            Beiträge der anderen über- oder unterschätzen, bekommen Sie entsprechend weniger Punkte
+                            gutgeschrieben: <br>
+                            Wenn Sie sich
+                            zum Beispiel um 6 Punkte verschätzen, bekommen Sie 30-6=24 Punkte gutgeschrieben.
+                            Wenn Sie sich hingegen um {{ Constants.elicitation_bonus }} Punkte oder mehr
+                            verschätzen, bekommen Sie für Ihr die Beantwortung dieser Frage nichts.
+                        </small>
+                    </p>
+
+                    <div class="form-group row mt-5 mb-4">
+                        <div class="col">
+                            <input type="number" class="form-control float-right" placeholder="Ich schätze..." id="id_belief" name="belief" min="0" max="60" required
+                            data-container="body" data-toggle="popover" data-placement="bottom"
+                                   data-content="Weil in dieser Runde jeder Ihrer drei Mitspieler ebenfalls 20 Punkte hat, sind Antworten
+                            zwischen 0 und 60 Punkten möglich.">
+                        </div>
+                        <div class="col">
+                            <button type="submit" id="" class="btn-primary btn float-left">
+                                Absenden
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Instructions Modal -->
+    <div class="modal fade bd-example-modal-lg" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Card's Tab Navigation -->
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+
+                        <li class="nav-item" >
+                            <a class="nav-link back-and-forth active" id="part1-tab" data-toggle="tab" href="#part1" role="tab" aria-controls="part1"> Allgemeines </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link back-and-forth" id="part2-tab" data-toggle="tab" href="#part2" role="tab" aria-controls="part2"> Aufbau </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-content" id="myTabContent">
+
+                        <!-- Part 1: Allgemeines -->
+                        <div class="tab-pane show active" id="part1" role="tabpanel" aria-labelledby="part1-tab">
+                            <div class="card-body">
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Inhalt
+                                    </span>
+                                </h5>
+                                <p>
+                                    Sie nehmen jetzt an einer Studie der Hamburger Universitäten teil. Wenn Sie die Instruktionen aufmerksam
+                                    lesen und befolgen, können Sie einen beträchtlichen Betrag verdienen, der von Ihren
+                                    Entscheidungen und den Entscheidungen weiterer Teilnehmer abhängt. Dieser Betrag wird Ihnen am
+                                    Ende des Studie genannt und ausgezahlt.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Wechselkurs
+                                    </span>
+                                </h5>
+                                <p>
+                                    Während der gesamten Studie werden Sie Entscheidungen über Punkte fällen. Am Ende des
+                                    Studie werden alle Punkte zu einem Wechselkurs von 5 Cent je Punkt umgerechnet. Zusätzlich
+                                    erhalten sie eine Pünktlichkeitsprämie in Höhe von {{ session.config.participation_fee }}.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Disqualifikation
+                                    </span>
+                                </h5>
+                                <p>
+                                    Es ist wichtig, dass Sie konzentriert und ohne Unterbrechungen an der Studie teilnehmen.
+                                    Sollten Sie die Studie frühzeitig abbrechen oder länger als 3 Minuten keine Entscheidung treffen,
+                                    dann können wir Ihre Daten sowie die Daten Ihrer Gruppenmitglieder nicht auswerten. Deshalb
+                                    können wir Ihnen nur dann Geld auszahlen, wenn Sie ans Ende der Studie gelangen.
+                                </p>
+
+                            </div>
+                        </div>
+
+
+                        <!-- Part 2: Aufbau  -->
+                        <div class="tab-pane" id="part2" role="tabpanel" aria-labelledby="part2-tab">
+                            <div class="card-body">
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Runden & Gruppen
+                                    </span>
+                                </h5>
+                                <p>
+                                    Die Studie besteht aus {{ session.config.num_rounds }} Entscheidungsrunden.
+                                    Zu Beginn der Studie werden Sie mit {{ Constants.num_others_per_group }} weiteren
+                                    Teilnehmern gruppiert. In einer Gruppe sind daher {{ Constants.players_per_group }} Personen, inklusive
+                                    Ihnen. Die Zusammensetzung der Gruppe wird sich für die Dauer der Studie nicht verändern.
+                                    Weil die Studie anonym ist, kennen Sie Ihre Gruppenmitglieder nicht und Ihre
+                                    Gruppenmitglieder kennen Sie nicht.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Startguthaben
+                                    </span>
+                                </h5>
+                                <p>
+                                    Vor der ersten Runde bekommen Sie ein Guthaben von 20 Punkten.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Entscheidungen
+                                    </span>
+                                </h5>
+                                <p>
+                                    Zu Beginn der ersten Runde werden Sie gebeten, Ihr Guthaben entweder zu einem Gruppenprojekt
+                                    beizutragen oder es zurückzulegen. Punkte, die Sie zurücklegen, haben keinen Ertrag.
+                                    Zurückgelegte Punkte werden also einfach behalten und stehen Ihnen zu Beginn der nächsten Runde
+                                    unverändert zur Verfügung. Niemand außer Ihnen profitiert von Ihren zurückgelegten Punkten.
+                                    <br><br>
+                                    Die Punkte, die Sie zu dem Gruppenprojekt beitragen, werden zu den Beiträgen der anderen
+                                    {{ Constants.num_others_per_group }} Gruppenmitglieder gerechnet. Die Summe der Beiträge
+                                    hat einen Ertrag von {{ Constants.efficiency_factor }} (also eine Rendite von
+                                    {{ Constants.rate_of_return }}%) und wird anschließend in Form einer Dividende gleichmäßig auf
+                                    alle Gruppenmitglieder aufgeteilt. Dementsprechend profitieren alle Gruppenmitglieder
+                                    gleichermaßen von den Beiträgen und der Rendite. Das heißt, dass die Summe
+                                    aller Beiträge einer Runde zusammengezählt und dann mit {{ Constants.efficiency_factor }}
+                                    multipliziert wird, bevor sie
+                                    zu gleichen Teilen auf alle Gruppenmitglieder aufgeteilt wird.
+                                    Dementsprechend ist Ihre Dividende am Ende der ersten Runde die folgende:
+                                </p>
+                                $$\frac{\text{Beitragssumme} \times {{ Constants.efficiency_factor }} }{ {{ Constants.players_per_group }} }$$
+
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Erträge
+                                    </span>
+                                </h5>
+                                <p>
+                                    Ihr Guthaben zu Beginn der zweiten Runde entspricht Ihren zurückgelegten Punkten sowie Ihrer
+                                    Dividende aus der ersten Runde.
+
+                                    Zu Beginn der zweiten Runde werden Sie dann wieder gefragt, wie viele Punkte Sie zurücklegen und
+                                    wie viele Punkte Sie beitragen wollen. Zurückgelegte und beigetragene Punkte funktionieren dabei exakt
+                                    genauso wie in der ersten Runde auch: Zurückgelegte Punkte werden bis zur Folgerunde unverändert behalten
+                                    und das Ergebnis der Beiträge wird in Form einer Dividende auf alle Gruppenmitglieder
+                                    ausgezahlt.
+
+                                    Alle weiteren Runden folgen derselben Struktur: Ihr Guthaben zu Beginn einer Runde entspricht
+                                    den zurückgelegten Punkten und der Dividende der Vorrunde.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Informationen
+                                    </span>
+                                </h5>
+                                <p>
+                                    In jeder Runde werden Sie über Folgendes informiert:
+                                </p>
+                                <ul>
+                                    <li>Das Guthaben der jeweiligen Gruppenmitglieder zu Beginn der Vorrunde</li>
+                                    <li>Die Beiträge der jeweiligen Gruppenmitglieder in der Vorrunde</li>
+                                    <li>Die Dividende in der Vorrunde</li>
+                                    <li>Das Guthaben der jeweiligen Gruppenmitglieder zu Beginn der aktuellen Runde</li>
+                                </ul>
+                                <p>
+                                    Alle weiteren Gruppenmitglieder erhalten exakt die gleichen Instruktionen wie Sie.
+                                </p>
+
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Verdienst
+                                    </span>
+                                </h5>
+                                <p>
+                                    Am Ende der Studie bekommen Sie einen Verdienst, der sich, wenn Sie alle Runden durchlaufen und
+                                    alle Fragen beantortet haben, aus den folgenden Bestandteilen
+                                    zusammensetzt: Zum einen bekommen Sie die Pünktlichkeitsprämie in Höhe von
+                                    {{ session.config.participation_fee }}. Darüber hinaus bekommen Sie einen Verdienst aus der
+                                    Schätzaufgabe sowie das Guthaben, das Sie am Ende der {{ session.config.num_rounds }}ten
+                                    (also am Ende der letzten) Runde haben.
+                                </p>
+
+                                <h5>
+                                    <span class="badge badge-content mt-4">
+                                        Weiterer Verlauf
+                                    </span>
+                                </h5>
+                                <p>
+                                    Nach den {{ session.config.num_rounds }} Runden werden wir Sie bitten, einen kurzen Fragebogen
+                                    auszufüllen. Im Anschluss daran werden Sie über Ihre Auszahlung informiert.
+                                </p>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Contact Modal -->
+<div class="modal fade bd-modal-lg" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p class="lead">
+                    Bitte rufen Sie im Falle von technischen Problemen oder Fragen unsere Service-Hotline an:
+                </p>
+                <address>
+                    WiSo-Forschungslabor <br><br>
+                    Fakultät für Wirtschafts- und Sozialwissenschaften<br>
+                    Universität Hamburg <br>
+                    Von-Melle-Park 5 <br>
+                    Raum 2155/56 <br>
+                    20144 Hamburg <br><br>
+                    <a href="mailto:forschungslabor.wiso@uni-hamburg.de?subject=CLICCS B5 Umfrage">forschungslabor.wiso@uni-hamburg.de</a><br>
+                    <a href="tel:+4940428389334">+49 40 42 838 - 9334</a>
+                </address>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Schließen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+{% endblock %}
+
+

@@ -31,7 +31,7 @@ Highcharts.chart('damage_viz', {
 
     yAxis: {
         title: {
-        		text : "Possible Damage in Percent of Stock"
+        		text : "Possible Damage of Stock in Percent"
         },
         labels: {
             format: '{value}%'

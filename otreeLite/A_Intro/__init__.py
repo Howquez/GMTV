@@ -13,6 +13,7 @@ class C(BaseConstants):
     NUM_ROUNDS = 1
     EARNINGS_TEMPLATE = "A_Intro/C_Earnings.html"
     SHOCKS_TEMPLATE = "A_Intro/D_Shocks.html"
+    DEMO_TEMPLATE = "A_Intro/E_Demo.html"
 
 
 class Subsession(BaseSubsession):

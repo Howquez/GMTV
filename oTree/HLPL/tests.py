@@ -1,13 +1,13 @@
 from otree.api import Currency as c, currency_range
-from . import pages
-from ._builtin import Bot
-from .models import Constants
+from . import *
+from otree.api import Bot
+
 import random
 
 
 class PlayerBot(Bot):
     def play_round(self):
-        yield pages.HLPL_Decision, dict(choice_1="lottery",
+        yield HLPL_Decision, dict(choice_1="lottery",
                                              choice_2="lottery",
                                              choice_3="lottery",
                                              choice_4="lottery",

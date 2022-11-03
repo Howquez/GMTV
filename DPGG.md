@@ -19,6 +19,8 @@ We want to incorporate an exogenous risk of extreme weather events that cause an
 intuitive: extreme weather events cannot be prevented in the short run but their damage can be controlled -- the more
 a society contributes to a public good the lower the damage if an extreme weather event occurs.
 
+The design is implemented using the `B_EWE` App, which you can find [here](otreeLite/B_EWE) and is based on the basic [GMTV](otreeLite/B_GMTV) setting.
+
 ## 🚏 How you can access a demo
 You can find the experiment's demo [here](https://labexp.herokuapp.com/demo/). A click on _GMTV_
 will open a new tab with several URLs. I'd advice you to click on the Hyperlink called _Play in split screen mode._

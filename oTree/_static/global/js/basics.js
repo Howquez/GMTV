@@ -33,14 +33,14 @@ function submitPage() {
 }*/
 
 // timer & alert
-setTimeout(
+/*setTimeout(
     function () {
         if (template == "decision"){
             document.getElementById("timeoutModal").classList.add("show")
         }
     },
     (timeout - 0.5) * 60 * 1000
-);
+);*/
 
 // open modal onload
 if (template == "risk"){

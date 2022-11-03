@@ -41,7 +41,7 @@
 
         <h5>
             <span class="badge rounded-pill mt-4 ms-3 bg-danger shadow" data-toggle="tooltip" data-placement="bottom" title="Risk of damage is {{ risk }}%">
-                Risk: {{ risk }}%
+                Event probability: {{ risk }}%
             </span>
         </h5>
 
@@ -113,7 +113,7 @@
                 {{ if ewe }}
                 <div class="alert alert-danger mt-3 rounded-0 shadow-sm" role="alert">
                     <small>
-                        A shock occured.
+                        An event occured.
                         {{ if total_damage > 0}}
                         This caused a damage and diminished your returns.
                         {{ endif }}
@@ -246,13 +246,13 @@
             <div>
                 This calculator is designed to guide your decision. Given the quota of {{ mpcr }}% as well as
                 your intended contribution, you can make an assumption about the other players' average contribution and
-                whether a shock will occur to calculate your return.
+                whether an event will occur to calculate your return.
             </div>
 
 
             <div class="form-check form-switch mt-4">
                 <input class="form-check-input" type="checkbox" role="switch" id="eweFlexSwitch">
-                <label class="form-check-label" for="eweFlexSwitch">Assume a shock occurs?</label>
+                <label class="form-check-label" for="eweFlexSwitch">Assume an event occurs?</label>
             </div>
             <div class="form-floating mt-2">
                 <input type="number" class="form-control" id="othersContributions" placeholder="0" value="0" min="0">
