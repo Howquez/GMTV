@@ -183,7 +183,7 @@ The abstract follows at later point.
 science \sep Dynamic public good game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, sharp corners, frame hidden, boxrule=0pt, breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, frame hidden, sharp corners, enhanced, breakable, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}
@@ -233,9 +233,11 @@ reporting the methods, this paper is organized along these findings.
 \section{Methodology}\label{sec-methods}}
 
 In the terminology of \citet{Hamermesh2007}, I ran both a \emph{pure} as
-well as a \emph{scientific replication} of one treatment of GMTV's
-dynamic public good game. The pure replication re-analyzes the original
-data. \protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
+well as a \emph{scientific replication}\footnote{\citet{Parsons2022} use
+  the term of a \emph{conceptual replication} which means the same.} of
+one treatment of GMTV's dynamic public good game. The pure replication
+re-analyzes the original data.
+\protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
 \href{}{errors I identified} in the original paper. The scientific
 replication, where I utilize a different sample drawn from a different
 population in a different situation, is described in the following
@@ -246,9 +248,10 @@ sections.
 
 As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with
 groups of four (\(i \in I=\{1,2,3,4\}\)), an initial endowment of
-\(N_i^1 = 20\) tokens, \(T=10\) periods, a private account with a return
-of \(1\) and a group account with a return of \(1.5\) (\(\Rightarrow\)
-MPCR\(\equiv \frac{1.5}{4}\)), such that:
+\(N_i^1 = 20\) tokens\footnote{A token was worth 0.05 Euros.}, \(T=10\)
+periods, a private account with a return of \(1\) and a group account
+with a return of \(1.5\) (\(\Rightarrow\) MPCR\(\equiv \frac{1.5}{4}\)),
+such that:
 
 \[
 N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
@@ -261,6 +264,29 @@ accumulated in the first two periods. And so on. Hence, a decision in
 one period has consequences on future endowments and, ultimately, growth
 paths. For this reason, the game is described as a \emph{dynamic} public
 good game
+
+\hypertarget{voluntary-climate-action-vca}{%
+\subsection{Voluntary Climate Action
+(VCA)}\label{voluntary-climate-action-vca}}
+
+Like GMTV we employ a real giving task after the abstract game. In
+contrast to GMTV and like \citet{GKLS2020}, we employed a VCA, where
+they could donate (some of) their earnings to offset carbon dioxide
+(that is, by retiring emission permits from the EU ETS).\footnote{Importantly,
+  \citet{GKLS2020} made the VCA decision with a fresh endowment
+  \emph{before} they played the abstract game. I deviate from their
+  procedure to match GMTV's procedure.} To ensure that each participant
+had the same basic level of information about the impact of their
+decision, I provided some basic information about the mechanism. The
+information also highlighted that the mitigation came into operation on
+a European level. Finally, I informed the participants that the
+documentation of individual and aggregate contributions were posted
+immediately after the experiments online. To avoid privacy or social
+image concerns, participants learned their unique and random IDs, which
+they needed to identify their individual contributions. This document
+certified that their contributions have been used to offset
+\href{https://www.compensators.org/compensatelist/?searchterm=stefan+traub}{1.82
+tons} of carbon dioxide emissions.
 
 \hypertarget{sec-sample}{%
 \subsection{Sample}\label{sec-sample}}
@@ -342,9 +368,6 @@ with artificial bots (and informing the rest of the group thereof).
 Insofar, oTree served a good tool to consider the participants' user
 experience and thus, to make dropouts less likely.
 
-The experiment's source code be found on
-\href{https://github.com/Howquez/coopUncertainty}{GitHub}.\footnote{https://github.com/Howquez/coopUncertainty}
-
 \hypertarget{sec-procedure}{%
 \subsection{Procedure}\label{sec-procedure}}
 
@@ -358,10 +381,8 @@ screen until they could be matched with three other participants, who
 have answered the comprehension questions correctly. Once matched, they
 were exposed to the decision screen over ten periods. At the end of the
 last period, participants saw results of all periods. Subsequently, they
-were exposed to a voluntary climate action, where they could donate
-(some of) their earnings to offset carbon dioxide. Subsequently, I
-elicited risk preferences \citep{HoltLaury2002} and finished with GMTV's
-questionnaire.
+made their VCA decision, before I elicited risk preferences
+\citep{HoltLaury2002} and finished with GMTV's questionnaire.
 
 While I tried to stick to GMTV's protocol as close as possible, I
 deviated in a few aspects. First, the instructions were German and also
@@ -371,20 +392,46 @@ Third, GMTV gave participants the opportunity to donate to \emph{Doctors
 without Borders} whereas we offered carbon dioxide offsets. Fourth, the
 graphical user interface looked different.
 
+The experiment lasted around 25 minutes on average. The earnings of the
+average subject were 11.23 Euros (sd = 4.85).\footnote{This values
+  include earnings from the incentivized risk elicitation task that are
+  not part of the analysis.}
+
+\hypertarget{sec-registration}{%
+\subsection{Pre-registration}\label{sec-registration}}
+
+Parts of the analyses are pre-registered \citep{preregistration}. In
+addition, I pre-registered the exact analyses I planned to run when I
+designed designed the experiment on
+\href{https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd}{GitHub}.\footnote{https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd
+  to run the code, you need to executed the .Rmd files in this
+  repository in the order that is indicated by its file names.}. GitHub
+is a website and cloud-based service where developers---and researchers
+alike---can store and manage their code. The service is based on
+Git\footnote{Git is a specific open-source version control system
+  developed in 2005.} and designed for version control. Importantly,
+changes are timestamped and can be tracked. Moreover, one can create
+branches, that is, duplicates of code -- either to work collaborative or
+to archive a certain state. Accordingly, I archived my analyses scripts
+and created a
+\href{https://github.com/Howquez/coopUncertainty/tree/July21Replication}{branch}
+a few days \emph{before} we collected data.
+
+The analysis that makes the most sense now that you have collected the
+data is a little different, though: Because the more representative
+subject pool was exhausted earlier than expected, I recruited students
+unwantedly and changed parts of the scripts.\footnote{The source code of
+  this document contains the analysis and can be found
+  \href{https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd}{here}:
+  https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd}
+Because the originally planned analysis code is archived and
+reproducible, these changes are transparent.
+
 \hypertarget{sec-results}{%
 \section{Results}\label{sec-results}}
 
 \hypertarget{sec-replication}{%
 \subsection{Pre-registered GMTV Replication}\label{sec-replication}}
-
-The analyses in this section were pre-registered
-\citep{preregistration}. I also pre-registered a RMarkdown file with the
-exact code I intended to use
-\href{https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd}{here}.\footnote{https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd
-  to run the code, you need to executed the .Rmd files in this
-  repository in the order that is indicated by its file names.} Even
-though I had to adjust a few lines of code, the main findings in the
-following section can also be replicated using the pre-registered code.
 
 \hypertarget{sec-contributions}{%
 \subsubsection{Contribution Behavior}\label{sec-contributions}}
