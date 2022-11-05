@@ -5,6 +5,12 @@ SESSION_CONFIGS = [
         name="GMTV",
         app_sequence=["A_Intro", "B_GMTV", "D_Outro"],
         num_demo_participants=2,
+        num_rounds=10,
+        group_size=2,
+        efficiency_factor=1.5,
+        risk=0,
+        damage=0,
+        initial_endowment=20,
     ),
     dict(
         name="Clubs",

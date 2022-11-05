@@ -183,7 +183,7 @@ The abstract follows at later point.
 science \sep Dynamic public good game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, frame hidden, sharp corners, enhanced, breakable, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[enhanced, frame hidden, interior hidden, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, sharp corners, breakable]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}
@@ -191,35 +191,48 @@ science \sep Dynamic public good game \sep Online experiment \sep
 Today's actions are tomorrow's result. There are many settings in which
 current decisions affect future outcomes and with it, future decision
 spaces. Opting for environmental friendly policies today not only
-reduces carbon dioxide omissions but also helps us to reach the Paris
-climate targets tomorrow. Deferring these policies, the targets can be
-reached as well---but with less flexibility. Hence, today's actions (or
-the omission thereof) not only affect intermediate results but also the
-number of paths one can choose to reach certain goals.
+reduces carbon dioxide omissions immediately but also helps us to reach
+the Paris climate targets tomorrow. Deferring these policies, may not
+necessarily prevent us from reaching these targets, but it makes it more
+difficult in the future. Hence, today's actions (or the omission
+thereof) not only affect intermediate outcomes but also the number of
+paths one can choose to reach certain goals.
 
 Standard public good games---although often intended to inform climate
 policies\footnote{See \citet[p.~1]{GKLS2020} for numerous references.}---miss
-these temporal interdependencies because participants have the same set
-of actions in each period. A game implemented by Gächter, Mengel, Tsakas
-\& Vostroknutov \citeyearpar{GMTV2017} (hereafter, GMTV) as well as
-Stefan Große (2011, unpublished) incorporated interdependencies into a
-\emph{dynamic} public good game with students in Nottingham, England and
-Erfurt, Germany.
+these temporal interdependencies simply because participants have the
+same set of actions in each period. Accordingly, participants' actions
+in a given period do not affect their number of actions in subsequent
+periods. A game implemented by Gächter, Mengel, Tsakas \& Vostroknutov
+\citeyearpar{GMTV2017} (hereafter, GMTV) as well as Stefan Große (2011,
+unpublished) incorporated interdependencies into a \emph{dynamic} public
+good game. Here, participants' actions in a given period affect their
+number of actions in subsequent periods. Because there is surprisingly
+little experimental research on these interdependencies\footnote{One
+  exemption are \citet{Moser2019}, who built on GMTV's design do
+  investigate leadership.}, I replicated one of their treatments.
 
-Because their setting is more realistic, one wonders whether it is
-better suited to inform public policy. To answer this question, I
-replicated parts of GMTV's experiment with different samples. In
-addition, I observed the participant's behavior in voluntary climate
+\citet{GKLS2020} find that standard public good games do not generalize
+to real-world climate action. Because the dynamic setting has a more
+realistic property, one wonders whether it is better suited to inform
+public policy. To answer this question, I ran the experiment with
+different samples\footnote{GMTV ran their experiments with students in
+  Nottingham, England.} online, that is, with participants who make
+their decisions in an environment whcih is more natural than the lab. In
+addition, I observed the participants' behavior in voluntary climate
 actions (VCA). This yielded a setting similar to \citet{GKLS2020}'s
 which allows me to analyze how behavior in the abstract game translates
 into real-world action across samples.
 
-I utilized an inexperienced sample that has not been exposed to
-interactive experiments before. Furthermore, I conducted the experiment
-online. This required me to make the experiment's software robust to
-minimize attrition. Because I observed metrics to assess the fluency and
-feasibility of online experiments, this study also serves as a case
-study like the one of \citet{AGM2018}.
+\citet{AGM2018} conducted public good games in the lab and on MTurk to
+draw lessons from online experimentation. This study extends this
+literature \citep[see also][]{GoodmanPaolacci2017} by focusing on a
+completely inexperienced sample that has not been exposed to interactive
+experiments before. This required me to design a robust (and thus, more
+complex) software to minimize attrition. In exchange, the online setting
+allowed me to also collect paradata to assess the fluency and
+feasibility of the experiment. This article reports on both topics: the
+robust design as well as the feasibility.
 
 Taken together, this study makes three contributions. First, it
 replicates parts of GMTV's original experiment and highlights the
@@ -250,12 +263,15 @@ As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with
 groups of four (\(i \in I=\{1,2,3,4\}\)), an initial endowment of
 \(N_i^1 = 20\) tokens\footnote{A token was worth 0.05 Euros.}, \(T=10\)
 periods, a private account with a return of \(1\) and a group account
-with a return of \(1.5\) (\(\Rightarrow\) MPCR\(\equiv \frac{1.5}{4}\)),
-such that:
+with a return of \(1.5\) (\(\Rightarrow\) MPCR\(\equiv \frac{1.5}{4}\)).
+With \(i\)'s contribution in period \(t\) being \(c_i^t\), the model
+looks as follows:
 
 \[
 N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
-\] What makes the game \emph{dynamic}? Instead of receiving fresh
+\]
+
+What makes the game \emph{dynamic}? Instead of receiving fresh
 endowments every period, participants received one endowment only at the
 beginning of the first period. A participant's endowment in the second
 period is the wealth he or she accumulated in the first period. A
@@ -271,8 +287,8 @@ good game
 
 Like GMTV we employ a real giving task after the abstract game. In
 contrast to GMTV and like \citet{GKLS2020}, we employed a VCA, where
-they could donate (some of) their earnings to offset carbon dioxide
-(that is, by retiring emission permits from the EU ETS).\footnote{Importantly,
+they could donate any amount their earnings to offset carbon dioxide
+(that is, retirine emission permits from the EU ETS).\footnote{Importantly,
   \citet{GKLS2020} made the VCA decision with a fresh endowment
   \emph{before} they played the abstract game. I deviate from their
   procedure to match GMTV's procedure.} To ensure that each participant
@@ -280,11 +296,11 @@ had the same basic level of information about the impact of their
 decision, I provided some basic information about the mechanism. The
 information also highlighted that the mitigation came into operation on
 a European level. Finally, I informed the participants that the
-documentation of individual and aggregate contributions were posted
-immediately after the experiments online. To avoid privacy or social
-image concerns, participants learned their unique and random IDs, which
-they needed to identify their individual contributions. This document
-certified that their contributions have been used to offset
+documentation of individual and aggregate contributions were to be
+posted immediately after the experiments online. To avoid privacy or
+social image concerns, participants learned their unique and random IDs,
+which they needed to identify their individual contributions. The
+document certified that their contributions have been used to offset
 \href{https://www.compensators.org/compensatelist/?searchterm=stefan+traub}{1.82
 tons} of carbon dioxide emissions.
 
@@ -296,15 +312,15 @@ I recruited the participants from the so called
 using HROOT \citep{hroot}. The panel is provided by the University of
 Hamburg's Research Laboratory, which used a randomized last digits
 approach to build the panel while drawing from the population of
-citizens from Hamburg, Germany. Because the sample was exhausted at one
+citizens of Hamburg, Germany. Because the sample was exhausted at one
 point, I also recruited students from the University of Hamburg.
 
-At the time I conducted the experiment, the representative sample was
-not familiar with interactive experiments. In fact, I ran the first
+At the time I conducted the experiment, the more representative sample
+was not familiar with interactive experiments. In fact, I ran the first
 interactive group experiment with this sample. The students, in
-contrast, are used to this kind of experiments. Recruiting them, I
+contrast, were used to this kind of experiments. Recruiting them, I
 excluded those who have participated in a public goods game before. As a
-consequence, nonnaiveté is unlikely to affect the validity of my
+consequence, nonnaiveté is unlikely to affect the validity of the
 experiment \citep[ p.~204]{GoodmanPaolacci2017}.
 
 Throughout this paper, I will compare results of my experiment with the
@@ -353,8 +369,8 @@ Describe sample properties here.
 The experiment was logistically complex for several reasons. First, the
 sample was inexperienced. Second, the experiment was interactive and
 synchronous. Third, the underlying game was dynamic and interdependent.
-This makes dropouts not only more likely, but also more expensive which
-is why dropouts were a major concern implementing the experiment.
+This makes dropouts not only more likely but also more expensive, which
+is why attrition was a major concern implementing the experiment.
 
 I chose oTree \citep{oTree} to implement the experiment because it is
 open-source, well documented and very flexible. Its
@@ -362,11 +378,28 @@ open-source, well documented and very flexible. Its
 toolkit) integration allowed me to make the graphical user interface
 interactive, appealing and easy to navigate. The
 \href{https://www.highcharts.com/}{Highcharts library} made it easy to
-visualize results and to communicate dynamics. The oTree code snippets
-made it possible to handle dropouts, for instance, by replacing them
-with artificial bots (and informing the rest of the group thereof).
-Insofar, oTree served a good tool to consider the participants' user
-experience and thus, to make dropouts less likely.
+visualize results and to communicate dynamics. Insofar, oTree served a
+good tool to enhance the participants' user experience and thus, to make
+dropouts less likely. Furthermore, the oTree code snippets made it
+possible to handle dropouts.
+
+Which features were required to handle dropouts? First, participants had
+to be matched to form a group \emph{after} comprehension questions were
+answered successfully. Importantly, participants were grouped by the
+order they answered these questions to reduce waiting times. While
+waiting for other players to form the group, the participants saw a
+wait-page informing them that they are waiting for other participants to
+arrive and that they do not have to wait for longer than 10 minutes. The
+screen also informed them that they would receive a \emph{patience
+bonus} of one Euro after the expiration of that time (or what was left
+of it). Second, participants only had 10 minutes to make the first
+contribution and 4 minutes for the remaining contributions. After this
+time expired, participants were replaced by bots that made random
+contributions. In this case, the remaining group members were informed
+about the replacement. Both features were implemented to limit wait
+times and boredom for other participants. Section~\ref{sec-feasibility}
+shows that the first feature became effective in some cases, wheres the
+second feature did not.
 
 \hypertarget{sec-procedure}{%
 \subsection{Procedure}\label{sec-procedure}}
@@ -392,17 +425,18 @@ Third, GMTV gave participants the opportunity to donate to \emph{Doctors
 without Borders} whereas we offered carbon dioxide offsets. Fourth, the
 graphical user interface looked different.
 
-The experiment lasted around 25 minutes on average. The earnings of the
-average subject were 11.23 Euros (sd = 4.85).\footnote{This values
-  include earnings from the incentivized risk elicitation task that are
-  not part of the analysis.}
+The experiment lasted around 25 minutes on average. The earnings
+averaged 11.23 Euros (sd = 4.85).\footnote{This values include earnings
+  from the incentivized risk elicitation task that is not part of the
+  analysis.}
 
 \hypertarget{sec-registration}{%
 \subsection{Pre-registration}\label{sec-registration}}
 
-Parts of the analyses are pre-registered \citep{preregistration}. In
-addition, I pre-registered the exact analyses I planned to run when I
-designed designed the experiment on
+Parts of the analyses were pre-registered in the American Economic
+Association's RCT Registry \citep{preregistration}. In addition, I
+pre-registered the exact analyses I planned to run when I designed
+designed the experiment on
 \href{https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd}{GitHub}.\footnote{https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd
   to run the code, you need to executed the .Rmd files in this
   repository in the order that is indicated by its file names.}. GitHub
@@ -417,15 +451,15 @@ and created a
 \href{https://github.com/Howquez/coopUncertainty/tree/July21Replication}{branch}
 a few days \emph{before} we collected data.
 
-The analysis that makes the most sense now that you have collected the
-data is a little different, though: Because the more representative
+The analysis that makes the most sense now that I have collected the
+data is a little different though: Because the more representative
 subject pool was exhausted earlier than expected, I recruited students
 unwantedly and changed parts of the scripts.\footnote{The source code of
   this document contains the analysis and can be found
   \href{https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd}{here}:
   https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd}
-Because the originally planned analysis code is archived and
-reproducible, these changes are transparent.
+However, because the originally planned analysis code is archived and
+reproducible, these changes are transparent and easy to assess.
 
 \hypertarget{sec-results}{%
 \section{Results}\label{sec-results}}
@@ -636,9 +670,14 @@ answer to the former question requires more thought, the answer to the
 latter simply is \emph{yes}: 67 out of 116 answered with \emph{``yes''}
 when I asked them. Another 44 answered with \emph{``rather yes''} while
 nobody indicated that he or she did not understand the situation at all.
-To analyze how participants coped with the situation, I consider three
-additional metrics: selection into the experiment, attrition as well as
-the time spent on each page.
+There is some behavioral data supporting this finding: The user
+interface offered a popup to review instructions or contact information.
+I tracked both and find that none of the participants ever opened these
+popups even though they were clearly visible in the decision screen's
+header and introduced in the instructions. To further analyze how
+participants coped with the situation, I consider three additional
+metrics: selection into the experiment, attrition as well as the time
+spent on each page.
 
 I first comment on the selection into the experiment: It was difficult
 to recruit the sample. The panel counted 1.209 non-students of which we
@@ -816,9 +855,10 @@ contributions across tasks and subject pools.}
 
 \end{figure}
 
-\textbf{Result 3.} \emph{Existing evidence overestimates the willingness
-to contribute to real public goods. This holds true for more
-representative samples and---to a lower degree---for student samples.}
+\textbf{Result 3.} \emph{Overall, contribution behavior is uncorrelated
+with the willingness to contribute to real public goods. This holds true
+for more representative samples and---to a lower degree---for student
+samples.}
 
 \hypertarget{sec-conclusion}{%
 \section{Conclusion}\label{sec-conclusion}}
@@ -835,9 +875,7 @@ behavior reported in the original study. Consequently, the outcomes
 growth and inequality are similar as well. Second, the online experiment
 proceeded fluently such that dropouts were no concern. Third,
 contribution behavior in my abstract setting is, if anything, only
-weakly linked to behavior in the real world. This lack of
-generalizability can be counteracted, but not be solved, by the use of
-more representative samples.
+weakly linked to behavior in the real world.
 
 The significance of the first result is that similar procedures led to
 replicable findings under different circumstances across two different
@@ -846,7 +884,8 @@ highlights that even logistically complex experiments can be conducted
 online with---not only with clickworkers but also with a true general
 population sample. The third result questions whether recruiting from
 more representative samples is worth the efforts because it decreases
-transferability of results to the real world---at least, a little.
+transferability of results to the real world---at least in this specific
+case.
 
 \newpage{}
 
