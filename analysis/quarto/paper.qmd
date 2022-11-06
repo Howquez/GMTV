@@ -1434,7 +1434,7 @@ p1 / (p2 + p3)
 
 Does this result hold true if one zooms in and inspects the two samples separately? Yes. Even though the general population sample is a little more consistent than the student sample, both are contributing more in the abstract game than in the VCA. @fig-kernel-generalizability shows distributions of contributions across both choices for both samples. The left panels illustrate the behavior of the general population sample. The right panels illustrate the behavior of the general population sample. The top panels show the behavior in the VCA. The bottom panels show the behavior in first period of the game. A visual inspection shows that (a) both samples behaved similarly in the first period of the game but (b) different (p =
 `r summary(lm(formula = donationShare ~ student, data = temp))$coefficients[2,4] %>% round(digits = 2)`) in the VCA. Furthermore, (c) the behavior in the first period of the experiment predicts the general population sample's behavior in the VCA worse than student sample's behavior (p =
-`r summary(lm(formula = contributionShare ~ donationShare + student + donationShare*student, data = temp))$coefficients[4,4] %>% round(digits = 2)`). Finally, (4) contributions in the abstract public good game are higher than contributions to the real public good of climate change mitigation.
+`r summary(lm(formula = contributionShare ~ donationShare + student + donationShare*student, data = temp))$coefficients[4,4] %>% round(digits = 2)`). Finally, (d) contributions in the abstract public good game are higher than contributions to the real public good of climate change mitigation.
 
 
 
