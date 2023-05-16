@@ -1,0 +1,1228 @@
+---
+title: "Growth and inequality in public good provision"
+author: Hauke Roggenkamp, Stefan Traub and Michael Berlemann
+date: "`r Sys.Date()`"
+bibliography: ../biblio.bib
+format: 
+  revealjs: 
+    footer: "[CLICCS B5 | Nov 2022](https://www.cliccs.uni-hamburg.de/research/theme-b/b5.html)"
+    preview-links: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 4)
+```
+
+```{r locale}
+#| include: false
+#| warning: false
+#| eval: false
+
+Sys.setlocale("LC_TIME","English United States")
+```
+
+```{r packages}
+# install this package once, it'll then install and load all remaining packages
+# install.packages("pacman")
+
+pacman::p_load(magrittr, data.table, stringr, lubridate, glue, DescTools, haven,
+               stargazer, ggplot2, patchwork, MetBrewer, Rmisc, knitr)
+```
+
+```{r constants}
+SHOW_UP_FEE <- 5
+EXCHANGE_RATE <- 1/20
+```
+
+```{r design}
+# ggplot layout
+layout <- theme(panel.background = element_rect(fill = "transparent", color = NA),
+                plot.background = element_rect(fill = "transparent", color = NA),
+                panel.grid = element_blank(),
+                panel.grid.major.y = element_blank(),
+                legend.key = element_rect(fill = "transparent"),
+                axis.line = element_line(size = 0.25),
+                axis.ticks = element_line(size = 0.25),
+                axis.title = element_text(size = 8),
+                legend.text = element_text(size = 8),
+                plot.caption = element_text(size = 6,
+                                            colour = "#555555"),
+                legend.title = element_blank()
+)
+
+# color
+colors <- met.brewer(name="Tam",n=7,type="discrete")
+colors <- c("#F3B05C", "#1E4A75", "#65B5C0", "#AD5E21")
+# cPrimary = "#ffd353"
+# cSecondary = "#9f2d55"
+# cInfo = "#34168"
+cPrimary = "#F3B05C"
+cSecondary = "#1E4A75"
+cInfo = "#36BFA2"
+```
+
+<!-- OUR DATA -->
+
+
+```{r readAllData}
+# identify files of all sessions
+files <- list.files(path = "../../data/replication/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+
+# load all of them into a list
+csvs <- list()
+for(i in files){
+  name <- str_extract(string = i, pattern = "2021.*")
+  temp <- read.csv(i, stringsAsFactors = FALSE) %>% data.table()
+  csvs[[name]] <- temp
+}
+
+# bind list into single data table
+full <- rbindlist(l = csvs, use.names = TRUE) %>% data.table()
+
+# ignore observations who have not made it to the first contribution
+DT <- full[participant._index_in_pages > 2 & 
+             participant.time_started != "" & 
+             participant.label != "" &
+             !(is.na(dPGG.1.player.contribution))]
+
+# tidy up
+rm(list = c("files", "csvs", "i", "name", "temp"))
+```
+
+```{r metaData}
+# aggregate each session's meta data
+meta_long <- full[participant.time_started != "" & 
+                    participant.label != "",
+                  .(session.code,
+                    participant.label,
+                    participant.time_started,
+                    participant._index_in_pages,
+                    dPGG.1.player.contribution)]
+
+# reformat time stamp in new variables
+meta_long[, `:=`(date = participant.time_started %>% ymd_hms() %>% date(),
+                 hour = participant.time_started %>% ymd_hms() %>% hour())]
+
+# aggregate and count 
+meta <- meta_long[,
+                  .(date = date %>% unique(),
+                    # weekday = date %>% unique() %>% lubridate::wday(label = TRUE),
+                    time = hour %>% unique() %>% paste("00", sep = ":"),
+                    showups = participant.time_started %>% length(),
+                    dropouts = sum(participant._index_in_pages == 2),
+                    residuals = sum(is.na(dPGG.1.player.contribution) & participant._index_in_pages == 77)),
+                  by = session.code]
+
+# get number of participants and observations (groups of 4)
+meta[,
+     `:=`(participants = showups - dropouts - residuals,
+          observations = (showups - dropouts - residuals)/4)]
+
+# save data
+fileName <- "replication2021"
+save(meta, file = paste0("../../data/processed/rda/", fileName, "_meta", ".rda"))
+write.csv(meta, file = paste0("../../data/processed/csv/", fileName, "_meta", ".csv"))
+
+rm(list = c("meta_long"))
+```
+
+```{r identifyStudents}
+# we had to invite students as the general population sample was exhausted, unfortunately. let's identify them:
+invitedStudents <- read.table(file = "../../data/sample/invited_students.txt", col.names = c("participant.label")) %>%
+  data.table()
+# note that these students participated in the ultimate session
+```
+
+```{r focusOnFirstRound}
+# create data table 
+replicationFirstRound <- DT[,
+                 .(participant.code,
+                   treatment = "replication",
+                   session.code,
+                   groupID = paste(session.code, dPGG.1.group.id_in_subsession, sep = "_"),
+                   othersContribution = dPGG.1.group.total_contribution - dPGG.1.player.contribution,
+                   ownContribution = dPGG.1.player.contribution,
+                   trust = Outro.1.player.PQ11,
+                   comprehension = dPGG.10.player.comprehension)]
+
+# save data
+save(replicationFirstRound, file = paste0("../../data/processed/rda/", fileName, "_R1", ".rda"))
+write.csv(replicationFirstRound, file = paste0("../../data/processed/csv/", fileName, "_R1", ".csv"))
+```
+
+```{r subsetData}
+
+# identify most relevant variables
+mRegex <- "participant\\.code$|session\\.code$|dPGG\\.1\\.group\\.id_in_subsession|^dPGG.1.player.id_in_group$|\\.1\\.player.belief|endowment|contribution|stock|gain$|bot_active|10.player.comprehension|10.player.donation"
+mainVariables <- str_subset(string = names(DT), pattern = mRegex)
+
+# prune all other variables
+subset <- DT[, ..mainVariables]
+
+# tidy up
+rm(list = c("mRegex", "mainVariables"))
+```
+
+```{r addNewVariables}
+# refactor groupID such that it eventually contains treatment-info
+subset[, groupID := paste(session.code, 
+                          dPGG.1.group.id_in_subsession,
+                          sep = "_")]
+
+# add share as contribution/endowment
+for(round in 1:10){
+  contribution <- glue("dPGG.{round}.player.contribution")
+  endowment <- glue("dPGG.{round}.player.endowment")
+  subset[, glue("dPGG.{round}.player.share") := subset[[contribution]]/subset[[endowment]] ]
+}
+
+# add treatment variable
+subset[,
+       treatment := "replication"]
+```
+
+```{r calculateAggregates}
+# we need to aggregate some outcomes on a groupID level (per sessions per treatment)
+# we'll do so using a loop
+# this will yield a list of data tables that will be merged to a list eventually.
+cluster <- c("treatment", "session.code", "groupID")
+outcomes <- c("contribution", "endowment", "stock", "gain", "bot_active")
+
+DTs <- list()
+for(outcome in outcomes){
+  if(outcome == "bot_active"){
+    var = names(subset) %>% str_subset(pattern = glue("group\\.{outcome}$"))
+  } else {
+    var = names(subset) %>% str_subset(pattern = glue("player\\.{outcome}$"))
+  }
+
+
+  # calculate either averages or the sum per round per group
+  aggregates = subset[, lapply(.SD, sum, na.rm=TRUE), 
+                      by = cluster, 
+                      .SDcols=var]
+  
+  # transform from wide to long
+  meltedAggregates <- melt(aggregates, id.vars = cluster, measure.vars = var)
+  DTname <- glue("{str_to_title(outcome)}")
+  DTs[[DTname]] <- meltedAggregates
+  rm(list = c("DTname", "meltedAggregates", "aggregates", "var", "outcome"))
+}
+```
+
+```{r renameVariables}
+# each data table in that list has the same column names.
+# the outcomes are all named "value", for instance.
+# now, we"ll infer the round number (contained in the variable name)
+for(i in 1:length(outcomes)){
+  DTs[[i]] <- DTs[[i]][,
+                       .(treatment,
+                         session.code,
+                         groupID,
+                         round = str_replace_all(string = variable,
+                                                 pattern = "\\D", 
+                                                 replacement="") %>% as.integer(),
+                         value # to be renamed afterwards
+                       )
+  ]
+  # rename "value" to outcome variable
+  setnames(DTs[[i]], old = "value", new = outcomes[i])
+}
+
+# tidy up
+rm("i")
+```
+
+
+```{r calculateGini}
+# repeat everything for the gini
+var = names(subset) %>% str_subset(pattern = "player\\.stock$")
+gini = subset[,
+              lapply(.SD, Gini, na.rm=TRUE), 
+                by = cluster, 
+                .SDcols=var
+              ]
+Gini <- melt(gini, id.vars = cluster, measure.vars = var)
+
+DTs[["Gini"]] <- Gini[,
+                    .(treatment,
+                      session.code,
+                      groupID,
+                      round = str_replace_all(string = variable,
+                                              pattern = "\\D", 
+                                              replacement="") %>% as.integer(),
+                      gini = value
+                       )]
+rm(list = c("var", "gini", "Gini"))
+
+# note that GMTV used start of period earnnings, i.e. endowments. We use end of period earnings, i.e. stock.
+# this adjustment has been considered in our processing of GMTVs data.
+```
+
+
+```{r mergerEverything4FinalData}
+# now merge every table in the list to one final data table called "replication"
+replication <- Reduce(function(...) merge(..., by=c(cluster, "round"), all = TRUE), DTs)
+
+# tidy up
+rm(list = c("cluster", "contribution", "endowment", "round", "DTs", "outcomes"))
+```
+
+```{r calculateShare}
+# define the share (one of the main outcome variables) as 
+# the sum of contributions devided by the sum of endowments
+replication[, share := contribution/endowment]
+```
+
+```{r defineRichGroups}
+# use the median to differentiate between poor and rich groups (as GMTV did)
+median <- replication[round == 10,
+                      median(stock)]
+
+# find the groups that end up rich or poor
+richGroups <- replication[round == 10 & stock > median,
+                          unique(groupID)] 
+
+poorGroups <- replication[round == 10 & stock < median,
+                          unique(groupID)]
+
+# mark these groups for each period
+replication[groupID %in% richGroups,
+            rich := TRUE]
+
+replication[groupID %in% poorGroups,
+            rich := FALSE]
+
+# tidy up
+rm(list = c("median", "poorGroups", "richGroups"))
+
+```
+
+```{r misc}
+# flag observations where at least one participant did not understand the game
+noComp <- subset[dPGG.10.player.comprehension == 0,
+                 groupID] %>% unique()
+replication[,
+     noComprehension := 0]
+replication[groupID %in% noComp,
+     noComprehension := 1]
+
+
+# drop observations (i.e. groups in rounds) with dropouts (bot_active == 1) and
+# where round > 10
+replication <- replication[bot_active == 0 & round <= 10]
+
+# tidy up
+rm("noComp")
+```
+
+```{r saveData}
+save(replication, file = paste0("../../data/processed/rda/", fileName, ".rda"))
+write.csv(replication, file = paste0("../../data/processed/csv/", fileName, ".csv"))
+```
+
+```{r createCovariates}
+
+# so far, I neglected many variables in what happened before. The following few lines
+# deal with some of these variables in a similar procedure
+
+
+# add variables
+DT[, treatment := "replication"]
+DT[, groupID := paste(session.code, dPGG.1.group.id_in_subsession, 
+                    sep = "_")]
+
+# subset
+cRegex <- "participant.code|session.code|treatment|groupID|Outro.1.player|10.player.donation|10.player.stock|switching_row|inconsistent"
+covariates <- str_subset(string = names(DT),
+                            pattern = cRegex)
+CT <- DT[, ..covariates]
+
+# rename
+names(CT) <- names(CT) %>% 
+  str_replace_all(pattern =".*player\\.",
+                  replacement = "") %>%
+  str_to_lower()
+names(CT)[names(CT) == "groupid"] <- "groupID"
+
+# refactor
+CT[, donation := donation/20] # exchange rate tokens to real world currency 1/20
+CT[donation %>% is.na, donation := 0]
+CT[, gender := ifelse(test = gender == "female",
+                      yes  = 1,
+                      no   = 0)]
+CT[, inconsistent := as.logical(inconsistent)]
+
+# reassign payoff (with stock of the last period)
+CT[, payoff := stock]
+CT[, stock := NULL]
+
+# write data
+replicationCovariates <- CT
+save(replicationCovariates, 
+     file = paste0("../../data/processed/rda/", fileName, "_COVS", ".rda"))
+write.csv(replicationCovariates, 
+          file = paste0("../../data/processed/csv/", fileName, "_COVS", ".csv"))
+
+# tidy up
+rm(list = c("CT", "cRegex", "covariates"))
+```
+
+```{r readTime}
+# as before, we need to read a list of files (measuring the time spent per page)
+
+# identify files
+files <- list.files(path = "../../data/pageTimes/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+
+# loop
+csvs <- list()
+for(i in files){
+  name <- str_extract(string = i,
+                      pattern = "2021.*")
+  
+  temp <- read.csv(i, 
+                   stringsAsFactors = FALSE) %>%
+    data.table()
+  
+  csvs[[name]] <- temp
+}
+
+# bind files list to data.table
+timeSpent <- rbindlist(l = csvs,
+                       use.names = TRUE) %>%
+  data.table()
+
+# set oder
+setorder(timeSpent, session_code, participant_code, epoch_time)
+
+# tidy up
+rm(list = c("files", "i", "name", "temp"))
+```
+
+
+```{r calcDuration}
+# shift rows to calculate this duration (per page) as the distance between
+# the current and the next time stamp
+timeSpent[,
+          lag := shift(epoch_time, fill = NA, type = "lag"),
+          by = c("session_code", "participant_code")]
+
+timeSpent[,
+          duration := epoch_time - lag,
+          by = c("session_code", "participant_code")]
+
+# calculate overall time spent as the difference between the min and max time stamp
+timeSpent[,
+          completion := epoch_time %>% max() - epoch_time %>% min(),
+          by = c("session_code", "participant_code")]
+
+# create new data table with selected columns
+duration <- timeSpent[session_code %in% meta$session.code, # participant_code %in% DT$participant.code,
+                      .(
+                        session_code,
+                        participant_code,
+                        app_name,
+                        page_name,
+                        page_index,
+                        page_submission = epoch_time,
+                        time_spent = duration,
+                        completion_time = completion
+                      )]
+
+# save data
+save(duration, file = paste0("../../data/processed/rda/", fileName, "_timeSpent", ".rda"))
+write.csv(duration, file = paste0("../../data/processed/csv/", fileName, "_timeSpent", ".csv"))
+
+# tidy up
+rm(list = c("timeSpent", "csvs", "DT"))
+```
+
+
+
+
+<!-- ORIGINAL (GMTV) DATA -->
+
+```{r readGMTV}
+# having done all that, we need to prepare the original data and bind it to ours
+# I'll thus, start by reading the orginal data
+
+DT <- read_dta(file="../../data/gaechteretal/GMTV-data.dta") %>% data.table()
+CT <- read_dta(file="../../data/gaechteretal/GMTV-questionnaire-data.dta") %>% data.table()
+```
+
+```{r subsetGMTV}
+# because we only replicate one of their treatments, I subset accordingly
+# noPunish10 <- DT[exp_num == 5 | exp_num == 8 | exp_num == 9]
+noPunish10 <- DT[longgame == 0 & punish == 0 & exp_num <= 10]
+```
+
+```{r newVariablsGMTV}
+# calculate the share of endowments contributed
+noPunish10[,
+           share := sum/gdp,
+           by = .(subj_id, per)]
+
+# calculate gini based on endowments (as GMTV did)
+noPunish10[,
+           gini2 := Gini(c(tokens, other1, other2, other3)),
+           by = .(subj_id, per)]
+
+# calculate gini based on stock (i.e. end of period earnings)
+noPunish10[, stock0 := (tokens - putin + 1.5*sum/4) %>% ceiling()]
+noPunish10[, stock1 := (other1 - pu1 + 1.5*sum/4) %>% ceiling()]
+noPunish10[, stock2 := (other2 - pu2 + 1.5*sum/4) %>% ceiling()]
+noPunish10[, stock3 := (other3 - pu3 + 1.5*sum/4) %>% ceiling()]
+noPunish10[, 
+           gini3 := Gini(c(stock0, stock1, stock2, stock3)),
+           by = .(subj_id, per)]
+```
+
+```{r createGMTVtable}
+# select columns we are interested in and rename a few to match our data
+
+GMTV <- noPunish10[order(gr_id, per),
+           .(treatment = "noPunish10", 
+             session.code = exp_num,
+             groupID = gr_id, 
+             round = per,
+             contribution = sum,
+             endowment = gdp,
+             share,
+             stock = (gdp + ceiling(sum/4*1.5)*4-sum),
+             gain = (ceiling(sum/4*1.5)*4-sum),
+             gini = gini3,
+             bot_active = 0,
+             noComprehension = NA)] %>% unique()
+
+# tidy up
+rm(list = c("noPunish10"))
+```
+
+```{r richPoorGMTV}
+ # create rich indicator (just as highgdp in original data)
+median <- GMTV[round == 10,
+                   median(stock)]
+
+richGroups <- GMTV[round == 10 & stock > median,
+                       unique(groupID)] 
+
+poorGroups <- GMTV[round == 10 & stock < median,
+                       unique(groupID)]
+
+GMTV[groupID %in% richGroups,
+         rich := TRUE]
+
+GMTV[groupID %in% poorGroups,
+         rich := FALSE]
+
+# tidy up
+rm(list = c("median", "richGroups", "poorGroups", "fileName"))
+```
+
+```{r saveGMTV}
+fileName <- "GMTV2017"
+# save data
+save(GMTV, file = paste0("../../data/processed/rda/", fileName, ".rda"))
+write.csv(GMTV, file = paste0("../../data/processed/rda/", fileName, ".csv"))
+```
+
+
+```{r calcSwitchingPoint}
+# GMTV gathered some risk data that I'll process in a separate DT and merge it
+# with other covariates later on
+
+GMTVRisk <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
+               .(participant.code = subj_id,
+                 e10, e20, e30, e40, e50, e60, e70,
+                 inconsistent = ifelse(test = e60 < e70 | e50 < e60 | e40 < e50 | e30 < e40 | e20 < e30 | e10 < e20,
+                                       yes  = TRUE,
+                                       no   = FALSE)
+                 )]
+
+GMTVRisk[,
+         switching_row := ifelse(test = inconsistent == TRUE,
+                                yes  = NA,
+                                no   = e10 + e20 + e30 + e40 + e50 + e60 + e70 + 1 + 2) # because GMTV used a 7-point-likert scale
+         ]
+```
+
+```{r subsetCovariates}
+# subset covariate data and rename+refactor some variables
+temp <- CT[exp_num == 5 | exp_num == 8 | exp_num == 9,
+                         .(treatment = "noPunish10",
+                           session.code = exp_num,
+                           groupID = gr_id,
+                           participant.code = subj_id,
+                           gender,
+                           age = Sys.Date() %>% lubridate::year() - age,
+                           pq01 = q1,
+                           pq02 = q2,
+                           pq03 = q3,
+                           pq04 = q4,
+                           pq05 = q5,
+                           pq06 = q6,
+                           pq07 = q7,
+                           pq08 = q8,
+                           pq09 = q9,
+                           pq10 = q10,
+                           pq11 = q11,
+                           pq12 = q12,
+                           pq13 = q13,
+                           pq14 = q14,
+                           donation = don
+                           )]
+
+temp[donation %>% is.na, donation := 0]
+
+```
+
+```{r mergeAndWrite}
+
+GMTVCovariates <- data.table::merge.data.table(x = temp,
+                                               y = GMTVRisk[, .(participant.code, inconsistent, switching_row)],
+                                               by = c("participant.code"))
+
+# write data
+save(GMTVCovariates, 
+     file = paste0("../../data/processed/rda/", fileName, "_COVS", ".rda"))
+write.csv(GMTVCovariates, 
+          file = paste0("../../data/processed/csv/", fileName, "_COVS", ".csv"))
+
+# tidy up
+rm(list = c("temp", "GMTVRisk"))
+```
+
+```{r firstRound}
+noPunish <- DT[exp_num == 1 | exp_num == 3 | # noPunish15
+                 exp_num == 5 | exp_num == 8 | exp_num == 9] # noPunish10
+
+temp <- noPunish[per == 1]
+temp <- temp[,
+             treatment := "noPunish10"]
+temp <- temp[exp_num == 1 | exp_num == 3,
+             treatment := "noPunish15"]
+
+GMTVFirstRound <- temp[,
+                           .(participant.code = subj_id,
+                             treatment,
+                             session.code = exp_num,
+                             groupID = gr_id,
+                             othersContribution = sumputin - putin,
+                             ownContribution = putin,
+                             trust = NA,
+                             comprehension = NA)]
+
+# save data
+save(GMTVFirstRound, 
+     file = paste0("../../data/processed/rda/", fileName, "_R1", ".rda"))
+write.csv(GMTVFirstRound, 
+          file = paste0("../../data/processed/csv/", fileName, "_R1", ".csv"))
+
+rm(list = c("temp", "fileName"))
+```
+
+<!-- MERGE & TUNE DATA -->
+
+```{r rbindOursAndGMTV, eval = TRUE}
+main <- rbindlist(list(replication, GMTV), 
+                  use.names = TRUE)
+
+R1   <- rbindlist(list(replicationFirstRound, GMTVFirstRound), 
+                  use.names = TRUE)
+
+covs <- rbindlist(list(replicationCovariates, GMTVCovariates), 
+                  use.names = TRUE,
+                  fill = TRUE)
+
+rm(list = c("CT", "DT", "GMTV", "GMTVCovariates", "GMTVFirstRound", 
+            "noPunish", "replication", "replicationCovariates",
+            "replicationFirstRound", "subset"))
+```
+
+```{r treatmentAsFactor}
+main[, treatment := as.factor(treatment)]
+R1[, treatment := as.factor(treatment)]
+covs[, treatment := as.factor(treatment)]
+```
+
+```{r studentSample}
+
+# Two of these sessions were special: The first (`r meta[1, session.code]`) as well as the last one (`r meta[, session.code %>% tail(n=1)]`). The first session suffered technical problems such that the risk elicitation task was omitted. The last session (almost exclusively) relied on a student sample as our non-student sample was exhausted after the first three sessions. As a consequence, the last session was conducted with 59 students while all others were conducted without any students. I'll therefore create a boolean `student` variable. Becaue all of the original experiments were conducted with students, `student` also equals 1 in the "noPunish10" treatments
+
+main[, student := FALSE]
+main[session.code == "d6jrsxnr" | treatment == "noPunish10",
+     student := TRUE]
+
+covs[, student := FALSE]
+covs[session.code == "d6jrsxnr" | treatment == "noPunish10",
+     student := TRUE]
+
+R1[, student := FALSE]
+R1[session.code == "d6jrsxnr" | treatment == "noPunish10",
+   student := TRUE]
+```
+
+```{r earnings}
+
+# This chunk requires raw data
+files <- list.files(path = "../../data/replication/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+csvs <- list()
+
+for(i in files){
+  name <- str_extract(string = i,
+                      pattern = "2021.*")
+  
+  temp <- read.csv(i, 
+                   stringsAsFactors = FALSE) %>%
+    data.table()
+  
+  csvs[[name]] <- temp
+}
+
+full <- rbindlist(l = csvs,
+                  use.names = TRUE) %>%
+  data.table()
+
+
+# subset data of participants who have completed the study
+tmp <- full[participant._index_in_pages >= 76 & 
+              participant.time_started != "" & 
+              !(is.na(dPGG.1.player.contribution)) &
+              participant.label != ""]
+
+# calculate total payoff
+tmp[, finalPayoff := (dPGG.10.player.stock - dPGG.10.player.donation + HLPL.1.player.payoff) * EXCHANGE_RATE + SHOW_UP_FEE]
+
+earningsMean <- tmp[, mean(finalPayoff, na.rm = TRUE)]
+earningsSD   <- tmp[, sd(finalPayoff, na.rm = TRUE)]
+```
+
+# Background
+
+We would like to submit to JBEE's special issue: [Transparency, Reproducibility, and Generalizability of Behavioral Economics Experiments](https://www.sciencedirect.com/journal/journal-of-behavioral-and-experimental-economics/about/call-for-papers#transparency-reproducibility-and-generalizability-of-behavioral-economics-experiments)
+
+
+# Outline {.smaller}
+
+**Transparency**: We preregistered our (initially intended) analysis [@preregistration] and [version control](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd) is public on GitHub.
+
+**Reproducibility**: We ran a pure as well as a scientific (yet partial) replication of @GMTV2017. 
+
+**Generalizability**: We ended up in a setting similar to @GKLS2020. 
+
+**Online Feasibility**: Because the experiment was logistically complex, we provide a case study similar to @AGM2018. 
+
+
+# Replication: @GMTV2017 
+
+## Idea
+
+- Opting for necessary climate policies tomorrow does not render it impossible to reach targets --- but it makes it increasingly more difficult.
+- We can describe this as temporal interdependencies where timing and paths matter.
+- Even though public good games are often interpreted in climate policy contexts, they do not capture these dynamics.
+- Gächter and colleagues designed a _dynamic_ public game that captures just that.
+
+
+## Dynamic Public Good Game
+
+We conducted their 10-period treatment without punishing.
+
+$$
+E_i^{t+1}=E_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
+$$
+
+- Groups of four players receive an initial endowment of $E_i^{1}=20$ tokens each. 
+- Their contributions $c_i^t$ are pooled, multiplied and divided by all players.
+- Today's actions are tomorrow's result: $E_i^{t+1}$ is the current period's outcome.
+- The game ends after period 10 and participants earn $E_i^{10}$.
+
+## Methods {.smaller}
+
+We ran a _scientific_ replication (different sample drawn from a different population in a different situation).
+
+- We recruited a non-convenience sample from Hamburg^[The so called _[HamburgPanel](https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html)_.] that was completely inexperienced in interactive multi-player experiments at that time.
+- We conducted a synchronous online experiment using oTree [@oTree] with a different (probably more appealing) User Interface.
+- After the game, participants could donate to retire emission permits from the EU ETS (instead of doctors without borders).
+- Four sessions in July 2021. Importantly, the subject pool was exhausted, so we had to invite additional students.
+- N = `r R1[treatment == 'replication', .N]`
+
+## Initial Contributions
+
+```{r firstRoundViz}
+#| fig-cap: Individual contributions to the dynamic public good in the first period
+#| label: fig-first-round
+
+ggplot(data = R1[treatment != "noPunish15"],
+       mapping = aes(x = ownContribution, fill = treatment, lty = treatment)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(limits = c(0, 20),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 0.1),
+                       expand = c(0, NA)) +
+  scale_fill_manual(values = c(cPrimary, cSecondary),
+                    labels = c("Original Sample", "Replication Sample")) +
+  guides(lty = "none") +
+  geom_vline(xintercept = R1[treatment == "replication", 
+                             mean(ownContribution)],
+             col = "#FFFFFF",
+             lty = 2) +
+  geom_vline(xintercept = R1[treatment == "noPunish10", 
+                             mean(ownContribution)],
+             col = "#FFFFFF",
+             lty = 1) +
+    labs(title = "", 
+       y = "", x = "Initially Contributed Tokens",
+       caption = "White lines indicate means (dashed line = replication sample).") +
+  layout +
+  theme(legend.position = "top")
+```
+
+## Contributions over Time
+
+```{r plotContributions}
+
+SUM <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "contribution"]
+
+SUM[,
+    sum := round(contribution)]
+
+SUM[,
+    contribution := contribution/4]
+
+upperLimit <- SUM$contribution %>% max() %>% round() + 5
+
+p1 <- ggplot(data = SUM, 
+             aes(x = round, y = contribution, fill = treatment, color = treatment, lty = treatment)) +
+  layout +
+  theme(legend.position="top") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Average Amount of Tokens contributed") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("Original Sample", "Replication Sample")) + 
+  guides(fill = "none") +
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+
+rm(list = c("SUM"))
+```
+
+
+```{r plotShareOfContributions}
+#| fig-cap: "The average amount of tokens contributed over time in treatments."
+#| label: fig-share-of-contributions
+
+SHARE <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "share"]
+
+# SHARE <- main[,
+#             .(share = sum(contribution)/sum(endowment)),
+#             by = c("round", "treatment")]
+
+upperLimit <- 0.75
+
+p2 <- ggplot(data = SHARE, 
+             aes(x = round, y = share, fill = treatment, color = treatment, lty = treatment)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE) +
+  geom_point() +
+  scale_x_continuous(name="",  breaks = 1:15) +
+  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
+  labs(y = "Share of Current Endowment contributed") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("Original Sample", "Replication Sample")) +
+  guides(fill = "none")
+
+p1 + p2 + plot_layout(guides = "collect") & 
+  theme(legend.position = "top")
+
+# rm(list = c("p1", "p2"))
+```
+
+
+## Wealth Creation
+
+```{r wealthVariables}
+originalWealth    <- main[treatment == "noPunish10" & round == 10, mean(stock)]
+replicationWealth <- main[treatment == "replication" & round == 10, mean(stock)]
+```
+
+```{r stockDistributionViz}
+#| fig-cap: Groups' income at the end of the game
+#| label: fig-stock-distribution
+
+ggplot(data = main,
+       mapping = aes(x = stock, fill = treatment, lty = treatment)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_fill_manual(values = c(cPrimary, cSecondary),
+                    labels = c("Original Sample", "Replication Sample")) +
+  guides(lty = "none") +
+  geom_vline(xintercept = replicationWealth,
+             col = "#000000", alpha = 0.5,
+             lty = 2) +
+  geom_vline(xintercept = originalWealth,
+             col = "#000000", alpha = 0.5,
+             lty = 1) +
+    labs(title = "", 
+       y = "", x = "Stock",
+       caption = "Grey lines indicate means (dashed line = replication sample).") +
+  layout +
+  theme(legend.position = "top")
+```
+
+
+## Wealth Creation
+
+```{r plotStock .column-page}
+
+# data
+STOCK <- main[,
+              lapply(.SD, mean, na.rm = TRUE),
+              by = c("round", "treatment"),
+              .SDcols = "stock"]
+
+STOCKr <- main[rich == TRUE,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("round", "treatment"),
+               .SDcols = "stock"]
+
+STOCKp <- main[rich == FALSE,
+               lapply(.SD, mean, na.rm = TRUE),
+               by = c("round", "treatment"),
+               .SDcols = "stock"]
+
+
+# annotation
+maxPath <- data.table(x = 1:10)
+maxPath[, y := 80*1.5^x]
+maxPath[, treatment := "replication"]
+maxPath[, groupID := 42]
+
+# plot
+p1 <- ggplot(data = STOCK, 
+             aes(x = round, y = stock, fill = treatment, color = treatment, lty = treatment)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(limits = c(0, 4700), expand = c(0, 0)) +
+  labs(y = "Wealth", x = "Period") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("Original Sample", "Replication Sample")) +
+  geom_point(mapping = aes(x = 10, y = 4613), col = "#b5b5b5") +
+  annotate("text", x = 9, y = 4630, size = 3,
+           label = "max", col = "#b5b5b5") +
+  geom_line(data = maxPath, mapping = aes(x = x, y =y), col = "#b5b5b5", lty = 2) +
+  guides(fill = "none") +
+  layout +
+  theme(legend.position = "top") +
+  guides(lty = "none")
+```
+
+```{r growthHeterogeneityViz}
+#| fig-cap: Average wealth over time across samples.
+#| label: fig-growth-heterogeneity
+
+# plot
+p2 <- ggplot(data = main,
+       mapping = aes(x = round, y = stock, color = treatment, by = groupID)) +
+  geom_line(alpha = 0.5) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(limits = c(0, 2000),
+                       expand = c(0, NA)) +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("Original Sample", "Replication Sample")) +
+  labs(y = "", x = "Period") +
+  layout +
+  guides(col = "none")
+
+
+# assembling
+p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "top")
+```
+
+
+## Inequality
+
+```{r giniOverTime}
+#| fig-cap: Average Gini coefficient (within groups) over time across samples
+#| label: fig-ginit-time-series
+
+tmp <- main[,
+            lapply(.SD, mean, na.rm = TRUE),
+            by = c("round", "treatment"),
+            .SDcols = "gini"]
+
+GINI <- rbind(tmp, list(0, "replication", 0), list(0, "noPunish10", 0))
+
+ggplot(data = GINI, 
+             aes(x = round, y = gini, fill = treatment, color = treatment, lty = treatment)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = 0:10) +
+  scale_y_continuous(limits = c(0, 0.25), expand = c(0, 0)) +
+  labs(y = "Wealth", x = "Period") +
+  scale_color_manual(values = c(cPrimary, cSecondary),
+                     labels = c("Original Sample", "Replication Sample")) +
+  guides(fill = "none") +
+  layout +
+  theme(legend.position = "top") +
+  guides(lty = "none")
+```
+
+
+## Replication: @GMTV2017 
+
+We also downloaded their data to run a _pure_ replication. That is, we tried to reproduce their results using their data.
+
+- Doing so, we found two errors
+    - calculating the Gini coefficient and
+    - calculating the share of endowments contributed.
+- In addition, we found a misconception as they report the endowments at the beginning of each period. Hence, the outcome of the last period is pruned.
+
+# Generalizability: @GKLS2020
+
+## Idea
+
+## Observed Behavior
+
+```{r}
+R1covs <- covs[, .(participant.code,
+                   donation = donation * 20 ,
+                   donationShare = (donation * 20) / payoff * 100,
+                   payoff)]
+temp <- R1[R1covs, on = .(participant.code = participant.code)][treatment == "replication"]
+temp[, contributionShare := ownContribution/20 * 100]
+```
+
+```{r vizGeneralizability}
+#| fig-cap: Kernel distributions of contributions across tasks and subject pools.
+#| label: fig-kernel-generalizability
+#| fig.height: 6
+
+# viz wrapper
+plotShares <- function(stud = FALSE,
+                       var  = "donationShare",
+                       col  = cPrimary,
+                       xlab = "",
+                       ylab = ""){
+  
+  dt <- temp[student == stud, .(x = get(var))]
+  
+  model <- lm(x ~ 1, dt)
+  ci1 <- confint(model, level=0.95)[1]
+  ci2 <- confint(model, level=0.95)[2]
+  
+  ggplot(data = dt,
+         mapping = aes(x = x)) +
+    annotate("rect", 
+             xmin = ci1, xmax = ci2, 
+             ymin  =0, ymax = Inf, 
+             alpha = 0.33) +
+    geom_density(alpha = 0.75,
+                 fill = col) +
+    scale_x_continuous(limits = c(0, 100),
+                       expand = c(0, NA)) +
+    scale_y_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+    geom_vline(xintercept = dt[,mean(x, na.rm = TRUE)],
+               lty = 2) +
+    labs(x = xlab,
+         y = ylab) +
+  layout
+}
+
+p1 <- plotShares(stud = FALSE, col = cSecondary,   var = "donationShare", ylab = "Density in VCA")
+p2 <- plotShares(stud = FALSE, col = cSecondary,   var = "contributionShare", 
+                 xlab = "Share of general pop. contributions", ylab = "Density in Experiment (round 1)")
+p3 <- plotShares(stud = TRUE,  col = cPrimary, var = "donationShare")
+p4 <- plotShares(stud = TRUE,  col = cPrimary, var = "contributionShare", xlab = "Share of students' contributions")
+
+patchwork <- (p1 / p2) | (p3 / p4)
+patchwork + plot_annotation(caption = "Dashed vertical lines indicate the respective means.\nShaded areas indicate 95% confidence intervals.")
+
+
+
+rm(list = c("R1covs", "p1", "p2", "p3", "p4", "patchwork"))
+```
+
+
+## Individual Behavior
+
+```{r}
+#| fig-cap: Scatter plot of average contributions in the dPGG and real giving task.
+#| label: fig-scatter-generalizability
+#| fig.height: 6
+
+p1 <- ggplot(data = temp[, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cInfo, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cInfo) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "Percentage of endowment contributed in period 1") +
+  layout
+
+p2 <- ggplot(data = temp[student == FALSE, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cSecondary, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cSecondary) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "General pop.: Percentage of endowment contributed in period 1") +
+  layout
+
+p3 <- ggplot(data = temp[student == TRUE, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cPrimary, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cPrimary) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "Students: Percentage of endowment contributed in period 1") +
+  layout
+
+p1 / (p2 + p3)
+```
+
+# Online Feasibility: @AGM2018
+
+## Idea
+
+Accept the loss of control in online experiments and make use of (para) data to better describe it. For instance,
+
+- Provide instructions in pop-up windows and measure the time they were opened.
+- Track wrong answers in comprehension questions.
+- Note that it is fairly simple to implement a chat-with-experimenter-widget.
+- Measure the time spent on each page.
+
+## Time Spent
+
+```{r plotTimeData}
+N <- duration[, participant_code %>% unique() %>% length()]
+plotDT <- duration[app_name == "dPGG" & page_name == "dPGG_Decision",
+                   .(time_spent = time_spent %>% sum()),
+                   by = c("session_code", "participant_code", "page_index", "page_name")]
+
+plotDT[, round := seq(from = 1, to = 10), by = c("participant_code")]
+
+upperLimit <- plotDT[, time_spent %>% mean(), by = c("round")] %>% max()
+
+tmp <- summarySE(data = plotDT,
+                 measurevar = "time_spent",
+                 groupvars=c("round"),
+                 na.rm = FALSE,
+                 conf.interval = 0.95,
+                 .drop = TRUE) %>% 
+  data.table()
+
+```
+
+```{r plotTime}
+#| fig-cap: Average Time Spent for each Contribution per Period
+#| label: fig-time-spent
+
+ggplot(data = tmp,
+       mapping = aes(x = round, y = time_spent)) +
+  layout +
+  theme(legend.position="bottom") +
+  geom_line(show.legend=FALSE, color = cInfo, lty=2) +
+  geom_errorbar(aes(ymin=time_spent-ci, ymax=time_spent+ci), width=.25, alpha = 0.5, color = cInfo) +
+  geom_point(color = cInfo) +
+  scale_x_continuous(name="",  breaks = 1:10) +
+  scale_y_continuous(limits = c(0, upperLimit + 10), expand = c(0, 0)) +
+  labs(y = "Time Passed in Seconds", caption = "Bars indicate 95% confidence intervals.") +
+  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
+```
+
+
+## Handle Dropouts 
+
+- Match participants into groups after they have successfully answered the comprehension questions.
+- Define a rule for participants who could not form a group (timer and patience bonus).
+- Set a reasonable time limit for decisions to keep the rest of the group engaged
+- In case of Dropouts, either define bots or let players finish the game in smaller groups.
+
+## {.smaller}
+
+```{r showMeta}
+#| label: tbl-meta
+#| tbl-cap: The Experimental Sessions' Meta Data
+
+tmp <- meta[, .(date, time, showups, dropouts, residuals, participants, observations)] 
+tmp %>% 
+  kable(col.names = names(tmp) %>%
+          str_replace_all(pattern = "\\.",
+                          replacement = " ") %>% 
+          str_to_title()) #, caption = 'A table of the first 10 rows of the mtcars data.')
+```
+
+Dropouts don't get paid and _Residuals_^[Overbooked participants.] are cheaper as in the lab.
+
+
+
+# Thank you
+
+![](img/QR.png)
+
+## References
+
+::: {#refs}
+:::
+
+```{python}
+#| eval: false
+import random
+
+TASKS = ['A', 'B', 'C']
+NUM_ROUNDS = len(TASKS)
+round_numbers = list(range(1, NUM_ROUNDS + 1))
+random.shuffle(round_numbers)
+task_rounds = dict(zip(TASKS, round_numbers))
+```
+

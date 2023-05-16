@@ -1,5 +1,5 @@
 ---
-title: Growth and inequality in public good provision --- an extended replication
+title: Revisiting 'Growth and Inequality in Public Good Provision' ---Reproducing and Generalizing Through Inconvenient Online Experimentation
 author:
   - name: Hauke Roggenkamp
     email: hauke.roggenkamp@unisg.ch
@@ -22,7 +22,9 @@ author:
     #     corresponding: true
     # note: This is the first author footnote.
 abstract: |
-  You can find the most recent version of this paper [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.pdf). The abstract follows at later point.
+  I revisit the dynamic public good game by Gächter et al. (2017) developed to study cooperation under dynamic interdependencies. Collecting data from both students and a general population sample, I not only reproduce some of the author's original observations but also test the game's generalizability. Appending a charitable dictator game, I find no correlations between behavior in the abstract game and the charitable context. This applies to students and the general population sample alike. Studying inexperiend general population samples raises methodological challenges with respect to fatigue and dropouts. This paper approaches them and provides simple solutions to run relieable interactive experiments online.
+  
+  You can find the most recent version of this paper [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.pdf).
 keywords: 
   - Replication study
   - Non-convenience sample
@@ -44,7 +46,8 @@ format:
 
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 4)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE,
+                      fig.width = 10, fig.height = 4)
 ```
 
 ```{r locale}
@@ -59,8 +62,8 @@ Sys.setlocale("LC_TIME","English United States")
 # install this package once, it'll then install and load all remaining packages
 # install.packages("pacman")
 
-pacman::p_load(magrittr, data.table, stringr, lubridate, glue, DescTools, haven,
-               stargazer, ggplot2, patchwork, MetBrewer, Rmisc, knitr)
+pacman::p_load(magrittr, data.table, stringr, lubridate, glue, DescTools, haven, censReg,
+               stargazer, vtable, ggplot2, patchwork, MetBrewer, Rmisc, knitr)
 ```
 
 ```{r constants}
@@ -179,6 +182,7 @@ replicationFirstRound <- DT[,
                    othersContribution = dPGG.1.group.total_contribution - dPGG.1.player.contribution,
                    ownContribution = dPGG.1.player.contribution,
                    trust = Outro.1.player.PQ11,
+                   government = Outro.1.player.PQ13,
                    comprehension = dPGG.10.player.comprehension)]
 
 # save data
@@ -648,6 +652,7 @@ GMTVFirstRound <- temp[,
                              othersContribution = sumputin - putin,
                              ownContribution = putin,
                              trust = NA,
+                             government = NA,
                              comprehension = NA)]
 
 # save data
@@ -759,51 +764,82 @@ earningsSD   <- tmp[, sd(finalPayoff, na.rm = TRUE)]
 
 # Introduction {#sec-intro}
 
+Today's actions are tomorrow's result. There are many settings in which current decisions affect future outcomes and with it, future decision spaces. Opting for environmental friendly policies today not only reduces carbon dioxide omissions immediately but also helps us to reach the Paris climate targets tomorrow. Deferring these policies, may not necessarily prevent us from reaching these targets, but it makes it more difficult in the future. Hence, today's actions (or the omission thereof) not only affect intermediate outcomes but also the number of paths one can choose to reach certain goals. This apllies especially to carbon dioxide emissions where its current stock will last for well over a millennium [@Inman2008; @CalzolariEtAl2018].
 
-Today's actions are tomorrow's result. There are many settings in which current decisions affect future outcomes and with it, future decision spaces. Opting for environmental friendly policies today not only reduces carbon dioxide omissions immediately but also helps us to reach the Paris climate targets tomorrow. Deferring these policies, may not necessarily prevent us from reaching these targets, but it makes it more difficult in the future. Hence, today's actions (or the omission thereof) not only affect intermediate outcomes but also the number of paths one can choose to reach certain goals.
+Public good games---although often intended to inform climate policies (e.g. @MilinskiEtAl2006, @TavoniEtAl2011, @Hauser2014, @BrickEtAl2015, @GomezEtAl2018, @CalzolariEtAl2018, @CookEtAl2019)---miss these temporal interdependencies simply because participants have the same set of actions in each period. Accordingly, participants' actions in a given period do not affect their number of actions in subsequent periods. A game designed by Gächter, Mengel, Tsakas & Vostroknutov [-@GMTV2017] (hereafter, GMTV) as well as Stefan Große (2011, unpublished) incorporated interdependencies into a _dynamic_ public good game. Here, participants' actions in a given period affect their number of actions in subsequent periods. Because there is surprisingly little experimental research on these interdependencies^[One exemption are @Moser2019, who built on GMTV's design to investigate leadership.], I reproduced one of their treatments to compare dynamics across samples.
 
-Standard public good games---although often intended to inform climate policies^[See @GKLS2020 [p. 1] for numerous references.]---miss these temporal interdependencies simply because participants have the same set of actions in each period. Accordingly, participants' actions in a given period do not affect their number of actions in subsequent periods. A game implemented by Gächter, Mengel, Tsakas & Vostroknutov [-@GMTV2017] (hereafter, GMTV) as well as Stefan Große (2011, unpublished) incorporated interdependencies into a _dynamic_ public good game. Here, participants' actions in a given period affect their number of actions in subsequent periods. Because there is surprisingly little experimental research on these interdependencies^[One exemption are @Moser2019, who built on GMTV's design do investigate leadership.], I replicated one of their treatments.
+@GKLS2020 find that standard public good games do not generalize well to real-world climate action. They also find that generalizability depends on structural resemblance of the public goods game with the context of climate change mitigation. Greater resemblance improves generalizability. Because GMTV's dynamic setting has a more realistic property—namely, interdependencies—one wonders whether it is better suited to inform public policy. To approach this question, I ran the experiment with different samples^[GMTV ran their experiments with students in Nottingham, England.] and
+<!--, that is, with participants who make their decisions in an environment which is more natural than the lab.-->
+observed the participants' behavior in voluntary climate actions (VCA). This yielded a setting similar to @GKLS2020's which allows me to analyze how behavior in the abstract game translates into real-world action across samples.
 
-@GKLS2020 find that standard public good games do not generalize to real-world climate action. Because the dynamic setting has a more realistic property, one wonders whether it is better suited to inform public policy. To answer this question, I ran the experiment with different samples^[GMTV ran their experiments with students in Nottingham, England.] online, that is, with participants who make their decisions in an environment whcih is more natural than the lab. In addition, I observed the participants' behavior in voluntary climate actions (VCA). This yielded a setting similar to @GKLS2020's which allows me to analyze how behavior in the abstract game translates into real-world action across samples.
+The VCA is a (charitable) dictator games where each participant is a dictator dividing her budget between herself and some organization linked to the reduction of CO2 emissions. @EckelGrossman1996 were the first to implement a charitable dictator game observing contributions of 30% of the endowments. Like @GKLS2020, @CarpenterEtAl2008 report that students make lower contributions to charity than community members.
 
-@AGM2018 conducted public good games in the lab and on MTurk to draw lessons from online experimentation. This study extends this literature [see also @GoodmanPaolacci2017] by focusing on a completely inexperienced sample that has not been exposed to interactive experiments before. This required me to design a robust (and thus, more complex) software to minimize attrition. In exchange, the online setting allowed me to also collect paradata to assess the fluency and feasibility of the experiment. This article reports on both topics: the robust design as well as the feasibility.
+@AGM2018 conducted public good games in the lab and on MTurk to draw lessons from online experimentation. This study extends this literature [see also @GoodmanPaolacci2017  @AmirEtAl2012] by focusing on a completely inexperienced sample that has not been exposed to interactive experiments before. This required me to design a robust (and thus, more complex) software to minimize attrition. In exchange, the online setting allowed me to also collect paradata to assess the fluency and feasibility of the experiment. This article reports on both topics: the robust design as well as the feasibility.
 
-Taken together, this study makes three contributions. First, it replicates parts of GMTV's original experiment and highlights the importance of pure replications. Second, it shows that logistically complex online experiments are feasible for samples other than students or clickworkers. Third, it shows that findings from abstract games do not generalize well and even worse with the representative sample. After reporting the methods, this paper is organized along these findings.
+Taken together, this study makes three contributions. First, it replicates parts of GMTV's original experiment and highlights the importance of pure replications. Second, it shows that logistically complex online experiments are feasible for samples other than students or clickworkers. Third, this paper supports critics arguing that findings from abstract games do not generalize well---not even with a more representative sample. After reporting the methods, this paper is organized along these findings.
 
+# Transparency
+
+Well before credibility crises comprised a variety disciplines, @bemwriting [p. 2] indirectly conceded discrepancies between fuzzy research processes and the polished article that results from it:
+
+> _"There are two possible articles you can write: (a) the article you planned to write when you designed your study or (b) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (b)."_ 
+
+Now, 20 years later, we accustom ourselves with mechanisms designed to unravel the fuzzy back-and-forth between exploratory and confirmatory research. Prominently, pre-registrations were established to tie the researchers' hands when doing confirmatory research--reducing observable discrepancies between (a) and (b). Today, researchers can not only choose where to pre-register but also decide about the level of detail they provide. More severely, nothing stops researchers from pre-registering multiple hypotheses opposing each other (see e.g. @SimmonsEtAl2021 and @PhamEtAl2021 for a discussion).
+
+@WaldronAllen2022 report a wide variety of depth of pre-registrations in the field of Neuropsychopharmacology and document that the label _'pre-registration'_ can be obtained with minimal effort. In absence of transparency and scrutiny pre-registrations run into danger to miss the target of making science more credible. Even more so, they may have adverse effects as the label _'pre-registered'_ becomes cheap (too) to acquire.
+
+Discussing the costs and benefits of pre-registrations, @Olken2015 stresses the uncertainty of research processes and promotes moderate approaches. As @WaldronAllen2022, he argues that pre-registrations not necessarily eliminate  flexibility. These 'moderate' or 'flexible' approaches require transparency to reduce concerns of _'data-mining'_ [@Olken2015 p. 61] by showing (a) the analyses I planned to run, (b) the analysis that made most sense after collecting the data and the transition from (a) to (b). Because this is neither incentivized nor easy to verify, we need tools that make transparency convenient to establish and to scrutinize.
+I propose version control (such as Git) as one such tool and illustrate its application on this paper:  GitHub is a website and cloud-based service where developers---and researchers alike---can store and manage their code. The service is based on Git^[Git is a specific open-source version control system developed in 2005.] and designed for version control. Importantly, changes are time-stamped and can be tracked. Moreover, one can create branches, that is, duplicates of code -- either to work collaborative or to archive a certain state. 
+
+To sum up, pre-registrations alone are necessary but not sufficient to restore the credibility in experimental sciences. Pre-registrations must come with additional emphasis on transparency covering the whole research process as well as with a higher level of scrutiny that looks beyond mere labels.
+
+In fact, the experiment reported in this article qualifies for the label _'pre-registered'_ at a first glance:
+Parts of the analyses were pre-registered in the American Economic Association's RCT Registry [@preregistration]. In addition, I pre-registered the exact analyses I planned to run when I designed the experiment on [GitHub](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd).^[https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd to run the code, you need to executed the .Rmd files in this repository in the order that is indicated by its file names.].
+
+The analysis that made the most sense after having collected the data is a little different though: Because the more representative subject pool was exhausted earlier than expected, I recruited students which opened up a new research direction: assessing generalizability. Hence, this article combines both confirmatory as well as exploratory research. 
+
+Accordingly, I  changed many of the analysis scripts.^[The source code of this document contains the analysis and can be found [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd): https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd] However, because the originally planned analysis code is archived and reproducible, these changes are transparent and easy to assess, showcasing (a), (b) and the transition from (a) to (b).
+
+<!--
+I archived detailed analyses scripts and created a [branch](https://github.com/Howquez/coopUncertainty/tree/July21Replication) a few days _before_ we collected data and pre-registered the analysis via the American Economic Association's RCT Registry [@preregistration].
+-->
 
 # Methodology {#sec-methods}
 
-In the terminology of @Hamermesh2007, I ran both a _pure_ as well as a _scientific replication_^[@Parsons2022 use the term of a _conceptual replication_ which means the same.] of one treatment of GMTV's dynamic public good game. The pure replication re-analyzes the original data. [Appendix A](#A:-Pure-Replication) documents [errors I identified]() in the original paper. The scientific replication, where I utilize a different sample drawn from a different population in a different situation, is described in the following sections.
+In the terminology of @Hamermesh2007, I ran both a _pure_ as well as a _scientific_ reproduction^[@Parsons2022 use the term of a _conceptual replication_ which means the same.] of one treatment of GMTV's dynamic public good game. The pure reproduction re-analyzes the original data. [Appendix A](#A:-Pure-Replication) documents [errors I identified]() in the original paper. The scientific replication, where I utilize a different sample drawn from a different population in a different situation, is described in the following sections.
 
 ## Experimental Design {#sec-design}
 
-As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of $N_i^1 = 20$ tokens^[A token was worth `r EXCHANGE_RATE` Euros.], $T=10$ periods, a private account with a return of $1$ and a group account with a return of $1.5$ ($\Rightarrow$ MPCR$\equiv \frac{1.5}{4}$). With $i$'s contribution in period $t$ being $c_i^t$, the model looks as follows:
+The design builds on the workhorse model @Zelmer2003 [p.301] describes in her meta-analysis, where 
+
+> _"subjects are divided into groups and play the same game for a finite number of periods. Each period, every subject is endowed with an income [...] The subject must then divide this income between a contribution to a private account [...] that yields a constant return to themselves only and a contribution to a public account [...] where consumption benefits accrue to all group members. At the end of each period, subjects typically learn the aggregate contribution to the public good by all members of their group and their earnings for the period."_
+
+Considering the design, the only differences between such a _static_ game and GMTV's design are _dynamics_: Instead of receiving fresh endowments every period, participants receive one endowment only at the beginning of the first period. A participant's endowment in the second period is the wealth she accumulated in the first period. A participant's endowment in the third period is the wealth she accumulated in the first two periods. And so on. Hence, a decision in one period has consequences on future endowments and, ultimately, growth paths. For this reason, the game is described as a _dynamic_ public good game. 
+
+ As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with groups of four ($i \in I=\{1,2,3,4\}$), an initial endowment of $N_i^1 = 20$ tokens^[A token was worth `r EXCHANGE_RATE` Euros.], $T=10$ periods, a private account with a return of $1$ and a group account with a return of $1.5$ ($\Rightarrow$ MPCR$\equiv \frac{1.5}{4}$). With $i$'s contribution in period $t$ being $c_i^t$, the model looks as follows:
 
 $$
 N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
 $$
 
-What makes the game _dynamic_? Instead of receiving fresh endowments every period, participants received one endowment only at the beginning of the first period. A participant's endowment in the second period is the wealth he or she accumulated in the first period. A participant's endowment in the third period is the wealth he or she accumulated in the first two periods. And so on. Hence, a decision in one period has consequences on future endowments and, ultimately, growth paths. For this reason, the game is described as a _dynamic_ public good game
 
 ## Voluntary Climate Action (VCA)
 
-Like GMTV we employ a real giving task after the abstract game. In contrast to GMTV and like @GKLS2020, we employed a VCA, where they could donate any amount their earnings to offset carbon dioxide (that is, retirine emission permits from the EU ETS).^[Importantly, @GKLS2020 made the VCA decision with a fresh endowment _before_ they played the abstract game. I deviate from their procedure to match GMTV's procedure.]
+Like GMTV we employ a real giving task after the abstract game. In contrast to GMTV and like @GKLS2020, we employed a VCA, where participants could donate any amount their earnings to offset carbon dioxide (that is, retire emission permits from the EU ETS).^[Importantly, @GKLS2020 made the VCA decision with a fresh endowment _before_ they played the abstract game. I deviate from their procedure to match GMTV's procedure.]
 To ensure that each participant had the same basic level of information about the impact of their decision, I provided some basic information about the mechanism. The information also highlighted that the mitigation came into operation on a European level.
-Finally, I informed the participants that the documentation of individual and aggregate contributions were to be posted immediately after the experiments online. To avoid privacy or social image concerns, participants learned their unique and random IDs, which they needed to identify their individual contributions.
+Finally, I informed the participants that the documentation of individual and aggregate contributions were to be posted immediately after the concluding the sessions online. To avoid privacy or social image concerns, participants learned their unique and random IDs, which they needed to identify their individual contributions.
 The document certified that their contributions have been used to offset [1.82 tons](https://www.compensators.org/compensatelist/?searchterm=stefan+traub) of carbon dioxide emissions.
 
 
-## Sample {#sec-sample}
+## Recruitment and Sample Characteristics {#sec-sample}
 
 I recruited the participants from the so called _[HamburgPanel](https://www.wiso.uni-hamburg.de/forschung/forschungslabor/umfragelabor/aktuelle-umfragen/hamburgpanel.html)_ using HROOT [@hroot]. The panel is provided by the University of Hamburg's Research Laboratory, which used a randomized last digits approach to build the panel while drawing from the population of citizens of Hamburg, Germany. Because the sample was exhausted at one point, I also recruited students from the University of Hamburg.
 
-At the time I conducted the experiment, the more representative sample was not familiar with interactive experiments. In fact, I ran the first interactive group experiment with this sample. The students, in contrast, were used to this kind of experiments. Recruiting them, I excluded those who have participated in a public goods game before. As a consequence, nonnaiveté is unlikely to affect the validity of the experiment [@GoodmanPaolacci2017 p. 204].
+At the time I conducted the experiment, the more representative sample was not familiar with interactive experiments. In fact, I ran the first interactive group experiment with this sample. The students, in contrast, were used to single-player experiments. Recruiting them, I excluded those who have participated in interactive experiments such as public goods games before, to keep the two distinct subject pools comparable in terms of their experience. As a consequence, nonnaiveté is unlikely to affect the validity of the experiment [@GoodmanPaolacci2017 p. 204].
 
-Throughout this paper, I will compare results of my experiment with the results of GMTV's NOPUNISH 10 Period treatments. I am thus, referring to three different samples utilized at two points in time: the University of Nottingham's students (in late 2012), Hamburg's citizens and the University Hamburg's students (both in July 2021). @tbl-sample-properties shows how they compare with respect to a few properties.
+Throughout this paper, I will compare results of my experiment with the results of GMTV's NOPUNISH 10 Period treatments. I am thus, referring to three different samples utilized at two points in time: the University of Nottingham's students (in late 2012), Hamburg's citizens and the University Hamburg's students (both in July 2021). @tbl-sample-properties gives an overview.
 
-```{r sampleDifferences1, results = "asis", warning = FALSE}
-#| label: tbl-sample-properties
-#| tbl-cap: Sample Properties
+```{r sampleDifferences1, results = "asis", warning = FALSE, eval=FALSE}
 
 covs[, sample := "Nottingham Students"]
 covs[treatment == "replication" & student == TRUE, sample := "Hamburg Students"]
@@ -836,11 +872,34 @@ stargazer(m1, m2, m5, m6, m7, m8,
           )
 ```
 
+```{r sampleProperties}
+#| results: 'asis'
+#| label: tbl-sample-properties
+#| tbl-cap: Sample Properties
+
+covs[, sample := "Nottingham Students"]
+covs[treatment == "replication" & student == TRUE, sample := "Hamburg Students"]
+covs[treatment == "replication" & student == FALSE, sample := "Hamburg Citizens"]
+covs[, sample := as.factor(sample)]
+
+vtable::sumtable(data = covs, 
+                 vars = c('age', 'gender', 'switching_row'),
+                 group = 'sample',
+                 group.test = TRUE,
+                 digits = 2,
+                 labels = c('Age', 'Female', 'Switching Row'),
+                 # note = "Switching Row describes choices in a multiple price list to elicit risk preferences. The higher the value, the higher the certainty equivalent. Government Responsible is self-reported based on a question adapted from GMTV ('The government should take responsibility that people are better provided for.')",
+                 out = 'latex')
+```
+
+
 ```{r}
 # covs[, sample := ordered(sample, levels = c("Nottingham Students", "Hamburg Students", "Hamburg Citizens"))]
 ```
 
-Describe sample properties here.
+Overall, I recruited `r covs[treatment == 'replication', .N]` participants for the experiment. The three samples differ significantly with respect to their age. The non-student sample is more diverse compared to the two student samples. 
+
+
 
 
 
@@ -848,16 +907,16 @@ Describe sample properties here.
 
 The experiment was logistically complex for several reasons. First, the sample was inexperienced. Second, the experiment was interactive and synchronous. Third, the underlying game was dynamic and interdependent. This makes dropouts not only more likely but also more expensive, which is why attrition was a major concern implementing the experiment.
 
-I chose oTree [@oTree] to implement the experiment because it is open-source, well documented and very flexible. Its [Bootstrap](https://getbootstrap.com/) (a powerful frontend toolkit) integration allowed me to make the graphical user interface interactive, appealing and easy to navigate. The [Highcharts library](https://www.highcharts.com/) made it easy to visualize results and to communicate dynamics. Insofar, oTree served a good tool to enhance the participants' user experience and thus, to make dropouts less likely. Furthermore, the oTree code snippets made it possible to handle dropouts.
+I chose oTree [@oTree] to implement the experiment because it is open-source, well documented and very flexible. Its [Bootstrap](https://getbootstrap.com/) (a powerful frontend toolkit) integration allowed me to make the graphical user interface interactive, appealing and easy to navigate. The [Highcharts library](https://www.highcharts.com/) made it easy to visualize results and to communicate dynamics. Insofar, oTree served a good tool to enhance the participants' user experience and thus, to make dropouts less likely.
 
 Which features were required to handle dropouts? First, participants had to be matched to form a group _after_ comprehension questions were answered successfully. Importantly, participants were grouped by the order they answered these questions to reduce waiting times. While waiting for other players to form the group, the participants saw a wait-page informing them that they are waiting for other participants to arrive and that they do not have to wait for longer than 10 minutes. The screen also informed them that they would receive a _patience bonus_ of one Euro after the expiration of that time (or what was left of it). Second, participants only had 10 minutes to make the first contribution and 4 minutes for the remaining contributions. After this time expired, participants were replaced by bots that made random contributions. In this case, the remaining group members were informed about the replacement. Both features were implemented to limit wait times and boredom for other participants. @sec-feasibility shows that the first feature became effective in some cases, wheres the second feature did not.
 
 
 ## Procedure {#sec-procedure}
 
-Participants entered the experiment at appointed times remotely from home. They first saw a welcome screen. After agreeing to the privacy policy, they could proceed to the instructions individually. Having read these instructions, each participant has also seen a demo-screen explaining the user interface. Before proceeding, they had to answer six comprehension questions correctly. Subsequently, they saw a waiting screen until they could be matched with three other participants, who have answered the comprehension questions correctly. Once matched, they were exposed to the decision screen over ten periods. At the end of the last period, participants saw results of all periods. Subsequently, they made their VCA decision, before I elicited risk preferences [@HoltLaury2002] and finished with GMTV's questionnaire.
+Participants entered the experiment at appointed times remotely from home. They first saw a welcome screen. After agreeing to the privacy policy, they could proceed to the instructions individually. Having read these instructions, each participant has also seen a demo-screen explaining the user interface. Before proceeding, they had to answer six comprehension questions correctly to avoid confusion in later stages [@FerraroVossler2010]. Subsequently, they saw a waiting screen until they could be matched with three other participants, who have answered the comprehension questions correctly. Once matched, they were exposed to the decision screen over ten periods. At the end of the last period, participants saw results of all periods. Subsequently, they made their VCA decision, before I elicited risk preferences [@HoltLaury2002] and finished with GMTV's questionnaire.
 
-While I tried to stick to GMTV's protocol as close as possible, I deviated in a few aspects. First, the instructions were German and also covered topics inherent to the online setting (dropouts and bots, for instance). Second, I used another software (oTree instead of zTree). Third, GMTV gave participants the opportunity to donate to _Doctors without Borders_ whereas we offered carbon dioxide offsets. Fourth, the graphical user interface looked different.
+While I stuck to GMTV's protocol as close as possible, I deviated in a few aspects. First, the instructions were German and also covered topics inherent to the online setting (dropouts and bots, for instance). Second, I used another software (oTree instead of zTree) which also affected the graphical user interface participants were exposed to. Third, GMTV gave participants the opportunity to donate to _Doctors without Borders_ whereas we offered carbon dioxide offsets.
 
 ```{r totalTimeSpent}
 tmp <- duration[page_index == 1 | page_index == 76, 
@@ -872,13 +931,6 @@ total_completion_time <- tmp[!is.na(total), mean(total/ 60) %>% round()]
 ```
 
 The experiment lasted around `r total_completion_time` minutes on average. The earnings  averaged `r earningsMean %>% round(digits = 2)` Euros (sd = `r earningsSD  %>% round(digits = 2)`).^[This values include earnings from the incentivized risk elicitation task that is not part of the analysis.] 
-
-
-## Pre-registration {#sec-registration}
-
-Parts of the analyses were pre-registered in the American Economic Association's RCT Registry [@preregistration]. In addition, I pre-registered the exact analyses I planned to run when I designed designed the experiment on [GitHub](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd).^[https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd to run the code, you need to executed the .Rmd files in this repository in the order that is indicated by its file names.]. GitHub is a website and cloud-based service where developers---and researchers alike---can store and manage their code. The service is based on Git^[Git is a specific open-source version control system developed in 2005.] and designed for version control. Importantly, changes are timestamped and can be tracked. Moreover, one can create branches, that is, duplicates of code -- either to work collaborative or to archive a certain state. Accordingly, I archived my analyses scripts and created a [branch](https://github.com/Howquez/coopUncertainty/tree/July21Replication) a few days _before_ we collected data.
-
-The analysis that makes the most sense now that I have collected the data is a little different though: Because the more representative subject pool was exhausted earlier than expected, I recruited students unwantedly and changed parts of the scripts.^[The source code of this document contains the analysis and can be found [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd): https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd] However, because the originally planned analysis code is archived and reproducible, these changes are transparent and easy to assess.
 
 # Results {#sec-results}
 
@@ -903,10 +955,11 @@ rs1 <- wilcox.test(replication,
           digits = 4)
 ```
 
-First, I ask whether the samples differ with respect to their initial contributions to the public good. Is our replication sample more pro-social than the original sample? @fig-first-round reveals that it is not. The distributions of both samples look fairly similar. Both samples contributed 10 tokens, that is, 50% of their endowments on average (median and mean).^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean contribution in first round of the game.] Moreover, both samples' initial contributions resemble initial contributions participants usually make in the standard game with partner matching.^[See Figure 3B in @fehrgaechter2000 (p.989), for instance.] However, in the dynamic game presented here, we are particularly interested in the subsequent periods because differences add up exponentially. Do the two groups remain similar over the course of time?
+First, I ask whether the samples differ with respect to their initial contributions to the public good. Is the replication sample (consisting of both students and non-students) more pro-social than the original sample? A two-sided rank sum test reveals that it is not (p=`r rs1`). Both samples contributed 10 tokens, that is, 50% of their endowments on average (median and mean). Moreover, both samples' initial contributions resemble initial contributions participants usually make in the static game with partner matching.^[See Figure 3B in @fehrgaechter2000 [p.989], for instance.] However, in the dynamic game presented here, we are particularly interested in the subsequent periods because differences add up exponentially. Do the two groups remain similar over the course of time?
 
 
 ```{r firstRoundViz}
+#| eval: false
 #| fig-cap: Individual contributions to the dynamic public good in the first period
 #| label: fig-first-round
 
@@ -955,10 +1008,36 @@ stargazer(temp,
           header=FALSE)
 ```
 
+```{r}
+for(r in 1:10){
+  a <- main[round == r & treatment == 'replication', share]
+  b <- main[round == r & treatment == 'noPunish10', share]
+  
+  wilcox.test(a, 
+              b,
+              exact = FALSE)$p.value %>% 
+    round(digits = 4) %>% 
+    formatC(format = "f", 
+            digits = 4)# %>%
+    # print()
+  }
 
-In particular, do the two samples' contributions follow the same path over the 10 periods they played? The answer is _no_. @fig-share-of-contributions illustrates that the samples make similar contributions at the beginning and the end of the game but behave differently in between. More precisely, the left panel--depicting the average contributions in absolute terms--shows that the original sample contributed substantially more than the replication sample _in all but the first and last period_. For this reason, the original sample's behavior differs from the replication sample's behavior in two aspects: it contributes more and exhibits a considerable drop in the last period (whereas the replication sample's contributions flatten). 
 
-Note that increasing contributions over time imply increasing endowments over time. Hence, absolute contributions do not us much about the willingness to cooperate. For this reason, the right panel in @fig-share-of-contributions shows the average _share of endowments contributed_ over time. Both samples exhibit a similar pattern: their share of endowments contributed declined and did not stabilize. However, both samples also differ with respect to one aspect: the replication sample's share of contributions declines faster.
+r <- 5
+a <- main[round == r & treatment == 'replication', contribution]
+b <- main[round == r & treatment == 'noPunish10', contribution]
+
+rs2 <- wilcox.test(a, 
+            b,
+            exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
+```
+
+In particular, do the two samples' contributions follow the same path over the 10 periods they played? The answer is _no_. @fig-share-of-contributions illustrates that the samples make similar contributions at the beginning and the end of the game but behave differently in between. More precisely, the left panel--depicting the average contributions in absolute terms--shows that the original sample contributed more than the replication sample _in all but the first and last period_.^[In period five, this difference is significant: a two-sided rank sum test yields p=`r rs2`. ] For this reason, the original sample's behavior differs from the replication sample's behavior in two aspects: it contributes more and exhibits a considerable drop in the last period (whereas the replication sample's contributions flatten). 
+
+Note that increasing contributions over time imply increasing endowments over time. Hence, absolute contributions do not tell much about the willingness to cooperate. For this reason, the right panel in @fig-share-of-contributions shows the average _share of endowments contributed_ over time. Both samples exhibit a similar pattern: their share of endowments contributed declined and did not stabilize. However, both samples also differ with respect to one aspect: the replication sample's share of contributions declines faster. This is mirrored by a two-sided rank sum test which is only significant at a five percent level in periods three and four.
 
 
 ```{r plotContributions}
@@ -1029,7 +1108,7 @@ p1 + p2 + plot_layout(guides = "collect") &
 ```
 
 
-Again, both samples' behavior resembles the contributions participants usually make in the standard game with partner matching: contributions equal approximately half of endowments in the very first period and decrease to around 10% of endowments by the last period.^[The right panel is thus, comparable to the visualizations _and results_ in the standard game. See, for instance, Figure 1B in @fehrgaechter2000 (p.986).] In the dynamic game presented here, however, different paths lead to different levels of wealth -- even if they share the same start- and end-points. I am thus, more interested in the contributions' implications for wealth generation and growth. 
+Again, both samples' behavior resembles the contributions participants usually make in the static game with partner matching: contributions equal approximately half of endowments in the very first period and decrease to around ten percent of endowments by the last period.^[The right panel is thus, comparable to the visualizations _and results_ in the static game. See, for instance, Figure 1B in @fehrgaechter2000 [p.986].] In the dynamic game presented here, however, different paths lead to different levels of wealth -- even if they share the same start- and end-points. I am thus, more interested in the contributions' implications for wealth generation and growth. 
 
 ### Wealth Creation {#sec-wealth}
 
@@ -1061,9 +1140,10 @@ originalWealth    <- main[treatment == "noPunish10" & round == 10, mean(stock)]
 replicationWealth <- main[treatment == "replication" & round == 10, mean(stock)]
 ```
 
-How do the different contribution-paths translate into wealth?^[To measure wealth and growth, I define a variable called _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed).] Given that the original sample contributed more in most of the periods, one would expect the respective groups to be considerably more wealthy. @fig-stock-distribution indicates just that. The grey lines show that an average group in the original sample accumulated about `r round(originalWealth)` tokens. In contrast, an average group in the replication sample accumulated about `r round(replicationWealth)` tokens. This difference is insignificant at conventional levels^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean stock in last round of the game.] though.
+How do the different contribution-paths translate into wealth?^[To measure wealth and growth, I define a variable called _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed).] Given that the original sample contributed more, one would expect the respective groups to be  more wealthy. A mere mean comparison indicates just that: An average group in the original sample accumulated about `r round(originalWealth)` tokens. In contrast, an average group in the replication sample accumulated about `r round(replicationWealth)` tokens. This difference is insignificant at conventional levels though: A two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean stock in last period of the game.
 
 ```{r stockDistributionViz}
+#| eval: false
 #| fig-cap: Groups' income at the end of the game
 #| label: fig-stock-distribution
 
@@ -1108,7 +1188,7 @@ oSD <- main[round == 10 & treatment == "noPunish10",
             by = groupID][, sd(stock)] %>% round(digits = 2)
 ```
 
-Although there clearly is growth, groups do not realize the maximal potential efficiency: under full cooperation, a group can accumulate at least `r (80*1.5^10) %>% trunc()` tokens or EUR `r (80*1.5^10 /20) %>% trunc()`. This is depicted in the left panel of @fig-growth-heterogeneity, where one can see the average wealth over time by sample. The panel illustrates for both samples that growth was continuous and surprisingly linear, given the exponential character of the game's design. To sum up, the contribution behavior differed between samples. In contrast, neither the eventual wealth nor the corresponding growth paths differed. Differences in contribution behavior did, thus, not translate to significantly different wealth outcomes.
+Although there clearly is growth, groups do not realize the maximal potential efficiency: under full cooperation, a group can accumulate at least `r (80*1.5^10) %>% trunc()` tokens or EUR `r (80*1.5^10 /20) %>% trunc()`. This is depicted in the left panel of @fig-growth-heterogeneity, where one can see the average wealth over time by sample. The panel illustrates for both samples that growth was continuous and surprisingly linear, given the exponential character of the game's design. Despite somewhat differing contribution behavior between samples, neither the eventual wealth nor the corresponding growth paths differed. Differences in contribution behavior did, thus, not translate to significantly different wealth outcomes.
 
 Why? Perhaps because the heterogeneity within samples and across groups has been too large to _detect_ a significant difference. The right panel of @fig-growth-heterogeneity depicts heterogeneity: In the replication sample, the richest group earned `r a <- main[treatment == "replication" & round == 10, max(stock)]; a` tokens (which is about `r round(a/80, digits = 2)*100`% of the initial endowment) whereas the poorest group ends up with `r b <- main[treatment == "replication" & round == 10, min(stock)]; b` tokens (`r round(b/80, digits = 2)*100`%). More broadly, the replication sample is characterized by inequality between groups ($SD_{Replication} =$ `r rSD`). The same holds true for the original sample ($SD_{Original} =$ `r oSD`). Hence, the heterogeneity across groups does not differ between samples, which is remarkable because the replication sample was drawn from a more heterogeneous (non-convenience sample). Does it differ within groups?
 
@@ -1211,11 +1291,12 @@ originalGini    <- main[treatment == "noPunish10" & round == 10, mean(gini)] %>%
 replicationGini <- main[treatment == "replication" & round == 10, mean(gini)] %>% round(digits = 2)
 ```
 
-Given the different samples and the possibility of endogenous growth--which essentially is the main feature of the game--I ask whether and how the inequality grows _within_ groups. @fig-gini-distribution illustrates that inequality did grow: at the end of the game, the original and the replication groups exhibit an average Gini coefficient of `r originalGini` and `r replicationGini`, respectively.^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean Gini coefficient in last round of the game.] Because every participant started with the same initial endowment (in _Period 0_, so to speak), every group started equally--with a Gini coefficient equaling zero.
+Given the different samples and the possibility of endogenous growth--which essentially is the main feature of the game--I ask whether and how the inequality grows _within_ groups. @fig-gini-time-series illustrates that inequality did grow: at the end of the game, the original and the replication groups exhibit an average Gini coefficient of `r originalGini` and `r replicationGini`, respectively.^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean Gini coefficient in last round of the game.] Because every participant started with the same initial endowment (in _Period 0_, so to speak), every group started equally--with a Gini coefficient equaling zero.
 
-@fig-ginit-time-series shows that this initial state of equality ended with the first period already: both samples exhibit a stark incline in inequality before the second period started. From then on, the respective Gini coefficients grew slowly but continuously -- for both samples.
+@fig-gini-time-series also shows that this initial state of equality ended with the first period already: both samples exhibit a stark incline in inequality before the second period started. From then on, the respective Gini coefficients grew slowly but continuously -- for both samples.^[In each and every period, the two-sided rank sum test comparing gini coefficients between both sample yields p-values way over ten percent.]
 
 ```{r giniDistributionViz}
+#| eval: false
 #| fig-cap: Groups' Gini coefficients (within groups) at the end of the game
 #| label: fig-gini-distribution
 
@@ -1244,7 +1325,7 @@ ggplot(data = main,
 
 ```{r giniOverTime}
 #| fig-cap: Average Gini coefficient (within groups) over time across samples
-#| label: fig-ginit-time-series
+#| label: fig-gini-time-series
 
 tmp <- main[,
             lapply(.SD, mean, na.rm = TRUE),
@@ -1290,9 +1371,9 @@ full[dPGG.2.player.review_contact !=0, .N]
 ```
 
 
-How did the participants, who have never participated in an online group experiment before, cope with the situation? Moreover, did participants understand the unfamiliar setting they found themselves in? While the answer to the former question requires more thought, the answer to the latter simply is _yes_: `r 67` out of `r 44 + 67 + 5` answered with _"yes"_ when I asked them. Another `r 44` answered with _"rather yes"_ while nobody indicated that he or she did not understand the situation at all. There is some behavioral data supporting this finding: The user interface offered a popup to review instructions or contact information. I tracked both and find that none of the participants ever opened these popups even though they were clearly visible in the decision screen's header and introduced in the instructions. To  further analyze how participants coped with the situation, I consider three additional metrics: selection into the experiment, attrition as well as the time spent on each page.
+How did the participants, who have never participated in an online group experiment before, cope with the situation? Moreover, did participants understand the unfamiliar setting they found themselves in? While the answer to the former question requires more thought, the answer to the latter simply is _yes_: `r 67` out of `r 44 + 67 + 5` answered with _"yes"_ when I asked them. Another `r 44` answered with _"rather yes"_ while nobody indicated that he or she did not understand the situation at all. There is some behavioral data supporting this finding: The user interface offered a popup to review instructions or contact information. I tracked both and find that none of the participants ever opened these popups even though they were clearly visible in the decision screen's header and introduced in the instructions. To further analyze how participants coped with the situation, I consider three additional metrics: selection into the experiment, attrition as well as the time spent on each page.
 
-I first comment on the selection into the experiment: It was difficult to recruit the sample. The panel counted 1.209 non-students of which we were able to recruit `r main[student == FALSE, .N]` participants who finished the experiment---even though we varied the weekdays and timing of the sessions (which were conducted during a nation-wide lockdown with home office regime). For this reason, we also recruited students in the last session which explains the relatively large number of showups in @tbl-meta. Although I intended to refrain from the recruitment of students initially, this particular sub sample enabled me to investigate the generalizability of my results as I will discuss in  @sec-generalizability. Alternatively, I also could have contacted a market research institute to recruit additional participants within a week. I refrained from doing so to contrast students and the general population sample, however.
+I first comment on the selection into the experiment: It was difficult to recruit the sample. The panel counted 1.209 non-students of which I were able to recruit `r main[student == FALSE, .N]` participants who finished the experiment---even though I varied the weekdays and timing of the sessions (which were conducted during a nation-wide lockdown with home office regime). For this reason, I also recruited students in the last session which explains the relatively large number of showups in @tbl-meta. Although I intended to refrain from the recruitment of students initially, this particular sub sample enabled me to investigate the generalizability of my results as I will discuss in  @sec-generalizability.
 
 ```{r showMeta}
 #| label: tbl-meta
@@ -1355,87 +1436,32 @@ Considering attrition, I find that it did not affect the interactive experiment 
 > "There are two possible articles you can write: (a) the article you planned to write when you designed your study or (b) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (b)." [@bemwriting, p. 171]
 -->
 
-```{r}
+```{r generalizability_prep}
 R1covs <- covs[, .(participant.code,
                    donation = donation * 20 ,
                    donationShare = (donation * 20) / payoff * 100,
+                   age,
+                   gender,
+                   switching_row,
                    payoff)]
 temp <- R1[R1covs, on = .(participant.code = participant.code)][treatment == "replication"]
 temp[, contributionShare := ownContribution/20 * 100]
+temp[, consistency := 1 - (contributionShare - donationShare)]
 ```
 
-@GKLS2020 asked how much can we learn about voluntary climate action from the behavior in public goods games. Using a similar strategy, I answer the question for _dynamic_ public goods games: _Not much_. Overall, there seems to be no association between choices in the voluntary climate action and the first period in the dynamic public goods game. @fig-scatter-generalizability shows a scatter plot of realized choices, with the percentage of endowment spent by each participant in the first period of the game on the x-axis and that spent in the VCA on the y-axis. In addition, the figure contains a fitted line of a linear model whose slope is indistinguishable from zero. No matter how much the participants contributed in the first round, they spent, on average, about `r temp[, round(mean(donationShare))]`% of their income on the VCA.
+@GKLS2020 asked how much can we learn about voluntary climate action from the behavior in public goods games. Using a similar strategy, I answer the question for a _dynamic_ public good game: _Not much_. Overall, there seems to be no association between choices in the voluntary climate action and the first period in the dynamic public goods game. 
 
 
-```{r}
-#| fig-cap: Scatter plot of average contributions in the dPGG and real giving task.
-#| label: fig-scatter-generalizability
-#| fig.height: 6
-
-p1 <- ggplot(data = temp[, 
-                   .(vca = donation / payoff * 100,
-                     dpgg = ownContribution / 20 * 100)],
-       mapping = aes(y = vca, x = dpgg)) +
-  annotate("segment", x = 0, xend = 100,
-                   y = 0,
-                   yend = 100,
-                   colour = "black", lty = 2, alpha = 0.5) +
-  geom_point(alpha = 0.5, col = cInfo, size = 2) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE,
-              col = cInfo) +
-  scale_x_continuous(limits = c(0, 105),
-                     expand = c(0, NA)) +
-  scale_y_continuous(limits = c(0, 105),
-                     expand = c(0, NA)) +
-  labs(y = "VCA: Percentage of endowment donated",
-       x = "Percentage of endowment contributed in period 1") +
-  layout
-
-p2 <- ggplot(data = temp[student == FALSE, 
-                   .(vca = donation / payoff * 100,
-                     dpgg = ownContribution / 20 * 100)],
-       mapping = aes(y = vca, x = dpgg)) +
-  annotate("segment", x = 0, xend = 100,
-                   y = 0,
-                   yend = 100,
-                   colour = "black", lty = 2, alpha = 0.5) +
-  geom_point(alpha = 0.5, col = cInfo, size = 2) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE,
-              col = cInfo) +
-  scale_x_continuous(limits = c(0, 105),
-                     expand = c(0, NA)) +
-  scale_y_continuous(limits = c(0, 105),
-                     expand = c(0, NA)) +
-  labs(y = "VCA: Percentage of endowment donated",
-       x = "General pop.: Percentage of endowment contributed in period 1") +
-  layout
-
-p3 <- ggplot(data = temp[student == TRUE, 
-                   .(vca = donation / payoff * 100,
-                     dpgg = ownContribution / 20 * 100)],
-       mapping = aes(y = vca, x = dpgg)) +
-  annotate("segment", x = 0, xend = 100,
-                   y = 0,
-                   yend = 100,
-                   colour = "black", lty = 2, alpha = 0.5) +
-  geom_point(alpha = 0.5, col = cInfo, size = 2) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE,
-              col = cInfo) +
-  scale_x_continuous(limits = c(0, 105),
-                     expand = c(0, NA)) +
-  scale_y_continuous(limits = c(0, 105),
-                     expand = c(0, NA)) +
-  labs(y = "VCA: Percentage of endowment donated",
-       x = "Students: Percentage of endowment contributed in period 1") +
-  layout
-
-p1 / (p2 + p3)
+```{r vca_differences}
+rs1 <- wilcox.test(temp[student == FALSE, donationShare], 
+                   temp[student == TRUE, donationShare],
+                   exact = FALSE)$p.value %>% 
+  round(digits = 4) %>% 
+  formatC(format = "f", 
+          digits = 4)
 ```
 
-Does this result hold true if one zooms in and inspects the two samples separately? Yes. Even though the general population sample is a little more consistent than the student sample, both are contributing more in the abstract game than in the VCA. @fig-kernel-generalizability shows distributions of contributions across both choices for both samples. The left panels illustrate the behavior of the general population sample. The right panels illustrate the behavior of the general population sample. The top panels show the behavior in the VCA. The bottom panels show the behavior in first period of the game. A visual inspection shows that (a) both samples behaved similarly in the first period of the game but (b) different (p =
-`r summary(lm(formula = donationShare ~ student, data = temp))$coefficients[2,4] %>% round(digits = 2)`) in the VCA. Furthermore, (c) the behavior in the first period of the experiment predicts the general population sample's behavior in the VCA worse than student sample's behavior (p =
-`r summary(lm(formula = contributionShare ~ donationShare + student + donationShare*student, data = temp))$coefficients[4,4] %>% round(digits = 2)`). Finally, (d) contributions in the abstract public good game are higher than contributions to the real public good of climate change mitigation.
-
+@fig-kernel-generalizability shows distributions of contributions across both choices for both samples. The top panels illustrate the behavior of the general population sample. The bottom panels illustrate the behavior of the general population sample. The left panels show the behavior in the VCA. The right panels show the behavior in first period of the game. A visual inspection shows that (a) mean contributions are positive in both tasks for both samples.^[The same holds true for median contributions.] (b) Furthermore, average contributions are lower in the VCA. (c) In contrast to @GKLS2020's observation, we do not observe a difference between samples in the abstract game's contribution behavior. (d) However, the student's share of income contributed to the VCA is significantly lower than the general population sample's contributions (two-sided rank sum test, p=`r rs1`). Taken together, these aggregate results indicate, that the consistency between tasks is higher for the general population than it is for students. Or, to put it differently, the general population's behavior in the abstract game better predicts their behavior in real-world mitigation context.
 
 
 ```{r vizGeneralizability}
@@ -1475,13 +1501,27 @@ plotShares <- function(stud = FALSE,
   layout
 }
 
-p1 <- plotShares(stud = FALSE, col = cPrimary,   var = "donationShare", ylab = "Density in VCA")
-p2 <- plotShares(stud = FALSE, col = cPrimary,   var = "contributionShare", 
-                 xlab = "Share of general pop. contributions", ylab = "Density in Experiment (round 1)")
-p3 <- plotShares(stud = TRUE,  col = cSecondary, var = "donationShare")
-p4 <- plotShares(stud = TRUE,  col = cSecondary, var = "contributionShare", xlab = "Share of students' contributions")
+p1 <- plotShares(stud = FALSE, 
+                 col = cSecondary,   
+                 var = "donationShare",
+                 xlab = "Share of erarnings the general pop. contributed", 
+                 ylab = "Density in VCA")
 
-patchwork <- (p1 / p2) | (p3 / p4)
+p2 <- plotShares(stud = FALSE, 
+                 col = cSecondary,   
+                 var = "contributionShare", 
+                 xlab = "Share of endowment the general pop. contributed", 
+                 ylab = "Density in dPGG Experiment (period 1)")
+
+p3 <- plotShares(stud = TRUE,  col = cPrimary, var = "donationShare",
+                 xlab = "Share of income the students contributed",
+                 ylab = "Density in VCA")
+
+p4 <- plotShares(stud = TRUE,  col = cPrimary, var = "contributionShare", 
+                 xlab = "Share of endowment the students contributed",
+                 ylab = "Density in dPGG Experiment (period 1)")
+
+patchwork <- (p1 / p3) | (p2 / p4)
 patchwork + plot_annotation(caption = "Dashed vertical lines indicate the respective means.\nShaded areas indicate 95% confidence intervals.")
 
 
@@ -1489,17 +1529,120 @@ patchwork + plot_annotation(caption = "Dashed vertical lines indicate the respec
 rm(list = c("R1covs", "p1", "p2", "p3", "p4", "patchwork"))
 ```
 
-**Result 3.** _Overall, contribution behavior is uncorrelated with the willingness to contribute to real public goods. This holds true for more representative samples and---to a lower degree---for student samples._
+@tbl-tobit-generalizability shows that this is not the case. It reports tobit regression results cautioning against transferability from dPGG results to real-world mitigation behavior: The share of endowment contributed in the first period (displayed in the first row) does not predict the share of earnings donated as a VCA. The student status negatively affects VCA donations in column two but disappears if one controls for age in column three. Importantly, the interaction of student status and first-period contributions is not significant. This suggests that the general population sample's transferability is just as bad as the student sample's. We thus, find a similar result as @GKLS2020 [p.6].
+
+```{r generalizability_tobit}
+#| results: 'asis'
+#| label: tbl-tobit-generalizability
+#| tbl-cap: Correlations between first-round-dPGG and VCA behavior
+
+to1 <- censReg(formula = donationShare ~ contributionShare, 
+                   data = temp, left = 0, right = 100)
+to2 <- censReg(formula = donationShare ~ contributionShare + student + student * contributionShare, 
+                   data = temp, left = 0, right = 100)
+reg <- lm(formula = donationShare ~ contributionShare + student + student * contributionShare, 
+                   data = temp,)
+to3 <- censReg(formula = donationShare ~ contributionShare + student + student * contributionShare + age + gender, 
+                   data = temp, left = 0, right = 100)
+to4 <- censReg(formula = donationShare ~ contributionShare + student + student * contributionShare + age + gender + switching_row, 
+                   data = temp, left = 0, right = 100)
+
+
+stargazer(to1, to2, # reg, 
+          to3, # to4,
+          
+          model.numbers = TRUE,
+          dep.var.caption  = "Tobit Regression censoring below 0 and above 100",
+          dep.var.labels = "VCA Donation as Share of Earnings",
+          header=FALSE,
+          intercept.bottom = TRUE,
+          order = c(1, 2, 6, 3, 4, 5),
+          covariate.labels = c("First-period contribution in percent", "Student (1 = yes)", "First-period contr. x Student", "Age", "Female (1 = yes)", "Risk Aversion (1-12)"),
+          type = "latex", digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
+          )
+```
+
+```{r}
+#| fig-cap: Scatter plot of average contributions in the dPGG and real giving task.
+#| label: fig-scatter-generalizability
+#| fig.height: 6
+#| eval: false
+
+p1 <- ggplot(data = temp[, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cInfo, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cInfo) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "Percentage of endowment contributed in period 1") +
+  layout
+
+p2 <- ggplot(data = temp[student == FALSE, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cSecondary, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cSecondary) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "General pop.: Percentage of endowment contributed in period 1") +
+  layout
+
+p3 <- ggplot(data = temp[student == TRUE, 
+                   .(vca = donation / payoff * 100,
+                     dpgg = ownContribution / 20 * 100)],
+       mapping = aes(y = vca, x = dpgg)) +
+  annotate("segment", x = 0, xend = 100,
+                   y = 0,
+                   yend = 100,
+                   colour = "black", lty = 2, alpha = 0.5) +
+  geom_point(alpha = 0.5, col = cPrimary, size = 2) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE,
+              col = cPrimary) +
+  scale_x_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 105),
+                     expand = c(0, NA)) +
+  labs(y = "VCA: Percentage of endowment donated",
+       x = "Students: Percentage of endowment contributed in period 1") +
+  layout
+
+p1 / (p2 + p3)
+```
+
+<!--
+@fig-kernel-generalizability also indicates that the general population's contribution behavior is more consistent than the students' behavior. Hence, one may conclude that their behavior in the abstract game translates comparably well to the real world. This is not the case. If anything, the _students'_ behavior in the abstract game is more predictive for their VCA. @fig-scatter-generalizability visualizes the within-subjects relationship of both contribution tasks. More precisely, it shows a scatter plot of realized choices, with the percentage of endowment spent by each participant in the first period of the game on the x-axis and that spent in the VCA on the y-axis. In addition, the figures contains a fitted line of a linear model. The upper pannel illustrates overall behavior and exhibits a slope which is indistinguishable from zero. No matter how much the participants contributed in the first round, they spent, on average, about `r temp[, round(mean(donationShare))]`% of their income on the VCA. The two bottom panels differentiate between both samples with slopes that differ qualitatively. However, none of the slopes is significant. 
+-->
+
+**Result 3.** _There is no significant correlation between average contributions in the abstract public goods game and contributions to the real public good of climate change mitigation._
 
 
 
 # Conclusion {#sec-conclusion}
 
-The goal of the experiment was to replicate specific experiments of GMTV in an online setting using a general population sample. The results suggest that it is important to replicate experiments---both purely and scientifically [@Hamermesh2007 p. 716]---before drawing conclusions about generalizability.
+The initial goal of the experiment was to reproduce specific experiments of GMTV in an online setting using a general population sample. The results suggest that it is important to reproduce experiments---both purely and scientifically [@Hamermesh2007 p. 716]---before drawing conclusions about generalizability.
 
-The three most important findings are as follows: First, the contribution behavior in my experiment is statistically similar to the behavior reported in the original study. Consequently, the outcomes growth and inequality are similar as well. Second, the online experiment proceeded fluently such that dropouts were no concern. Third, contribution behavior in my abstract setting is, if anything, only weakly linked to behavior in the real world. 
+The three most important findings are as follows: First, the contribution behavior in my experiment is statistically similar to the behavior reported in the original study. Consequently, the outcomes growth and inequality are reproducible. Second, the online experiment proceeded fluently such that dropouts were no concern. Third, contribution behavior in the dynamic abstract setting is not linked to behavior in the real world -- neither for students nor a more representative sample.
 
-The significance of the first result is that similar procedures led to replicable findings under different circumstances across two different samples. The second result is of methodological importance: It highlights that even logistically complex experiments can be conducted online with---not only with clickworkers but also with a true general population sample. The third result questions whether recruiting from more representative samples is worth the efforts because it decreases transferability of results to the real world---at least in this specific case.
+The significance of the first result is that similar procedures led to replicable findings under different circumstances across two different samples. The second result is of methodological importance: It highlights that even logistically complex experiments can be conducted online with---not only with clickworkers but also with a true general population sample. The third result questions whether recruiting from more representative samples is worth the efforts because it did not affect transferability of abstract results to the real world.
 
 {{< pagebreak >}}
 
