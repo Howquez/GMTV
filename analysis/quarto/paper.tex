@@ -209,7 +209,7 @@ You can find the most recent version of this paper
 science \sep Dynamic public good game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, interior hidden, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, breakable, sharp corners, borderline west={3pt}{0pt}{shadecolor}, enhanced, boxrule=0pt, frame hidden]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}
@@ -254,7 +254,9 @@ experiment with different samples\footnote{GMTV ran their experiments
   with students in Nottingham, England.} and observed the participants'
 behavior in voluntary climate actions (VCA). This yielded a setting
 similar to \citet{GKLS2020}'s which allows me to analyze how behavior in
-the abstract game translates into real-world action across samples.
+the abstract game translates into real-world action across samples. The
+article shows that the dynamic setting \emph{does not} add any advances
+with respect to generalizability of results.
 
 The VCA is a (charitable) dictator games where each participant is a
 dictator dividing her budget between herself and some organization
@@ -267,12 +269,13 @@ to charity than community members.
 \citet{AGM2018} conducted public good games in the lab and on MTurk to
 draw lessons from online experimentation. This study extends this
 literature \citep[see also][ \citet{AmirEtAl2012}]{GoodmanPaolacci2017}
-by focusing on a completely inexperienced sample that has not been
-exposed to interactive experiments before. This required me to design a
-robust (and thus, more complex) software to minimize attrition. In
-exchange, the online setting allowed me to also collect paradata to
-assess the fluency and feasibility of the experiment. This article
-reports on both topics: the robust design as well as the feasibility.
+by focusing on an inconvenient sample: one that is completely
+inexperienced sample that has not been exposed to interactive
+experiments before. This required me to design a robust (and thus, more
+complex) software to minimize attrition. In exchange, the online setting
+allowed me to also collect paradata to assess the fluency and
+feasibility of the experiment. This article reports on both topics: the
+robust design as well as the feasibility.
 
 Taken together, this study makes three contributions. First, it
 reproduces parts of GMTV's original experiment and highlights the
@@ -280,11 +283,18 @@ importance of pure replications. Second, it shows that logistically
 complex online experiments are feasible for samples other than students
 or clickworkers. Third, this paper supports critics arguing that
 findings from abstract games do not generalize well---not even with a
-more representative sample. After reporting the methods, this paper is
-organized along these findings.
+more representative sample.
 
-\hypertarget{transparency}{%
-\section{Transparency}\label{transparency}}
+After commenting on transparent research practices and reporting the
+methods in Section~\ref{sec-transparency} and Section~\ref{sec-methods},
+this paper is organized along these findings: The confirmatory
+reproduction is reported in Section~\ref{sec-replication}, the online
+feasibility in Section~\ref{sec-feasibility} and the generalizability in
+Section~\ref{sec-generalizability}. Section~\ref{sec-conclusion}
+concludes.
+
+\hypertarget{sec-transparency}{%
+\section{Transparency}\label{sec-transparency}}
 
 Well before credibility crises comprised a variety disciplines,
 \citet[p.~2]{bemwriting} indirectly conceded discrepancies between fuzzy
@@ -363,11 +373,11 @@ Accordingly, I changed many of the analysis scripts.\footnote{The source
 However, because the originally planned analysis code is archived and
 reproducible, these changes are transparent. Importantly, I followed a
 literate programming approach \citep{Knuth_1984, AkhtarYe_2023}. Hence,
-all documents needed to analyze the data and write the report stem from
-the same source. This establishes consistence between the commands one
-tells the statistical software to do and the explanation one tells human
-beings one told the statistical software to do. As such, (a), (b) and
-the transition from (a) to (b) are not only transparent but also
+all documents needed to analyze the data and to write the report stem
+from the same source. This establishes consistence between the commands
+one tells the statistical software to do and the explanation one tells
+human beings one told the statistical software to do. As such, (a), (b)
+and the transition from (a) to (b) are not only transparent but also
 comprehensible.
 
 \hypertarget{sec-methods}{%
@@ -957,6 +967,8 @@ online with---not only with clickworkers but also with a true general
 population sample. The third result questions whether recruiting from
 more representative samples is worth the efforts because it did not
 affect transferability of abstract results to the real world.
+
+Limitations?
 
 \newpage{}
 
