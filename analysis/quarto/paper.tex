@@ -209,7 +209,7 @@ You can find the most recent version of this paper
 science \sep Dynamic public good game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, borderline west={3pt}{0pt}{shadecolor}, enhanced, interior hidden, boxrule=0pt, sharp corners, frame hidden]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, enhanced, borderline west={3pt}{0pt}{shadecolor}, boxrule=0pt, interior hidden, frame hidden, sharp corners]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}
@@ -222,7 +222,7 @@ the Paris climate targets tomorrow. Deferring these policies, may not
 necessarily prevent us from reaching these targets, but it makes it more
 difficult in the future. Hence, today's actions (or the omission
 thereof) not only affect intermediate outcomes but also the number of
-paths one can choose to reach certain goals. This apllies especially to
+paths one can choose to reach certain goals. This applies especially to
 carbon dioxide emissions where its current stock will last for well over
 a millennium \citep{Inman2008, CalzolariEtAl2018}.
 
@@ -275,7 +275,7 @@ assess the fluency and feasibility of the experiment. This article
 reports on both topics: the robust design as well as the feasibility.
 
 Taken together, this study makes three contributions. First, it
-replicates parts of GMTV's original experiment and highlights the
+reproduces parts of GMTV's original experiment and highlights the
 importance of pure replications. Second, it shows that logistically
 complex online experiments are feasible for samples other than students
 or clickworkers. Third, this paper supports critics arguing that
@@ -347,21 +347,28 @@ pre-registered in the American Economic Association's RCT Registry
 analyses I planned to run when I designed the experiment on
 \href{https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd}{GitHub}.\footnote{https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd
   to run the code, you need to executed the .Rmd files in this
-  repository in the order that is indicated by its file names.}.
+  repository in the order that is indicated by its file names.}
 
-The analysis that made the most sense after having collected the data is
-a little different though: Because the more representative subject pool
-was exhausted earlier than expected, I recruited students which opened
-up a new research direction: assessing generalizability. Hence, this
-article combines both confirmatory as well as exploratory research.
+At a second glance, the analysis that made the most sense after having
+collected the data and that is reported here is a little different
+though: Because the more representative subject pool was exhausted
+earlier than expected, I recruited students which opened up a new
+research direction: assessing generalizability. Hence, this article
+combines both confirmatory as well as exploratory research.
 
 Accordingly, I changed many of the analysis scripts.\footnote{The source
   code of this document contains the analysis and can be found
   \href{https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd}{here}:
   https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd}
 However, because the originally planned analysis code is archived and
-reproducible, these changes are transparent and easy to assess,
-showcasing (a), (b) and the transition from (a) to (b).
+reproducible, these changes are transparent. Importantly, I followed a
+literate programming approach \citep{Knuth_1984, AkhtarYe_2023}. Hence,
+all documents needed to analyze the data and write the report stem from
+the same source. This establishes consistence between the commands one
+tells the statistical software to do and the explanation one tells human
+beings one told the statistical software to do. As such, (a), (b) and
+the transition from (a) to (b) are not only transparent but also
+comprehensible.
 
 \hypertarget{sec-methods}{%
 \section{Methodology}\label{sec-methods}}
@@ -373,7 +380,7 @@ of one treatment of GMTV's dynamic public good game. The pure
 reproduction re-analyzes the original data.
 \protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
 \href{}{errors I identified} in the original paper. The scientific
-replication, where I utilize a different sample drawn from a different
+reproduction, where I utilize a different sample drawn from a different
 population in a different situation, is described in the following
 sections.
 
@@ -563,13 +570,13 @@ averaged 11.23 Euros (sd = 4.85).\footnote{This values include earnings
 \section{Results}\label{sec-results}}
 
 \hypertarget{sec-replication}{%
-\subsection{Pre-registered GMTV Replication}\label{sec-replication}}
+\subsection{Pre-registered GMTV Reproduction}\label{sec-replication}}
 
 \hypertarget{sec-contributions}{%
 \subsubsection{Contribution Behavior}\label{sec-contributions}}
 
 First, I ask whether the samples differ with respect to their initial
-contributions to the public good. Is the replication sample (consisting
+contributions to the public good. Is the reproduction sample (consisting
 of both students and non-students) more pro-social than the original
 sample? A two-sided rank sum test reveals that it is not (p=0.3926).
 Both samples contributed 10 tokens, that is, 50\% of their endowments on
@@ -587,12 +594,12 @@ Figure~\ref{fig-share-of-contributions} illustrates that the samples
 make similar contributions at the beginning and the end of the game but
 behave differently in between. More precisely, the left panel--depicting
 the average contributions in absolute terms--shows that the original
-sample contributed more than the replication sample \emph{in all but the
-first and last period}.\footnote{In period five, this difference is
+sample contributed more than the reproduction sample \emph{in all but
+the first and last period}.\footnote{In period five, this difference is
   significant: a two-sided rank sum test yields p=0.0486.} For this
-reason, the original sample's behavior differs from the replication
+reason, the original sample's behavior differs from the reproduction
 sample's behavior in two aspects: it contributes more and exhibits a
-considerable drop in the last period (whereas the replication sample's
+considerable drop in the last period (whereas the reproduction sample's
 contributions flatten).
 
 Note that increasing contributions over time imply increasing endowments
@@ -602,8 +609,8 @@ Figure~\ref{fig-share-of-contributions} shows the average \emph{share of
 endowments contributed} over time. Both samples exhibit a similar
 pattern: their share of endowments contributed declined and did not
 stabilize. However, both samples also differ with respect to one aspect:
-the replication sample's share of contributions declines faster. This is
-mirrored by a two-sided rank sum test which is only significant at a
+the reproduction sample's share of contributions declines faster. This
+is mirrored by a two-sided rank sum test which is only significant at a
 five percent level in periods three and four.
 
 \begin{figure}
@@ -640,7 +647,7 @@ wealth?\footnote{To measure wealth and growth, I define a variable
 original sample contributed more, one would expect the respective groups
 to be more wealthy. A mere mean comparison indicates just that: An
 average group in the original sample accumulated about 478 tokens. In
-contrast, an average group in the replication sample accumulated about
+contrast, an average group in the reproduction sample accumulated about
 380 tokens. This difference is insignificant at conventional levels
 though: A two-sided rank sum test (comparing differences between
 samples) yields a p-Value of 0.1356 for the mean stock in last period of
@@ -661,14 +668,14 @@ outcomes.
 Why? Perhaps because the heterogeneity within samples and across groups
 has been too large to \emph{detect} a significant difference. The right
 panel of Figure~\ref{fig-growth-heterogeneity} depicts heterogeneity: In
-the replication sample, the richest group earned 1425 tokens (which is
+the reproduction sample, the richest group earned 1425 tokens (which is
 about 1781\% of the initial endowment) whereas the poorest group ends up
-with 92 tokens (115\%). More broadly, the replication sample is
+with 92 tokens (115\%). More broadly, the reproduction sample is
 characterized by inequality between groups (\(SD_{Replication} =\)
 336.06). The same holds true for the original sample
 (\(SD_{Original} =\) 393.58). Hence, the heterogeneity across groups
 does not differ between samples, which is remarkable because the
-replication sample was drawn from a more heterogeneous (non-convenience
+reproduction sample was drawn from a more heterogeneous (non-convenience
 sample). Does it differ within groups?
 
 \begin{figure}
@@ -837,21 +844,21 @@ dynamic public goods game.
 Figure~\ref{fig-kernel-generalizability} shows distributions of
 contributions across both choices for both samples. The top panels
 illustrate the behavior of the general population sample. The bottom
-panels illustrate the behavior of the general population sample. The
-left panels show the behavior in the VCA. The right panels show the
-behavior in first period of the game. A visual inspection shows that (a)
-mean contributions are positive in both tasks for both
-samples.\footnote{The same holds true for median contributions.} (b)
-Furthermore, average contributions are lower in the VCA. (c) In contrast
-to \citet{GKLS2020}'s observation, we do not observe a difference
-between samples in the abstract game's contribution behavior. (d)
-However, the student's share of income contributed to the VCA is
-significantly lower than the general population sample's contributions
-(two-sided rank sum test, p=0.0085). Taken together, these aggregate
-results indicate, that the consistency between tasks is higher for the
-general population than it is for students. Or, to put it differently,
-the general population's behavior in the abstract game better predicts
-their behavior in real-world mitigation context.
+panels illustrate the behavior of the student sample. The left panels
+show the behavior in the VCA. The right panels show the behavior in
+first period of the game. A visual inspection shows that (a) mean
+contributions are positive in both tasks for both samples.\footnote{The
+  same holds true for median contributions.} (b) Furthermore, average
+contributions are lower in the VCA. (c) In contrast to
+\citet{GKLS2020}'s observation, we do not observe a difference between
+samples in the abstract game's contribution behavior. (d) However, the
+student's share of income contributed to the VCA is significantly lower
+than the general population sample's contributions (two-sided rank sum
+test, p=0.0085). Taken together, these aggregate results indicate, that
+the consistency between tasks is higher for the general population than
+it is for students. Or, to put it differently, the general population's
+behavior in the abstract game better predicts their behavior in
+real-world mitigation context.
 
 \begin{figure}
 

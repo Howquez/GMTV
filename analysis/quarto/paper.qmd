@@ -764,7 +764,7 @@ earningsSD   <- tmp[, sd(finalPayoff, na.rm = TRUE)]
 
 # Introduction {#sec-intro}
 
-Today's actions are tomorrow's result. There are many settings in which current decisions affect future outcomes and with it, future decision spaces. Opting for environmental friendly policies today not only reduces carbon dioxide omissions immediately but also helps us to reach the Paris climate targets tomorrow. Deferring these policies, may not necessarily prevent us from reaching these targets, but it makes it more difficult in the future. Hence, today's actions (or the omission thereof) not only affect intermediate outcomes but also the number of paths one can choose to reach certain goals. This apllies especially to carbon dioxide emissions where its current stock will last for well over a millennium [@Inman2008; @CalzolariEtAl2018].
+Today's actions are tomorrow's result. There are many settings in which current decisions affect future outcomes and with it, future decision spaces. Opting for environmental friendly policies today not only reduces carbon dioxide omissions immediately but also helps us to reach the Paris climate targets tomorrow. Deferring these policies, may not necessarily prevent us from reaching these targets, but it makes it more difficult in the future. Hence, today's actions (or the omission thereof) not only affect intermediate outcomes but also the number of paths one can choose to reach certain goals. This applies especially to carbon dioxide emissions where its current stock will last for well over a millennium [@Inman2008; @CalzolariEtAl2018].
 
 Public good games---although often intended to inform climate policies (e.g. @MilinskiEtAl2006, @TavoniEtAl2011, @Hauser2014, @BrickEtAl2015, @GomezEtAl2018, @CalzolariEtAl2018, @CookEtAl2019)---miss these temporal interdependencies simply because participants have the same set of actions in each period. Accordingly, participants' actions in a given period do not affect their number of actions in subsequent periods. A game designed by Gächter, Mengel, Tsakas & Vostroknutov [-@GMTV2017] (hereafter, GMTV) as well as Stefan Große (2011, unpublished) incorporated interdependencies into a _dynamic_ public good game. Here, participants' actions in a given period affect their number of actions in subsequent periods. Because there is surprisingly little experimental research on these interdependencies^[One exemption are @Moser2019, who built on GMTV's design to investigate leadership.], I reproduced one of their treatments to compare dynamics across samples.
 
@@ -776,7 +776,7 @@ The VCA is a (charitable) dictator games where each participant is a dictator di
 
 @AGM2018 conducted public good games in the lab and on MTurk to draw lessons from online experimentation. This study extends this literature [see also @GoodmanPaolacci2017  @AmirEtAl2012] by focusing on a completely inexperienced sample that has not been exposed to interactive experiments before. This required me to design a robust (and thus, more complex) software to minimize attrition. In exchange, the online setting allowed me to also collect paradata to assess the fluency and feasibility of the experiment. This article reports on both topics: the robust design as well as the feasibility.
 
-Taken together, this study makes three contributions. First, it replicates parts of GMTV's original experiment and highlights the importance of pure replications. Second, it shows that logistically complex online experiments are feasible for samples other than students or clickworkers. Third, this paper supports critics arguing that findings from abstract games do not generalize well---not even with a more representative sample. After reporting the methods, this paper is organized along these findings.
+Taken together, this study makes three contributions. First, it reproduces parts of GMTV's original experiment and highlights the importance of pure replications. Second, it shows that logistically complex online experiments are feasible for samples other than students or clickworkers. Third, this paper supports critics arguing that findings from abstract games do not generalize well---not even with a more representative sample. After reporting the methods, this paper is organized along these findings.
 
 # Transparency
 
@@ -794,11 +794,11 @@ I propose version control (such as Git) as one such tool and illustrate its appl
 To sum up, pre-registrations alone are necessary but not sufficient to restore the credibility in experimental sciences. Pre-registrations must come with additional emphasis on transparency covering the whole research process as well as with a higher level of scrutiny that looks beyond mere labels.
 
 In fact, the experiment reported in this article qualifies for the label _'pre-registered'_ at a first glance:
-Parts of the analyses were pre-registered in the American Economic Association's RCT Registry [@preregistration]. In addition, I pre-registered the exact analyses I planned to run when I designed the experiment on [GitHub](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd).^[https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd to run the code, you need to executed the .Rmd files in this repository in the order that is indicated by its file names.].
+Parts of the analyses were pre-registered in the American Economic Association's RCT Registry [@preregistration]. In addition, I pre-registered the exact analyses I planned to run when I designed the experiment on [GitHub](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd).^[https://github.com/Howquez/coopUncertainty/tree/July21Replication/analysis/reports/rmd to run the code, you need to executed the .Rmd files in this repository in the order that is indicated by its file names.] 
 
-The analysis that made the most sense after having collected the data is a little different though: Because the more representative subject pool was exhausted earlier than expected, I recruited students which opened up a new research direction: assessing generalizability. Hence, this article combines both confirmatory as well as exploratory research. 
+At a second glance, the analysis that made the most sense after having collected the data and that is reported here is a little different though: Because the more representative subject pool was exhausted earlier than expected, I recruited students which opened up a new research direction: assessing generalizability. Hence, this article combines both confirmatory as well as exploratory research. 
 
-Accordingly, I  changed many of the analysis scripts.^[The source code of this document contains the analysis and can be found [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd): https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd] However, because the originally planned analysis code is archived and reproducible, these changes are transparent and easy to assess, showcasing (a), (b) and the transition from (a) to (b).
+Accordingly, I  changed many of the analysis scripts.^[The source code of this document contains the analysis and can be found [here](https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd): https://github.com/Howquez/coopUncertainty/blob/main/analysis/quarto/paper.qmd] However, because the originally planned analysis code is archived and reproducible, these changes are transparent. Importantly, I followed a literate programming approach [@Knuth_1984; @AkhtarYe_2023]. Hence, all documents needed to analyze the data and write the report stem from the same source. This establishes consistence between the commands one tells the statistical software to do and the explanation one tells human beings one told the statistical software to do. As such, (a), (b) and the transition from (a) to (b) are not only transparent but also comprehensible.
 
 <!--
 I archived detailed analyses scripts and created a [branch](https://github.com/Howquez/coopUncertainty/tree/July21Replication) a few days _before_ we collected data and pre-registered the analysis via the American Economic Association's RCT Registry [@preregistration].
@@ -806,7 +806,7 @@ I archived detailed analyses scripts and created a [branch](https://github.com/H
 
 # Methodology {#sec-methods}
 
-In the terminology of @Hamermesh2007, I ran both a _pure_ as well as a _scientific_ reproduction^[@Parsons2022 use the term of a _conceptual replication_ which means the same.] of one treatment of GMTV's dynamic public good game. The pure reproduction re-analyzes the original data. [Appendix A](#A:-Pure-Replication) documents [errors I identified]() in the original paper. The scientific replication, where I utilize a different sample drawn from a different population in a different situation, is described in the following sections.
+In the terminology of @Hamermesh2007, I ran both a _pure_ as well as a _scientific_ reproduction^[@Parsons2022 use the term of a _conceptual replication_ which means the same.] of one treatment of GMTV's dynamic public good game. The pure reproduction re-analyzes the original data. [Appendix A](#A:-Pure-Replication) documents [errors I identified]() in the original paper. The scientific reproduction, where I utilize a different sample drawn from a different population in a different situation, is described in the following sections.
 
 ## Experimental Design {#sec-design}
 
@@ -934,7 +934,7 @@ The experiment lasted around `r total_completion_time` minutes on average. The e
 
 # Results {#sec-results}
 
-## Pre-registered GMTV Replication {#sec-replication}
+## Pre-registered GMTV Reproduction {#sec-replication}
 
 ### Contribution Behavior {#sec-contributions}
 
@@ -955,7 +955,7 @@ rs1 <- wilcox.test(replication,
           digits = 4)
 ```
 
-First, I ask whether the samples differ with respect to their initial contributions to the public good. Is the replication sample (consisting of both students and non-students) more pro-social than the original sample? A two-sided rank sum test reveals that it is not (p=`r rs1`). Both samples contributed 10 tokens, that is, 50% of their endowments on average (median and mean). Moreover, both samples' initial contributions resemble initial contributions participants usually make in the static game with partner matching.^[See Figure 3B in @fehrgaechter2000 [p.989], for instance.] However, in the dynamic game presented here, we are particularly interested in the subsequent periods because differences add up exponentially. Do the two groups remain similar over the course of time?
+First, I ask whether the samples differ with respect to their initial contributions to the public good. Is the reproduction sample (consisting of both students and non-students) more pro-social than the original sample? A two-sided rank sum test reveals that it is not (p=`r rs1`). Both samples contributed 10 tokens, that is, 50% of their endowments on average (median and mean). Moreover, both samples' initial contributions resemble initial contributions participants usually make in the static game with partner matching.^[See Figure 3B in @fehrgaechter2000 [p.989], for instance.] However, in the dynamic game presented here, we are particularly interested in the subsequent periods because differences add up exponentially. Do the two groups remain similar over the course of time?
 
 
 ```{r firstRoundViz}
@@ -971,7 +971,7 @@ ggplot(data = R1[treatment != "noPunish15"],
   scale_y_continuous(limits = c(0, 0.1),
                        expand = c(0, NA)) +
   scale_fill_manual(values = c(cPrimary, cSecondary),
-                    labels = c("Original Sample", "Replication Sample")) +
+                    labels = c("Original Sample", "Reproduction Sample")) +
   guides(lty = "none") +
   geom_vline(xintercept = R1[treatment == "replication", 
                              mean(ownContribution)],
@@ -983,7 +983,7 @@ ggplot(data = R1[treatment != "noPunish15"],
              lty = 1) +
     labs(title = "", 
        y = "", x = "Initially Contributed Tokens",
-       caption = "White lines indicate means (dashed line = replication sample).") +
+       caption = "White lines indicate means (dashed line = reproduction sample).") +
   layout +
   theme(legend.position = "top")
 ```
@@ -1035,9 +1035,9 @@ rs2 <- wilcox.test(a,
           digits = 4)
 ```
 
-In particular, do the two samples' contributions follow the same path over the 10 periods they played? The answer is _no_. @fig-share-of-contributions illustrates that the samples make similar contributions at the beginning and the end of the game but behave differently in between. More precisely, the left panel--depicting the average contributions in absolute terms--shows that the original sample contributed more than the replication sample _in all but the first and last period_.^[In period five, this difference is significant: a two-sided rank sum test yields p=`r rs2`. ] For this reason, the original sample's behavior differs from the replication sample's behavior in two aspects: it contributes more and exhibits a considerable drop in the last period (whereas the replication sample's contributions flatten). 
+In particular, do the two samples' contributions follow the same path over the 10 periods they played? The answer is _no_. @fig-share-of-contributions illustrates that the samples make similar contributions at the beginning and the end of the game but behave differently in between. More precisely, the left panel--depicting the average contributions in absolute terms--shows that the original sample contributed more than the reproduction sample _in all but the first and last period_.^[In period five, this difference is significant: a two-sided rank sum test yields p=`r rs2`. ] For this reason, the original sample's behavior differs from the reproduction sample's behavior in two aspects: it contributes more and exhibits a considerable drop in the last period (whereas the reproduction sample's contributions flatten). 
 
-Note that increasing contributions over time imply increasing endowments over time. Hence, absolute contributions do not tell much about the willingness to cooperate. For this reason, the right panel in @fig-share-of-contributions shows the average _share of endowments contributed_ over time. Both samples exhibit a similar pattern: their share of endowments contributed declined and did not stabilize. However, both samples also differ with respect to one aspect: the replication sample's share of contributions declines faster. This is mirrored by a two-sided rank sum test which is only significant at a five percent level in periods three and four.
+Note that increasing contributions over time imply increasing endowments over time. Hence, absolute contributions do not tell much about the willingness to cooperate. For this reason, the right panel in @fig-share-of-contributions shows the average _share of endowments contributed_ over time. Both samples exhibit a similar pattern: their share of endowments contributed declined and did not stabilize. However, both samples also differ with respect to one aspect: the reproduction sample's share of contributions declines faster. This is mirrored by a two-sided rank sum test which is only significant at a five percent level in periods three and four.
 
 
 ```{r plotContributions}
@@ -1065,7 +1065,7 @@ p1 <- ggplot(data = SUM,
   scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
   labs(y = "Average Amount of Tokens contributed") +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample")) + 
+                     labels = c("Original Sample", "Reproduction Sample")) + 
   guides(fill = "none") +
   theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
 
@@ -1098,7 +1098,7 @@ p2 <- ggplot(data = SHARE,
   scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
   labs(y = "Share of Current Endowment contributed") +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample")) +
+                     labels = c("Original Sample", "Reproduction Sample")) +
   guides(fill = "none")
 
 p1 + p2 + plot_layout(guides = "collect") & 
@@ -1140,7 +1140,7 @@ originalWealth    <- main[treatment == "noPunish10" & round == 10, mean(stock)]
 replicationWealth <- main[treatment == "replication" & round == 10, mean(stock)]
 ```
 
-How do the different contribution-paths translate into wealth?^[To measure wealth and growth, I define a variable called _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed).] Given that the original sample contributed more, one would expect the respective groups to be  more wealthy. A mere mean comparison indicates just that: An average group in the original sample accumulated about `r round(originalWealth)` tokens. In contrast, an average group in the replication sample accumulated about `r round(replicationWealth)` tokens. This difference is insignificant at conventional levels though: A two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean stock in last period of the game.
+How do the different contribution-paths translate into wealth?^[To measure wealth and growth, I define a variable called _stock_ which sums the endowments of all participants in a given group at the end of the round (that is, after the contributions have been made, multiplied and redistributed).] Given that the original sample contributed more, one would expect the respective groups to be  more wealthy. A mere mean comparison indicates just that: An average group in the original sample accumulated about `r round(originalWealth)` tokens. In contrast, an average group in the reproduction sample accumulated about `r round(replicationWealth)` tokens. This difference is insignificant at conventional levels though: A two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean stock in last period of the game.
 
 ```{r stockDistributionViz}
 #| eval: false
@@ -1155,7 +1155,7 @@ ggplot(data = main,
   scale_y_continuous(limits = c(0, NA),
                        expand = c(0, NA)) +
   scale_fill_manual(values = c(cPrimary, cSecondary),
-                    labels = c("Original Sample", "Replication Sample")) +
+                    labels = c("Original Sample", "Reproduction Sample")) +
   guides(lty = "none") +
   geom_vline(xintercept = replicationWealth,
              col = "#000000", alpha = 0.5,
@@ -1165,7 +1165,7 @@ ggplot(data = main,
              lty = 1) +
     labs(title = "", 
        y = "", x = "Stock",
-       caption = "Grey lines indicate means (dashed line = replication sample).") +
+       caption = "Grey lines indicate means (dashed line = reproduction sample).") +
   layout +
   theme(legend.position = "top")
 ```
@@ -1190,7 +1190,7 @@ oSD <- main[round == 10 & treatment == "noPunish10",
 
 Although there clearly is growth, groups do not realize the maximal potential efficiency: under full cooperation, a group can accumulate at least `r (80*1.5^10) %>% trunc()` tokens or EUR `r (80*1.5^10 /20) %>% trunc()`. This is depicted in the left panel of @fig-growth-heterogeneity, where one can see the average wealth over time by sample. The panel illustrates for both samples that growth was continuous and surprisingly linear, given the exponential character of the game's design. Despite somewhat differing contribution behavior between samples, neither the eventual wealth nor the corresponding growth paths differed. Differences in contribution behavior did, thus, not translate to significantly different wealth outcomes.
 
-Why? Perhaps because the heterogeneity within samples and across groups has been too large to _detect_ a significant difference. The right panel of @fig-growth-heterogeneity depicts heterogeneity: In the replication sample, the richest group earned `r a <- main[treatment == "replication" & round == 10, max(stock)]; a` tokens (which is about `r round(a/80, digits = 2)*100`% of the initial endowment) whereas the poorest group ends up with `r b <- main[treatment == "replication" & round == 10, min(stock)]; b` tokens (`r round(b/80, digits = 2)*100`%). More broadly, the replication sample is characterized by inequality between groups ($SD_{Replication} =$ `r rSD`). The same holds true for the original sample ($SD_{Original} =$ `r oSD`). Hence, the heterogeneity across groups does not differ between samples, which is remarkable because the replication sample was drawn from a more heterogeneous (non-convenience sample). Does it differ within groups?
+Why? Perhaps because the heterogeneity within samples and across groups has been too large to _detect_ a significant difference. The right panel of @fig-growth-heterogeneity depicts heterogeneity: In the reproduction sample, the richest group earned `r a <- main[treatment == "replication" & round == 10, max(stock)]; a` tokens (which is about `r round(a/80, digits = 2)*100`% of the initial endowment) whereas the poorest group ends up with `r b <- main[treatment == "replication" & round == 10, min(stock)]; b` tokens (`r round(b/80, digits = 2)*100`%). More broadly, the reproduction sample is characterized by inequality between groups ($SD_{Replication} =$ `r rSD`). The same holds true for the original sample ($SD_{Original} =$ `r oSD`). Hence, the heterogeneity across groups does not differ between samples, which is remarkable because the reproduction sample was drawn from a more heterogeneous (non-convenience sample). Does it differ within groups?
 
 <!-- doch lieber Gini? statt SD reporten? -->
 
@@ -1228,7 +1228,7 @@ p1 <- ggplot(data = STOCK,
   scale_y_continuous(limits = c(0, 4700), expand = c(0, 0)) +
   labs(y = "Wealth", x = "Period") +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample")) +
+                     labels = c("Original Sample", "Reproduction Sample")) +
   geom_point(mapping = aes(x = 10, y = 4613), col = "#b5b5b5") +
   annotate("text", x = 9, y = 4630, size = 3,
            label = "max", col = "#b5b5b5") +
@@ -1251,7 +1251,7 @@ p2 <- ggplot(data = main,
   scale_y_continuous(limits = c(0, 2000),
                        expand = c(0, NA)) +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample")) +
+                     labels = c("Original Sample", "Reproduction Sample")) +
   labs(y = "", x = "Period") +
   layout +
   guides(col = "none")
@@ -1308,7 +1308,7 @@ ggplot(data = main,
   scale_y_continuous(limits = c(0, NA),
                        expand = c(0, NA)) +
   scale_fill_manual(values = c(cPrimary, cSecondary),
-                    labels = c("Original Sample", "Replication Sample")) +
+                    labels = c("Original Sample", "Reproduction Sample")) +
   guides(lty = "none") +
   geom_vline(xintercept = replicationGini,
              col = "#000000", alpha = 0.5,
@@ -1318,7 +1318,7 @@ ggplot(data = main,
              lty = 1) +
     labs(title = "", 
        y = "", x = "Gini Coefficient",
-       caption = "Grey lines indicate means (dashed line = replication sample).") +
+       caption = "Grey lines indicate means (dashed line = reproduction sample).") +
   layout +
   theme(legend.position = "top")
 ```
@@ -1342,7 +1342,7 @@ ggplot(data = GINI,
   scale_y_continuous(limits = c(0, 0.25), expand = c(0, 0)) +
   labs(y = "Wealth", x = "Period") +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample")) +
+                     labels = c("Original Sample", "Reproduction Sample")) +
   guides(fill = "none") +
   layout +
   theme(legend.position = "top") +
@@ -1461,7 +1461,7 @@ rs1 <- wilcox.test(temp[student == FALSE, donationShare],
           digits = 4)
 ```
 
-@fig-kernel-generalizability shows distributions of contributions across both choices for both samples. The top panels illustrate the behavior of the general population sample. The bottom panels illustrate the behavior of the general population sample. The left panels show the behavior in the VCA. The right panels show the behavior in first period of the game. A visual inspection shows that (a) mean contributions are positive in both tasks for both samples.^[The same holds true for median contributions.] (b) Furthermore, average contributions are lower in the VCA. (c) In contrast to @GKLS2020's observation, we do not observe a difference between samples in the abstract game's contribution behavior. (d) However, the student's share of income contributed to the VCA is significantly lower than the general population sample's contributions (two-sided rank sum test, p=`r rs1`). Taken together, these aggregate results indicate, that the consistency between tasks is higher for the general population than it is for students. Or, to put it differently, the general population's behavior in the abstract game better predicts their behavior in real-world mitigation context.
+@fig-kernel-generalizability shows distributions of contributions across both choices for both samples. The top panels illustrate the behavior of the general population sample. The bottom panels illustrate the behavior of the student sample. The left panels show the behavior in the VCA. The right panels show the behavior in first period of the game. A visual inspection shows that (a) mean contributions are positive in both tasks for both samples.^[The same holds true for median contributions.] (b) Furthermore, average contributions are lower in the VCA. (c) In contrast to @GKLS2020's observation, we do not observe a difference between samples in the abstract game's contribution behavior. (d) However, the student's share of income contributed to the VCA is significantly lower than the general population sample's contributions (two-sided rank sum test, p=`r rs1`). Taken together, these aggregate results indicate, that the consistency between tasks is higher for the general population than it is for students. Or, to put it differently, the general population's behavior in the abstract game better predicts their behavior in real-world mitigation context.
 
 
 ```{r vizGeneralizability}
@@ -1629,7 +1629,7 @@ p1 / (p2 + p3)
 ```
 
 <!--
-@fig-kernel-generalizability also indicates that the general population's contribution behavior is more consistent than the students' behavior. Hence, one may conclude that their behavior in the abstract game translates comparably well to the real world. This is not the case. If anything, the _students'_ behavior in the abstract game is more predictive for their VCA. @fig-scatter-generalizability visualizes the within-subjects relationship of both contribution tasks. More precisely, it shows a scatter plot of realized choices, with the percentage of endowment spent by each participant in the first period of the game on the x-axis and that spent in the VCA on the y-axis. In addition, the figures contains a fitted line of a linear model. The upper pannel illustrates overall behavior and exhibits a slope which is indistinguishable from zero. No matter how much the participants contributed in the first round, they spent, on average, about `r temp[, round(mean(donationShare))]`% of their income on the VCA. The two bottom panels differentiate between both samples with slopes that differ qualitatively. However, none of the slopes is significant. 
+@fig-kernel-generalizability also indicates that the general population's contribution behavior is more consistent than the students' behavior. Hence, one may conclude that their behavior in the abstract game translates comparably well to the real world. This is not the case. If anything, the _students'_ behavior in the abstract game is more predictive for their VCA. @fig-scatter-generalizability visualizes the within-subjects relationship of both contribution tasks. More precisely, it shows a scatter plot of realized choices, with the percentage of endowment spent by each participant in the first period of the game on the x-axis and that spent in the VCA on the y-axis. In addition, the figures contains a fitted line of a linear model. The upper panel illustrates overall behavior and exhibits a slope which is indistinguishable from zero. No matter how much the participants contributed in the first round, they spent, on average, about `r temp[, round(mean(donationShare))]`% of their income on the VCA. The two bottom panels differentiate between both samples with slopes that differ qualitatively. However, none of the slopes is significant. 
 -->
 
 **Result 3.** _There is no significant correlation between average contributions in the abstract public goods game and contributions to the real public good of climate change mitigation._
@@ -2034,7 +2034,7 @@ p1 <- ggplot(data = STOCKe,
   scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
   labs(y = "Wealth (Equality)", x = "Period") +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample"))
+                     labels = c("Original Sample", "Reproduction Sample"))
 
 p2 <- ggplot(data = STOCKu, 
              aes(x = round, y = stock, fill = treatment, color = treatment, lty = treatment)) +
@@ -2048,7 +2048,7 @@ p2 <- ggplot(data = STOCKu,
   scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
   labs(y = "Wealth (Inequality)", x = "Period") +
   scale_color_manual(values = c(cPrimary, cSecondary),
-                     labels = c("Original Sample", "Replication Sample"))
+                     labels = c("Original Sample", "Reproduction Sample"))
 
 p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 
