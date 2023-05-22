@@ -938,6 +938,13 @@ The experiment lasted around `r total_completion_time` minutes on average. The e
 
 ## Pre-registered GMTV Reproduction {#sec-replication}
 
+```{r}
+N_r <- R1[treatment == "replication", .N]
+N_o <- R1[treatment == "noPunish10", .N]
+```
+
+Throughout this section, I pool data from both the citizens as well as the students from Hamburg and compare it with the students GMTV recruited in Nottingham. I refer to the two samples as the _reproduction sample_ ($N_r$ = `r N_r`) and the _original sample_ ($N_o$ = `r N_o`), respectively.
+
 ### Contribution Behavior {#sec-contributions}
 
 ```{r prepFirstSummary}
@@ -1293,7 +1300,7 @@ originalGini    <- main[treatment == "noPunish10" & round == 10, mean(gini)] %>%
 replicationGini <- main[treatment == "replication" & round == 10, mean(gini)] %>% round(digits = 2)
 ```
 
-Given the different samples and the possibility of endogenous growth--which essentially is the main feature of the game--I ask whether and how the inequality grows _within_ groups. @fig-gini-time-series illustrates that inequality did grow: at the end of the game, the original and the replication groups exhibit an average Gini coefficient of `r originalGini` and `r replicationGini`, respectively.^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean Gini coefficient in last round of the game.] Because every participant started with the same initial endowment (in _Period 0_, so to speak), every group started equally--with a Gini coefficient equaling zero.
+Given the different samples and the possibility of endogenous growth--which essentially is the main feature of the game--I ask whether and how the inequality grows _within_ groups. @fig-gini-time-series illustrates that inequality did grow: at the end of the game, the original and the replication groups exhibit an average Gini coefficient of `r originalGini` and `r replicationGini`, respectively.^[The two-sided rank sum test (comparing differences between samples) yields a p-Value of `r rs1` for the mean Gini coefficient in last round of the game.] Because every participant started with the same initial endowment (in _period 0_, so to speak), every group started equally--with a Gini coefficient equaling zero.
 
 @fig-gini-time-series also shows that this initial state of equality ended with the first period already: both samples exhibit a stark incline in inequality before the second period started. From then on, the respective Gini coefficients grew slowly but continuously -- for both samples.^[In each and every period, the two-sided rank sum test comparing gini coefficients between both sample yields p-values way over ten percent.]
 
@@ -1356,6 +1363,12 @@ ggplot(data = GINI,
 This is remarkable given the different sample and language, the different software and user interface as well as the online setting during the COVID19 pandemic. The result suggests that, by and large, the sum of these factors did not affect people’s preferences towards cooperation.
 
 ## Online Feasibility {#sec-feasibility}
+
+```{r}
+N <- duration[, participant_code %>% unique() %>% length()]
+```
+
+Throughout this section, I do not consider GMTV's data and pool data I gathered from the citizens as well as the students from Hamburg (N = `r N`).
 
 ```{r reviewInformation}
 #| eval: false
@@ -1434,10 +1447,6 @@ Considering attrition, I find that it did not affect the interactive experiment 
 
 ## Generalizability {#sec-generalizability}
 
-<!--
-> "There are two possible articles you can write: (a) the article you planned to write when you designed your study or (b) the article that makes the most sense now that you have seen the results. They are rarely the same, and the correct answer is (b)." [@bemwriting, p. 171]
--->
-
 ```{r generalizability_prep}
 R1covs <- covs[, .(participant.code,
                    donation = donation * 20 ,
@@ -1449,7 +1458,14 @@ R1covs <- covs[, .(participant.code,
 temp <- R1[R1covs, on = .(participant.code = participant.code)][treatment == "replication"]
 temp[, contributionShare := ownContribution/20 * 100]
 temp[, consistency := 1 - (contributionShare - donationShare)]
+
+N_s <- temp[student == TRUE, .N]
+N_g <- temp[student == FALSE, .N]
 ```
+
+
+As before, I do not consider GMTVs' data in this section. Instead, I will differentiate between data from the citizens and the students from Hamburg. I refer to the two samples as the _students_ ($N_s$ = `r N_s`) and the _general population sample_ ($N_g$ = `r N_g`), respectively.
+
 
 @GKLS2020 asked how much can we learn about voluntary climate action from the behavior in public goods games. Using a similar strategy, I answer the question for a _dynamic_ public good game: _Not much_. Overall, there seems to be no association between choices in the voluntary climate action and the first period in the dynamic public goods game. 
 
