@@ -153,7 +153,8 @@
   pdftitle={Revisiting `Growth and Inequality in Public Good Provision' ---Reproducing and Generalizing Through Inconvenient Online Experimentation},
   pdfauthor={Hauke Roggenkamp},
   pdfkeywords={Replication study, Non-convenience sample, Open
-science, Dynamic public good game, Online experiment, Generalizability},
+science, Dynamic public goods game, Online
+experiment, Generalizability},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -184,7 +185,7 @@ St.~Gallen},addressline={Torstrasse
 
         
 \begin{abstract}
-I revisit the dynamic public good game by Gächter et al.~(2017)
+I revisit the dynamic public goods game by Gächter et al.~(2017)
 developed to study cooperation under dynamic interdependencies.
 Collecting data from both a convenient (students) and an inconvenient
 (general population) sample, I not only reproduce some of the author's
@@ -194,7 +195,7 @@ behavior in the charitable context and the dynamic game. This applies to
 students and the general population sample alike. Because the study of
 inexperiend general population samples raises methodological challenges,
 such as fatigue and dropouts, this research approaches them. Doing so, I
-and provide simple solutions to run relieable interactive experiments
+provide simple solutions to run relieable interactive experiments
 online.
 
 You can find the most recent version of this paper
@@ -207,10 +208,10 @@ You can find the most recent version of this paper
 
 \begin{keyword}
     Replication study \sep Non-convenience sample \sep Open
-science \sep Dynamic public good game \sep Online experiment \sep 
+science \sep Dynamic public goods game \sep Online experiment \sep 
     Generalizability
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[interior hidden, borderline west={3pt}{0pt}{shadecolor}, frame hidden, boxrule=0pt, breakable, enhanced, sharp corners]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, breakable, interior hidden, boxrule=0pt, enhanced, borderline west={3pt}{0pt}{shadecolor}, sharp corners]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}
@@ -232,8 +233,8 @@ climate policies (e.g. \citet{MilinskiEtAl2006}, \citet{TavoniEtAl2011},
 \citet{CalzolariEtAl2018}, \citet{CookEtAl2019})---miss these temporal
 interdependencies simply because participants have the same set of
 actions in each period. Accordingly, participants' actions in a given
-period do not affect their number of actions in subsequent periods. To
-see the lack of realism, consider carbon dioxide emissions, where the
+period do not affect their action space in subsequent periods. To see
+the lack of realism, consider carbon dioxide emissions, where the
 current stock will last for well over a millennium
 \citep{Inman2008, CalzolariEtAl2018}. Playing with fresh endowments in
 each period is as if one could just undo carbon dioxide emissions at no
@@ -241,22 +242,22 @@ cost.
 
 A game designed by Gächter, Mengel, Tsakas \& Vostroknutov \citeyearpar[
 hereafter, GMTV]{GMTV2017} as well as Stefan Große (2011, unpublished)
-shows that it is fairly simple to remedy that flaw. They incorporated
-interdependencies into a \emph{dynamic} public good game by defining
-endowments as the income of previous periods. To put it differently,
-participants' actions in a given period affect their number of actions
-in subsequent periods: the more (less) they earn now, the more (less)
-they can contribute in the next period. Importantly, this modification
-qualitatively yields the same rational predictions as the static game
-(i.e.~free-riding and the under-provision of the public good). It is
-thus, equally well suited to study dilemma situations.
+shows that it is fairly simple to remedy that limitation. They
+incorporated interdependencies into a \emph{dynamic} public goods game
+by defining endowments as the income of previous periods. To put it
+differently, participants' actions in a given period affect their number
+of actions in subsequent periods: the more (less) they earn now, the
+more (less) they can contribute in the next period. Importantly, this
+modification qualitatively yields the same rational predictions as the
+static game (i.e.~free-riding and the under-provision of the public
+good). It is thus, equally well suited to study dilemma situations.
 
 Because there is surprisingly little experimental research on
 interdependencies\footnote{One exemption are \citet{Moser2019}, who
   built on GMTV's design to investigate leadership.}, I reproduced one
 of GMTV's treatments to compare dynamics across (in)experienced samples
 to investigate its generalizability. \citet{GKLS2020} find that static
-public good games do not generalize well to real-world climate action.
+public goods games do not generalize well to real-world climate action.
 They also find that generalizability depends on structural resemblance
 of the public goods game with the context of climate change mitigation:
 Greater resemblance improves generalizability. Because GMTV's dynamic
@@ -264,7 +265,7 @@ setting has a more realistic property---namely, interdependencies---one
 would expect it to be better suited to inform public policy. To test
 this intuition, I not only ran the experiment with different samples but
 also observed the participants' behavior in voluntary climate actions
-(VCA).\footnote{The VCA is a (charitable) dictator games where each
+(VCA).\footnote{The VCA is a (charitable) dictator game where each
   participant is a dictator dividing her budget between herself and some
   organization linked to the reduction of CO2 emissions.
   \citet{EckelGrossman1996} were the first to implement a charitable
@@ -276,17 +277,17 @@ behavior in the abstract game translates into real-world action across
 samples. This research shows that the dynamic setting \emph{does not}
 add any advances with respect to generalizability of results.
 
-\citet{AGM2018} conducted static public good games in the lab and on
+\citet{AGM2018} conducted static public goods games in the lab and on
 MTurk to draw lessons from online experimentation. This study extends
-this literature \citep[see also][
-\citet{AmirEtAl2012}]{GoodmanPaolacci2017} by focusing on an
-\emph{inconvenient} sample (i.e.~one that is completely inexperienced
-sample that has not been exposed to interactive experiments before)
-playing a computationally more complex game. This required me to design
-a robust (and thus, more complex) software to minimize attrition. I
-collected paradata to assess the desired fluency and feasibility of the
-experiment. This research reports on the robust design that made the
-dynamic game feasible.
+this literature
+\citetext{\citealp[see][]{GoodmanPaolacci2017}; \citealp[also][]{AmirEtAl2012}}
+by focusing on an \emph{inconvenient} sample (i.e.~one that is
+completely inexperienced sample that has not been exposed to interactive
+experiments before) playing a computationally more complex game. This
+required me to design a robust (and thus, more complex) software to
+minimize attrition. I collected paradata to assess the desired fluency
+and feasibility of the experiment. This research reports on the robust
+design that made the dynamic game feasible.
 
 Taken together, this study makes three contributions. First, it
 reproduces parts of GMTV's original experiment and highlights the
@@ -302,7 +303,9 @@ this paper is organized along these findings: The confirmatory
 reproduction is reported in Section~\ref{sec-replication}, the online
 feasibility in Section~\ref{sec-feasibility} and the generalizability in
 Section~\ref{sec-generalizability}. Section~\ref{sec-conclusion}
-concludes.
+concludes. Because I observed some differences in reproducing GMTV's
+analysis using their data, I report these in the
+\href{@sec-appendix}{Appendix}.
 
 \hypertarget{sec-transparency}{%
 \section{Transparency}\label{sec-transparency}}
@@ -312,10 +315,10 @@ Well before credibility crises comprised a variety disciplines,
 research processes and the polished article that results from it:
 
 \begin{quote}
-\emph{``There are two possible articles you can write: (a) the article
-you planned to write when you designed your study or (b) the article
-that makes the most sense now that you have seen the results. They are
-rarely the same, and the correct answer is (b).''}
+\emph{There are two possible articles you can write: (a) the article you
+planned to write when you designed your study or (b) the article that
+makes the most sense now that you have seen the results. They are rarely
+the same, and the correct answer is (b).}
 \end{quote}
 
 Now, 20 years later, we accustom ourselves with mechanisms designed to
@@ -326,7 +329,7 @@ discrepancies between Daryl Bem's above-mentioned (a) and (b). Today,
 researchers can not only choose where to pre-register but also decide
 about the level of detail they provide. More severely, nothing stops
 researchers from pre-registering multiple hypotheses opposing each other
-(see e.g. \citet{SimmonsEtAl2021} and \citet{PhamEtAl2021} for a
+(see, e.g., \citet{SimmonsEtAl2021} and \citet{PhamEtAl2021} for a
 discussion).
 
 \citet{WaldronAllen2022} report a wide variety of depth of
@@ -353,8 +356,8 @@ where developers---and researchers alike---can store and manage their
 code. The service is based on Git\footnote{Git is a specific open-source
   version control system developed in 2005.} and designed for version
 control. Importantly, changes are time-stamped and can be tracked.
-Moreover, one can create branches, that is, duplicates of code -- either
-to work collaborative or to archive a certain state.
+Moreover, one can create branches, that is, duplicates of code either to
+work collaboratively or to archive a certain state.
 
 To sum up, pre-registrations alone are necessary but not sufficient to
 restore the credibility in experimental sciences. Pre-registrations must
@@ -398,7 +401,7 @@ comprehensible.
 In the terminology of \citet{Hamermesh2007}, I ran both a \emph{pure} as
 well as a \emph{scientific} reproduction\footnote{\citet{Parsons2022}
   use the term of a \emph{conceptual replication} which means the same.}
-of one treatment of GMTV's dynamic public good game. The pure
+of one treatment of GMTV's dynamic public goods game. The pure
 reproduction re-analyzes the original data.
 \protect\hyperlink{A:-Pure-Replication}{Appendix A} documents
 \href{}{errors I identified} in the original paper. The scientific
@@ -413,7 +416,7 @@ The design builds on the workhorse model \citet[p.301]{Zelmer2003}
 describes in her meta-analysis, where
 
 \begin{quote}
-\emph{``subjects are divided into groups and play the same game for a
+\emph{subjects are divided into groups and play the same game for a
 finite number of periods. Each period, every subject is endowed with an
 income {[}\ldots{]} The subject must then divide this income between a
 contribution to a private account {[}\ldots{]} that yields a constant
@@ -421,7 +424,7 @@ return to themselves only and a contribution to a public account
 {[}\ldots{]} where consumption benefits accrue to all group members. At
 the end of each period, subjects typically learn the aggregate
 contribution to the public good by all members of their group and their
-earnings for the period.''}
+earnings for the period.}
 \end{quote}
 
 Considering the design, the only differences between such a
@@ -433,7 +436,7 @@ accumulated in the first period. A participant's endowment in the third
 period is the wealth she accumulated in the first two periods. And so
 on. Hence, a decision in one period has consequences on future
 endowments and, ultimately, growth paths. For this reason, the game is
-described as a \emph{dynamic} public good game.
+described as a \emph{dynamic} public goods game.
 
 As in the NOPUNISH 10 Period treatment of GMTV, I ran sessions with
 groups of four (\(i \in I=\{1,2,3,4\}\)), an initial endowment of
@@ -451,23 +454,26 @@ N_i^{t+1}=N_i^t - c_i^t + \frac{1.5}{4}\sum_{j=1}^4 c_j^t
 \subsection{Voluntary Climate Action
 (VCA)}\label{voluntary-climate-action-vca}}
 
-Like GMTV we employ a real giving task after the abstract game. In
-contrast to GMTV and like \citet{GKLS2020}, we employed a VCA, where
-participants could donate any amount their earnings to offset carbon
-dioxide (that is, retire emission permits from the EU ETS).\footnote{Importantly,
-  \citet{GKLS2020} made the VCA decision with a fresh endowment
-  \emph{before} they played the abstract game. I deviate from their
-  procedure to match GMTV's procedure.} To ensure that each participant
-had the same basic level of information about the impact of their
-decision, I provided some basic information about the mechanism. The
-information also highlighted that the mitigation came into operation on
-a European level. Finally, I informed the participants that the
-documentation of individual and aggregate contributions were to be
-posted immediately after the concluding the sessions online. To avoid
-privacy or social image concerns, participants learned their unique and
-random IDs, which they needed to identify their individual
-contributions. The document certified that their contributions have been
-used to offset
+Like GMTV I employ a real giving task after the abstract game.
+Specifically, I employed a (charitable) dictator game where each
+participant is a dictator dividing her budget between herself and some
+organization. Whereas GMTV chose \emph{Doctors without Borders} as a
+receiver, I chose another organization in another context: like
+\citet{GKLS2020}, I employed a VCA, where participants could donate any
+amount their earnings to offset carbon dioxide (that is, retire emission
+permits from the EU ETS).\footnote{Importantly, \citet{GKLS2020} made
+  the VCA decision with a fresh endowment \emph{before} they played the
+  abstract game. I deviate from their procedure to match GMTV's
+  procedure.} To ensure that each participant had the same basic level
+of information about the impact of their decision, I provided some basic
+information about the mechanism. The information also highlighted that
+the mitigation came into operation on a European level. Finally, I
+informed the participants that the documentation of individual and
+aggregate contributions were to be posted immediately after the
+concluding the sessions online. To avoid privacy or social image
+concerns, participants learned their unique and random IDs, which they
+needed to identify their individual contributions. The document
+certified that their contributions have been used to offset
 \href{https://www.compensators.org/compensatelist/?searchterm=stefan+traub}{1.82
 tons} of carbon dioxide emissions.
 
@@ -581,7 +587,7 @@ inherent to the online setting (dropouts and bots, for instance).
 Second, I used another software (oTree instead of zTree) which also
 affected the graphical user interface participants were exposed to.
 Third, GMTV gave participants the opportunity to donate to \emph{Doctors
-without Borders} whereas we offered carbon dioxide offsets.
+without Borders} whereas I offered carbon dioxide offsets.
 
 The experiment lasted around 25 minutes on average. The earnings
 averaged 11.23 Euros (sd = 4.85).\footnote{This values include earnings
@@ -612,7 +618,7 @@ average (median and mean). Moreover, both samples' initial contributions
 resemble initial contributions participants usually make in the static
 game with partner matching.\footnote{See Figure 3B in
   \citet[p.989]{fehrgaechter2000}, for instance.} However, in the
-dynamic game presented here, we are particularly interested in the
+dynamic game presented here, I are particularly interested in the
 subsequent periods because differences add up exponentially. Do the two
 groups remain similar over the course of time?
 
@@ -678,8 +684,7 @@ average group in the original sample accumulated about 478 tokens. In
 contrast, an average group in the reproduction sample accumulated about
 380 tokens. This difference is insignificant at conventional levels
 though: A two-sided rank sum test (comparing differences between
-samples) yields a p-Value of 0.1356 for the mean stock in last period of
-the game.
+samples) yields p=0.1356 for the mean stock in last period of the game.
 
 Although there clearly is growth, groups do not realize the maximal
 potential efficiency: under full cooperation, a group can accumulate at
@@ -727,10 +732,10 @@ Figure~\ref{fig-gini-time-series} illustrates that inequality did grow:
 at the end of the game, the original and the replication groups exhibit
 an average Gini coefficient of 0.23 and 0.22, respectively.\footnote{The
   two-sided rank sum test (comparing differences between samples) yields
-  a p-Value of 0.6059 for the mean Gini coefficient in last round of the
-  game.} Because every participant started with the same initial
-endowment (in \emph{period 0}, so to speak), every group started
-equally--with a Gini coefficient equaling zero.
+  p=0.6059 for the mean Gini coefficient in last round of the game.}
+Because every participant started with the same initial endowment (in
+\emph{period 0}, so to speak), every group started equally--with a Gini
+coefficient equaling zero.
 
 Figure~\ref{fig-gini-time-series} also shows that this initial state of
 equality ended with the first period already: both samples exhibit a
@@ -874,7 +879,7 @@ respectively.
 
 \citet{GKLS2020} asked how much can we learn about voluntary climate
 action from the behavior in public goods games. Using a similar
-strategy, I answer the question for a \emph{dynamic} public good game:
+strategy, I answer the question for a \emph{dynamic} public goods game:
 \emph{Not much}. Overall, there seems to be no association between
 choices in the voluntary climate action and the first period in the
 dynamic public goods game.
@@ -888,7 +893,7 @@ first period of the game. A visual inspection shows that (a) mean
 contributions are positive in both tasks for both samples.\footnote{The
   same holds true for median contributions.} (b) Furthermore, average
 contributions are lower in the VCA. (c) In contrast to
-\citet{GKLS2020}'s observation, we do not observe a difference between
+\citet{GKLS2020}'s observation, I do not observe a difference between
 samples in the abstract game's contribution behavior. (d) However, the
 student's share of income contributed to the VCA is significantly lower
 than the general population sample's contributions (two-sided rank sum
@@ -918,7 +923,7 @@ status negatively affects VCA donations in column two but disappears if
 one controls for age in column three. Importantly, the interaction of
 student status and first-period contributions is not significant. This
 suggests that the general population sample's transferability is just as
-bad as the student sample's. We thus, find a similar result as
+bad as the student sample's. I thus, find a similar result as
 \citet[p.6]{GKLS2020}.
 
 \hypertarget{tbl-tobit-generalizability}{}
