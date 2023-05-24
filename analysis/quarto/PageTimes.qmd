@@ -1,0 +1,112 @@
+---
+title: "Page Times"
+format: html
+---
+
+
+```{r packages}
+# install this package once, it'll then install and load all remaining packages
+# install.packages("pacman")
+
+pacman::p_load(magrittr, data.table, stringr, lubridate, glue, DescTools, haven, censReg,
+               stargazer, vtable, ggplot2, patchwork, MetBrewer, Rmisc, knitr)
+```
+
+```{r design}
+# ggplot layout
+layout <- theme(panel.background = element_rect(fill = "transparent", color = NA),
+                plot.background = element_rect(fill = "transparent", color = NA),
+                panel.grid = element_blank(),
+                panel.grid.major.y = element_blank(),
+                legend.key = element_rect(fill = "transparent"),
+                axis.line = element_line(size = 0.25),
+                axis.ticks = element_line(size = 0.25),
+                axis.title = element_text(size = 8),
+                legend.text = element_text(size = 8),
+                plot.caption = element_text(size = 6,
+                                            colour = "#555555"),
+                legend.title = element_blank()
+)
+
+# color
+colors <- met.brewer(name="Tam",n=7,type="discrete")
+colors <- c("#F3B05C", "#1E4A75", "#65B5C0", "#AD5E21")
+# cPrimary = "#ffd353"
+# cSecondary = "#9f2d55"
+# cInfo = "#34168"
+cPrimary = "#F3B05C"
+cSecondary = "#1E4A75"
+cInfo = "#36BFA2"
+```
+
+
+
+```{r readAllData}
+# identify files of all sessions
+files <- list.files(path = "../../data/pageTimes/",
+                       recursive = TRUE,
+                       full.names = TRUE)
+
+# load all of them into a list
+csvs <- list()
+for(i in files){
+  name <- str_extract(string = i, pattern = "2021.*")
+  temp <- read.csv(i, stringsAsFactors = FALSE) %>% data.table()
+  csvs[[name]] <- temp
+}
+
+# bind list into single data table
+full <- rbindlist(l = csvs, use.names = TRUE) %>% data.table()
+
+# participants who made it to the last page
+full_obs <- full[page_index == max(page_index), participant_code]
+
+DT <- full[participant_code %in% full_obs & (page_index == max(page_index) | page_index == min(page_index)) & session_code != '5mm1nf75']
+
+setorder(DT, session_code, participant_code, page_index)
+
+# tidy up
+rm(list = c("files", "csvs", "i", "name", "temp", "full_obs"))
+```
+
+```{r}
+DT[, seconds_spent := epoch_time - shift(epoch_time, n = 1, type = 'lag'), by = participant_code]
+
+
+DT[, median(seconds_spent, na.rm = TRUE) %>% seconds_to_period()]
+DT[, mean(seconds_spent, na.rm = TRUE) %>% seconds_to_period()]
+DT[, min(seconds_spent, na.rm = TRUE) %>% seconds_to_period()]
+DT[, max(seconds_spent, na.rm = TRUE) %>% seconds_to_period()]
+
+tmp <- DT[!is.na(seconds_spent)]
+
+```
+
+```{r}
+
+ggplot(data = tmp,
+       mapping = aes(x = seconds_spent/60)) +
+  geom_density(col = cPrimary, fill = NA, alpha = 0.66) +
+  scale_x_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 0.075),
+                       expand = c(0, NA)) +
+  geom_vline(xintercept = tmp[, median(seconds_spent/60, na.rm = TRUE)],
+             col = "#999999",
+             lty = 2) +
+    labs(title = "", 
+       y = "", x = "Minutes Spent in Experiment") +
+  layout
+
+ggplot(data = tmp[!is.na(seconds_spent)],
+       mapping = aes(x = seconds_spent/60, fill = session_code)) +
+  geom_density(alpha = 0.5) +
+  scale_x_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+  scale_y_continuous(limits = c(0, NA),
+                       expand = c(0, NA)) +
+    labs(title = "", 
+       y = "", x = "Minutes Spent in Experiment") +
+  layout
+```
+
