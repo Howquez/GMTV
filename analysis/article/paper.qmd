@@ -66,8 +66,18 @@ Sys.setlocale("LC_TIME","English United States")
 # install this package once, it'll then install and load all remaining packages
 # install.packages("pacman")
 
-pacman::p_load(magrittr, data.table, stringr, lubridate, glue, DescTools, haven, censReg,
-               stargazer, vtable, ggplot2, patchwork, MetBrewer, Rmisc, knitr)
+pacman::p_load(magrittr, data.table, stringr, lubridate, glue, haven, DescTools, censReg, stargazer, vtable, ggplot2, patchwork, Rmisc, knitr, rang)
+```
+
+```{r system_requirements}
+#| eval: false
+packages <- pacman::p_loaded()
+
+graph <- rang::resolve(pkgs = packages,
+                       snapshot_date = '2023-06-14')
+
+export_rang(graph, '../requirements/article.R')
+save(graph, file = '../requirements/article.rda')
 ```
 
 ```{r constants}
@@ -92,11 +102,6 @@ layout <- theme(panel.background = element_rect(fill = "transparent", color = NA
 )
 
 # color
-colors <- met.brewer(name="Tam",n=7,type="discrete")
-colors <- c("#F3B05C", "#1E4A75", "#65B5C0", "#AD5E21")
-# cPrimary = "#ffd353"
-# cSecondary = "#9f2d55"
-# cInfo = "#34168"
 cPrimary = "#F3B05C"
 cSecondary = "#1E4A75"
 cInfo = "#36BFA2"
@@ -569,7 +574,7 @@ rm(list = c("median", "richGroups", "poorGroups", "fileName"))
 fileName <- "GMTV2017"
 # save data
 save(GMTV, file = paste0("../../data/processed/rda/", fileName, ".rda"))
-write.csv(GMTV, file = paste0("../../data/processed/rda/", fileName, ".csv"))
+write.csv(GMTV, file = paste0("../../data/processed/csv/", fileName, ".csv"))
 ```
 
 

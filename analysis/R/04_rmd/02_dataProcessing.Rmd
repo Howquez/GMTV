@@ -34,7 +34,7 @@ library(downloadthis)
 
 In an attempt to incorporate uncertainty to @GMTV2017's dynamic public goods game (DPGG), I plan to run a series of remote online experiments using oTree [@oTree]. The first experiment will replicate Gächter et al.'s NOPUNISH 10-period version as close as possible (given the remote circumstances). The current demo version of the experiment can be found [here](https://cliccs.herokuapp.com/). Click [here](https://github.com/Howquez/coopUncertainty) to visit the corresponding Github repository.
 
-[This report](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/02_dataProcessing.Rmd) is the second in a series of reports covering this project. It explains how simulated data is processed and prepared for analyses.
+[This report](https://github.com/Howquez/coopUncertainty/blob/July21Replication/analysis/reports/rmd/02_dataProcessing.Rmd) is the second in a series of reports covering this project. It explains how my data is processed and prepared for analyses.
 
 # Replication Data
 

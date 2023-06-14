@@ -435,4 +435,4 @@ write.csv(GMTVCovariates,
 
 # Outlook
 
-Having replicated Gaechter et al.'s main figures (more or less) the next step is to prepare the data we obtain in our experiment for the analysis. This will be done in the second report using simulated data.^[Eventually, one can use that report and apply it to the actual data.]
+Having replicated Gächter et al.'s main figures (more or less) the next step is to prepare the data we obtain in our experiment for the analysis. This will be done in the second report using my data.

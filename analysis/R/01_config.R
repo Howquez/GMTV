@@ -1,6 +1,7 @@
 # Packages -----
 # see https://rstudio.com/resources/webinars/managing-packages-for-open-source-data-science/
 listOfPackages <- c("renv",          # package management
+                    "rang",          # package management
                     "rmarkdown",
                     "knitr",
                     "distill",       # good looking HTML articles
@@ -36,9 +37,13 @@ for(package in listOfPackages){
   require(package, character.only = TRUE)
 }
 
-# renv::snapshot()
+# create snapshot -----
+# graph <- rang::resolve(pkgs = listOfPackages,
+#                        snapshot_date = '2023-06-14')
+# export_rang(graph, 'requirements/pre-reg.R')
+# save(graph, file = 'requirements/pre-reg.rda')
 
-# read most recent data
+# read most recent data -----
 cFiles <- file.info(list.files(path = "../data/replication",
                                recursive = TRUE,
                                full.names = TRUE,

@@ -397,9 +397,13 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-stargazer(lm(formula = stock ~ treatment, data = main_all),
-          lm(formula = stock ~ treatment, data = main_poor),
-          lm(formula = stock ~ treatment, data = main_rich),
+m1 <- lm(formula = stock ~ treatment, data = main_all)
+m2 <- lm(formula = stock ~ treatment, data = main_poor)
+m3 <- lm(formula = stock ~ treatment, data = main_rich)
+
+stargazer(m1,
+          m2,
+          m3,
 
           column.labels = c("All", "Below median", "Above median"),
           model.numbers = FALSE,
@@ -533,9 +537,13 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-stargazer(lm(formula = gini ~ treatment, data = main_all),
-          lm(formula = gini ~ treatment, data = main_poor),
-          lm(formula = gini ~ treatment, data = main_rich),
+m1 <- lm(formula = gini ~ treatment, data = main_all)
+m2 <- lm(formula = gini ~ treatment, data = main_poor)
+m3 <- lm(formula = gini ~ treatment, data = main_rich)
+
+stargazer(m1,
+          m2,
+          m3,
 
           column.labels = c("All", "Below median", "Above median"),
           model.numbers = FALSE,
@@ -626,10 +634,15 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-stargazer(lm(formula = gender ~ treatment, data = covs),
-          lm(formula = age ~ treatment, data = covs),
-          lm(formula = switching_row ~ treatment, data = covs),
-          lm(formula = donation ~ treatment, data = covs),
+m1 <- lm(formula = gender ~ treatment, data = covs)
+m2 <- lm(formula = age ~ treatment, data = covs)
+m3 <- lm(formula = switching_row ~ treatment, data = covs)
+m4 <- lm(formula = donation ~ treatment, data = covs)
+
+stargazer(m1,
+          m2,
+          m3,
+          m4,
 
 
           column.labels = c("female", "age", "risk", "donations"),
@@ -651,11 +664,17 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-stargazer(lm(formula = pq01 ~ treatment, data = covs),
-          lm(formula = pq02 ~ treatment, data = covs),
-          lm(formula = pq03 ~ treatment, data = covs),
-          lm(formula = pq04 ~ treatment, data = covs),
-          lm(formula = pq05 ~ treatment, data = covs),
+m5 <- lm(formula = pq01 ~ treatment, data = covs)
+m6 <- lm(formula = pq02 ~ treatment, data = covs)
+m7 <- lm(formula = pq03 ~ treatment, data = covs)
+m8 <- lm(formula = pq04 ~ treatment, data = covs)
+m9 <- lm(formula = pq05 ~ treatment, data = covs)
+  
+stargazer(m5,
+          m6,
+          m7,
+          m8,
+          m9,
 
 
           column.labels = c("quick thinker", "easily offended", "very satisfied", "very dependent", "generally happy"),
@@ -677,11 +696,17 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-stargazer(lm(formula = pq06 ~ treatment, data = covs),
-          lm(formula = pq07 ~ treatment, data = covs),
-          lm(formula = pq08 ~ treatment, data = covs),
-          lm(formula = pq09 ~ treatment, data = covs),
-          lm(formula = pq10 ~ treatment, data = covs),
+m10 <- lm(formula = pq06 ~ treatment, data = covs)
+m11 <- lm(formula = pq07 ~ treatment, data = covs)
+m12 <- lm(formula = pq08 ~ treatment, data = covs)
+m13 <- lm(formula = pq09 ~ treatment, data = covs)
+m14 <- lm(formula = pq10 ~ treatment, data = covs)
+
+stargazer(m10,
+          m11,
+          m12,
+          m13,
+          m14,
 
 
           column.labels = c("work important", "family important", "friends important", "religion important", "politics important"),
@@ -703,10 +728,14 @@ if(knitr::is_html_output()){
   type = "latex"
 }
 
-stargazer(lm(formula = pq11 ~ treatment, data = covs),
-          lm(formula = pq12 ~ treatment, data = covs),
-          lm(formula = pq13 ~ treatment, data = covs),
-          lm(formula = pq14 ~ treatment, data = covs),
+m15 <- lm(formula = pq11 ~ treatment, data = covs)
+m16 <- lm(formula = pq12 ~ treatment, data = covs)
+m17 <- lm(formula = pq13 ~ treatment, data = covs)
+m18 <- lm(formula = pq14 ~ treatment, data = covs)
+stargazer(m15,
+          m16,
+          m17,
+          m18,
 
 
           column.labels = c("most people trusted", "hard work better", "government responsible", "incomes equal"),
@@ -776,127 +805,4 @@ stargazer(olsStock1, olsStock2,
 
           type = type, digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
           )
-```
-
-
-# Hamburg: How do Students compare to non-Students?
-
-This section considers the replication data only. Doing so, we'll exploit the circumstance that we recruited from both the convenience or "student" sample as well as the non-convenience sample _(Hamburg Panel)_ and analyze the differences between the two.
-
-```{r sample0, results = "asis", warning = FALSE, fig.cap = "test"}
-
-if(knitr::is_html_output()){
-  type <- "html"
-} else {
-  type = "latex"
-}
-
-students <- R1[treatment == "replication" & student == TRUE, ownContribution]
-HHpanel  <- R1[treatment == "replication" & student == FALSE, ownContribution]
-
-
-rows <- sapply(X = list(students, HHpanel), FUN = NROW) %>% max()
-temp <- data.frame(Students = c(students, rep(NA, rows - NROW(students))),
-                   `HH-panel` = c(HHpanel, rep(NA, rows - NROW(HHpanel))))
-
-stargazer(temp,
-          summary.stat = c("mean", "median","sd", "max", "min", "n"),
-          type = type, 
-          flip = TRUE, 
-          header=FALSE)
-
-rs1 <- wilcox.test(students, 
-                   HHpanel,
-                   exact = FALSE)$p.value %>% 
-  round(digits = 4) %>% 
-  formatC(format = "f", 
-          digits = 4)
-```
-
-We start by looking at the initial contributions. As Table 5 illustrates, there is no difference in averages, standard deviation or the range. The two-sided rank sum test (comparing differences between data sources) yields a p-Value of `r rs1` for the mean contribution in first round of the game.
-
-While the initial contributions are on average quite similar between the two sample, the subsequent contributions differ. In both absolute and relative terms, the Hamburg-Panel tends to contribute more than the student sample as the following Figure shows.
-
-```{r sampleContributions}
-
-SUM <- main[treatment == "replication",
-            lapply(.SD, mean, na.rm = TRUE),
-            by = c("round", "student"),
-            .SDcols = "contribution"]
-
-SUM[,
-    sum := round(contribution/4)]
-
-upperLimit <- SUM$contribution %>% max() %>% round() + 10
-
-p1 <- ggplot(data = SUM, 
-             aes(x = round, y = contribution, fill = student, color = student, lty = student)) +
-  layout +
-  theme(legend.position="bottom") +
-  geom_line(show.legend=FALSE) +
-  geom_point() +
-  scale_x_continuous(name="",  breaks = 1:15) +
-  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
-  labs(y = "Average Amount of Tokens contributed") +
-  scale_color_manual(values = colors, labels = c("Hamburg-Panel", "Students")) + 
-  guides(lty = FALSE, fill = FALSE) +
-  theme(plot.margin = margin(0.25,1,0.25,0.25, "cm"))
-
-
-SHARE <- main[treatment == "replication",
-            lapply(.SD, mean, na.rm = TRUE),
-            by = c("round", "student"),
-            .SDcols = "share"]
-
-upperLimit <- 1
-
-p2 <- ggplot(data = SHARE, 
-             aes(x = round, y = share, fill = student, color = student, lty = student)) +
-  layout +
-  theme(legend.position="bottom") +
-  geom_line(show.legend=FALSE) +
-  geom_point() +
-  scale_x_continuous(name="",  breaks = 1:15) +
-  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
-  labs(y = "Share of Current Endowment contributed") +
-  guides(lty = FALSE, fill = FALSE) +
-  scale_color_manual(values = colors, labels = c("Hamburg-Panel", "Students"))
-
-p1 + p2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
-
-rm(list = c("SUM", "SHARE", "p1", "p2"))
-```
-
-Differences in contributions lead to differences in wealth. The Hamburg-Panel therefore earned more during the public goods game than the student sample. This can be seen in the following figure as well as in the subsequent table:
-
-
-```{r sampleStock, fig.cap = "Average wealth over time across samples."}
-STOCK <- main[treatment == "replication",
-              lapply(.SD, mean, na.rm = TRUE),
-              by = c("round", "student"),
-              .SDcols = "stock"]
-
-upperLimit <- STOCK$stock %>% max() %>% round() + 20
-
-ggplot(data = STOCK, 
-       aes(x = round, y = stock, fill = student, color = student, lty = student)) +
-  layout +
-  theme(legend.position="bottom") +
-  geom_line(show.legend=FALSE) +
-  geom_point() +
-  scale_x_continuous(name="",  breaks = 1:10) +
-  scale_y_continuous(limits = c(0, upperLimit), expand = c(0, 0)) +
-  labs(y = "Wealth") +
-  guides(lty = FALSE, fill = FALSE) +
-  scale_color_manual(values = colors, labels = c("Hamburg-Panel", "Students"))
-
-rm(list = c("STOCK"))
-```
-
-```{r}
-main[treatment == "replication" & round == 10, 
-     lapply(.SD, mean, na.rm = TRUE), 
-     by = c("round", "student"), 
-     .SDcols = c("contribution", "share", "stock")] %>%
-  kable()
 ```
