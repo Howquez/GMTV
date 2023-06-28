@@ -1,144 +1,51 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 ## Overview
 
-The code provided in this repository constructs the analysis of my
-article using R, RMarkdown as well as quarto and, importantly, a
-literate programming approach. It is based on data stemming from two
-different sources: Gächter, Mengel, Tsakas & Vostroknutov (2017,
-hereafter, GMTV) as well as my own. For transparency reasons, I provide
-two sets of code: (1) code that refers to the article I planned to write
-when I designed your study and (2) code referring to the article that
-makes the most sense after collecting the data.
+The code provided in this repository constructs the analysis of my article using R, RMarkdown as well as quarto and, importantly, a literate programming approach. It is based on data stemming from two different sources: Gächter, Mengel, Tsakas & Vostroknutov (2017, hereafter, GMTV) as well as my own. For transparency reasons, I provide two sets of code: (1) code that refers to the article I planned to write when I designed your study and (2) code referring to the article that makes the most sense after collecting the data.
 
-1.  **Pre-registered code**: consists of multiple R and RMarkdown files
-    that guide the replicator through the pre-processing and preliminary
-    analyses.
+1.  **Pre-registered code**: consists of multiple R and RMarkdown files that guide the replicator through the pre-processing and preliminary analyses.
 
-2.  **The article's code**: consists of one quarto file that not only
-    reproduces the complete final analysis but also the written article
-    interpreting the corresponding results.
+2.  **The article's code**: consists of one quarto file that not only reproduces the complete final analysis but also the written article interpreting the corresponding results.
 
 The replicator should expect the code to run for about 15 minutes.
 
 ## Data Availability and Provenance Statements
 
-> INSTRUCTIONS: - When the authors are **secondary data users** (they
-> did not generate the data), the provenance and DAS coincide, and
-> should describe the condition under which (a) the current authors (b)
-> any future users might access the data. - When the data were generated
-> (by the authors) in the course of conducting (lab or field)
-> **experiments**, or were collected as part of **surveys**, then the
-> description of the provenance should describe the data generating
-> process, i.e., survey or experimental procedures: - Experiments:
-> complete sets of experimental instructions, questionnaires, stimuli
-> for all conditions, potentially screenshots, scripts for experimenters
-> or research assistants, as well as for subject eligibility criteria
-> (e.g. selection criteria, exclusions), recruitment waves, demographics
-> of subject pool used. - For lab experiments specifically, a
-> description of any pilot sessions/studies, and computer programs,
-> configuration files, or scripts used to run the experiment. - For
-> surveys, the whole questionnaire (code or images/PDF) including survey
-> logic if not linear, interviewer instructions, enumeration lists,
-> sample selection criteria.
+> INSTRUCTIONS: - When the authors are **secondary data users** (they did not generate the data), the provenance and DAS coincide, and should describe the condition under which (a) the current authors (b) any future users might access the data. - When the data were generated (by the authors) in the course of conducting (lab or field) **experiments**, or were collected as part of **surveys**, then the description of the provenance should describe the data generating process, i.e., survey or experimental procedures: - Experiments: complete sets of experimental instructions, questionnaires, stimuli for all conditions, potentially screenshots, scripts for experimenters or research assistants, as well as for subject eligibility criteria (e.g. selection criteria, exclusions), recruitment waves, demographics of subject pool used. - For lab experiments specifically, a description of any pilot sessions/studies, and computer programs, configuration files, or scripts used to run the experiment. - For surveys, the whole questionnaire (code or images/PDF) including survey logic if not linear, interviewer instructions, enumeration lists, sample selection criteria.
 >
-> The information should describe ALL data used, regardless of whether
-> they are provided as part of the replication archive or not, and
-> regardless of size or scope. The DAS should provide enough information
-> that a replicator can obtain the data from the original source, even
-> if the file is provided.
+> The information should describe ALL data used, regardless of whether they are provided as part of the replication archive or not, and regardless of size or scope. The DAS should provide enough information that a replicator can obtain the data from the original source, even if the file is provided.
 >
-> For instance, if using GDP deflators, the source of the deflators
-> (e.g. at the national statistical office) should also be listed here.
-> If any of this information has been provided in a pre-registration,
-> then a link to that registration may (partially) suffice.
+> For instance, if using GDP deflators, the source of the deflators (e.g. at the national statistical office) should also be listed here. If any of this information has been provided in a pre-registration, then a link to that registration may (partially) suffice.
 >
-> DAS can be complex and varied. Examples are provided
-> [here](https://social-science-data-editors.github.io/guidance/Requested_information_dcas.html),
-> and below.
+> DAS can be complex and varied. Examples are provided [here](https://social-science-data-editors.github.io/guidance/Requested_information_dcas.html), and below.
 >
-> Importantly, if providing the data as part of the replication package,
-> authors should be clear about whether they have the **rights** to
-> distribute the data. Data may be subject to distribution restrictions
-> due to sensitivity, IRB, proprietary clauses in the data use
-> agreement, etc.
+> Importantly, if providing the data as part of the replication package, authors should be clear about whether they have the **rights** to distribute the data. Data may be subject to distribution restrictions due to sensitivity, IRB, proprietary clauses in the data use agreement, etc.
 >
-> NOTE: DAS do not replace Data Citations (see
-> [Guidance](Data_citation_guidance.md)). Rather, they augment them.
-> Depending on journal requirements and to some extent stylistic
-> considerations, data citations should appear in the main article, in
-> an appendix, or in the README. However, data citations only provide
-> information **where** to find the data, not **how to access** those
-> data. Thus, DAS augment data citations by going into additional detail
-> that allow a researcher to assess cost, complexity, and availability
-> over time of the data used by the original author.
+> NOTE: DAS do not replace Data Citations (see [Guidance](Data_citation_guidance.md)). Rather, they augment them. Depending on journal requirements and to some extent stylistic considerations, data citations should appear in the main article, in an appendix, or in the README. However, data citations only provide information **where** to find the data, not **how to access** those data. Thus, DAS augment data citations by going into additional detail that allow a researcher to assess cost, complexity, and availability over time of the data used by the original author.
 
-My article compares (1) data from GMTV to (2) data I generated by
-running their experimental paradigm with different sample drawn from a
-different population in a different situation.
+My article compares (1) data from GMTV to (2) data I generated by running their experimental paradigm with different sample drawn from a different population in a different situation.
 
-1.  I retrieved `GMTV-data.dta` in June 2020 from the authors appendix
-    that can be found
-    [here](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115).
-    More precisely, I downloaded `Supplementary Material 2` where the
-    file is stored in `Data and Stata Code`. Furthermore, I contacted
-    the authors to request a file called `GMTV-questionnaire-data.dta`
-    via eMail.
+1.  I retrieved `GMTV-data.dta` in June 2020 from the authors appendix that can be found [here](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115). More precisely, I downloaded `Supplementary Material 2` where the file is stored in `Data and Stata Code`. Furthermore, I contacted the authors to request a file called `GMTV-questionnaire-data.dta` via eMail.
 
-2.  I generated my own data running an online experiment using oTree
-    software (Chen et al.,2016) I provide
-    [here](https://github.com/Howquez/coopUncertainty/tree/July21Replication/oTree).
-    The corresponding data is stored in two folders (4 csv-files each):
-    `data/pageTimes/` and `data/replication`. The former is considered
-    as paradata while the latter is the behavioral data researchers are
-    mainly interested in.
+2.  I generated my own data running an online experiment using oTree software (Chen et al.,2016) I provide [here](https://github.com/Howquez/coopUncertainty/tree/July21Replication/oTree). The corresponding data is stored in two folders (4 csv-files each): `data/pageTimes/` and `data/replication`. The former is considered as paradata while the latter is the behavioral data researchers are mainly interested in.
 
 ### Statement about Rights
 
--   [x] I certify that the author(s) of the manuscript have legitimate
-    access to and permission to use the data used in this manuscript.
--   [ ] I certify that the author(s) of the manuscript have documented
-    permission to redistribute/publish the data contained within this
-    replication package. Appropriate permission are documented in the
-    license below.
+-   [x] I certify that the author(s) of the manuscript have legitimate access to and permission to use the data used in this manuscript.
+-   [ ] I certify that the author(s) of the manuscript have documented permission to redistribute/publish the data contained within this replication package. Appropriate permission are documented in the license below.
 
 ### License
 
-The content of this repository is licensed under the MIT open source
-license with a citation requirement. Also note that an application is
-based on oTree, which is also [licensed under the MIT open source
-license with a citation
-requirement.](https://github.com/oTree-org/otree-core/blob/master/LICENSE)
+The content of this repository is licensed under the MIT open source license with a citation requirement. Also note that an application is based on oTree, which is also [licensed under the MIT open source license with a citation requirement.](https://github.com/oTree-org/otree-core/blob/master/LICENSE)
 
 Copyright (c) 2023 Hauke Roggenkamp.
 
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-> The above copyright notice and this permission notice shall be
-> included in all copies or substantial portions of the Software.
+> The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 >
-> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-> EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-> MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-> IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-> CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-> TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-> SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 >
-> The licensee undertakes to mention the names of the licensor (Hauke
-> Roggenkamp) and to cite the following article in all publications in
-> which results of experiments conducted with the Software are
-> published:
+> The licensee undertakes to mention the names of the licensor (Hauke Roggenkamp) and to cite the following article in all publications in which results of experiments conducted with the Software are published:
 >
 > [Reference goes here]
 
@@ -150,148 +57,75 @@ the following conditions:
 
 ### Details on each Data Source
 
-> INSTRUCTIONS: For each data source, list the file that contains data
-> from that source here; if providing combined/derived datafiles, list
-> them separately after the DAS. For each data source or file, as
-> appropriate,
+> INSTRUCTIONS: For each data source, list the file that contains data from that source here; if providing combined/derived datafiles, list them separately after the DAS. For each data source or file, as appropriate,
 >
-> -   Describe the format (open formats preferred, but some
->     software-specific formats OK if open-source readers available):
->     `.dta`, `.xlsx`, `.csv`, `netCDF`, etc.
-> -   Provide a data dictionairy, either as part of the archive (list
->     the file name), or at a URL (list the URL). Some formats are
->     self-describing *if* they have the requisite information (e.g.,
->     `.dta` should have both variable and value labels).
+> -   Describe the format (open formats preferred, but some software-specific formats OK if open-source readers available): `.dta`, `.xlsx`, `.csv`, `netCDF`, etc.
+> -   Provide a data dictionairy, either as part of the archive (list the file name), or at a URL (list the URL). Some formats are self-describing *if* they have the requisite information (e.g., `.dta` should have both variable and value labels).
 > -   List availability within the package
-> -   Use proper bibliographic references in addition to a verbose
->     description (and provide a bibliography at the end of the README,
->     expanding those references)
+> -   Use proper bibliographic references in addition to a verbose description (and provide a bibliography at the end of the README, expanding those references)
 >
 > A summary in tabular form can be useful:
 
-+-------------+-------------+-------------+-------------+-------------+
-| D a ta.Name | D a t       | L ocation   | P rovided   | C itation   |
-|             | a.Files     |             |             |             |
-+=============+=============+=============+=============+=============+
-| GMTV        | GMTV-d a t  | d a ta/gaec | TRUE; FALSE | GMTV (2017) |
-|             | a.dta;\     | h t eretal/ |             |             |
-|             | GMTV- ques  |             |             |             |
-|             | t ion       |             |             |             |
-|             | naire - d   |             |             |             |
-|             | ata.dta     |             |             |             |
-+-------------+-------------+-------------+-------------+-------------+
-| Raw         | a ll_apps   | data/r e p  | TRUE        |             |
-|             | \_ w i d    | l i cation/ |             |             |
-|             | e_2021- 0   |             |             |             |
-|             | 7 - 0       |             |             |             |
-|             | 2.csv;\     |             |             |             |
-|             | a ll_apps   |             |             |             |
-|             | \_ w i d    |             |             |             |
-|             | e_2021- 0   |             |             |             |
-|             | 7 - 0       |             |             |             |
-|             | 3.csv;\     |             |             |             |
-|             | a ll_apps   |             |             |             |
-|             | \_ w i d    |             |             |             |
-|             | e_2021- 0   |             |             |             |
-|             | 7 - 1       |             |             |             |
-|             | 0.csv;\     |             |             |             |
-|             | all_ap p s  |             |             |             |
-|             | \_ w        |             |             |             |
-|             | ide_202 1 - |             |             |             |
-|             | 0 7 -24.csv |             |             |             |
-+-------------+-------------+-------------+-------------+-------------+
-| Page Times  | Page T i m  | data / p a  | TRUE        |             |
-|             | e s-2021- 0 | g eTimes/   |             |             |
-|             | 7 - 0       |             |             |             |
-|             | 1.csv;\     |             |             |             |
-|             | Page T i m  |             |             |             |
-|             | e s-2021- 0 |             |             |             |
-|             | 7 - 0       |             |             |             |
-|             | 3.csv;\     |             |             |             |
-|             | Page T i m  |             |             |             |
-|             | e s-2021- 0 |             |             |             |
-|             | 7 - 0       |             |             |             |
-|             | 9.csv;\     |             |             |             |
-|             | Pa g e      |             |             |             |
-|             | Times - 2 0 |             |             |             |
-|             | 2 1-07-23   |             |             |             |
-+-------------+-------------+-------------+-------------+-------------+
-| P r ocessed | G MTV2017   | d a ta/proc | TRUE        |             |
-|             | \_ C O V    | e s s e     |             |             |
-|             | S.csv;\     | d/csv/;     |             |             |
-|             | GMTV20 1 7  |             |             |             |
-|             | \_ R        | d ata/pro c |             |             |
-|             | 1.csv;\     | e s s       |             |             |
-|             | GM T V 2 0  | ed/rda/     |             |             |
-|             | 17.csv;     |             |             |             |
-|             |             |             |             |             |
-|             | G MTV2017   |             |             |             |
-|             | \_ C O V    |             |             |             |
-|             | S.rda;\     |             |             |             |
-|             | GMTV20 1 7  |             |             |             |
-|             | \_ R        |             |             |             |
-|             | 1.rda;\     |             |             |             |
-|             | G M T V 2   |             |             |             |
-|             | 017.rda     |             |             |             |
-+-------------+-------------+-------------+-------------+-------------+
++-------------+--------------------------------------------+-----------------------------+-------------+-------------+
+| D a ta.Name | D a t a.Files                              | L ocation                   | P rovided   | C itation   |
++=============+============================================+=============================+=============+=============+
+| GMTV        | GMTV-d a t a.dta;\                         | d a ta/gaec h t eretal/     | TRUE; FALSE | GMTV (2017) |
+|             | GMTV- ques t ion naire - d ata.dta         |                             |             |             |
++-------------+--------------------------------------------+-----------------------------+-------------+-------------+
+| Raw         | a ll_apps \_ w i d e_2021- 0 7 - 0 2.csv;\ | data/r e p l i cation/      | TRUE        |             |
+|             | a ll_apps \_ w i d e_2021- 0 7 - 0 3.csv;\ |                             |             |             |
+|             | a ll_apps \_ w i d e_2021- 0 7 - 1 0.csv;\ |                             |             |             |
+|             | all_ap p s \_ w ide_202 1 - 0 7 -24.csv    |                             |             |             |
++-------------+--------------------------------------------+-----------------------------+-------------+-------------+
+| Page Times  | Page T i m e s-2021- 0 7 - 0 1.csv;\       | data / p a g eTimes/        | TRUE        |             |
+|             | Page T i m e s-2021- 0 7 - 0 3.csv;\       |                             |             |             |
+|             | Page T i m e s-2021- 0 7 - 0 9.csv;\       |                             |             |             |
+|             | Pa g e Times - 2 0 2 1-07-23               |                             |             |             |
++-------------+--------------------------------------------+-----------------------------+-------------+-------------+
+| P r ocessed | G MTV2017 \_ C O V S.csv;\                 | d a ta/proc e s s e d/csv/; | TRUE        |             |
+|             | GMTV20 1 7 \_ R 1.csv;\                    |                             |             |             |
+|             | GM T V 2 0 17.csv;                         | d ata/pro c e s s ed/rda/   |             |             |
+|             |                                            |                             |             |             |
+|             | G MTV2017 \_ C O V S.rda;\                 |                             |             |             |
+|             | GMTV20 1 7 \_ R 1.rda;\                    |                             |             |             |
+|             | G M T V 2 017.rda                          |                             |             |             |
++-------------+--------------------------------------------+-----------------------------+-------------+-------------+
 
-where the `Data.Name` column is then expanded in the subsequent
-paragraphs, and `CEPR (2018)` is resolved in the References section of
-the README.
+where the `Data.Name` column is then expanded in the subsequent paragraphs, and `CEPR (2018)` is resolved in the References section of the README.
 
-The `processed` data data used to support the findings of this study
-will be deposited in the some persistent repository. Until then, the
-data is available in the [corresponding GitHub
-repository](https://github.com/Howquez/GMTV). The data were collected by
-the authors, and are available under a Creative Commons Non-commercial
-license.
+The `processed` data data used to support the findings of this study will be deposited in the some persistent repository. Until then, the data is available in the [corresponding GitHub repository](https://github.com/Howquez/GMTV). The data were collected by the authors, and are available under a Creative Commons Non-commercial license.
 
-Some `GMTV` data were downloaded from GMTV (2017) other data was
-provided by the authors upon request. More precisely, `GMTV-data.dta`
-can be found in the [corresponding
-appendix](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115).
-A copy of the data is provided as part of this archive.
-`GMTV-questionnaire-data.dta` was provided by the authors.
+Some `GMTV` data were downloaded from GMTV (2017) other data was provided by the authors upon request. More precisely, `GMTV-data.dta` can be found in the [corresponding appendix](https://www.sciencedirect.com/science/article/pii/S0047272717300361#s0115). A copy of the data is provided as part of this archive. `GMTV-questionnaire-data.dta` was provided by the authors.
 
 ### Preliminary code during the pre-registration process
 
-Code for data cleaning and analysis is provided as part of the
-replication package. It is available on
-[GitHub](https://github.com/Howquez/GMTV/tree/main/analysis) for review.
-Together with all the other materials, it will be uploaded to the
-journal repository once the paper has been conditionally accepted.
+Code for data cleaning and analysis is provided as part of the replication package. It is available on [GitHub](https://github.com/Howquez/GMTV/tree/main/analysis) for review. Together with all the other materials, it will be uploaded to the journal repository once the paper has been conditionally accepted.
 
 ## Dataset list
 
++------------------------------------------------+-------------+------------------------------------------------------------------------------+----------+
 | Data file                                      | Source      | Notes                                                                        | Provided |
-|------------------------------------------------|-------------|------------------------------------------------------------------------------|----------|
++================================================+=============+==============================================================================+==========+
 | `da t a / r aw/lbd.dta`                        | LBD         | C onfidential                                                                | No       |
++------------------------------------------------+-------------+------------------------------------------------------------------------------+----------+
 | `d ata / r a w /terra.dta`                     | IPUMS Terra | As per terms of use                                                          | Yes      |
++------------------------------------------------+-------------+------------------------------------------------------------------------------+----------+
 | `data /de riv ed/ r eg res s i o n _input.dta` | All listed  | Combines multiple data sources, serves as input for Table 2, 3 and Figure 5. | Yes      |
++------------------------------------------------+-------------+------------------------------------------------------------------------------+----------+
 
 ## Computational requirements
 
-I created two dependency graphs of R packages used for the
-pre-registered scripts and the article's analysis. These graphs should
-help the replicator to reconstruct the computational environment I used.
-Due to problems with the `renv` package, I decided to use `rang` which
-is documented [here](https://github.com/chainsawriot/rang).
+I created two dependency graphs of R packages used for the pre-registered scripts and the article's analysis. These graphs should help the replicator to reconstruct the computational environment I used. Due to problems with the `renv` package, I decided to use `rang` which is documented [here](https://github.com/chainsawriot/rang).
 
-The corresponding graphs are stored in `analysis/requirements/` where
-you can find R scripts as well as `rda` files. Run the former to install
-the timestamped R packages when I used them or use the latter for
-dockerization (see rang documentation).
+The corresponding graphs are stored in `analysis/requirements/` where you can find R scripts as well as `rda` files. Run the former to install the timestamped R packages when I used them or use the latter for dockerization (see rang documentation).
 
-Alternatively, just try to run my scripts and hope for smooth
-executions.
+Alternatively, just try to run my scripts and hope for smooth executions.
 
-Below, you'll find the packages and -versions I used as human readable
-lists.
+Below, you'll find the packages and -versions I used as human readable lists.
 
 ### Software Requirements
 
-The pre-registered code was last run using `R` (4.2.0) & `RMarkdown`
-(2.21)
+The pre-registered code was last run using `R` (4.2.0) & `RMarkdown` (2.21)
 
 -   `downloadthis` (0.3.1)
 -   `DescTools` (0.99.45)
@@ -352,8 +186,7 @@ The article's code was last run using `R` (4.2.0) & `quarto` (1.2)
 
 #### Summary
 
-Approximate time needed to reproduce the analyses on a standard (CURRENT
-YEAR) desktop machine:
+Approximate time needed to reproduce the analyses on a standard (CURRENT YEAR) desktop machine:
 
 -   [x] \<15 minutes
 -   [ ] 15-60 minutes
@@ -367,109 +200,53 @@ YEAR) desktop machine:
 
 #### Details
 
-The code was last run on a **8-core Intel-based laptop with MacOS
-version 13.0**.
+The code was last run on a **8-core Intel-based laptop with MacOS version 13.0**.
 
 ## Description of programs/code
 
-> INSTRUCTIONS: Give a high-level overview of the program files and
-> their purpose. Remove redundant/ obsolete files from the Replication
-> archive.
+> INSTRUCTIONS: Give a high-level overview of the program files and their purpose. Remove redundant/ obsolete files from the Replication archive.
 
--   Programs in `programs/01_dataprep` will extract and reformat all
-    datasets referenced above. The file `programs/01_dataprep/main.do`
-    will run them all.
--   Programs in `programs/02_analysis` generate all tables and figures
-    in the main body of the article. The program
-    `programs/02_analysis/main.do` will run them all. Each program
-    called from `main.do` identifies the table or figure it creates
-    (e.g., `05_table5.do`). Output files are called appropriate names
-    (`table5.tex`, `figure12.png`) and should be easy to correlate with
-    the manuscript.
--   Programs in `programs/03_appendix` will generate all tables and
-    figures in the online appendix. The program
-    `programs/03_appendix/main-appendix.do` will run them all.
--   Ado files have been stored in `programs/ado` and the `main.do` files
-    set the ADO directories appropriately.
--   The program `programs/00_setup.do` will populate the `programs/ado`
-    directory with updated ado packages, but for purposes of exact
-    reproduction, this is not needed. The file `programs/00_setup.log`
-    identifies the versions as they were last updated.
--   The program `programs/config.do` contains parameters used by all
-    programs, including a random seed. Note that the random seed is set
-    once for each of the two sequences (in `02_analysis` and
-    `03_appendix`). If running in any order other than the one outlined
-    below, your results may differ.
+-   Programs in `programs/01_dataprep` will extract and reformat all datasets referenced above. The file `programs/01_dataprep/main.do` will run them all.
+-   Programs in `programs/02_analysis` generate all tables and figures in the main body of the article. The program `programs/02_analysis/main.do` will run them all. Each program called from `main.do` identifies the table or figure it creates (e.g., `05_table5.do`). Output files are called appropriate names (`table5.tex`, `figure12.png`) and should be easy to correlate with the manuscript.
+-   Programs in `programs/03_appendix` will generate all tables and figures in the online appendix. The program `programs/03_appendix/main-appendix.do` will run them all.
+-   Ado files have been stored in `programs/ado` and the `main.do` files set the ADO directories appropriately.
+-   The program `programs/00_setup.do` will populate the `programs/ado` directory with updated ado packages, but for purposes of exact reproduction, this is not needed. The file `programs/00_setup.log` identifies the versions as they were last updated.
+-   The program `programs/config.do` contains parameters used by all programs, including a random seed. Note that the random seed is set once for each of the two sequences (in `02_analysis` and `03_appendix`). If running in any order other than the one outlined below, your results may differ.
 
 ## Instructions to Replicators
 
-> INSTRUCTIONS: The first two sections ensure that the data and software
-> necessary to conduct the replication have been collected. This section
-> then describes a human-readable instruction to conduct the
-> replication. This may be simple, or may involve many complicated
-> steps. It should be a simple list, no excess prose. Strict linear
-> sequence. If more than 4-5 manual steps, please wrap a main
-> program/Makefile around them, in logical sequences. Examples follow.
+> INSTRUCTIONS: The first two sections ensure that the data and software necessary to conduct the replication have been collected. This section then describes a human-readable instruction to conduct the replication. This may be simple, or may involve many complicated steps. It should be a simple list, no excess prose. Strict linear sequence. If more than 4-5 manual steps, please wrap a main program/Makefile around them, in logical sequences. Examples follow.
 
 -   Edit `programs/config.do` to adjust the default path
--   Run `programs/00_setup.do` once on a new system to set up the
-    working environment.
--   Download the data files referenced above. Each should be stored in
-    the prepared subdirectories of `data/`, in the format that you
-    download them in. Do not unzip. Scripts are provided in each
-    directory to download the public-use files. Confidential data files
-    requested as part of your FSRDC project will appear in the `/data`
-    folder. No further action is needed on the replicator's part.
+-   Run `programs/00_setup.do` once on a new system to set up the working environment.
+-   Download the data files referenced above. Each should be stored in the prepared subdirectories of `data/`, in the format that you download them in. Do not unzip. Scripts are provided in each directory to download the public-use files. Confidential data files requested as part of your FSRDC project will appear in the `/data` folder. No further action is needed on the replicator's part.
 -   Run `programs/01_main.do` to run all steps in sequence.
 
 ### Details
 
--   `programs/00_setup.do`: will create all output directories, install
-    needed ado packages.
-    -   If wishing to update the ado packages used by this archive,
-        change the parameter `update_ado` to `yes`. However, this is not
-        needed to successfully reproduce the manuscript tables.
+-   `programs/00_setup.do`: will create all output directories, install needed ado packages.
+    -   If wishing to update the ado packages used by this archive, change the parameter `update_ado` to `yes`. However, this is not needed to successfully reproduce the manuscript tables.
 -   `programs/01_dataprep`:
     -   These programs were last run at various times in 2018.
-    -   Order does not matter, all programs can be run in parallel, if
-        needed.
-    -   A `programs/01_dataprep/main.do` will run them all in sequence,
-        which should take about 2 hours.
+    -   Order does not matter, all programs can be run in parallel, if needed.
+    -   A `programs/01_dataprep/main.do` will run them all in sequence, which should take about 2 hours.
 -   `programs/02_analysis/main.do`.
     -   If running programs individually, note that ORDER IS IMPORTANT.
     -   The programs were last run top to bottom on July 4, 2019.
--   `programs/03_appendix/main-appendix.do`. The programs were last run
-    top to bottom on July 4, 2019.
--   Figure 1: The figure can be reproduced using the data provided in
-    the folder "2_data/data_map", and ArcGIS Desktop (Version 10.7.1) by
-    following these (manual) instructions:
-    -   Create a new map document in ArcGIS ArcMap, browse to the folder
-        "2_data/data_map" in the "Catalog", with files
-        "provinceborders.shp", "lakes.shp", and "cities.shp".
-    -   Drop the files listed above onto the new map, creating three
-        separate layers. Order them with "lakes" in the top layer and
-        "cities" in the bottom layer.
-    -   Right-click on the cities file, in properties choose the
-        variable "health"... (more details)
+-   `programs/03_appendix/main-appendix.do`. The programs were last run top to bottom on July 4, 2019.
+-   Figure 1: The figure can be reproduced using the data provided in the folder "2_data/data_map", and ArcGIS Desktop (Version 10.7.1) by following these (manual) instructions:
+    -   Create a new map document in ArcGIS ArcMap, browse to the folder "2_data/data_map" in the "Catalog", with files "provinceborders.shp", "lakes.shp", and "cities.shp".
+    -   Drop the files listed above onto the new map, creating three separate layers. Order them with "lakes" in the top layer and "cities" in the bottom layer.
+    -   Right-click on the cities file, in properties choose the variable "health"... (more details)
 
 ## References
 
-Chen, D.L., Schonger, M., Wickens, C., 2016. otree-an open-source
-platform for laboratory, online, and field experiments.Journal of
-Behavioral and Experimental Finance 9, 88 -- 97.
-URL:<http://www.sciencedirect.com/science/article/pii/S2214635016000101,>
-<doi:10.1016/j.jbef.2015.12.001>.
+Chen, D.L., Schonger, M., Wickens, C., 2016. otree-an open-source platform for laboratory, online, and field experiments.Journal of Behavioral and Experimental Finance 9, 88 -- 97. URL:<http://www.sciencedirect.com/science/article/pii/S2214635016000101,> <doi:10.1016/j.jbef.2015.12.001>.
 
-Gächter, S., Mengel, F., Tsakas, E., Vostroknutov, A., 2017. Growth and
-inequality in public good provision. Journal of PublicEconomics 150,
-1--13.
-URL:<https://www.sciencedirect.com/science/article/pii/S0047272717300361,>
-<doi:10.1016/j.jpubeco.2017.03.002>.
+Gächter, S., Mengel, F., Tsakas, E., Vostroknutov, A., 2017. Growth and inequality in public good provision. Journal of PublicEconomics 150, 1--13. URL:<https://www.sciencedirect.com/science/article/pii/S0047272717300361,> <doi:10.1016/j.jpubeco.2017.03.002>.
 
 ------------------------------------------------------------------------
 
 ## Acknowledgements
 
-The structure of this README file stems from the [Social Science Data
-Editor's
-template](https://github.com/social-science-data-editors/template_README/blob/release-candidate/templates/README.md).
+The structure of this README file stems from the [Social Science Data Editor's template](https://github.com/social-science-data-editors/template_README/blob/release-candidate/templates/README.md).
