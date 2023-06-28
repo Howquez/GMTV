@@ -34,9 +34,10 @@ class A_Welcome(Page):
     pass
 
 
-class B_Instructions(Page):
+class B_Instructions_1(Page):
     form_model = "player"
-    form_fields = ["formula_shown"]
+    # form_fields = ["formula_shown"]
+
     @staticmethod
     def before_next_page(player, timeout_happened):
         player.participant.waited_too_long = False
@@ -53,6 +54,97 @@ class B_Instructions(Page):
             max_mpcr=round((player.session.config["efficiency_factor"]/player.session.config["group_size"])*100, 1),
         )
 
+class B_Instructions_2(Page):
+    form_model = "player"
+    # form_fields = ["formula_shown"]
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.waited_too_long = False
+        player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            redirect="",
+            damage=int(player.session.config["damage"] * 100),
+            risk=int(player.session.config["risk"] * 100),
+            group_members=player.session.config["group_size"] - 1,
+            min_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"] -
+                            player.session.config["risk"] * player.session.config["damage"]) * 100, 1),
+            max_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"]) * 100,
+                           1),
+        )
+
+class B_Instructions_3(Page):
+    form_model = "player"
+    # form_fields = ["formula_shown"]
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.waited_too_long = False
+        player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            redirect="",
+            damage=int(player.session.config["damage"] * 100),
+            risk=int(player.session.config["risk"] * 100),
+            group_members=player.session.config["group_size"] - 1,
+            min_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"] -
+                            player.session.config["risk"] * player.session.config["damage"]) * 100, 1),
+            max_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"]) * 100,
+                           1),
+        )
+
+class B_Instructions_4(Page):
+    form_model = "player"
+    # form_fields = ["formula_shown"]
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.waited_too_long = False
+        player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            redirect="",
+            damage=int(player.session.config["damage"] * 100),
+            risk=int(player.session.config["risk"] * 100),
+            group_members=player.session.config["group_size"] - 1,
+            min_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"] -
+                            player.session.config["risk"] * player.session.config["damage"]) * 100, 1),
+            max_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"]) * 100,
+                           1),
+        )
+
+class B_Instructions(Page):
+    form_model = "player"
+    # form_fields = ["formula_shown"]
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.waited_too_long = False
+        player.participant.wait_page_arrival = time.time()
+
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(
+            redirect="",
+            damage=int(player.session.config["damage"] * 100),
+            risk=int(player.session.config["risk"] * 100),
+            group_members=player.session.config["group_size"] - 1,
+            min_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"] -
+                            player.session.config["risk"] * player.session.config["damage"]) * 100, 1),
+            max_mpcr=round((player.session.config["efficiency_factor"] / player.session.config["group_size"]) * 100,
+                           1),
+        )
+
 
 page_sequence = [A_Welcome,
-                 B_Instructions]
+                 B_Instructions_1,
+                 B_Instructions_2,
+                 B_Instructions_3,
+                 B_Instructions_4]

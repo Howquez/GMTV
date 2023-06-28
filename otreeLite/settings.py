@@ -11,23 +11,7 @@ SESSION_CONFIGS = [
         risk=0,
         damage=0,
         initial_endowment=20,
-    ),
-    dict(
-        name="Clubs",
-        app_sequence=["A_Intro", "B_Clubs", "D_Outro"],
-        num_demo_participants=2,
-    ),
-    dict(
-        name="EWE",
-        app_sequence=["A_Intro", "B_EWE", "D_Outro"],
-        num_demo_participants=3,
-        num_rounds=10,
-        group_size=3,
-        efficiency_factor=1.5,
-        risk=0.2,
-        damage=0.5,
-        initial_endowment=20,
-    ),
+    )
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

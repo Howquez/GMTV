@@ -204,9 +204,6 @@ tools to make pre-registrations more credible and flexible.
 
 
 
-\begin{highlights}
-\item Highlight 1\item Highlight 2\item Highlight 3
-\end{highlights}
 
 
 \begin{keyword}
@@ -215,7 +212,7 @@ games \sep Reproducibility \sep Generalizability \sep Online
 Experiment \sep 
     Climate change mitigation
 \end{keyword}
-\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[frame hidden, borderline west={3pt}{0pt}{shadecolor}, breakable, enhanced, sharp corners, boxrule=0pt, interior hidden]}{\end{tcolorbox}}\fi
+\end{frontmatter}\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, frame hidden, borderline west={3pt}{0pt}{shadecolor}, breakable, enhanced, interior hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
 
 \hypertarget{sec-intro}{%
 \section{Introduction}\label{sec-intro}}
@@ -283,17 +280,20 @@ to the generalizability of results.
 
 \citet{AGM2018} conducted static public goods games in the lab and on
 MTurk to draw (and report) lessons from online experimentation. This
-study extends this literature \citep[see,
-e.g.,][]{SnowbergYariv_2021, GuptaRigottiWilson_2021, GoodmanPaolacci2017, AmirEtAl2012}
+study extends this literature \citetext{\citealp[see,
+e.g.,][\citet{AmirEtAl2012}]{KrantzEtAl1997}; \citealp{KleinEtAl2014}; \citealp{PaolacciChandler2014}; \citealp{GoodmanPaolacci2017}; \citealp{SnowbergYariv_2021}; \citealp{GuptaRigottiWilson_2021}; \citealp{BusoEtAl2021}}
 by focusing on an \emph{inconvenient} sample (i.e.~one that is a
-completely inexperienced sample that has not been exposed to interactive
-experiments before) playing a computationally more complex game. This
-required me to design robust (and thus, more complex) software to
-minimize attrition. I collected para data---which capture screen time
-and survey navigation, for instance---to assess the desired fluency and
-feasibility of the experiment. Like \citet{AGM2018}, this research is of
-practical relevance as it reports on the robust design that made the
-dynamic game feasible.
+completely inexperienced sample \citep[see also][]{BenndorfEtAl2017}
+that has not been exposed to interactive experiments before) playing a
+computationally more complex game during a time that was characterized
+by more inattentiveness in online samples
+\citep{ArecharRand2021, PeytonEtAl2022}. This required me to design
+robust (and thus, more complex) software to minimize attrition. I
+collected para data \citep[ p.~12]{Parsons2022}---which capture screen
+time and survey navigation, for instance---to assess the desired fluency
+and feasibility of the experiment. Like \citet{AGM2018}, this research
+is of practical relevance as it reports on the robust design that made
+the dynamic game feasible.
 
 Taken together, this study makes three contributions. First, it
 reproduces parts of GMTVs' original experiment and highlights the
@@ -319,10 +319,10 @@ these in the \href{@sec-appendix}{Appendix}.
 Well before credibility crises comprised a variety of
 disciplines\footnote{See e.g., \citet{CamererEtAl2016};
   \citet{BrodeurEtAl2016}; \citet{BrodeurEtAl2020};
-  \citet{ChristensenMiguel2018}; \citet{FerraroShukla2020} who focus on
-  economics.}, \citet[p.~2]{bemwriting} indirectly conceded
-discrepancies between fuzzy research processes and the polished article
-that results from it:
+  \citet{ChristensenMiguel2018}; \citet{FerraroShukla2020};
+  \citet{PageEtAl2021} who focus on economics.},
+\citet[p.~2]{bemwriting} indirectly conceded discrepancies between fuzzy
+research processes and the polished article that results from it:
 
 \begin{quote}
 \emph{There are two possible articles you can write: (a) the article you
@@ -333,23 +333,24 @@ the same, and the correct answer is (b).}
 
 Now, 20 years later, we accustom ourselves to mechanisms designed to
 unravel the fuzzy back-and-forth between exploratory and confirmatory
-research. Prominently, pre-registrations were established to tie the
+research. Prominently, pre-registrations and pre-analysis plans (PAP)
+\citep[see, e.g.,][]{BrodeurEtAl2022} were established to tie the
 researchers' hands with respect to p-hacking and ex-post theorizing when
 doing confirmatory research---reducing observable discrepancies between
 Daryl Bem's above-mentioned (a) and (b).
 
-While pre-registrations could help to make empirical sciences more
-credible, they come at costs that are discussed by \citet{Olken2015} as
-well as \citet{Krishna2021}, \citet{SimmonsEtAl2021}, and
-\citet{PhamEtAl2021}. One important concern is that strict
-pre-registrations may severely discount any additional analysis of the
-data inspired by surprise results. In practice, there are at least two
-ways to approach that problem: First, one could (and should) add
-unforeseen analyses to the article but label them as exploratory.
-Second, one could write a minimal pre-registration leaving enough
-degrees of freedom for the researcher to incorporate such surprises
-without further notice. The key difference between the two approaches is
-the deliberate omission of transparency.
+While pre-registrations and PAPs could help to make empirical sciences
+more credible, they come at costs that are discussed by
+\citet{Olken2015}, \citet{PageEtAl2021}, as well as \citet{Krishna2021},
+\citet{SimmonsEtAl2021}, and \citet{PhamEtAl2021}. One important concern
+is that strict pre-registrations may severely discount any additional
+analysis of the data inspired by surprise results. In practice, there
+are at least two ways to approach that problem: First, one could (and
+should) add unforeseen analyses to the article but label them as
+exploratory. Second, one could write a minimal pre-registration leaving
+enough degrees of freedom for the researcher to incorporate such
+surprises without further notice. The key difference between the two
+approaches is the deliberate omission of transparency.
 
 For the field of neuropsychopharmacology \citet{WaldronAllen2022}
 document that the depth of pre-registrations differs indeed: it is
@@ -362,15 +363,15 @@ into danger to become worthless and to miss the target of making science
 more credible.
 
 This erosion of credibility can be avoided by the means of
-transparency---not because transparency can tighten the ties but also
-because it facilitates scrutiny, policing
-\citep[see][]{AnkelPetersFialaNeubauer2023} and forensics: transparent
-research practices make it easier for others to track and understand a
-researcher's reaction to surprises in the data, which, in turn, gives
-the researcher more flexibility to react to these surprises. As
-additional transparency is associated with additional effort, I propose
-version control as a natural and easy-to-implement solution augmenting
-pre-registrations.
+transparency---not because transparency can tighten the ties but because
+it facilitates scrutiny, policing
+\citep[see][]{AnkelPetersFialaNeubauer2023} and forensics \citep[see,
+e.g.,][]{SimonsohnEtAl2023}: transparent research practices make it
+easier for others to track and understand a researcher's reaction to
+surprises in the data, which, in turn, gives the researcher more
+flexibility to react to these surprises. As additional transparency is
+associated with additional effort, I propose version control as a
+natural and easy-to-implement solution augmenting pre-registrations.
 
 Contemporary experimental research is, to a certain degree, a
 computational science: experiments often require complex software and
@@ -396,7 +397,7 @@ The experiment reported in this article qualifies for the
 \emph{`pre-registered'} label at first glance: The analysis was
 pre-registered in the American Economic Association's RCT Registry
 \citep{preregistration}. Further, I pre-registered the exact analyses I
-planned to run when I designed the experiment on
+planned to run (PAP) when I designed the experiment on
 \href{https://github.com/Howquez/GMTV/tree/July21Replication/analysis/R}{GitHub}.\footnote{bit.ly/3Pnak5H.
   To run the code, you need to execute the .Rmd files in this repository
   in the order that is indicated by file names. Detailed instructions
@@ -565,7 +566,9 @@ The experiment was logistically complex for several reasons. First, the
 sample was inexperienced. Second, the experiment was interactive and
 synchronous. Third, the underlying game was dynamic and interdependent.
 This makes dropouts not only more likely but also more expensive, which
-is why attrition was a major concern in implementing the experiment.
+is why attrition was a major concern in implementing the
+experiment.\footnote{see \citet{ZhouFischbach2016} for a nice
+  illustration of how (selective) attrition affects identification.}
 
 I chose oTree \citep{oTree} to implement the experiment because it is
 open-source, well-documented, and very flexible. Its
@@ -857,7 +860,7 @@ d6jrsxnr & 2021-07-23 & 14:00 & 75 & 8 & 3 & 64 & 16\\
 Turning to the time spent on each page, I focus on the decision times in
 the dynamic public goods game as \citet{Anderhub2001} did. How many
 seconds did the participants need to decide in each period of the game?
-Not too many. Figure~\ref{fig-time-spent} illustrates an intuitive
+Not too many. Figure~\ref{fig-time-spent} illustrates an plausible
 pattern: The first decision took about 22 seconds. The second
 decision---where participants first learned about the other group
 members' previous decisions---took longer (about 33 seconds).
@@ -1051,8 +1054,9 @@ samples.
 
 I gratefully acknowledge support by the German Research Foundation (DFG)
 under Germany's Excellence Strategy, cluster EXC 2037 ``Climate,
-Climatic Change, and Society'' (project 390683824). I thank Stefan Traub
-and the participants of the CLICCS B5 group for helpful discussions.
+Climatic Change, and Society'' (project 390683824). I thank Stefan
+Traub, whoever proofreads this and the participants of the CLICCS B5
+group for helpful discussions.
 
 \newpage{}
 
