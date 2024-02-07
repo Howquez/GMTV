@@ -2,7 +2,8 @@
 title: Revisiting 'Growth and Inequality in Public Good Provision' ---Reproducing and Generalizing Through Inconvenient Online Experimentation
 author:
   - name: Hauke Roggenkamp
-    email: hauke.roggenkamp@unisg.ch
+    email: Hauke.Roggenkamp@unisg.ch
+    orcid: 0009-0005-5176-4718
     affiliations:
         - id: HSU
           name: Helmut Schmidt University
@@ -18,9 +19,6 @@ author:
           city: St. Gallen
           state: Switzerland
           postal-code: 9000
-    # attributes:
-    #     corresponding: true
-    # note: This is the first author footnote.
 abstract: |
   I revisit the dynamic public goods game developed by Gächter et al. (2017) to study cooperation under dynamic interdependencies. Collecting data from both a convenient (students) and an inconvenient (general population) sample, I not only reproduce some of the authors' original observations but also test their novel game's generalizability. Appending a charitable dictator game, I find no correlations between behavior in the charitable context and the dynamic game. This applies to students and the general population sample alike. Because the study of inexperienced general population samples raises methodological challenges, such as fatigue and dropouts, this research approaches them. In doing so, I provide simple solutions to run reliable interactive experiments online. Furthermore, this article showcases the use of literate programming and version control which I argue are convenient tools to make pre-registrations more credible and flexible.
 
@@ -58,22 +56,23 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE,
 Sys.setlocale("LC_TIME","English United States")
 ```
 
-```{r packages}
-# install this package once, it'll then install and load all remaining packages
-# install.packages("pacman")
 
-pacman::p_load(magrittr, data.table, stringr, lubridate, glue, haven, DescTools, censReg, stargazer, vtable, ggplot2, patchwork, Rmisc, knitr, rang)
-```
+```{r}
+#| warning: false
 
-```{r system_requirements}
-#| eval: false
-packages <- pacman::p_loaded()
+if (!requireNamespace("groundhog", quietly = TRUE)) {
+    install.packages("groundhog")
+    library("groundhog")
+}
 
-graph <- rang::resolve(pkgs = packages,
-                       snapshot_date = '2023-06-14')
+pkgs <- c("magrittr", "data.table", "stringr", "lubridate", "glue", "haven",
+          "DescTools", "censReg", "stargazer", "vtable", "ggplot2",
+          "patchwork", "Rmisc", "knitr")
 
-export_rang(graph, '../requirements/article.R')
-save(graph, file = '../requirements/article.rda')
+groundhog::groundhog.library(pkg = pkgs,
+                             date = "2024-01-01")
+
+rm(pkgs)
 ```
 
 ```{r constants}
@@ -1575,7 +1574,7 @@ stargazer(to1, to2, # reg,
           header=FALSE,
           intercept.bottom = TRUE,
           order = c(1, 2, 5, 3, 4),
-          covariate.labels = c("First-period contribution in percent", "Student (1 = yes)", "First-period contr. x Student", "Age", "Female (1 = yes)", "Risk Aversion (1-12)"),
+          covariate.labels = c("First-period contribution in percent", "Student (1 = yes)", "First-period contr. x Student", "Age", "Female (1 = yes)"),
           type = "latex", digits = 2, omit.stat = c("adj.rsq", "f"), df = FALSE
           )
 ```
