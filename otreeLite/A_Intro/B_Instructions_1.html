@@ -50,7 +50,6 @@
                     <p>
                         The next few pages will guide you through the instructions.
                         On each page, we'll ask at least one comprehension question.
-                        For each question you answer correctly, you'll get an additional bonus.
                     </p>
 
                     <p>
@@ -88,9 +87,8 @@
 
                         <p>
                             You are about to participate in a decision making experiment. If you follow the instructions
-                            carefully, you can earn a considerable amount of money depending on your decisions and the
-                            decisions of the other participants. Your earnings will be transferred at the end of the
-                            experiment.
+                            carefully, you can earn a considerable amount of money that depends on your decisions and the
+                            decisions of three other participants. Your earnings will be transferred as bonus payments.
                         </p>
 
                         <p>
@@ -101,12 +99,33 @@
                         </p>
 
                         <p>
-                            During the experiment all your decisions will be treated confidentially. This means that
-                            none of the other participants will know which decisions you made.
+                            The experiment will consist of {{ session.config.num_rounds }} decision making periods
+                            as well as a brief questionnaire.
+                            At the beginning of the experiment, you will be matched with three other participants.
+                            Therefore, there are four people, including yourself, participating in your group.
+                            You will be matched with the same participants during the entire experiment.
+                            None of the participants knows anything about other participants' identities.
+                        </p>
+
+                        <p>
+                            All your decisions will be treated confidentially. This means that
+                            none of the other participants will know who you are and which decisions you made.
+                            Likewise, you will not be able to learn the identity of your group members.
+                            Whereas we will provide some information about each participant's previous decision,
+                            we will mask them to establish anonymity.
+                        </p>
+
+                        <p>
+                            Before the first period, each participant will be given an
+                            <b>initial endowment of {{ session.config.initial_endowment }} tokens</b>.
                         </p>
 
                         <hr class="">
 
+                        <small>
+                            {{ formfields }}
+                        </small>
+                        <!--
                         <p>
                             Here comes a question.
                         </p>
@@ -123,6 +142,7 @@
                                 Default checked radio
                             </label>
                         </div>
+                        -->
 
 
                         <div class="d-flex justify-content-center mt-5 mb-3">

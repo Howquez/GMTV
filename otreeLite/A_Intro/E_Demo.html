@@ -1,11 +1,11 @@
 <p>
-    Your decision screen will look as follows: You will see your endwoment in the top left pane;
-    your quota is displayed in the top right pane; your actual decision is made in the central pane, where you have an
+    Your decision screen will look as follows: You will see your endwoment in the top left panel;
+    your quota is displayed in the top right panel; your actual decision is made in the central panel, where you have an
     input field on the left as well as a button (that submits your decision) on the right.
 </p>
 
 <p>
-    In addition, there may be a red pane that shows up if an event occured. Finally, you will also see a pane informing you
+    In addition, there may be a red panel that shows up if an event occured. Finally, you will also see a panel informing you
     about the other group members' decision (from round 2 on).
 </p>
 
@@ -39,7 +39,7 @@
                                         46.67%
                                     </p>
                                     <small class="text-secondary">
-                                        of the total contributions you and the others make in this period.
+                                        of the tokens allocated to the group account in this period.
                                     </small>
                                 </div>
                             </div>
@@ -64,25 +64,26 @@
                         </p>
 
                         <p class="card-text mb-1 text-secondary">
-                            From these 20 tokens you can contribute any amount you want or keep everything.
+                            From these 20 tokens you can allocate any amount you want to the group account or keep
+                            everything (in your private account).
                         </p>
 
                         <p class="mb-4 text-secondary">
                             <small>
-                                The tokens you keep, that is, the tokens you do not contribute, will remain unchanged and
-                                are available to you in the next period.
+                                The tokens you keep, that is, the tokens you allocate to your private account, will
+                                remain unchanged until the next period.
                             </small>
                         </p>
 
                         <div class="container-fluid p-0 m-0">
                             <div class="row align-items-center">
                                 <div class="col m-0">
-                                    <input type="number" class="form-control m-0 border-primary" placeholder="Contribution" id="id_contribution" name="contribution" min="0"
+                                    <input type="number" class="form-control m-0 border-primary" placeholder="Allocation" id="id_contribution" name="contribution" min="0"
                                            data-container="body" data-toggle="popover" data-placement="bottom" data-content="You can contribute up to 20 tokens in this period.">
                                 </div>
                                 <div class="col m-0">
                                     <button type="button" id="submit_button" class="btn-primary btn m-0 w-100" disabled>
-                                        Contribute
+                                        To Group Account
                                     </button>
                                 </div>
                             </div>

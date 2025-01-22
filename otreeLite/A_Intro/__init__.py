@@ -27,6 +27,44 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     formula_shown = models.BooleanField(doc="True if participant wanted to see the formula that explains earnings.",
                                         initial=False)
+    CQ_1 = models.BooleanField(label='How much money can you earn in this experiment?',
+                               choices=[
+                                   [False, 'Exactly the fixed participation fee.'],
+                                   [True, 'That depends on my decisions and the decisions of others.'],
+                                   [False, '20 tokens.']
+                               ],
+                               blank=False)
+
+    CQ_2 = models.BooleanField(label='Which of the following statements is correct?',
+                               choices=[
+                                   [True, 'I will play ten periods while being matched with three other participants.'],
+                                   [False, 'I will be matched with ten participants and play four periods.'],
+                                   [False, 'I will play ten periods while being matched with four other participants'],
+                                   [False, 'None of the above is true.']
+                               ],
+                               blank=False)
+
+    CQ_3 = models.BooleanField(label='Which of the following statements is correct?',
+                               choices=[
+                                   [False, 'No matter what happens, I will receive an endowment of 20 tokens in each period'],
+                                   [False, 'My earnings in the previous periods will not affect my endwoment of the current period.'],
+                                   [True, 'The higher my endowment (compared to others), the lower my quota, the lower my share from the group account.']
+                               ])
+
+    CQ_4 = models.BooleanField(label='Which part of the following statement is false?',
+                               choices=[
+                                   [False, 'There a constant chance that an event occurs...'],
+                                   [False, '...If an event occurs, I may lose up to half of my endwoment...'],
+                                   [False, '...How much of my endowment will be lost, depends on my group...'],
+                                   [True, '...I, however, cannot affect the damage if an event occurs.']
+                               ])
+
+    CQ_5 = models.BooleanField(label='Take a closer look at your decision interface. How many tokens can you possibly allocate to the group account?',
+                               choices=[
+                                   [True, '20'],
+                                   [False, '46.67'],
+                                   [False, '10']
+                               ])
 
 
 # PAGES
@@ -36,7 +74,7 @@ class A_Welcome(Page):
 
 class B_Instructions_1(Page):
     form_model = "player"
-    # form_fields = ["formula_shown"]
+    form_fields = ["CQ_1", "CQ_2"]
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -56,7 +94,7 @@ class B_Instructions_1(Page):
 
 class B_Instructions_2(Page):
     form_model = "player"
-    # form_fields = ["formula_shown"]
+    form_fields = ["CQ_3"]
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -78,7 +116,7 @@ class B_Instructions_2(Page):
 
 class B_Instructions_3(Page):
     form_model = "player"
-    # form_fields = ["formula_shown"]
+    form_fields = ["formula_shown", "CQ_4"]
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -100,7 +138,7 @@ class B_Instructions_3(Page):
 
 class B_Instructions_4(Page):
     form_model = "player"
-    # form_fields = ["formula_shown"]
+    form_fields = ["CQ_5"]
 
     @staticmethod
     def before_next_page(player, timeout_happened):

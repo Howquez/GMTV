@@ -8,8 +8,8 @@ SESSION_CONFIGS = [
         num_rounds=10,
         group_size=2,
         efficiency_factor=1.5,
-        risk=0,
-        damage=0,
+        risk=0.2,
+        damage=0.5,
         initial_endowment=20,
     )
 ]

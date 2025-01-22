@@ -1,7 +1,7 @@
 <input type="hidden" name="formula_shown" id="formula_shown" value="false"/>
 
 <p>
-    There is a chance of {{ risk }}% that an event occurs. Such an event reduces your
+    There is a fixed chance of {{ risk }}% that an event occurs. Such an event reduces your
     endowment to up to {{ damage }}%. While you do not have any influence on the
     occurence of an event, you can affect the damage it evokes:
 </p>
@@ -27,9 +27,8 @@
 
 <p>
     Note that we provide a calculator behind the <i class="bi bi-calculator"></i>-symbol. It
-    takes the abovementioned formula und helps you to consider different cases. As such, it is
-    most important that you understand that higher contributions lead to lower damage and
-    vice versa.
+    takes the abovementioned formula, as well as the quota and helps you to consider different cases.
+    As such, it is most important that you understand that higher contributions lead to lower damage in case of an event.
 </p>
 
 <p>
@@ -50,7 +49,6 @@
 <script>
     document.getElementById("collapseButton").addEventListener("click",
         function() {
-            console.log("hi")
             document.getElementById("formula_shown").value = true;
         },
     false);

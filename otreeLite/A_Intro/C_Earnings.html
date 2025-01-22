@@ -1,18 +1,5 @@
-
 <p>
-    The experiment will consist of {{ session.config.num_rounds }} decision making periods.
-    At the beginning of the experiment, you will be matched with {{ group_members }} other people
-    in this room. Therefore, there are {{ session.config.group_size }} people, including
-    yourself, participating in your group.
-    You will be matched with the same people during the entire experiment.
-    None of the participants knows anything about other participants' identities.
-</p>
-<p>
-    Before the first period you, and each other person in your group, will be given the
-    <b>endowment of {{ session.config.initial_endowment }} tokens</b>.
-</p>
-<p>
-    At the beginning of the first period you will be asked to allocate your endowment between a
+    At the beginning of each period you will be asked to allocate your endowment between a
     private account and a group account.
 </p>
 
@@ -21,8 +8,8 @@
 </h4>
 
 <p>
-    The tokens that you place in the <b>private account</b> have a return of 1 at the end of the
-    first period. This means that at the end of the first period your private account will
+    The tokens that you place in the <b>private account</b> have a return of 1.
+    This means that, at the end of a given period, your private account will
     contain exactly the amount of tokens you put into the private account at the beginning of
     the period. Nobody except yourself benefits from your private account.
 </p>
@@ -33,13 +20,17 @@
     group will get a share of that sum of tokens.
 </p>
 <p>
-    The exact <b>quota</b> determining your share varies, which is why we will display
-    it on your decision screen in each period. More precisely, the return you receive from the
-    group account depends on how your endowment compares to the whole group's endowments. In case
-    you have an endowment while the other group members have nothing, the
-    quota will equal {{min_mpcr}}%. If, in contrast, you have no endowment but some other
-    group member has an endowment, the quota equals {{max_mpcr}}%. This relationship is visualized in the following
-    figure.
+    The exact <b>quota</b> determining your individual share of the group account may vary from period to period,
+    which is why we will display it on your decision screen in each period.
+
+    More precisely, the return you receive from the
+    group account depends on how your endowment compares to the whole group's endowments.
+    In case you have an endowment while the other group members have nothing, the
+    quota will be smaller. If, in contrast, you have no endowment but some other
+    group member has an endowment, the quota will be higher.
+    Hence, the lower your endowment in a given period (compared to others) the higher your individual share of the group
+    account  in that period.
+    This relationship is visualized in the following figure.
 </p>
 
 <div id="mpcr_viz"></div>
@@ -49,29 +40,26 @@
 </h4>
 
 <p>
-    Your endowment at the beginning of the second period will be equal to the amount of tokens
-    contained in your private account at the end of the first period plus your share of the
+    Your endowment at the beginning of the second period will be equal to the amount of tokens you accumulated in the first period.
+    Hence, you'll start the second period with all the tokens from your private account plus your individual share of the
     group account at the end of the first period.
 </p>
 <p>
-    At the beginning of the second period you will be again asked to allocate the endowment that
-    you have at the beginning of the second period between a private account and a group account.
-    Both the private and the group account work in exactly the same manner as in the first
-    period, namely, they have the same returns.
+    In the second period, you will be again asked to allocate the endowment you accumulated between a private account
+    and a group account. Both the private and the group account work in exactly the same manner as in the first
+    period.
 </p>
 <p>
     The structure of the experiment at all subsequent periods is identical: your endowment at
-    the beginning of each period is equal to the amount of tokens in your private account at
-    the end of the previous period plus your share of the group account at the end of the
-    previous period.
+    the beginning of each period is equal to the amount of tokens in your private account
+    plus your share of the group account at the end of the previous period.
 </p>
 <p>
-    <b> Your total income in the end of the experiment is equal to the amount of tokens in your
-    private account and your share of the group account at the end of period
-        {{session.config.num_rounds}}</b>. At the end
-    of the experiment there will be a short questionnaire for you to fill in.
+    Your <b> total income </b>in the end of the experiment is equal to the amount of tokens in your
+    private account and your share of the group account at the end of period {{session.config.num_rounds}}.
 </p>
 
+<!--
 <h4 class=" mt-4">
     Information
 </h4>
@@ -87,3 +75,4 @@
 <p>
     All other participants will receive exactly the same information.
 </p>
+-->
